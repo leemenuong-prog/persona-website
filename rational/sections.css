@@ -267,8 +267,8 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 
 /* the focused card's EXPANDED face — name + honors, laid out horizontally.
    inherits the card's colour (paper on blue / ink). driven by JS opacity. */
-.wc-full { position: absolute; inset: 0; display: grid; grid-template-columns: 1.15fr 1fr;
-  gap: clamp(16px, 1.9vw, 38px); padding: clamp(15px, 1.5vw, 26px) clamp(18px, 1.9vw, 34px);
+.wc-full { position: absolute; inset: 0; display: grid; grid-template-columns: 1.05fr 1fr;
+  gap: clamp(14px, 1.6vw, 30px); padding: clamp(11px, 1.1vw, 18px) clamp(16px, 1.7vw, 30px);
   align-content: center; opacity: 0; }
 .wc-l { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
 .wc-fmeta { display: flex; gap: 12px; font-size: 9px; letter-spacing: .2em; opacity: .8; white-space: nowrap; }
@@ -278,7 +278,8 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wk-card.ink .wc-name .psq { background: var(--blue-up); }
 .wc-fsub { font-size: 9px; letter-spacing: .16em; opacity: .66; }
 .wc-r { display: flex; flex-direction: column; justify-content: center; gap: clamp(9px, 1.2vh, 15px); min-width: 0; }
-.wc-faw { font-size: 9px; letter-spacing: .1em; line-height: 1.7; opacity: .72; }
+.wc-faw { font-size: 8.5px; letter-spacing: .08em; line-height: 1.45; opacity: .72;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .wc-fmx { display: flex; gap: 16px; }
 .wc-fmx .m { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .wc-fmx .m b { font-size: clamp(14px, 1.3vw, 21px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; }
@@ -287,7 +288,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 /* ===== the work SHOWCASE — was the decoded text, now the work itself =====
    version C · 档案窗: annotated header, framed film with registration
    brackets, ruled name+caption footer. sits below the fan. */
-.wk-show { position: absolute; left: 7vw; right: 7vw; top: 49vh; bottom: 10.5vh; z-index: 4; }
+.wk-show { position: absolute; left: 7vw; right: 7vw; top: 33vh; bottom: 10.5vh; z-index: 4; }
 .wk-show-item { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; }
 .sc-top { display: flex; justify-content: space-between; align-items: center; gap: 16px;
   padding: 9px 13px; margin-bottom: 12px; border: 1px solid var(--line);
@@ -296,7 +297,11 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .sc-top .l b { color: var(--fg); font-weight: 400; }
 .sc-top .dot { width: 8px; height: 8px; background: var(--blue); flex: 0 0 auto; }
 .sc-top .r { white-space: nowrap; }
-.sc-media { position: relative; flex: 1; min-height: 0; overflow: hidden; display: block;
+/* the media frame is now a centered 16:9 rectangle — as large as 16:9 allows inside
+   the .sc-frame band, vertically + horizontally centered. corner brackets + play button
+   (drawn on .sc-media) frame the rectangle; the gutters carry the annotation rails. */
+.sc-media { position: relative; height: 100%; width: auto; aspect-ratio: 16 / 9; max-width: 100%;
+  margin: auto; overflow: hidden; display: block;
   background: #06080f; border: 1px solid var(--line); }
 .sc-still { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ez); display: block; }
 .sc-media:hover .sc-still { transform: scale(1.03); }
@@ -306,7 +311,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .sc-media.playing::before, .sc-media.playing::after { display: none; }
 video.sc-still { cursor: pointer; }
 /* poster-still showcase that opens an embedded film (W·02) is a <button> */
-button.sc-media { appearance: none; margin: 0; padding: 0; width: 100%; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
+button.sc-media { appearance: none; padding: 0; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
 /* the interactive film, loaded in-frame on click */
 iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
 .sc-media.playing iframe.sc-still { object-fit: fill; }
@@ -318,7 +323,7 @@ iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
   display: flex; align-items: center; justify-content: center; transition: transform .3s var(--ez), background .3s; }
 .sc-media:hover .sc-play { transform: translate(-50%,-50%) scale(1.08); background: rgba(8,10,20,.58); }
 .sc-play .tri { width: 0; height: 0; border-left: 18px solid #fff; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 4px; }
-.sc-ph { flex: 1; min-height: 0; border: 1px solid var(--line);
+.sc-ph { height: 100%; width: auto; aspect-ratio: 16 / 9; max-width: 100%; margin: auto; border: 1px solid var(--line);
   background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(11,11,14,.05) 0 12px, transparent 12px 24px);
   display: flex; align-items: center; justify-content: center; }
 .sc-ph .n { text-align: center; font-family: var(--mono); font-size: 10px; letter-spacing: .26em; color: var(--fg-dim); }
@@ -326,6 +331,18 @@ iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
 a.sc-ph.as-link { text-decoration: none; cursor: pointer; transition: background .3s, border-color .3s; }
 a.sc-ph.as-link:hover { border-color: var(--blue); background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(0,71,171,.08) 0 12px, transparent 12px 24px); }
 a.sc-ph.as-link:hover .n b { color: var(--blue); }
+/* the media band — centers the 16:9 frame, with thin mono annotation rails pinned to
+   the left/right edges so the freed gutters read as an archive window (档案窗). */
+.sc-frame { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.sc-rail { position: absolute; top: 0; bottom: 0; width: clamp(20px, 2.4vw, 40px); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 0;
+  font-size: 8.5px; letter-spacing: .22em; color: var(--fg-dim); pointer-events: none; }
+.sc-rail.l { left: 0; } .sc-rail.r { right: 0; }
+.sc-rail .rl-t, .sc-rail .rl-b { writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; max-height: 42%; }
+.sc-rail .rl-b { transform: rotate(180deg); }
+.sc-rail .rl-tick { flex: 1; width: 1px; margin: 8px 0;
+  background: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 9px); }
+
 .sc-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
 .sc-name { display: inline-flex; align-items: baseline; gap: .4em; font-size: clamp(22px, 2.4vw, 38px);
@@ -344,15 +361,17 @@ a.sc-name:hover .go { color: var(--fg); transform: translateY(-.35em) translateX
 @media (max-height: 720px) {
   .wk-intro { top: 9vh; }
   .wk-zh { font-size: clamp(22px, 4vw, 44px); }
+  .wk-show { top: 30vh; }
 }
 
 @media (max-width: 900px) {
   .wk-wrap { height: 560vh; }
   .wk-zh { font-size: clamp(24px, 7vw, 46px); }
-  .wk-show { left: 7vw; right: 7vw; top: 52vh; }
+  .wk-show { left: 7vw; right: 7vw; top: 36vh; }
   .wk-ttl { font-size: clamp(26px, 8.4vw, 46px); }
   .wk-aw { font-size: 10px; }
   .wk-foot .wf-r { display: none; }
+  .sc-rail { display: none; }
 }
 
 /* dossier overlay */

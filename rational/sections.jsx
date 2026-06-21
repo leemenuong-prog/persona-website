@@ -475,7 +475,10 @@ function Works({ jump }) {
       const FHAND = 0.12;
       const eGeo = clp((eS - FHAND) / (1 - FHAND), 0, 1);
       const pB = clp((p - 0.40) / 0.42, 0, 1);         /* scrub across the deck (browse window) */
-      const focus = smooth(0.34, 0.58, p) * (1 - close); /* emphasis eases in, fades on reconverge */
+      /* emphasis is fully in by the time the FIRST card is active (p≈0.40) so
+         W·01/W·02 decode their names; the ramp still starts AFTER the bar→card
+         morph is done (eGeo≈1 by p≈0.30) so no card pops wide mid-handoff. */
+      const focus = smooth(0.26, 0.40, p) * (1 - close); /* emphasis eases in, fades on reconverge */
       /* DWELL — instead of a linear scrub (where the next work surfaces while
          the last is still arriving), each work HOLDS in focus, then the scrub
          moves briskly to the next. The plateau at each integer is the dwell. */
@@ -534,10 +537,10 @@ function Works({ jump }) {
       /* airy but always within frame: ~8% overlap on wide screens, a touch
          more on narrow, never wider than 94% of the stage. */
       const step = Math.min(cardW * 0.92, (W * 0.94 - cardW) / (N - 1));
-      const fanTop = H * 0.16;
+      const fanTop = H * 0.105;
       const angStep = 1.45;
-      const focusW = clp(W * 0.44, 360, 680);   /* the stretched poster width */
-      const focusH = clp(H * 0.29, 184, 280);
+      const focusW = clp(W * 0.56, 420, 860);   /* the stretched banner width — wider so the short banner stays legible */
+      const focusH = clp(H * 0.19, 132, 188);   /* shorter banner — frees vertical room for the media below */
       const marginX = W * 0.06;
 
       cards.forEach((card, i) => {
@@ -563,12 +566,15 @@ function Works({ jump }) {
            clamped to stay on screen; neighbours stay narrow behind it. */
         const wOpen = lerp(cardW, focusW, e);
         const hOpen = lerp(cardH, focusH, e);
-        const slotCx = fanCx + off * step;
+        /* the focused card glides to screen centre so it sits directly above the
+           centred showcase below — aligned, not drifting left/right; neighbours
+           keep their fan slots. */
+        const slotCx = lerp(fanCx + off * step, fanCx, e);
         const cCx = clp(slotCx, marginX + wOpen / 2, W - marginX - wOpen / 2);
         const cardX = cCx - wOpen / 2;
         /* the focused work rises clear of the deck; the rest sink + recede,
            so the active poster and the still-encoded ones never blur together */
-        const cardTop = fanTop + Math.abs(off) * 6 - 52 * e + 16 * rec;
+        const cardTop = fanTop + Math.abs(off) * 6 - 34 * e + 16 * rec;
         const ang = (off * angStep) * (1 - 0.96 * e);
         const sclRec = 1 - 0.14 * rec;                   /* backgrounded ≈-14%; focus grows via width */
 
@@ -607,7 +613,7 @@ function Works({ jump }) {
       /* the work showcase below — the active work, crossfaded */
       works.forEach((wEl, i) => {
         const d = disp - i;
-        const op = clp(1 - Math.abs(d) / 0.62, 0, 1) * smooth(0, 0.02, pB) * (1 - close);
+        const op = clp(1 - Math.abs(d) / 0.62, 0, 1) * smooth(0.05, 0.35, focus) * (1 - close);
         wEl.style.opacity = op.toFixed(3);
         wEl.style.transform = "translateY(" + (-d * 26).toFixed(1) + "px)";
         wEl.style.pointerEvents = op > 0.6 ? "auto" : "none";
@@ -617,7 +623,7 @@ function Works({ jump }) {
         if (cur) cur.textContent = String(active + 1).padStart(2, "0");
         lastActive = active;
       }
-      foot.style.opacity = (smooth(0, 0.05, pB) * (1 - close)).toFixed(3);
+      foot.style.opacity = (smooth(0.05, 0.35, focus) * (1 - close)).toFixed(3);
     };
 
     if (!window.__addLoop) { tick(); return; }
@@ -627,8 +633,12 @@ function Works({ jump }) {
 
   useSecEffect(() => {
     const esc = (ev) => { if (ev.key === "Escape") setOpen(null); };
+    /* the hover selection STICKS — it won't fly back to the scrubbed card when the
+       pointer leaves. Scrolling is what hands control back to the scroll-scrub. */
+    const onScroll = () => { hoverRef.current = null; };
     window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("keydown", esc); window.removeEventListener("scroll", onScroll); };
   }, []);
 
   const od = open != null ? WORKS[open] : null;
@@ -645,11 +655,18 @@ function Works({ jump }) {
             <p className="wk-lead mono">SCROLL — THE MARK UNFOLDS INTO THE WORK · 滚动，标记展开为作品</p>
           </div>
 
-          <div className="wk-fan" aria-hidden="false" onPointerLeave={() => { hoverRef.current = null; }}>
+          <div className="wk-fan" aria-hidden="false"
+               onPointerMove={(ev) => {
+                 /* hover-scrub, movement-driven: focus whichever card is actually
+                    under the pointer. Using pointermove (not pointerenter) means a
+                    card sliding under a STILL cursor never re-triggers — no float. */
+                 if ((window.__wkOpen || 0) <= 0.55) return;
+                 const card = ev.target.closest(".wk-card");
+                 if (card && card.dataset.i != null) hoverRef.current = +card.dataset.i;
+               }}>
             {WORKS.map((wk, i) => (
-              <button key={i} type="button"
+              <button key={i} type="button" data-i={i}
                       className={"wk-card" + (wk.dark ? " ink" : "")} data-hov
-                      onPointerEnter={() => { hoverRef.current = i; }}
                       onClick={() => setOpen(i)} aria-label={wk.ix + " " + wk.t}>
                 <span className="wc-body">
                   <span className="wc-top mono"><span>{wk.tag}</span><span>{wk.year}</span></span>
@@ -684,7 +701,19 @@ function Works({ jump }) {
                   <span className="l"><span className="dot"></span><span>{wk.ix}</span><b>{wk.tag} · {wk.year}</b></span>
                   <span className="r">{wk.mediaLabel || (wk.poster ? "PRODUCT FILM · 路演视频" : wk.doc ? "PORTFOLIO · 作品集 PDF" : "ARCHIVE · 作品本体待上线 / TBD")}</span>
                 </div>
-                <WorkMedia wk={wk} />
+                <div className="sc-frame">
+                  <span className="sc-rail l mono" aria-hidden="true">
+                    <span className="rl-t">{wk.ix}</span>
+                    <span className="rl-tick"></span>
+                    <span className="rl-b">{wk.mediaLabel || "ARCHIVE"}</span>
+                  </span>
+                  <WorkMedia wk={wk} />
+                  <span className="sc-rail r mono" aria-hidden="true">
+                    <span className="rl-t">{wk.role[0]}</span>
+                    <span className="rl-tick"></span>
+                    <span className="rl-b">{wk.tag} · {wk.year}</span>
+                  </span>
+                </div>
                 <div className="sc-foot">
                   {wk.link ? (
                     <a className="sc-name" href={wk.link} target="_blank" rel="noopener" data-hov>
