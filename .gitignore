@@ -1,9 +1,8 @@
 # macOS
 .DS_Store
 
-# large media kept OUT of the repo (exceed GitHub's 100MB limit) —
-# host these externally (Bilibili / YouTube / CDN) and link/embed instead
+# originals kept OUT of the repo (exceed GitHub's 100MB limit) — the repo
+# ships compressed/web versions instead (see README). originals stay local.
 *.zip
 PeersWork-路演视频.mp4
 作品集【李文苑】.pdf
-pears-roadshow.mp4

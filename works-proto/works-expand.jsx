@@ -22,14 +22,15 @@ const lp = (a, b, u) => a + (b - a) * u;
 const clp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
 const SLOTS = [
-  /* W·01 — Pears · 路演视频 lives on the live site (459MB, not in repo) */
+  /* W·01 — Pears · 路演视频, compressed to 1080p/H.264 (~69MB) & played inline */
   {
     real: true, ix: "W·01", tag: "AI PRODUCT", year: "2026", h: 0.97,
     display: "Pears", sub: "AGENT FACTORY · 智能体工厂",
     award: ["ADVENTURE-X HACKATHON · 2ND PRIZE", "OBSERVE → GENERATE → REINFORCE"],
     metrics: [["2nd", "HACKATHON PRIZE"], ["3", "ENDS SHIPPED SOLO"], ["PRD", "AS THE CONTRACT"]],
-    media: { kind: "link", poster: "../works/pears-roadshow-cover.jpg", href: "https://pear-work-web.vercel.app/", label: "访问项目 ↗" },
-    caption: "PEERSWORK · 路演视频 · 详见线上站",
+    media: { kind: "video", src: "../works/pears-roadshow.mp4", poster: "../works/pears-roadshow-cover.jpg", note: "路演视频" },
+    link: "https://pear-work-web.vercel.app/", linkLabel: "访问项目 ↗",
+    caption: "PEERSWORK · 路演视频 · PRODUCT FILM",
     portfolio: PORTFOLIO,
   },
   /* W·02 — Pear Agent 动态影片 (the xtool platform film, interactive) */
@@ -110,7 +111,7 @@ function DkFull({ sl }) {
 function ScTop({ sl, version }) {
   if (version !== "C") return null;
   const right = !sl.real ? "ARCHIVE · 待补充 / TBD"
-    : sl.media && sl.media.kind === "video" ? "PRODUCT FILM · 影像 · 16MB"
+    : sl.media && sl.media.kind === "video" ? ("PRODUCT FILM · 影像" + (sl.media.note ? " · " + sl.media.note : ""))
     : sl.media && sl.media.kind === "iframe" ? "MOTION FILM · 互动影片"
     : sl.media && sl.media.kind === "portfolio" ? "PORTFOLIO · 作品集 PDF"
     : "PRODUCT · 线上项目 ↗";
@@ -209,6 +210,7 @@ function Showcase({ sl, version }) {
         )}
         <div className="sc-cap">
           {sl.caption}
+          {sl.link ? <a className="sc-pf-link" href={sl.link} target="_blank" rel="noopener" data-hov> · {sl.linkLabel || "访问项目 ↗"}</a> : null}
           {showPfLink ? <a className="sc-pf-link" href={sl.portfolio} target="_blank" rel="noopener" data-hov> · 作品集 PDF ↗</a> : null}
         </div>
       </div>
