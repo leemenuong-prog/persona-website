@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-label="Peear — Career Agent">
+  <rect width="1280" height="720" fill="#0047AB"/>
+  <!-- data-bars skyline (条) — the .IAM. rhythm; period = deeper blue (跳色) -->
+  <g>
+    <rect x="498" y="180" width="26" height="120" fill="#0b0b0e"/>
+    <rect x="538" y="150" width="26" height="150" fill="#0b0b0e"/>
+    <rect x="578" y="210" width="26" height="90"  fill="#0b0b0e"/>
+    <rect x="618" y="135" width="26" height="165" fill="#0b0b0e"/>
+    <rect x="658" y="200" width="26" height="100" fill="#0b0b0e"/>
+    <rect x="698" y="165" width="26" height="135" fill="#0b0b0e"/>
+    <rect x="738" y="190" width="26" height="110" fill="#0b0b0e"/>
+    <rect x="778" y="284" width="16" height="16"  fill="#002a66"/>
+  </g>
+  <!-- wordmark — paper letters, square period in deeper blue (accent on the dot only) -->
+  <text x="640" y="470" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+        font-size="172" font-weight="800" letter-spacing="-6" fill="#efece6">Peear</text>
+  <rect x="828" y="448" width="20" height="20" fill="#002a66"/>
+  <!-- mono captions -->
+  <text x="640" y="545" text-anchor="middle"
+        font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+        font-size="23" letter-spacing="7" fill="#efece6" fill-opacity="0.82">CAREER AGENT · MEMO → ASSET · STAR ENGINE</text>
+  <text x="60" y="74"
+        font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+        font-size="22" letter-spacing="5" fill="#efece6" fill-opacity="0.72">W·03 · AI PRODUCT · 2025</text>
+  <text x="60" y="676"
+        font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+        font-size="21" letter-spacing="4" fill="#efece6" fill-opacity="0.6">LIVE · pear-agent.vercel.app</text>
+</svg>

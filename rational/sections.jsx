@@ -278,6 +278,8 @@ const WORKS = [
     ix: "W·03", t: "Peear — Career Agent", tag: "AI PRODUCT", year: "2025", dark: false,
     award: "MVP LOOP VALIDATED — MEMO → ASSET · STAR ENGINE",
     link: "https://pear-agent.vercel.app/",
+    poster: "works/peear-cover.svg", embed: "https://pear-agent.vercel.app/",
+    mediaLabel: "LIVE APP · 在线体验", caption: "PEEAR · CAREER AGENT · 在线 MVP",
     band: [0.6, 0.8, 0.5, 0.95, 0.7], role: ["Independent builder", "MVP validated"],
     body: "For juniors whose experience never compounds: an agent that restructures fragmented notes into standard STAR records, then converts them into quantified virtual assets — record, quantify, feedback. Layered model calls (fast Flash / deep Pro) balance instant response against per-call cost.",
     zh: "针对「经验无法沉淀」的 Memo-to-Asset Agent：碎片输入重组为 STAR，配合价值估算算法变成可量化的虚拟资产。分层模型调用平衡秒级响应与成本。",
