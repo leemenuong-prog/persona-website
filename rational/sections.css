@@ -331,6 +331,33 @@ iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
 a.sc-ph.as-link { text-decoration: none; cursor: pointer; transition: background .3s, border-color .3s; }
 a.sc-ph.as-link:hover { border-color: var(--blue); background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(0,71,171,.08) 0 12px, transparent 12px 24px); }
 a.sc-ph.as-link:hover .n b { color: var(--blue); }
+
+/* ── portfolio flip-book (W·05–W·08) — same 16:9 frame, but the A3 spread sits
+   object-fit:contain on near-black so the whole page reads; ‹ › flip, square pips
+   index the pages (the period motif as a counter). 条 → 页. */
+.sc-media.gallery { background: #0b0b0e; cursor: default; }
+.sc-media.gallery .gl-page { position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; opacity: 0; transform: none; transition: opacity .5s var(--ez); pointer-events: none; }
+.sc-media.gallery .gl-page.on { opacity: 1; }
+.sc-media.gallery:hover .gl-page { transform: none; }   /* cancel the cover-still hover zoom */
+.gl-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+  width: clamp(34px, 3.2vw, 48px); height: clamp(46px, 9vh, 76px); padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; background: rgba(8,10,20,.34); color: #fff; cursor: pointer;
+  font-size: 30px; line-height: 0; opacity: .5; transition: opacity .25s, background .25s; }
+.gl-nav.prev { left: 0; } .gl-nav.next { right: 0; }
+.gl-nav span { transform: translateY(-2px); }
+.sc-media.gallery:hover .gl-nav { opacity: .92; }
+.gl-nav:hover { background: rgba(0,71,171,.78); opacity: 1; }   /* cobalt on hover */
+.gl-pips { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6;
+  display: flex; align-items: center; gap: 7px; padding: 6px 11px; background: rgba(8,10,20,.46); }
+.gl-pips i { width: 7px; height: 7px; background: rgba(255,255,255,.42); cursor: pointer;
+  transition: background .25s, transform .25s; }
+.gl-pips i.on { background: var(--blue-up); transform: scale(1.18); }   /* accent square on ink */
+.gl-pips i:hover { background: rgba(255,255,255,.75); }
+.gl-count { margin-left: 4px; font-size: 8.5px; letter-spacing: .14em;
+  color: rgba(255,255,255,.78); font-weight: 400; font-variant-numeric: tabular-nums; }
+
 /* the media band — centers the 16:9 frame, with thin mono annotation rails pinned to
    the left/right edges so the freed gutters read as an archive window (档案窗). */
 .sc-frame { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }

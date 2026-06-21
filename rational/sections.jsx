@@ -255,10 +255,10 @@ const WORKS = [
   {
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
     award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
-    link: "https://pear-work-web.vercel.app/",
+    link: "https://pearwork.netlify.app/",
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     mediaLabel: "PRODUCT FILM · 路演视频",
-    caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pear-work-web.vercel.app",
+    caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pearwork.netlify.app",
     band: [0.5, 0.9, 0.65, 1, 0.7], role: ["Independent builder", "0 → launch"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
     zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件捕捉行为轨迹 → 蒸馏为可编辑 PRD → AI 编码 Agent 生成专属 Workflow Agent。可编辑 PRD 是观察层与执行层之间的契约。现场获企业对接意向最多的项目之一。",
@@ -267,7 +267,7 @@ const WORKS = [
   {
     ix: "W·02", t: "XTOOL Agent Platform", tag: "AI PLATFORM", year: "2026", dark: false,
     award: "0→1 SOLO · 9 TOOLS — ADOPTED BY 25+ OF A 48-PERSON DEPT",
-    poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "xtool/",
+    poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://pearagent.netlify.app/",
     mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
     band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM / platform owner", "intern, dept. of 48"],
     body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, 3 candidates to pick from — drove three product generations. A self-built ROI board (0.39 h/$) keeps the platform honest.",
@@ -275,15 +275,15 @@ const WORKS = [
     metrics: [["9", "PRODUCTION TOOLS"], ["220K", "LINES TYPESCRIPT"], ["0.39", "ROI · H/$"]],
   },
   {
-    ix: "W·03", t: "Peear — Career Agent", tag: "AI PRODUCT", year: "2025", dark: false,
-    award: "MVP LOOP VALIDATED — MEMO → ASSET · STAR ENGINE",
-    link: "https://pear-agent.vercel.app/",
-    poster: "works/peear-cover.svg", embed: "https://pear-agent.vercel.app/",
-    mediaLabel: "LIVE APP · 在线体验", caption: "PEEAR · CAREER AGENT · 在线 MVP",
-    band: [0.6, 0.8, 0.5, 0.95, 0.7], role: ["Independent builder", "MVP validated"],
-    body: "For juniors whose experience never compounds: an agent that restructures fragmented notes into standard STAR records, then converts them into quantified virtual assets — record, quantify, feedback. Layered model calls (fast Flash / deep Pro) balance instant response against per-call cost.",
-    zh: "针对「经验无法沉淀」的 Memo-to-Asset Agent：碎片输入重组为 STAR，配合价值估算算法变成可量化的虚拟资产。分层模型调用平衡秒级响应与成本。",
-    metrics: [["STAR", "AUTO-STRUCTURED"], ["2-TIER", "MODEL ROUTING"], ["MVP", "LOOP VALIDATED"]],
+    ix: "W·03", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", dark: false,
+    award: "企业 AGENT 黑客松 · 2ND PRIZE 二等奖 — DECISION CONSENSUS FOR TEAMS",
+    link: "https://yijian-demo4.netlify.app",
+    poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app",
+    mediaLabel: "LIVE DEMO · 在线体验", caption: "议见 YIJIAN · 决策共识 AGENT · 在线 DEMO",
+    band: [0.7, 0.9, 0.6, 1, 0.65], role: ["Product & build", "Enterprise hackathon · 2nd"],
+    body: "A decision-consensus agent for enterprise teams. Name the call to make — a product pick, a budget add, a regional launch — and Yijian convenes a panel of role perspectives, then resolves them across four layers: strategic goal, factual evidence, stakeholder interest, weighted accountability. What it returns is not one opinion but an auditable verdict — a consensus score, the conditions a decision must clear, and the disagreements still worth solving.",
+    zh: "面向企业团队的「决策共识」Agent：输入一项待决策事项，议见组织多角色视角，并在四层共识——战略目标 / 事实证据 / 利益角色 / 权重权责——上收敛分歧。产出的不是单一意见，而是可追溯的结论：共识度评分、决策需满足的附加条件、以及仍需解决的分歧点。企业 Agent 黑客松二等奖。",
+    metrics: [["2nd", "ENTERPRISE HACKATHON"], ["4-LAYER", "CONSENSUS MODEL"], ["7-ROLE", "DELIBERATION"]],
   },
   {
     ix: "W·04", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", dark: false,
@@ -298,7 +298,9 @@ const WORKS = [
   {
     ix: "W·05", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", dark: true,
     award: "深港双年展 UABB · 地外人居板块 SECTION REPRESENTATIVE — 火箭利用 × 地外人居",
-    doc: "uploads/portfolio.pdf#page=3", caption: "PORTFOLIO · 作品集 · 地外人居",
+    doc: "uploads/portfolio.pdf#page=4", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/aftersilence-1.jpg", "works/portfolio/aftersilence-2.jpg"],
+    caption: "PORTFOLIO · 作品集 · 地外人居",
     band: [0.95, 0.55, 0.78, 0.62, 1], role: ["Design lead", "UABB off-world section"],
     body: "When the engines fall silent, life begins. Taking the first Mars base's pioneer cluster as prototype, the design turns technical modules into scenes of living — a closed Martian habitat loop where dwelling, energy and research sustain each other. Exhibited in mixed reality (N'Space, naked-eye 3D) at the UABB main hall as the section's representative work.",
     zh: "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」以首座火星基地「首航组团」为原型，把功能模块转化为生活场景，提出居住、能源、科研相互依存的「火星人居闭环」。作为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
@@ -307,7 +309,9 @@ const WORKS = [
   {
     ix: "W·06", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", dark: true,
     award: "「活力杯」大湾区高校设计大赛 · 1ST PRIZE 一等奖 — TOP 3%",
-    doc: "uploads/portfolio.pdf#page=5", caption: "PORTFOLIO · 作品集 · 桥上书屋",
+    doc: "uploads/portfolio.pdf#page=6", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
+    caption: "PORTFOLIO · 作品集 · 桥上书屋",
     band: [1, 0.66, 0.5, 0.9, 0.72], role: ["Project lead", "活力杯 2023"],
     body: "Lychee Bay's water once gathered people; now it divides them. With no land left in the dense old quarter, the public space goes onto the water — a bridge-library stitching the two banks. Movable bookshelves let one span be a reading room by day, a waiting area at school run, an event hall on holidays. Needle-point urban renewal, now aligned with a real implementation project.",
     zh: "荔枝湾水系曾聚人，如今却隔开两岸。高密度老城无地可用，便把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。绣花针式的城市更新，并与拟落地项目对接实施。",
@@ -316,7 +320,9 @@ const WORKS = [
   {
     ix: "W·07", t: "风贯·立方 Air Cube", display: "风贯·立方", tag: "ARCHITECTURE", year: "2025", dark: true,
     award: "2025 优秀毕业设计展 · 卓越奖 — 产城融合 · 工业上楼",
-    doc: "uploads/portfolio.pdf#page=9", caption: "PORTFOLIO · 作品集 · 产城融合",
+    doc: "uploads/portfolio.pdf#page=10", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/aircube-1.jpg", "works/portfolio/aircube-2.jpg", "works/portfolio/aircube-3.jpg"],
+    caption: "PORTFOLIO · 作品集 · 产城融合",
     band: [0.7, 1, 0.6, 0.85, 0.55], role: ["Design lead", "毕业设计 2025"],
     body: "A \"factory-upstairs\" industry–city fusion for an IDC R&D centre in Guangzhou's Knowledge City. Production floors lift to level three and above; the entire second floor opens into a public void that doubles as a convective wind corridor, stack ventilation cooling the block without machines. Irregular perforated-aluminium façades and vertical greening modulate shade and heat, while a cold-lane ground level tunes the microclimate through planting and water evaporation. Prefab steel, rooftop PV and a rainwater loop close the energy gap.",
     zh: "以「工业上楼」为核心的产城融合：生产空间抬升至三层及以上，二层整体架空为通透公共空间，兼作对流通风廊道，结合热压通风实现自然降温。东西向不规则穿孔铝板幕墙 + 垂直绿化动态遮阳隔热；架空层引入冷巷原理，以植被与水体蒸发优化微气候。装配式钢结构 + 屋顶光伏 + 雨水循环系统进一步降低能耗。科力新能源 IDC · 大湾区研发中心，2025 优秀毕业设计展卓越奖。",
@@ -325,7 +331,9 @@ const WORKS = [
   {
     ix: "W·08", t: "环·世界 The Ring-World", display: "环·世界", tag: "ARCHITECTURE", year: "2024", dark: true,
     award: "「华灿奖」两岸新锐设计竞赛 · 1ST PRIZE 一等奖 — TOP 5%",
-    doc: "uploads/portfolio.pdf#page=18", caption: "PORTFOLIO · 作品集 · 声景社区",
+    doc: "uploads/portfolio.pdf#page=19", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/ringworld-1.jpg", "works/portfolio/ringworld-2.jpg", "works/portfolio/ringworld-3.jpg"],
+    caption: "PORTFOLIO · 作品集 · 声景社区",
     band: [0.78, 0.6, 0.95, 0.55, 0.84], role: ["Project lead", "华灿奖 2024"],
     body: "A rental community above a metro depot: 72 dB of traffic noise, public space squeezed to 35% of normal. The answer flips the public realm vertically — a double-deck roaming loop strings roof gardens and shared living rooms together, while a parametric acoustic façade opens and closes against the simulated noise map, trading view against silence in real time. 5,000 m² of shared ground reclaimed.",
     zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音。释放 5000 ㎡ 共享场域，课题 96 分。",
@@ -355,13 +363,52 @@ const smooth = (e0, e1, x) => { const t = clp((x - e0) / (e1 - e0 || 1e-6), 0, 1
 const eOut = (t) => 1 - Math.pow(1 - t, 3);
 const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
 
+/* ── the portfolio flip-book — for the architecture works whose body
+   lives as作品集 spreads. The same .sc-media 16:9 frame, but the A3 page
+   sits object-fit:contain (whole spread visible) and ‹ › flip through
+   THIS work's pages only (After_Silence = 2, 上桥 = 4, …). Square pips =
+   the period motif, doubling as the page index. 条 → 页. ── */
+function WorkGallery({ wk }) {
+  const [idx, setIdx] = useSecState(0);
+  const n = wk.pages.length;
+  const go = (d, ev) => { if (ev) { ev.preventDefault(); ev.stopPropagation(); } setIdx((i) => (i + d + n) % n); };
+  return (
+    <div className="sc-media gallery"
+         tabIndex={0}
+         onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1, e); else if (e.key === "ArrowRight") go(1, e); }}>
+      {wk.pages.map((src, i) => (
+        <img key={i} className={"sc-still gl-page" + (i === idx ? " on" : "")}
+             src={src} alt={wkShort(wk) + " · 作品集 " + (i + 1) + "/" + n}
+             draggable="false" loading={i === 0 ? "eager" : "lazy"} aria-hidden={i !== idx} />
+      ))}
+      {n > 1 && (
+        <React.Fragment>
+          <button className="gl-nav prev" type="button" data-hov aria-label="上一页"
+                  onClick={(e) => go(-1, e)}><span aria-hidden="true">‹</span></button>
+          <button className="gl-nav next" type="button" data-hov aria-label="下一页"
+                  onClick={(e) => go(1, e)}><span aria-hidden="true">›</span></button>
+          <span className="gl-pips" role="tablist" aria-label="作品集翻页">
+            {wk.pages.map((_, i) => (
+              <i key={i} className={i === idx ? "on" : ""} role="tab" aria-selected={i === idx}
+                 onClick={(e) => { e.stopPropagation(); setIdx(i); }}></i>
+            ))}
+            <b className="gl-count mono">{String(idx + 1).padStart(2, "0")}/{String(n).padStart(2, "0")}</b>
+          </span>
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
+
 /* ── the showcase media — a real inline film when the work has one,
-   else the poster (links out), else the TBD placeholder. Every branch
-   reuses the SAME .sc-media frame so all eight read identically. ── */
+   a portfolio flip-book when it ships spreads, else the poster (links
+   out), else the TBD placeholder. Every branch reuses the SAME .sc-media
+   frame so all eight read identically. ── */
 function WorkMedia({ wk }) {
   const vidRef = useSecRef(null);
   const [playing, setPlaying] = useSecState(false);
   const [framed, setFramed] = useSecState(false);
+  if (wk.pages && wk.pages.length) return <WorkGallery wk={wk} />;
   if (wk.video && wk.videoReady) {
     return (
       <div className={"sc-media" + (playing ? " playing" : "")}>
@@ -810,11 +857,11 @@ function Contact() {
             <a className="crow" href="https://github.com/leemenuong" target="_blank" rel="noopener" data-hov>
               <span className="cl">GitHub</span><span className="cv">@leemenuong&nbsp;↗</span>
             </a>
-            <a className="crow" href="https://pear-work-web.vercel.app/" target="_blank" rel="noopener" data-hov>
-              <span className="cl">Pear · Web</span><span className="cv">pear-work-web.vercel.app&nbsp;↗</span>
+            <a className="crow" href="https://pearwork.netlify.app/" target="_blank" rel="noopener" data-hov>
+              <span className="cl">Pear · Web</span><span className="cv">pearwork.netlify.app&nbsp;↗</span>
             </a>
-            <a className="crow" href="https://pear-agent.vercel.app/" target="_blank" rel="noopener" data-hov>
-              <span className="cl">Pear · Agent</span><span className="cv">pear-agent.vercel.app&nbsp;↗</span>
+            <a className="crow" href="https://pearagent.netlify.app/" target="_blank" rel="noopener" data-hov>
+              <span className="cl">Pear · Agent</span><span className="cv">pearagent.netlify.app&nbsp;↗</span>
             </a>
           </div>
         </div>
