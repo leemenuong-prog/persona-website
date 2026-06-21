@@ -256,7 +256,7 @@ const WORKS = [
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
     award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
     link: "https://pear-work-web.vercel.app/",
-    poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: false,
+    poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pear-work-web.vercel.app",
     band: [0.5, 0.9, 0.65, 1, 0.7], role: ["Independent builder", "0 → launch"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
