@@ -257,6 +257,7 @@ const WORKS = [
     award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
     link: "https://pear-work-web.vercel.app/",
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
+    mediaLabel: "PRODUCT FILM · 路演视频",
     caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pear-work-web.vercel.app",
     band: [0.5, 0.9, 0.65, 1, 0.7], role: ["Independent builder", "0 → launch"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
@@ -266,6 +267,8 @@ const WORKS = [
   {
     ix: "W·02", t: "XTOOL Agent Platform", tag: "AI PLATFORM", year: "2026", dark: false,
     award: "0→1 SOLO · 9 TOOLS — ADOPTED BY 25+ OF A 48-PERSON DEPT",
+    poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "xtool/",
+    mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
     band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM / platform owner", "intern, dept. of 48"],
     body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, 3 candidates to pick from — drove three product generations. A self-built ROI board (0.39 h/$) keeps the platform honest.",
     zh: "单人主导部门 Agent 平台 0→1：9 个生产工具、22 万行 TypeScript、291 commits，48 人部门超半数纳入日常工作流。埋点 → 判断 → ship → 复测的闭环；自建 ROI 看板让中台的存在合理性可量化。首位受邀实习生在全公司公开课主讲。",
@@ -283,6 +286,8 @@ const WORKS = [
   {
     ix: "W·04", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", dark: false,
     award: "深港双年展 UABB 2025 · 50+ EXHIBITS — 30 DAYS → 5 DAYS",
+    poster: "works/aftersilence-cover.jpg", video: "works/aftersilence.mp4", videoReady: true,
+    mediaLabel: "AIGC FILM · 影像", caption: "UABB · AIGC PIPELINE · 影像",
     band: [0.7, 0.5, 0.85, 0.6, 1], role: ["AIGC pipeline assistant", "2025 UABB curatorial team"],
     body: "A ComfyUI pipeline wired to external APIs (Gemini / Tripo) that translates non-standard exhibits into standardized 3D assets. Processing time for 50+ exhibits fell from 30 days to 5; 120+ sketch-and-model iterations later, the result was selected as its section's sole representative (top 3%).",
     zh: "ComfyUI 外接 API 的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品处理周期 30 天 → 5 天，成果作为板块唯一代表入选展会分享。",
@@ -354,6 +359,7 @@ const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
 function WorkMedia({ wk }) {
   const vidRef = useSecRef(null);
   const [playing, setPlaying] = useSecState(false);
+  const [framed, setFramed] = useSecState(false);
   if (wk.video && wk.videoReady) {
     return (
       <div className={"sc-media" + (playing ? " playing" : "")}>
@@ -368,6 +374,25 @@ function WorkMedia({ wk }) {
           </button>
         )}
       </div>
+    );
+  }
+  if (wk.embed) {
+    if (framed) {
+      return (
+        <div className="sc-media playing">
+          <iframe className="sc-still" src={wk.embed} title={wkShort(wk)}
+                  loading="lazy" allow="autoplay; fullscreen"></iframe>
+        </div>
+      );
+    }
+    return (
+      <button className="sc-media" type="button" data-hov aria-label={"播放 " + wkShort(wk)}
+              onClick={() => setFramed(true)}>
+        {wk.poster
+          ? <img className="sc-still" src={wk.poster} alt={wkShort(wk)} draggable="false" />
+          : <span className="sc-still"></span>}
+        <span className="sc-play" aria-hidden="true"><span className="tri"></span></span>
+      </button>
     );
   }
   if (wk.poster) {
@@ -655,7 +680,7 @@ function Works({ jump }) {
               <div key={i} className={"wk-show-item" + (wk.dark ? " ink" : "")}>
                 <div className="sc-top mono">
                   <span className="l"><span className="dot"></span><span>{wk.ix}</span><b>{wk.tag} · {wk.year}</b></span>
-                  <span className="r">{wk.poster ? "PRODUCT FILM · 路演视频" : wk.doc ? "PORTFOLIO · 作品集 PDF" : "ARCHIVE · 作品本体待上线 / TBD"}</span>
+                  <span className="r">{wk.mediaLabel || (wk.poster ? "PRODUCT FILM · 路演视频" : wk.doc ? "PORTFOLIO · 作品集 PDF" : "ARCHIVE · 作品本体待上线 / TBD")}</span>
                 </div>
                 <WorkMedia wk={wk} />
                 <div className="sc-foot">

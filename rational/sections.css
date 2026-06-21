@@ -305,6 +305,11 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .sc-media.playing .sc-still { object-fit: contain; transform: none; background: #06080f; }
 .sc-media.playing::before, .sc-media.playing::after { display: none; }
 video.sc-still { cursor: pointer; }
+/* poster-still showcase that opens an embedded film (W·02) is a <button> */
+button.sc-media { appearance: none; margin: 0; padding: 0; width: 100%; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
+/* the interactive film, loaded in-frame on click */
+iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
+.sc-media.playing iframe.sc-still { object-fit: fill; }
 .sc-media::before, .sc-media::after { content: ""; position: absolute; z-index: 4; width: 20px; height: 20px; pointer-events: none; }
 .sc-media::before { top: 11px; left: 11px; border-top: 2px solid rgba(255,255,255,.9); border-left: 2px solid rgba(255,255,255,.9); }
 .sc-media::after { bottom: 11px; right: 11px; border-bottom: 2px solid rgba(255,255,255,.9); border-right: 2px solid rgba(255,255,255,.9); }
