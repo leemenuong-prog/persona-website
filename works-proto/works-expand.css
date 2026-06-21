@@ -1,0 +1,210 @@
+/* ════════════════════════════════════════════════════════════
+   works-expand.css — WORKS, corrected model.
+   KEEP the flip-card deck. The card IN FOCUS stretches HORIZONTALLY
+   to give its name + honors (top). The area that used to hold the
+   decoded text becomes the WORK SHOWCASE (real product film, bottom).
+   Browse with hover / arrows; W·01 is real, 02–08 are empty frames.
+   ════════════════════════════════════════════════════════════ */
+
+.wxp { position: relative; min-height: 100vh; padding: clamp(22px, 3.4vh, 40px) clamp(26px, 4vw, 64px) clamp(20px, 3vh, 36px);
+  display: flex; flex-direction: column; gap: clamp(16px, 2.4vh, 30px); }
+
+/* ── header ───────────────────────────────────────────────── */
+.wxp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+.wxp-kick { font-family: var(--mono); font-size: 11px; letter-spacing: .3em; color: var(--fg-dim); }
+.wxp-title { margin-top: 10px; font-size: clamp(26px, 3.4vw, 48px); font-weight: 800; letter-spacing: -.02em;
+  line-height: 1.0; display: flex; align-items: baseline; }
+.wxp-title .psq { width: .1em; height: .1em; align-self: flex-end; margin-bottom: .14em; }
+.wxp-sub { margin-top: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: .24em; color: var(--fg-dim); max-width: 36em; line-height: 1.85; }
+
+/* version switcher */
+.wxp-seg { display: inline-flex; border: 1px solid var(--line); flex-shrink: 0; }
+.wxp-seg button { appearance: none; background: none; border: none; cursor: pointer;
+  padding: 10px 15px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em;
+  color: var(--fg-dim); border-left: 1px solid var(--line); transition: background .25s, color .25s; white-space: nowrap; }
+.wxp-seg button:first-child { border-left: none; }
+.wxp-seg button .vn { display: block; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--fg); margin-bottom: 3px; }
+.wxp-seg button:hover { background: rgba(11,11,14,.05); }
+.wxp-seg button.on { background: var(--ink); }
+.wxp-seg button.on, .wxp-seg button.on .vn { color: var(--paper); }
+
+/* ══ THE DECK — flip cards; the focused one stretches horizontally ══ */
+/* the deck rests as the LOGO SKYLINE — ink bars of the .IAM. rhythm,
+   baseline-aligned, closed with the blue square period. Focusing a card
+   makes that bar GROW UP + stretch wide, decoding into the work. 条 → 卡. */
+.wxp-deck { display: flex; align-items: flex-end; gap: clamp(6px, .7vw, 12px);
+  height: clamp(168px, 28vh, 244px); }
+
+.dk-card { position: relative; overflow: hidden; cursor: pointer;
+  background: var(--ink); color: var(--paper); border: none; padding: 0; text-align: left; font: inherit;
+  flex: 0 1 8%; transition: flex-basis .6s var(--ez), height .6s var(--ez), background-color .45s var(--ez), box-shadow .4s var(--ez); }
+.dk-card:not(.on) .dk-full { display: none; }
+.dk-card.on .dk-min { display: none; }
+/* focused bar has grown into a work card — recolour by kind */
+.dk-card.on.real { background: var(--blue); --acc: var(--blue-dn); --hard: var(--ink); --line: rgba(239,236,230,.26); box-shadow: 0 30px 70px rgba(5,8,30,.24); z-index: 2; }
+.dk-card.on.ph { background: var(--paper); color: var(--fg-dim); border: 1px solid var(--line); --acc: var(--blue);
+  background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(11,11,14,.05) 9px 10px);
+  box-shadow: 0 26px 60px rgba(11,11,14,.12); z-index: 2; }
+
+/* the blue square period — the logo's full stop, closing the skyline */
+.dk-period { flex: 0 0 auto; align-self: flex-end; width: clamp(12px, 1.1vw, 18px); height: clamp(12px, 1.1vw, 18px);
+  background: var(--blue); margin-left: 2px; }
+
+/* collapsed card — a clean skyline bar carrying just its number */
+.dk-min { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
+  padding: clamp(8px, .7vw, 13px); }
+.dk-min .dk-no { font-size: clamp(15px, 1.5vw, 24px); font-weight: 800; letter-spacing: -.03em; line-height: .8;
+  color: rgba(239,236,230,.92); }
+
+/* expanded card — name + honors, laid out HORIZONTALLY */
+.dk-full { position: absolute; inset: 0; display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: clamp(20px, 2.4vw, 44px); padding: clamp(18px, 1.8vw, 30px) clamp(22px, 2.2vw, 38px);
+  align-content: center; }
+.dk-l { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.dk-meta { display: flex; gap: 12px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .2em; opacity: .8; white-space: nowrap; }
+.dk-meta .ix { opacity: 1; }
+.dk-name { display: inline-flex; align-items: baseline; gap: .42em; font-size: clamp(26px, 2.7vw, 46px);
+  font-weight: 800; letter-spacing: -.025em; line-height: .98; white-space: nowrap; }
+.dk-name .psq { width: .12em; height: .12em; background: var(--acc); align-self: flex-end; margin-bottom: .08em; }
+.dk-name .go { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; opacity: .72; transform: translateY(-.3em); transition: opacity .25s, transform .25s; }
+a.dk-name:hover .go { opacity: 1; transform: translateY(-.3em) translateX(4px); }
+.dk-name.dim { color: rgba(239,236,230,.4); }
+.dk-card.ph .dk-name.dim { color: var(--fg-dim); }
+.dk-sub { font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; color: rgba(239,236,230,.62); }
+.dk-card.ph .dk-sub { color: var(--fg-dim); }
+
+.dk-r { display: flex; flex-direction: column; justify-content: center; gap: clamp(10px, 1.4vh, 16px); min-width: 0; }
+.dk-award { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; line-height: 1.75; color: rgba(239,236,230,.66); }
+.dk-card.ph .dk-award { color: var(--fg-dim); }
+.dk-award b { color: var(--paper); font-weight: 400; }
+.dk-card.ph .dk-award b { color: var(--fg); }
+.dk-metrics { display: flex; flex-wrap: nowrap; gap: 18px; }
+.dk-metrics .m { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.dk-metrics .m b { font-size: clamp(15px, 1.4vw, 22px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.dk-metrics .m span { font-family: var(--mono); font-size: 7.5px; letter-spacing: .08em; opacity: .6; line-height: 1.3; }
+
+/* ══ THE SHOWCASE — was the text area, now the real work ══════════ */
+.wxp-show { flex: 1; min-height: 0; position: relative; }
+.sc-frame { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.sc-media { position: relative; flex: 1; min-height: 0; display: block; overflow: hidden; background: #06080f; }
+.sc-still { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s var(--ez); }
+.sc-media:hover .sc-still { transform: scale(1.03); }
+.sc-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 84px; height: 56px; border: 1.5px solid rgba(255,255,255,.9); background: rgba(8,10,20,.34);
+  display: flex; align-items: center; justify-content: center; transition: transform .3s var(--ez), background .3s; }
+.sc-media:hover .sc-play { transform: translate(-50%, -50%) scale(1.08); background: rgba(8,10,20,.58); }
+.sc-play .tri { width: 0; height: 0; border-left: 18px solid #fff; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 4px; }
+.sc-scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 56%; pointer-events: none; opacity: 0;
+  background: linear-gradient(180deg, transparent, rgba(6,8,15,.92)); }
+
+/* placeholder showcase */
+.sc-ph { position: absolute; inset: 0; border: 1px solid var(--line);
+  background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(11,11,14,.05) 0 12px, transparent 12px 24px);
+  display: flex; align-items: center; justify-content: center; }
+.sc-ph .n { text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .26em; color: var(--fg-dim); }
+.sc-ph .n b { display: block; font-size: 13px; letter-spacing: .2em; color: var(--fg); margin-bottom: 8px; }
+
+/* the showcase footer — name link + caption */
+.sc-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
+  padding: 14px 2px 0; flex-wrap: wrap; }
+.sc-name { display: inline-flex; align-items: baseline; gap: .4em; font-size: clamp(22px, 2.2vw, 34px);
+  font-weight: 800; letter-spacing: -.025em; line-height: 1; color: var(--fg); }
+.sc-name .psq { width: .12em; height: .12em; background: var(--acc, var(--blue)); align-self: flex-end; margin-bottom: .06em; }
+.sc-name .go { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--fg-dim);
+  transform: translateY(-.35em); transition: color .25s, transform .25s; }
+a.sc-name:hover .go { color: var(--fg); transform: translateY(-.35em) translateX(5px); }
+.sc-cap { font-family: var(--mono); font-size: 9.5px; letter-spacing: .2em; color: var(--fg-dim); white-space: nowrap; }
+
+/* ── version B — cinema: name overlaid on the film, no footer below ── */
+.vB .sc-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: clamp(20px, 2.4vw, 36px); align-items: flex-end; }
+.vB .sc-scrim { opacity: 1; }
+.vB .sc-name { color: #fff; }
+.vB .sc-name .go { color: rgba(255,255,255,.8); }
+.vB .sc-cap { color: rgba(255,255,255,.85); }
+.vB .sc-name .psq { background: var(--blue-up); }
+
+/* ── version C — 档案窗 / dossier viewfinder: annotated header bar,
+   framed film with registration brackets, ruled footer ─────────── */
+.vC .sc-frame { gap: 0; }
+.vC .sc-top { display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 9px 13px; margin-bottom: 12px; border: 1px solid var(--line);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .22em; color: var(--fg-dim); }
+.vC .sc-top .l { display: flex; align-items: center; gap: 12px; }
+.vC .sc-top .l span:nth-child(2) { color: var(--fg); }
+.vC .sc-top .dot { width: 8px; height: 8px; background: var(--blue); flex: 0 0 auto; }
+.vC .sc-top .r { white-space: nowrap; }
+.vC .sc-media { border: 1px solid var(--line); }
+.vC .sc-media::before, .vC .sc-media::after { content: ""; position: absolute; z-index: 4;
+  width: 20px; height: 20px; pointer-events: none; }
+.vC .sc-media::before { top: 11px; left: 11px; border-top: 2px solid rgba(255,255,255,.92); border-left: 2px solid rgba(255,255,255,.92); }
+.vC .sc-media::after { bottom: 11px; right: 11px; border-bottom: 2px solid rgba(255,255,255,.92); border-right: 2px solid rgba(255,255,255,.92); }
+.vC .sc-foot { border-top: 1px solid var(--line); margin-top: 13px; padding-top: 14px; }
+
+@media (max-width: 760px) {
+  .dk-full { grid-template-columns: 1fr; gap: 10px; align-content: center; }
+  .dk-r { display: none; }
+}
+
+/* ══ THE ENTRANCE — logo fans open into cards, settles into the deck ══ */
+/* NB: no opacity transition on the reveal — it would stall under the
+   preview's idle throttling and leave the deck blank. The fan lands
+   pixel-exact on the deck, so an instant swap is already seamless. */
+.wxp.intro .wxp-deck, .wxp.intro .wxp-show { opacity: 0; }
+.intro-overlay { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+.intro-card { position: absolute; left: 0; top: 0; background: #0b0b0e; color: var(--paper);
+  transform-origin: bottom center; overflow: hidden; will-change: transform, width, height;
+  display: flex; align-items: flex-end; justify-content: center; transition: box-shadow .3s var(--ez); }
+.intro-card.solid { box-shadow: 0 18px 48px rgba(8,8,12,.26); }
+.intro-card .n { font-size: 15px; font-weight: 800; letter-spacing: -.02em; opacity: .82; padding-bottom: 9px; }
+
+.wxp-replay { appearance: none; background: none; border: 1px solid var(--line); cursor: pointer;
+  margin-left: 12px; padding: 4px 10px; font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  color: var(--fg-dim); transition: background .25s, color .25s; vertical-align: middle; }
+.wxp-replay:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ══ WIRED MEDIA — video / iframe / portfolio frame + actions ══════ */
+/* header actions: the 作品集 button sits beside the version switcher */
+.wxp-actions { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.wxp-pf { appearance: none; align-self: stretch; display: inline-flex; align-items: center;
+  padding: 0 18px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+  font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .16em;
+  text-decoration: none; white-space: nowrap; transition: background .25s, color .25s; }
+.wxp-pf:hover { background: var(--blue); border-color: var(--blue); }
+
+/* the focus card's showcase media can be a <button> (iframe poster) */
+button.sc-media { appearance: none; margin: 0; padding: 0; width: 100%; font: inherit;
+  color: inherit; text-align: inherit; cursor: pointer; }
+
+/* inline video — show the whole frame, don't crop */
+.sc-media.is-video { background: #06080f; }
+.sc-video { width: 100%; height: 100%; object-fit: contain; display: block; background: #06080f; }
+
+/* the interactive piece, loaded in-frame on click */
+.sc-iframe { width: 100%; height: 100%; border: 0; display: block; background: #0a0a0a; }
+
+/* fallback when a media kind has no poster still */
+.sc-blank { display: block; width: 100%; height: 100%;
+  background: #06080f repeating-linear-gradient(135deg, rgba(239,236,230,.04) 0 12px, transparent 12px 24px); }
+
+/* ── portfolio frame — a cobalt dossier whose CTA opens the 作品集 PDF.
+   carries the data-bar motif (条) so it stays inside the design language. */
+.sc-media.is-pf { background: var(--blue); display: flex; align-items: center; justify-content: center; }
+.sc-pf { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+  color: var(--paper); padding: 20px; z-index: 2; }
+.sc-pf .bars { display: flex; align-items: flex-end; gap: 6px; height: 46px; }
+.sc-pf .bars i { width: 9px; background: var(--paper); }
+.sc-pf .bars i:nth-child(1) { height: 60%; }
+.sc-pf .bars i:nth-child(2) { height: 92%; }
+.sc-pf .bars i:nth-child(3) { height: 44%; }
+.sc-pf .bars i:nth-child(4) { height: 74%; }
+.sc-pf .bars i:nth-child(5) { width: 9px; height: 9px; background: var(--blue-dn); align-self: flex-end; }
+.sc-pf b { font-size: clamp(16px, 1.6vw, 22px); font-weight: 800; letter-spacing: .04em; }
+.sc-pf span { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; opacity: .82; }
+.sc-media.is-pf:hover .sc-pf .bars i:nth-child(5) { background: var(--paper); }
+
+/* the secondary 作品集 link in the caption */
+.sc-pf-link { color: var(--fg-dim); text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+.sc-pf-link:hover { color: var(--blue); border-color: var(--blue); }
+.vB .sc-pf-link { color: rgba(255,255,255,.8); }
+.vB .sc-pf-link:hover { color: #fff; border-color: #fff; }

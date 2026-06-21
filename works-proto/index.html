@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WORKS · 作品 — Alnt Med</title>
+<style>
+  .home-link { position: fixed; top: 16px; left: 18px; z-index: 40; font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: .18em; color: #0b0b0e; text-decoration: none; padding: 7px 12px;
+    border: 1px solid rgba(11,11,14,.22); background: rgba(239,236,230,.7); backdrop-filter: blur(3px);
+    transition: background .25s, color .25s, border-color .25s; }
+  .home-link:hover { background: #0b0b0e; color: #efece6; border-color: #0b0b0e; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../rational/base.css">
+<link rel="stylesheet" href="../rational/barmorph.css">
+<link rel="stylesheet" href="works-expand.css">
+<link rel="preload" as="image" href="../works/pears-roadshow-cover.jpg">
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#efece6"></rect>
+    <rect x="22" y="40" width="7" height="34" fill="#0047AB"></rect>
+    <rect x="33" y="30" width="7" height="44" fill="#0b0b0e"></rect>
+    <rect x="44" y="48" width="7" height="26" fill="#0b0b0e"></rect>
+    <rect x="55" y="36" width="7" height="38" fill="#0b0b0e"></rect>
+    <rect x="66" y="56" width="9" height="9" fill="#0047AB"></rect>
+  </svg>
+</template>
+</head>
+<body data-tone="paper">
+<a class="home-link" href="../" data-hov>← 首页 / HOME</a>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="../rational/barmorph.jsx"></script>
+<script type="text/babel" src="works-expand.jsx"></script>
+</body>
+</html>

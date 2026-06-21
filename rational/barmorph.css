@@ -1,0 +1,152 @@
+/* ════════════════════════════════════════════════════════════
+   barmorph.css — the 字⇄条 design language.
+   Born in the loader: letters freeze into bars, bars fly into
+   the .IAM. band. Generalized here so any word can be born
+   from bars — and bars can become a chronology.
+
+   Rules:
+   · bars = the encoded state (the logo's skyline rhythm)
+   · word = the decoded state (the meaning)
+   · the blue square = the period — "self" — always lands last
+   · bars sink into the baseline as letters rise out of it:
+     mass is conserved at the baseline.
+
+   Plays when an ancestor gains .in (the data-ob reveal system).
+   Tuned for bold display setting (weight 800).
+   ════════════════════════════════════════════════════════════ */
+
+.bmw { display: block; line-height: 1; }
+.bmw .bmw-in { display: flex; align-items: flex-end; gap: .12em; }
+.bmw .bsp { width: .3em; }
+.bmw .bg { position: relative; display: block; }
+.bmw .glc { display: block; overflow: hidden; }
+.bmw .gl { display: block; transform: translateY(115%); }
+.bmw .bars {
+  position: absolute; left: 3%; right: 3%; bottom: .18em; height: var(--bz, .72em);
+  display: flex; gap: .07em; align-items: flex-end; pointer-events: none;
+}
+.bmw .bars i { flex: 1; height: 100%; background: var(--hard);
+  transform: scaleY(0); transform-origin: bottom; }
+
+/* 跳色 glyph — the one letter that stays in the encoded color,
+   like the logo's period. Its bars dye to the accent too. */
+.bmw .bg.acc .gl { color: var(--acc); }
+.bmw .bg.acc .bars i { --dye: var(--acc); }
+
+/* the period — the 跳色 dot. Takes var(--acc), the tone-flipped
+   accent: cobalt on paper · deepened blue on cobalt (a darker same-
+   hue dot, not black) · lifted blue on ink */
+.bmw .bmp { flex: 0 0 auto; width: .13em; height: .13em; background: var(--acc);
+  margin-bottom: .19em; margin-left: .1em;
+  transform: scale(0); transform-origin: bottom left; transition: background-color .9s var(--ez-io); }
+
+/* choreography — rise → skyline hold → encode full → dye to the
+   letter's color → sink + dissolve, while the letter rises out of
+   the baseline under a same-colored bar (no black/white seam) */
+.in .bmw .bars i { animation: bmBar 1.7s both;
+  animation-delay: calc(var(--gd, 0s) + var(--bd, 0s)); }
+.in .bmw .gl { animation: bmGl .85s var(--ez) both;
+  animation-delay: calc(var(--gd, 0s) + .98s); }
+.in .bmw .bmp { animation: bmSq .7s var(--ez) both;
+  animation-delay: calc(var(--gd, 0s) + 1.55s); }
+
+@keyframes bmBar {
+  0%   { transform: scaleY(0); background-color: var(--hard); opacity: 1; animation-timing-function: var(--ez); }
+  22%  { transform: scaleY(var(--h, .8)); animation-timing-function: linear; }
+  46%  { transform: scaleY(var(--h, .8)); animation-timing-function: var(--ez-io); }
+  60%  { transform: scaleY(1); background-color: var(--hard); animation-timing-function: linear; }
+  72%  { transform: scaleY(1); background-color: var(--dye, var(--fg)); opacity: 1; animation-timing-function: var(--ez-io); }
+  100% { transform: scaleY(0); background-color: var(--dye, var(--fg)); opacity: 0; }
+}
+@keyframes bmGl { from { transform: translateY(115%); } to { transform: none; } }
+@keyframes bmSq { 0% { transform: scale(0); } 62% { transform: scale(1.16); } 100% { transform: scale(1); } }
+
+/* ── settled — the birth has played once. Drop the one-shot
+   keyframes and hold the decoded word, permanently readable.
+   (Hover no longer re-encodes the title back into bars — a title
+   must always stay legible; the 字⇄条 grammar lives in the birth
+   reveal and the logo band, not in a hover that hides the word.) */
+.bmw.set .gl { animation: none; transform: none;
+  transition: transform .52s var(--ez), opacity .4s var(--ez); }
+.bmw.set .bars i { animation: none; transform: scaleY(0); opacity: 1;
+  transition: transform .55s var(--ez), opacity .4s var(--ez); }
+
+/* ── BarBand — the mini skyline + period, for labels/cells ── */
+.bband { display: flex; align-items: flex-end; gap: 4px; height: 16px; width: 64px; }
+.bband i { flex: 1; height: calc(var(--h, .8) * 100%); background: var(--hard);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .8s var(--ez);
+  transition-delay: calc(var(--rd, 0s) + var(--bi, 0s) + .1s); }
+.in .bband i, .bband.in i { transform: none; }
+.bband .sq { flex: 0 0 6px; height: 6px; background: var(--blue);
+  transform: scale(0); transition: transform .5s var(--ez);
+  transition-delay: calc(var(--rd, 0s) + .45s); }
+.in .bband .sq, .bband.in .sq { transform: none; }
+body[data-tone="blue"] .bband .sq { background: var(--paper); }
+body[data-tone="ink"] .bband .sq { background: var(--blue-up); }
+
+/* ── .psq — the inline 跳色 full stop, replaces "." in copy ── */
+.psq { display: inline-block; width: .12em; height: .12em; background: var(--acc); margin-left: .12em;
+  transition: background-color .9s var(--ez-io); }
+
+/* ── BarChrono — the time skyline ──────────────────────────
+   bars = periods · height = magnitude · the square (the self)
+   rides the active bar across time. ───────────────────────── */
+.bchrono { opacity: 0; transition: opacity .8s var(--ez) .25s; }
+.in .bchrono { opacity: 1; }
+
+.bc-read { display: flex; align-items: baseline; gap: 24px; min-height: 88px;
+  animation: bcIn .45s var(--ez) both; }
+.bc-y { font-family: var(--mono); font-weight: 700; font-size: clamp(28px, 3vw, 50px); letter-spacing: -.02em; }
+.bc-body { display: block; max-width: 56em; }
+.bc-t { display: block; font-size: clamp(15px, 1.25vw, 20px); font-weight: 700; letter-spacing: .01em; line-height: 1.35; }
+.bc-body .zh { margin-top: 7px; }
+.bc-tag { margin-left: auto; font-size: 10px; letter-spacing: .3em; color: var(--fg-dim);
+  align-self: flex-start; padding-top: 10px; white-space: nowrap; }
+@keyframes bcIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.bc-chart { position: relative; height: clamp(110px, 18vh, 190px); margin-top: 22px; margin-bottom: 36px;
+  display: flex; align-items: flex-end; }
+.bc-chart::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+  background: var(--fg); transform: scaleX(0); transform-origin: left;
+  transition: transform 1.2s var(--ez) .1s; }
+.in .bc-chart::after { transform: none; }
+
+.bc-col { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; cursor: pointer; }
+.bc-col i { display: block; width: 64%; margin: 0 18%; height: calc(var(--h, .5) * 100%);
+  background: var(--hard); opacity: .5;
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .9s var(--ez), opacity .3s, background-color .35s;
+  transition-delay: calc(var(--bi, 0s) + .15s), 0s, 0s; }
+.in .bc-col i { transform: none; }
+.bc-col:hover i { opacity: .8; }
+.bc-col.on i { background: var(--fg); opacity: 1; }
+.bc-col b { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+  font-weight: 400; font-size: 9.5px; letter-spacing: .12em; color: var(--fg-dim); transition: color .3s; }
+.bc-col.on b { color: var(--fg); }
+
+.bc-self { position: absolute; z-index: 2; width: clamp(9px, .8vw, 13px); height: clamp(9px, .8vw, 13px);
+  background: var(--blue); transform: translateX(-50%) scale(0);
+  transition: left .65s var(--ez), bottom .65s var(--ez), transform .5s var(--ez) 1s, background-color .9s var(--ez-io); }
+.in .bc-self { transform: translateX(-50%) scale(1); }
+body[data-tone="blue"] .bc-self { background: var(--paper); }
+body[data-tone="ink"] .bc-self { background: var(--blue-up); }
+
+@media (max-width: 900px) {
+  .bc-read { flex-direction: column; gap: 8px; min-height: 148px; }
+  .bc-tag { display: none; }
+  .bc-col b { font-size: 8px; letter-spacing: .04em; }
+  .bc-col i { width: 74%; margin: 0 13%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bmw .gl, .in .bmw .gl { animation: none !important; transform: none !important; }
+  .bmw .bars { display: none; }
+  .bmw .bmp, .in .bmw .bmp,
+  .bband i, .in .bband i,
+  .bband .sq, .in .bband .sq { animation: none !important; transition: none !important; transform: none !important; }
+  .bchrono { opacity: 1; transition: none; }
+  .bc-read { animation: none; }
+  .bc-col i, .bc-chart::after { transition: none; transform: none; }
+  .bc-self { transition: none; transform: translateX(-50%); }
+}

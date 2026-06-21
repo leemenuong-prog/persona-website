@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I.AM Logo 方向探索</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  .logo-frame {
+    width: 100%; height: 100%; box-sizing: border-box;
+    background: #F2EFE8; display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+  }
+  .logo-frame.dark { background: #0B0A08; }
+  .logo-frame svg { width: 100%; height: auto; max-height: 100%; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="logo/design-canvas.jsx"></script>
+<script type="text/babel" src="logo/logo-variants.jsx"></script>
+<script type="text/babel" src="logo/logo-variants-2.jsx"></script>
+<script type="text/babel">
+const Frame = ({ children, dark }) => (
+  <div className={'logo-frame' + (dark ? ' dark' : '')}>{children}</div>
+);
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="iam" title="I.AM — 大条纹 Logo" subtitle="六个方向 · 黑条纹 + 蓝色方块为周期符号">
+        <DCArtboard id="v1" label="01 · 节奏 — 原稿精修" width={520} height={300}>
+          <Frame><LogoRhythm /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v2" label="02 · 镂空字 — 条纹直接拼出 I.AM" width={520} height={300}>
+          <Frame><LogoStencil /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v3" label="03 · 摩斯密码 — ·· / ·− / −−" width={520} height={300}>
+          <Frame><LogoMorse /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v4" label="04 · 声纹 — 说出 “I am” 的波形" width={520} height={300}>
+          <Frame><LogoVoice /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v5" label="05 · 图标块 — App icon 反白" width={300} height={300}>
+          <Frame><LogoTile /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v6" label="06 · 轮廓 — I · A 峰 M 峰" width={520} height={300}>
+          <Frame><LogoSkyline /></Frame>
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="iam2" title="第二轮 — 跳出原稿" subtitle="七个新方向 · 蓝色方块始终代表「自我 / 句点」">
+        <DCArtboard id="v7" label="07 · 字标 — 镂空块体 I.AM" width={520} height={280}>
+          <Frame><LogoBlockword /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v8" label="08 · 自我 — 黑色场域中的蓝点" width={300} height={300}>
+          <Frame><LogoField /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v9" label="09 · 像素 i. — 极简单字符" width={300} height={300}>
+          <Frame><LogoPixelI /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v10" label="10 · 日轮 — 条纹围成圆，自我在中心" width={340} height={340}>
+          <Frame><LogoSun /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v11" label="11 · 前倾 — 节奏版斜体化" width={520} height={300}>
+          <Frame><LogoLean /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v12" label="12 · 徽章 — 方框内的条纹" width={300} height={300}>
+          <Frame><LogoBadge /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v13" label="13 · 脉搏 — 方波心跳，活着即 I am" width={520} height={300}>
+          <Frame><LogoPulse /></Frame>
+        </DCArtboard>
+        <DCArtboard id="v14" label="14 · .IAM. — 01×06 结合（已上站）" width={520} height={300}>
+          <Frame><LogoIAM /></Frame>
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="dark" title="深色背景检验" subtitle="反白 + 蓝色保持不变">
+        <DCArtboard id="d1" label="01 · 节奏 / 深色" width={520} height={300}>
+          <Frame dark><LogoRhythm color="#F4F1EA" /></Frame>
+        </DCArtboard>
+        <DCArtboard id="d3" label="03 · 摩斯密码 / 深色" width={520} height={300}>
+          <Frame dark><LogoMorse color="#F4F1EA" /></Frame>
+        </DCArtboard>
+        <DCArtboard id="d7" label="07 · 字标 / 深色" width={520} height={280}>
+          <Frame dark><LogoBlockword color="#F4F1EA" /></Frame>
+        </DCArtboard>
+        <DCArtboard id="d13" label="13 · 脉搏 / 深色" width={520} height={300}>
+          <Frame dark><LogoPulse color="#F4F1EA" /></Frame>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

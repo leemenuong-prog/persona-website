@@ -1,0 +1,202 @@
+/* ════════════════════════════════════════════════════════════
+   base.css — tokens · type · loader · nav · cursor · reveal
+   The Art of Rationality · cobalt / ink / paper
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --blue: #0047AB;
+  --blue-up: #2b5fde;          /* lifted blue for lines on ink   */
+  --blue-dn: #002a66;          /* deepened blue — period on cobalt */
+  --ink: #0b0b0e;
+  --paper: #efece6;
+  --paper-dim: #e4e0d6;
+
+  --sans: "Helvetica Neue", Helvetica, "Segoe UI", Arial, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* cinematic easings */
+  --ez: cubic-bezier(.16, 1, .3, 1);          /* long entrance   */
+  --ez-io: cubic-bezier(.65, .05, .36, 1);    /* wipe / curtain  */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+html, body { background: var(--blue); }
+
+body {
+  font-family: var(--sans);
+  color: var(--fg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  /* crossfade background AND the inherited text color over one curve, so
+     the page recolors as a single piece. (We transition the real color
+     properties, not the custom vars — var()-driven transitions on
+     registered @property tokens stall in this engine.) */
+  /* Both the page background-color AND inherited text color are recolored
+     per tone. Their CSS transitions are var()-driven and STALL in this
+     engine (freezing on the previous tone's color), so we don't transition
+     them here: background-color is crossfaded in JS, and text color snaps
+     with the tone (elements read the new --fg instantly). */
+}
+
+/* tone system —每个章节切换全页底色 */
+/* background uses LITERAL hex (not var()) so the .9s background-color
+   crossfade actually interpolates — var()-driven transitions stall in
+   this engine and leave the page stuck on the previous tone's color. */
+body[data-tone="blue"]  { background: #0047AB;  --bg: var(--blue);  --fg: var(--paper); --fg-dim: rgba(239,236,230,.62); --line: rgba(239,236,230,.32); --ghost: rgba(8,10,26,.20); --hard: var(--ink);   --acc: var(--blue-dn); }
+body[data-tone="paper"] { background: #efece6; --bg: var(--paper); --fg: var(--ink);   --fg-dim: rgba(11,11,14,.55);    --line: rgba(11,11,14,.28);    --ghost: rgba(11,11,14,.06); --hard: var(--ink);   --acc: var(--blue); }
+body[data-tone="ink"]   { background: #0b0b0e;   --bg: var(--ink);   --fg: var(--paper); --fg-dim: rgba(239,236,230,.55); --line: rgba(239,236,230,.22); --ghost: rgba(239,236,230,.05); --hard: var(--paper); --acc: var(--blue-up); }
+
+/* 跳色点缀 — --acc is the accent that POPS against the tone's text
+   color. It lives on the period squares (.psq / .bmp), never on
+   letters: cobalt on paper · deepened blue on cobalt · lifted blue
+   on ink. (Bar-ground periods — logo band, .bband, .bc-self — keep
+   their own flip: paper on cobalt, since they sit among ink bars.)
+   The page background + inherited text crossfade over .9s on tone
+   change; accent marks carry matching background-color transitions. */
+.tac { color: var(--acc); }
+
+::selection { background: var(--blue-up); color: var(--paper); }
+a { color: inherit; text-decoration: none; }
+img, canvas, svg { display: block; }
+
+.mono { font-family: var(--mono); }
+.zh {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .14em;
+  color: var(--fg-dim);
+  margin-top: 10px;
+  font-family: var(--sans);
+}
+
+/* ── custom cursor ───────────────────────────────────────── */
+.cur {
+  position: fixed; left: 0; top: 0; z-index: 9000;
+  width: 12px; height: 12px;
+  background: var(--blue-up);
+  pointer-events: none;
+  transform: translate(-100px, -100px);
+  transition: width .25s var(--ez), height .25s var(--ez), background .25s;
+  will-change: transform;
+}
+body[data-tone="blue"] .cur { background: var(--paper); }
+.cur.big { width: 40px; height: 40px; mix-blend-mode: difference; background: #fff; }
+@media (pointer: coarse) { .cur { display: none; } }
+
+/* ── loader — "I am" unfolds into "I alnt med" ──────────── */
+.loader {
+  position: fixed; inset: 0; z-index: 8000;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 1s var(--ez-io);
+}
+.loader.off { transform: translateY(-100.5%); }
+.loader .box { text-align: center; width: min(88vw, 940px); }
+.loader .lkick {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .4em; text-transform: uppercase;
+  color: rgba(239,236,230,.45);
+  display: flex; gap: .7em; align-items: center; justify-content: center; margin-bottom: 32px;
+}
+.loader .lkick .sq { width: 7px; height: 7px; background: var(--blue-up); display: inline-block; }
+.lreveal {
+  display: flex; align-items: baseline; justify-content: center; white-space: nowrap;
+  color: var(--paper); font-weight: 800; letter-spacing: -.04em; line-height: .95;
+  font-size: clamp(3rem, 12vw, 9.5rem);
+}
+.lreveal .ins {
+  display: inline-block; overflow: hidden; max-width: 0; opacity: 0; color: var(--blue-up);
+  transition: max-width 1.05s var(--ez-io), opacity .8s ease .15s;
+}
+.lreveal.show .ins { max-width: 4.2em; opacity: 1; }
+.lreveal .lsq { width: .11em; height: .11em; background: var(--blue-up); margin-left: .12em;
+  align-self: flex-end; margin-bottom: .07em; }
+.loader .lbar { margin: 44px auto 0; width: min(70vw, 440px); height: 2px;
+  background: rgba(239,236,230,.16); position: relative; }
+.loader .lbar i { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: var(--blue-up); }
+.loader .lrow { display: flex; justify-content: space-between; width: min(70vw, 440px); margin: 14px auto 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .26em; color: rgba(239,236,230,.45); }
+
+/* ── fixed nav ───────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px 14px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .22em;
+  color: var(--fg);
+  border-bottom: 1px solid transparent;
+  transition: color .9s var(--ez-io), background .5s, border-color .5s;
+  transform: translateY(-110%);
+}
+body.ready .nav { transform: none; transition: transform 1s var(--ez) .15s, color .9s var(--ez-io); }
+.nav .wordmark { display: flex; align-items: baseline; gap: 10px; font-weight: 700; letter-spacing: .04em; font-family: var(--sans); font-size: 16px; }
+.nav .wordmark .sq { width: 7px; height: 7px; background: var(--blue-up); display: inline-block; }
+body[data-tone="blue"] .nav .wordmark .sq { background: var(--paper); }
+.nav .wordmark small { font-family: var(--mono); font-size: 10px; letter-spacing: .28em; color: var(--fg-dim); font-weight: 400; }
+.nav .menu { display: flex; gap: 8px; align-items: center; }
+.nav .menu a { padding: 4px 10px; opacity: .75; transition: opacity .2s; position: relative; }
+.nav .menu a:hover, .nav .menu a.active { opacity: 1; }
+.nav .menu a.active::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -2px;
+  height: 2px; background: currentColor;
+}
+.nav .menu .sl { opacity: .4; }
+.nav .handle { opacity: .65; }
+
+/* ── brand band — .IAM. · skyline letters + twin periods.
+   Fixed at the hero top on load; the scroll engine glides it
+   into the nav's top-left logoslot. ───────────────────────── */
+.brandmorph {
+  position: fixed; top: 0; left: 40px; z-index: 705;
+  width: calc(100vw - 80px); height: 34vh; min-height: 200px;
+  display: block; transform-origin: 0 0; will-change: transform;
+}
+.brandmorph .band { height: 100%; min-height: 0; padding: 0; }
+.brandmorph .band i { transition: transform 1.25s var(--ez), background-color .9s var(--ez-io); transition-delay: var(--d, 0s), 0s; }
+/* squares are the two periods — always the accent blue; flip to paper
+   on the cobalt tone, lifted blue on ink. (3-class selectors so the
+   later-loading sections.css .band rules can't override them) */
+.brandmorph .band .bsq { background: var(--blue); transition: transform 1.2s var(--ez) .1s, background-color .9s var(--ez-io); }
+.brandmorph .band .bdot { background: var(--blue); transition: transform .9s var(--ez) 1s, background-color .9s var(--ez-io); }
+body[data-tone="blue"] .brandmorph .band .bsq,
+body[data-tone="blue"] .brandmorph .band .bdot { background: var(--paper); }
+body[data-tone="ink"] .brandmorph .band .bsq,
+body[data-tone="ink"] .brandmorph .band .bdot { background: var(--blue-up); }
+/* loader → logo morph overlay */
+.morph-ov { position: fixed; inset: 0; z-index: 8300; pointer-events: none; }
+.morph-ov .mbar { position: fixed; background: var(--paper); }
+.morph-ov .mbar.msq { background: var(--blue-up); }
+.brandmorph.veil { opacity: 0; }
+.brandmorph.preset .band i,
+.brandmorph.preset .band .bsq { transition: none !important; transform: none !important; }
+.lreveal > .g { transition: opacity .32s ease; }
+.lreveal.gone > span { opacity: 0; }
+.fband-slot { height: 34vh; min-height: 200px; margin: auto 40px 0; }
+.band-slot { height: 34vh; min-height: 200px; margin: 0 40px; }
+.nav .wordmark { align-items: flex-end; }
+.nav .wordmark .logoslot { display: block; width: 118px; height: 24px; }
+@media (max-width: 900px) {
+  .brandmorph { left: 20px; width: calc(100vw - 40px); }
+  .band-slot { margin: 0 20px; }
+  .fband-slot { margin-left: 20px; margin-right: 20px; }
+  .nav .wordmark .logoslot { width: 88px; height: 20px; }
+}
+
+/* ── reveal system — 滚动显影 ────────────────────────────── */
+[data-rv] { opacity: 0; transform: translateY(44px); transition: opacity 1s var(--ez), transform 1.1s var(--ez); transition-delay: var(--rd, 0s); }
+.in [data-rv], [data-rv].in { opacity: 1; transform: none; }
+
+/* line-mask reveal: 标题像从一条缝里升起来 */
+.lm { overflow: hidden; display: block; }
+.lm > span { display: block; transform: translateY(112%); transition: transform 1.15s var(--ez); transition-delay: var(--rd, 0s); }
+.in .lm > span, .lm.in > span { transform: none; }
+
+/* rule that draws itself */
+.rule { height: 2px; background: var(--fg); transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ez); transition-delay: var(--rd, 0s); }
+.in .rule, .rule.in { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rv], .lm > span, .rule { transition: none !important; transform: none !important; opacity: 1 !important; }
+  .lreveal .ins { transition: none; max-width: 4.2em; opacity: 1; }
+}
