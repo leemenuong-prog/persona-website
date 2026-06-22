@@ -2,12 +2,12 @@
    barmorph.jsx — the 字⇄条 design language (see barmorph.css).
 
    <BarWord text="WHOAMI" />
-     A word born from bars. Each glyph decodes from as many bars
-     as it has vertical strokes (I→1, A→3, M→4 — the loader's
-     grammar). Needs an ancestor with .in (data-ob reveal system).
-     Births ONCE. After it settles, hover toggles it back to the
-     encoded skyline — a smooth, reversible 字⇄条 glimpse of the
-     bars the word is made of — never a replay of the birth jump.
+     A word born from bars. Each glyph rises from a SINGLE bar —
+     one letter, one bar. The bar's width echoes the letter's stroke
+     weight (i/l→thin · m/w→wide); its height rides the skyline
+     rhythm, so every bar differs in length and width.
+     Needs an ancestor with .in (data-ob reveal system). Births ONCE,
+     then settles into the plain, permanently-legible word.
      props: period=true · delay=0 (word offset, s)
             rhythm=[heights] · className
 
@@ -23,9 +23,10 @@
 
 const BM_RHYTHM = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
 
-/* vertical-stroke count per glyph — how many bars a letter freezes into */
+/* stroke weight per glyph — now the WIDTH of the letter's single bar
+   (i/l→thin · m/w→wide), no longer a bar count */
 const BM_STROKES = { i: 1, j: 1, l: 1, t: 1, f: 1, r: 1, a: 3, e: 3, s: 2, m: 4, w: 4 };
-const bmCount = (ch) => BM_STROKES[ch.toLowerCase()] != null ? BM_STROKES[ch.toLowerCase()] : 2;
+const bmW = (ch) => { const n = BM_STROKES[ch.toLowerCase()] != null ? BM_STROKES[ch.toLowerCase()] : 2; return (0.12 + n * 0.1).toFixed(2) + "em"; };
 /* bar zone — caps/ascenders get cap height, low x-height glyphs less */
 const bmZone = (ch) => (/[a-z]/.test(ch) && !/[bdfhklt]/.test(ch)) ? ".52em" : ".72em";
 
@@ -51,21 +52,15 @@ function BarWord({ text, period = true, delay = 0, rhythm = BM_RHYTHM, accent = 
     return () => { host.removeEventListener("animationstart", onStart); if (t) clearTimeout(t); };
   }, []);
 
-  let bi = 0;
   return (
     <span ref={ref} className={("bmw " + (set ? "set " : "") + className).trim()} aria-label={text}>
       <span className="bmw-in" aria-hidden="true">
         {glyphs.map((ch, gi) => {
           if (ch === " ") return <span key={gi} className="bsp"></span>;
-          const n = bmCount(ch);
-          const bars = [];
-          for (let b = 0; b < n; b++, bi++) {
-            bars.push(<i key={b} style={{ "--h": rhythm[bi % rhythm.length], "--bd": (b * 0.05).toFixed(2) + "s" }}></i>);
-          }
           return (
             <span key={gi} className={"bg" + (accent.indexOf(gi) >= 0 ? " acc" : "")} style={{ "--gd": (delay + gi * 0.09).toFixed(2) + "s", "--bz": bmZone(ch) }}>
               <span className="glc"><span className="gl">{ch}</span></span>
-              <span className="bars">{bars}</span>
+              <span className="bars"><i style={{ "--h": rhythm[gi % rhythm.length], "--bw": bmW(ch) }}></i></span>
             </span>
           );
         })}
