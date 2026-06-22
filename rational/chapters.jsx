@@ -2,11 +2,12 @@
    chapters.jsx — the three identities · three expressions.
    One language (bars ⇄ glyphs · the blue period), three dimensions:
 
-   02 · An AIPM      — FLAT 平面 · 2D
-       The sheet itself becomes ordered: a process column
-       (telemetry → judgment → ship → re-test), a 3×3 tool
-       matrix that stamps in, a disorder→order meter.
-       Pure DOM. No depth — only order.
+   02 · An AIPM      — THE CUT 一刀 · FLAT 2D
+       Prioritisation as one decisive incision: ~1800 weak
+       signal-dots, a hairline cut deletes almost all of them,
+       the few survivors snap to a priority spine, the apex
+       ignites cobalt as the period. Luxury = subtraction.
+       Flat — nothing rises. (See aipm-cut.jsx.)
 
    03 · A Developer  — AXON 体 · 3D
        The .IAM. band extruded into an axonometric structure.
@@ -55,71 +56,36 @@ const C2_STEPS = [
     note: "ROI BOARD 0.39 H/$ — 中台合理性可被验证" },
 ];
 
-/* the six acts of the origin myth — a single forward gesture: a
-   meteor decoded into the rational unit, then chaos resolved into
-   the mark. boundaries shared with the canvas. */
-const C2_ACTS = [
-  { no: "0",   en: "THE METEOR", zh: "流星", a: 0.00, b: 0.14 },
-  { no: "I",   en: "THE LINE",   zh: "成线", a: 0.14, b: 0.26 },
-  { no: "II",  en: "THE PLANE",  zh: "成面", a: 0.26, b: 0.42 },
-  { no: "III", en: "THE CUBE",   zh: "立方", a: 0.42, b: 0.52 },
-  { no: "IV",  en: "CHAOS → ORDER", zh: "混沌成序", a: 0.52, b: 0.82 },
-  { no: "V",   en: "THE MARK",   zh: "落定", a: 0.82, b: 1.01 },
-];
-
-/* the genesis stage driver — writes --p / --film / --pay onto the
-   stage and toggles the active act caption. (Pure style writes; the
-   payoff text only exists after the film resolves.) */
-function useGenesisStage(id, ref) {
+/* the cut stage driver — writes --p and --pay onto the stage.
+   (Pure style writes; the payoff copy only resolves after the cut.) */
+function useCutStage(id, ref) {
   useChE(() => {
     const el = ref.current; if (!el) return;
-    const acts = [...el.querySelectorAll(".c2x-act")];
-    let last = -2, lastAct = -1;
+    let last = -2;
     const stop = window.__addLoop(() => {
-      const p = aClamp((window.__progress && window.__progress.aipm) || 0, 0, 1);
+      const p = aClamp((window.__progress && window.__progress[id]) || 0, 0, 1);
       if (Math.abs(p - last) < 0.0006) return;
       last = p;
       el.style.setProperty("--p", p.toFixed(4));
-      /* letterbox + HUD live during the film, retract at the payoff */
-      const film = aClamp(aSeg(p, 0.015, 0.085) - aSeg(p, 0.82, 0.90), 0, 1);
-      el.style.setProperty("--film", film.toFixed(3));
-      el.style.setProperty("--pay", aEase(aSeg(p, 0.85, 0.95)).toFixed(3));
-      const ai = Math.max(0, C2_ACTS.findIndex((x) => p < x.b));
-      const idx = ai < 0 ? C2_ACTS.length - 1 : ai;
-      if (idx !== lastAct) {
-        lastAct = idx;
-        acts.forEach((n, i) => n.classList.toggle("show", i === idx));
-      }
+      el.style.setProperty("--pay", aEase(aSeg(p, 0.82, 0.95)).toFixed(3));
     });
     return () => stop();
   }, []);
 }
 
 function ChAipm({ jump }) {
-  const { AipmGenesis } = window;
+  const { AipmCut } = window;
   const ref = useChR(null);
-  useGenesisStage("aipm", ref);
+  useCutStage("aipm", ref);
   return (
-    <section className="chapter ch2x" id="aipm" data-tone="blue" data-prog="aipm" data-screen-label="02 · An AIPM — GENESIS">
+    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE CUT">
       <div className="ch-wrap c2x-wrap">
         <div className="ch-stage c2x-stage" data-ob ref={ref}>
-          <div className="c2x-art" aria-hidden="true"><AipmGenesis /></div>
+          <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
 
-          {/* cinematic letterbox */}
-          <div className="c2x-letter top" aria-hidden="true"></div>
-          <div className="c2x-letter bot" aria-hidden="true"></div>
-
-          {/* film HUD — slug · act cards · timecode (fade out at the payoff) */}
+          {/* quiet HUD — the live decision counter is drawn on the canvas */}
           <div className="c2x-hud" aria-hidden="true">
-            <div className="c2x-slug mono"><span className="ix">02</span><span className="ln"></span><span>AN AIPM · GENESIS</span></div>
-            <div className="c2x-acts">
-              {C2_ACTS.map((a, i) => (
-                <div key={i} className={"c2x-act" + (i === 0 ? " show" : "")}>
-                  <span className="n mono">ACT {a.no}</span>
-                  <span className="t">{a.en}<i className="zh">{a.zh}</i></span>
-                </div>
-              ))}
-            </div>
+            <div className="c2x-slug mono"><span className="ix">02</span><span className="ln"></span><span>AN AIPM · THE CUT</span></div>
           </div>
 
           {/* the payoff — appears only after the film resolves into the mark */}

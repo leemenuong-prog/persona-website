@@ -4,39 +4,23 @@
    ════════════════════════════════════════════════════════════ */
 
 /* ════════════════════════════════════════════════════════════
-   02 · AN AIPM — THE ORIGIN MYTH (cinematic, scroll-driven film)
-   The canvas IS the chapter. A 6-act epic plays across a tall
-   sticky stage; the page copy only arrives once the film resolves
-   into the .IAM. mark. (See aipm-genesis.jsx.)
+   02 · AN AIPM — THE CUT 一刀 (flat, scroll-driven)
+   The canvas IS the chapter. A field of weak signals is cut down
+   to a priority spine across a tall sticky stage; the page copy
+   arrives once the verdict lands. (See aipm-cut.jsx.)
    ════════════════════════════════════════════════════════════ */
 .ch2x .ch-wrap { height: 600vh; }
 .c2x-stage { padding: 0; }
 .c2x-art { position: absolute; inset: 0; z-index: 0; }
 .c2x-art canvas { width: 100%; height: 100%; display: block; }
 
-/* ── cinematic letterbox — driven by --film (0 hidden · 1 shown) ── */
-.c2x-letter { position: absolute; left: 0; right: 0; height: 8.5vh; z-index: 2;
-  background: #04102b; pointer-events: none; will-change: transform; }
-.c2x-letter.top { top: 0; transform: translateY(calc((var(--film, 0) - 1) * 100%)); }
-.c2x-letter.bot { bottom: 0; transform: translateY(calc((1 - var(--film, 0)) * 100%)); }
-
-/* ── film HUD ── */
+/* ── quiet HUD — fades out as the payoff (--pay) resolves ── */
 .c2x-hud { position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  color: var(--paper); opacity: var(--film, 0); transition: opacity .25s linear; }
-.c2x-slug { position: absolute; left: 40px; top: calc(8.5vh + 26px); display: flex; align-items: center; gap: 14px;
-  font-size: 10.5px; letter-spacing: .26em; color: rgba(239,236,230,.72); }
-.c2x-slug .ix { font-weight: 700; color: var(--paper); }
-.c2x-slug .ln { width: 30px; height: 1px; background: rgba(239,236,230,.4); }
-
-/* act cards — stacked top-centre, only the active one shows */
-.c2x-acts { position: absolute; left: 0; right: 0; top: calc(8.5vh + 22px); height: 120px; }
-.c2x-act { position: absolute; left: 50%; top: 0; transform: translate(-50%, 10px);
-  display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
-  opacity: 0; transition: opacity .7s var(--ez), transform .9s var(--ez); }
-.c2x-act.show { opacity: 1; transform: translate(-50%, 0); }
-.c2x-act .n { font-size: 10px; letter-spacing: .5em; color: rgba(239,236,230,.6); }
-.c2x-act .t { font-size: clamp(13px, 1.2vw, 17px); font-weight: 800; letter-spacing: .42em; text-indent: .42em; }
-.c2x-act .t .zh { display: inline; margin-left: 14px; font-weight: 400; letter-spacing: .3em; color: rgba(239,236,230,.55); }
+  color: var(--fg-dim); opacity: calc(1 - var(--pay, 0)); transition: opacity .25s linear; }
+.c2x-slug { position: absolute; left: 40px; top: 34px; display: flex; align-items: center; gap: 14px;
+  font-size: 10.5px; letter-spacing: .26em; color: var(--fg-dim); }
+.c2x-slug .ix { font-weight: 700; color: var(--fg); }
+.c2x-slug .ln { width: 30px; height: 1px; background: var(--line); }
 
 /* ── the payoff — text only after the mark lands (opacity = --pay) ── */
 .c2x-pay { position: absolute; inset: 0; z-index: 4; padding: 12vh 40px 7vh;
@@ -81,7 +65,6 @@
   .c2x-right { align-items: flex-start; text-align: left; max-width: 92vw; }
   .c2x-loop { display: none; }
   .c2x-stats { gap: 7vw; }
-  .c2x-act .t .zh { display: none; }
 }
 
 /* ── 03 · A DEVELOPER — AXONOMETRIC STRUCTURE ────────────── */
