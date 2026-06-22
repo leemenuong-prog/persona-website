@@ -234,73 +234,74 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wk-zh .psq { width: .1em; height: .1em; align-self: flex-end; margin-bottom: .14em; }
 .wk-lead { margin-top: 18px; font-size: 11px; letter-spacing: .3em; color: var(--fg-dim); }
 
-/* the fan — bars stretch open into a fanned deck of cards (JS-placed).
-   each card IS a bar that grew: closed = the logo skyline, open = the deck.
+/* the deck — each work is a card that grows out of a logo bar (JS-placed).
+   closed = the logo skyline · open = a slim skyline index + one BIG card.
    blue = AI products · ink = architecture — echoing the mark. */
 .wk-fan { position: absolute; inset: 0; z-index: 3; }
 .wk-card {
-  position: absolute; left: 0; top: 0; transform-origin: 50% 116%;
+  position: absolute; left: 0; top: 0; transform-origin: 50% 50%;
   background: var(--blue); color: var(--paper);
   border: 1px solid transparent;
   box-shadow: 0 0 0 rgba(5, 8, 30, 0);
-  padding: 0; cursor: pointer; overflow: hidden; backface-visibility: hidden;
+  padding: 0; overflow: hidden; backface-visibility: hidden;
   will-change: transform; transition: box-shadow .5s var(--ez), border-color .5s var(--ez);
 }
 .wk-card.ink { background: var(--ink); }
-/* a card only earns its border + drop-shadow once it has clearly left the
-   skyline — while it's still bar-shaped it must read as a flat bar, no chrome */
+/* a card only earns its border + drop-shadow once it has grown clear of the
+   skyline — while it's still a slim bar it must read flat, no chrome */
 .wk-card.solid { border-color: rgba(239, 236, 230, .20); box-shadow: 0 26px 60px rgba(5, 8, 30, .30); }
 .wk-card.ink.solid { border-color: rgba(239, 236, 230, .14); box-shadow: 0 26px 60px rgba(8, 8, 12, .34); }
-.wk-card.on { box-shadow: 0 56px 124px rgba(5, 8, 30, .48); }
-.wk-card.ink.on { box-shadow: 0 56px 124px rgba(8, 8, 12, .52); }
-.wc-body { display: flex; flex-direction: column; height: 100%;
-  padding: clamp(13px, 1.15vw, 20px); opacity: 0; }
-.wc-top { display: flex; justify-content: space-between; gap: 10px;
-  font-size: 9px; letter-spacing: .16em; opacity: .78; white-space: nowrap; }
-.wc-band { display: flex; align-items: flex-end; gap: 5px; height: 34%; margin-top: 14px; }
-.wc-band > i { flex: 1; background: #0a0c18; height: calc(var(--h, .6) * 100%); }
-.wk-card.ink .wc-band > i { background: rgba(239, 236, 230, .16); }
-.wc-band > .sq { flex: 0 0 11px; height: 11px; align-self: flex-end; background: var(--paper); }
-.wk-card.ink .wc-band > .sq { background: var(--blue-up); }
-.wc-spacer { flex: 1; }
-.wc-no { font-size: clamp(34px, 3.4vw, 56px); font-weight: 800; letter-spacing: -.03em; line-height: .85; }
+.wk-card.on { box-shadow: 0 56px 130px rgba(5, 8, 30, .50); }
+.wk-card.ink.on { box-shadow: 0 56px 130px rgba(8, 8, 12, .55); }
 
-/* the focused card's EXPANDED face — name + honors, laid out horizontally.
-   inherits the card's colour (paper on blue / ink). driven by JS opacity. */
-.wc-full { position: absolute; inset: 0; display: grid; grid-template-columns: 1.05fr 1fr;
-  gap: clamp(14px, 1.6vw, 30px); padding: clamp(11px, 1.1vw, 18px) clamp(16px, 1.7vw, 30px);
-  align-content: center; opacity: 0; }
-.wc-l { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
-.wc-fmeta { display: flex; gap: 12px; font-size: 9px; letter-spacing: .2em; opacity: .8; white-space: nowrap; }
-.wc-name { font-size: clamp(22px, 2.3vw, 40px); font-weight: 800; letter-spacing: -.025em; line-height: .98;
-  display: inline-flex; align-items: baseline; gap: .4em; white-space: nowrap; }
-.wc-name .psq { width: .12em; height: .12em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .06em; }
-.wk-card.ink .wc-name .psq { background: var(--blue-up); }
-.wc-fsub { font-size: 9px; letter-spacing: .16em; opacity: .66; }
-.wc-r { display: flex; flex-direction: column; justify-content: center; gap: clamp(9px, 1.2vh, 15px); min-width: 0; }
-.wc-faw { font-size: 8.5px; letter-spacing: .08em; line-height: 1.45; opacity: .72;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.wc-fmx { display: flex; gap: 16px; }
-.wc-fmx .m { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.wc-fmx .m b { font-size: clamp(14px, 1.3vw, 21px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; }
-.wc-fmx .m span { font-size: 7px; letter-spacing: .08em; opacity: .62; line-height: 1.3; }
+/* the slim spine = an invisible flip-to-me hit target covering the bar */
+.wc-spine { position: absolute; inset: 0; z-index: 3; margin: 0; padding: 0;
+  border: 0; background: none; cursor: pointer; font: inherit; color: inherit; }
 
-/* ===== the work SHOWCASE — was the decoded text, now the work itself =====
-   version C · 档案窗: annotated header, framed film with registration
-   brackets, ruled name+caption footer. sits below the fan. */
-.wk-show { position: absolute; left: 7vw; right: 7vw; top: 33vh; bottom: 10.5vh; z-index: 4; }
-.wk-show-item { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; }
-.sc-top { display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  padding: 9px 13px; margin-bottom: 12px; border: 1px solid var(--line);
-  font-size: 9px; letter-spacing: .22em; color: var(--fg-dim); }
-.sc-top .l { display: flex; align-items: center; gap: 12px; }
-.sc-top .l b { color: var(--fg); font-weight: 400; }
-.sc-top .dot { width: 8px; height: 8px; background: var(--blue); flex: 0 0 auto; }
-.sc-top .r { white-space: nowrap; }
-/* the media frame is now a centered 16:9 rectangle — as large as 16:9 allows inside
-   the .sc-frame band, vertically + horizontally centered. corner brackets + play button
-   (drawn on .sc-media) frame the rectangle; the gutters carry the annotation rails. */
-.sc-media { position: relative; height: 100%; width: auto; aspect-ratio: 16 / 9; max-width: 100%;
+/* ===== the BIG card face — media pane + full dossier, side by side =====
+   decoded in by JS opacity as a work rises into focus. paper text on the card's
+   cobalt / ink ground. 大卡 = 影片 + 档案. */
+.wc-full { position: absolute; inset: 0; z-index: 2; display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(16px, 1.7vw, 34px);
+  padding: clamp(16px, 1.7vw, 30px) clamp(18px, 1.9vw, 34px);
+  align-items: stretch; opacity: 0; color: var(--paper); }
+.wf-media { display: flex; align-items: center; justify-content: center;
+  min-width: 0; min-height: 0; }
+/* the media pane reuses the .sc-media 16:9 frame; cap its height to the pane */
+.wf-media .sc-media, .wf-media .sc-ph { max-height: 100%; }
+.wf-text { display: flex; flex-direction: column; gap: clamp(7px, .95vh, 13px);
+  min-width: 0; max-height: 100%; overflow-y: auto; padding-right: 4px;
+  justify-content: safe center; }
+.wf-meta { display: flex; gap: 14px; font-size: 9.5px; letter-spacing: .2em;
+  opacity: .78; white-space: nowrap; }
+.wf-meta .ix { font-weight: 700; opacity: 1; }
+.wf-name { font-size: clamp(21px, 2.05vw, 35px); font-weight: 800; letter-spacing: -.025em;
+  line-height: 1.02; display: inline-flex; align-items: baseline; gap: .35em; }
+.wf-name .psq { width: .13em; height: .13em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .06em; }
+.wk-card.ink .wf-name .psq { background: var(--blue-up); }
+.wf-role { font-size: 9.5px; letter-spacing: .16em; opacity: .74; }
+.wf-award { font-size: 9px; letter-spacing: .1em; line-height: 1.55; opacity: .82;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.wf-metrics { display: flex; gap: clamp(16px, 1.8vw, 30px); margin: 2px 0; }
+.wf-metrics .m { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wf-metrics .m b { font-size: clamp(17px, 1.6vw, 26px); font-weight: 800; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; line-height: 1; }
+.wf-metrics .m span { font-family: var(--mono); font-size: 7.5px; letter-spacing: .1em; opacity: .72; line-height: 1.3; }
+.wf-body { font-size: clamp(11.5px, .82vw, 13px); line-height: 1.6; opacity: .92;
+  display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.wf-zh { font-size: 11px; line-height: 1.85; letter-spacing: .04em; opacity: .7;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.wf-cta { align-self: flex-start; margin-top: 4px; padding: 9px 18px;
+  border: 1px solid rgba(239, 236, 230, .4); color: var(--paper);
+  font-size: 9.5px; letter-spacing: .18em; transition: background .25s, color .25s, border-color .25s; }
+.wf-cta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+
+/* ===== the work media — the 16:9 film / portfolio gallery that lives INSIDE the
+   big card's left pane (.wf-media). reused as-is from the old showcase. =====
+   width-driven 16:9 so the film/poster shows WHOLE (no crop); max-height keeps it
+   inside the pane on short viewports. */
+.sc-media { position: relative; width: 100%; height: auto; aspect-ratio: 16 / 9; max-width: 100%; max-height: 100%;
   margin: auto; overflow: hidden; display: block;
   background: #06080f; border: 1px solid var(--line); }
 .sc-still { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ez); display: block; }
@@ -323,7 +324,7 @@ iframe.sc-still { border: 0; background: #0a0a0a; transition: none; }
   display: flex; align-items: center; justify-content: center; transition: transform .3s var(--ez), background .3s; }
 .sc-media:hover .sc-play { transform: translate(-50%,-50%) scale(1.08); background: rgba(8,10,20,.58); }
 .sc-play .tri { width: 0; height: 0; border-left: 18px solid #fff; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 4px; }
-.sc-ph { height: 100%; width: auto; aspect-ratio: 16 / 9; max-width: 100%; margin: auto; border: 1px solid var(--line);
+.sc-ph { width: 100%; height: auto; aspect-ratio: 16 / 9; max-width: 100%; max-height: 100%; margin: auto; border: 1px solid var(--line);
   background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(11,11,14,.05) 0 12px, transparent 12px 24px);
   display: flex; align-items: center; justify-content: center; }
 .sc-ph .n { text-align: center; font-family: var(--mono); font-size: 10px; letter-spacing: .26em; color: var(--fg-dim); }
@@ -358,81 +359,39 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
 .gl-count { margin-left: 4px; font-size: 8.5px; letter-spacing: .14em;
   color: rgba(255,255,255,.78); font-weight: 400; font-variant-numeric: tabular-nums; }
 
-/* the media band — centers the 16:9 frame, with thin mono annotation rails pinned to
-   the left/right edges so the freed gutters read as an archive window (档案窗). */
-.sc-frame { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
-.sc-rail { position: absolute; top: 0; bottom: 0; width: clamp(20px, 2.4vw, 40px); z-index: 2;
-  display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 0;
-  font-size: 8.5px; letter-spacing: .22em; color: var(--fg-dim); pointer-events: none; }
-.sc-rail.l { left: 0; } .sc-rail.r { right: 0; }
-.sc-rail .rl-t, .sc-rail .rl-b { writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; max-height: 42%; }
-.sc-rail .rl-b { transform: rotate(180deg); }
-.sc-rail .rl-tick { flex: 1; width: 1px; margin: 8px 0;
-  background: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 9px); }
-
-.sc-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-  border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
-.sc-name { display: inline-flex; align-items: baseline; gap: .4em; font-size: clamp(22px, 2.4vw, 38px);
-  font-weight: 800; letter-spacing: -.025em; line-height: 1; color: var(--fg); }
-.sc-name .psq { width: .12em; height: .12em; background: var(--blue); align-self: flex-end; margin-bottom: .05em; }
-.sc-name .go { font-size: 10px; letter-spacing: .14em; color: var(--fg-dim); transform: translateY(-.35em); transition: color .25s, transform .25s; }
-a.sc-name:hover .go { color: var(--fg); transform: translateY(-.35em) translateX(5px); }
-.sc-cap { font-size: 9px; letter-spacing: .2em; color: var(--fg-dim); white-space: nowrap; }
-
-/* foot — decode progress */
-.wk-foot { position: absolute; left: 7vw; right: 7vw; bottom: 5.5vh; z-index: 5;
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
-  font-size: 9.5px; letter-spacing: .24em; color: var(--fg-dim); opacity: 0; }
-.wk-foot .wk-cur { color: var(--blue); font-variant-numeric: tabular-nums; }
+/* the active-work readout that floats just above the skyline index rail */
+.wk-railread { position: absolute; left: 0; right: 0; bottom: clamp(80px, 11.5vh, 122px);
+  z-index: 130; text-align: center; opacity: 0; pointer-events: none;
+  font-size: 11px; letter-spacing: .12em; color: var(--fg); }
+.wk-railread b { color: var(--blue); font-weight: 700; letter-spacing: .18em; }
+.wk-railread span { display: inline-block; margin-left: 14px; color: var(--fg-dim);
+  font-variant-numeric: tabular-nums; letter-spacing: .2em; }
+/* the self-square rides the skyline at the live scrub position (the period · 自我) */
+.wk-railself { position: absolute; left: 0; top: 0; z-index: 131; width: 9px; height: 9px;
+  background: var(--blue); opacity: 0; pointer-events: none; will-change: transform; }
 
 @media (max-height: 720px) {
   .wk-intro { top: 9vh; }
   .wk-zh { font-size: clamp(22px, 4vw, 44px); }
-  .wk-show { top: 30vh; }
+  .wf-body { -webkit-line-clamp: 5; }
+  .wf-zh { -webkit-line-clamp: 2; }
+  .wk-railread { bottom: clamp(64px, 10vh, 96px); }
 }
 
 @media (max-width: 900px) {
   .wk-wrap { height: 560vh; }
   .wk-zh { font-size: clamp(24px, 7vw, 46px); }
-  .wk-show { left: 7vw; right: 7vw; top: 36vh; }
-  .wk-ttl { font-size: clamp(26px, 8.4vw, 46px); }
-  .wk-aw { font-size: 10px; }
-  .wk-foot .wf-r { display: none; }
-  .sc-rail { display: none; }
+  /* the big card folds to a single column: media on top, the dossier below */
+  .wc-full { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(12px, 2vh, 20px); padding: clamp(14px, 4vw, 22px); align-items: stretch; }
+  .wf-media { height: auto; }
+  .wf-text { justify-content: flex-start; }
+  .wf-name { font-size: clamp(22px, 6.4vw, 34px); }
+  .wf-body { -webkit-line-clamp: 4; }
+  .wf-zh { -webkit-line-clamp: 2; }
 }
 
-/* dossier overlay */
-.dossier { position: fixed; inset: 0; z-index: 950; visibility: hidden; transition: visibility 0s .8s; }
-.dossier.on { visibility: visible; transition: none; }
-.dossier .scrim { position: absolute; inset: 0; background: rgba(8, 9, 14, .55); opacity: 0; transition: opacity .6s; }
-.dossier.on .scrim { opacity: 1; }
-.dossier .sheet {
-  position: absolute; right: 0; top: 0; bottom: 0; width: min(660px, 94vw);
-  background: var(--paper); color: var(--ink);
-  transform: translateX(103%); transition: transform .85s var(--ez-io);
-  padding: 64px 56px 56px; overflow-y: auto;
-}
-.dossier.on .sheet { transform: none; }
-.dossier .x { position: absolute; top: 22px; right: 26px; width: 44px; height: 44px; border: 1px solid rgba(11,11,14,.3);
-  background: none; font-size: 18px; cursor: pointer; color: var(--ink); font-family: var(--mono); }
-.dossier .x:hover { background: var(--ink); color: var(--paper); }
-.dossier .dk { font-family: var(--mono); font-size: 10.5px; letter-spacing: .3em; color: rgba(11,11,14,.5); }
-.dossier h2 { font-size: clamp(34px, 4vw, 52px); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-top: 14px; }
-.dossier .drule { height: 2px; background: var(--ink); margin: 22px 0; }
-.dossier .role { font-size: 14px; font-weight: 700; letter-spacing: .02em; }
-.dossier .role i { font-style: normal; color: var(--blue); }
-.dossier .daward { margin-top: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: .18em; line-height: 1.9; color: var(--blue); }
-.dossier p { margin-top: 16px; font-size: 13.5px; line-height: 1.85; color: rgba(11,11,14,.78); }
-.dossier .dmetrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(11,11,14,.2);
-  border: 1px solid rgba(11,11,14,.2); margin-top: 26px; }
-.dossier .dmetrics .m { background: var(--paper); padding: 14px 12px; }
-.dossier .dmetrics .m b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
-.dossier .dmetrics .m span { font-family: var(--mono); font-size: 8.5px; letter-spacing: .14em; color: rgba(11,11,14,.5); display: block; margin-top: 5px; }
-.dossier .dzh { font-size: 12px; line-height: 2.1; letter-spacing: .08em; color: rgba(11,11,14,.6); margin-top: 22px; }
-.dossier .dlink { display: inline-block; margin-top: 26px; padding: 13px 24px; border: 1px solid var(--ink);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .24em; transition: background .25s, color .25s; }
-.dossier .dlink:hover { background: var(--ink); color: var(--paper); }
-.dossier .dlink + .dlink { margin-left: 12px; }
+/* (dossier overlay removed — the body now lives inside the big card .wc-full) */
 
 /* ── CONTACT ─────────────────────────────────────────────── */
 .contact { min-height: 100vh; display: flex; flex-direction: column; padding-top: 15vh; }
@@ -508,6 +467,5 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .ch-stats { right: 20px; bottom: 5vh; gap: 6vw; flex-wrap: wrap; }
   .code-panel { display: none; }
   .iamf .real, .iamf .echo { font-size: clamp(32px, 9.4vw, 70px); }
-  .dossier .sheet { padding: 56px 24px 40px; }
   .c-list { flex-basis: 100%; max-width: 100%; }
 }

@@ -413,7 +413,7 @@ function WorkMedia({ wk }) {
     return (
       <div className={"sc-media" + (playing ? " playing" : "")}>
         <video ref={vidRef} className="sc-still" src={wk.video} poster={wk.poster}
-               preload="metadata" playsInline controls={playing}
+               preload="none" playsInline controls={playing}
                onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
                onEnded={() => setPlaying(false)}></video>
         {!playing && (
@@ -465,7 +465,8 @@ function WorkMedia({ wk }) {
 function Works({ jump }) {
   const stageRef = useSecRef(null);
   const hoverRef = useSecRef(null);
-  const [open, setOpen] = useSecState(null);
+  const readRef = useSecRef(null);
+  const selfRef = useSecRef(null);
 
   /* the whole stage is driven by scroll progress — one rAF, only
      style writes, mirroring useChProg in chapters.jsx. */
@@ -473,14 +474,13 @@ function Works({ jump }) {
     const stage = stageRef.current;
     if (!stage) return;
     const cards = [...stage.querySelectorAll(".wk-card")];
-    const bodies = cards.map((c) => c.querySelector(".wc-body"));
+    const spines = cards.map((c) => c.querySelector(".wc-spine"));
     const fulls = cards.map((c) => c.querySelector(".wc-full"));
-    const works = [...stage.querySelectorAll(".wk-show-item")];
     const intro = stage.querySelector(".wk-intro");
-    const foot = stage.querySelector(".wk-foot");
-    const cur = stage.querySelector(".wk-cur");
+    const readEl = readRef.current;
+    const selfEl = selfRef.current;
     const N = cards.length;
-    let lastActive = -1, disp = 0;
+    let disp = 0, lastActive = -1;
 
     /* TRUE MORPH — not a crossfade. The cards ARE the logo's bars, grown.
        We read the live <.brandmorph .band i> rectangles every frame so each
@@ -537,21 +537,17 @@ function Works({ jump }) {
       const hv = hoverRef.current;
       const target = (hv != null && eS > 0.55) ? hv : seg;
       /* silky inertia — the focus glides toward target rather than snapping. */
-      disp += (target - disp) * 0.14;
+      disp += (target - disp) * 0.12;
       if (Math.abs(target - disp) < 0.002) disp = target;
-      const active = Math.round(disp);
+      /* while the deck is closed, snap focus home so a fast scroll-out-and-back
+         never flashes a stale work on re-entry */
+      if (eS < 0.08) { disp = seg; hoverRef.current = null; }
 
       /* intro caption blooms as the logo lands at centre, then lifts away as
          the mark unfolds */
       const introOp = smooth(0, 0.028, p) * (1 - smooth(0.075, 0.17, p));
       intro.style.opacity = introOp.toFixed(3);
       intro.style.transform = "translate(-50%," + (-40 * eS).toFixed(1) + "px)";
-
-      /* CLOSED state — the logo skyline. Fallback footprint (≈42vw wide,
-         baseline 46vh, max bar ≈15vh) used only if the real logo isn't found. */
-      const cTot = clp(W * 0.42, 320, 900);
-      const cw = cTot / (N * 1.62 - 0.62), cgap = cw * 0.62;
-      const cx0 = W * 0.5 - cTot / 2, cBase = H * 0.46, cMax = H * 0.15;
 
       /* read the live logo bars (relative to the stage) — the cards' closed
          state. Re-measured through the morph zone; cached during browse where
@@ -575,102 +571,116 @@ function Works({ jump }) {
         colored = false;
       }
 
-      /* OPEN state — a fanned spread of poster cards. The FOCUSED card
-         stretches HORIZONTALLY into a wide poster (name + honors); the
-         rest stay slim skyline bars behind it. 卡 → 宽卡. */
-      const cardW = clp(W * 0.15, 132, 212);
-      const cardH = clp(H * 0.30, 188, 286);
-      const fanCx = W * 0.5;
-      /* airy but always within frame: ~8% overlap on wide screens, a touch
-         more on narrow, never wider than 94% of the stage. */
-      const step = Math.min(cardW * 0.92, (W * 0.94 - cardW) / (N - 1));
-      const fanTop = H * 0.105;
-      const angStep = 1.45;
-      const focusW = clp(W * 0.56, 420, 860);   /* the stretched banner width — wider so the short banner stays legible */
-      const focusH = clp(H * 0.19, 132, 188);   /* shorter banner — frees vertical room for the media below */
-      const marginX = W * 0.06;
+      /* OPEN state — the deck becomes a SKYLINE INDEX along the bottom (one slim
+         bar per work) and the focused work RISES out of it into one BIG card that
+         carries everything: film + title + award + metrics + body. 条 → 天际线 + 大卡. */
+      const narrow = W < 900;
+      const bigW = Math.min(W * (narrow ? 0.95 : 0.93), 1320);
+      const bigTop = H * (narrow ? 0.065 : 0.045);
+      const bigBot = H * (narrow ? 0.865 : 0.82);
+      const bigH = bigBot - bigTop;
+      const bigCx = W * 0.5;
+      /* the skyline index rail — slim bars along the bottom edge */
+      const railBaseY = H * 0.965;
+      const railMaxH = clp(H * 0.072, 32, 60);
+      const railTotW = Math.min(W * (narrow ? 0.88 : 0.58), 920);
+      const railLeft = W * 0.5 - railTotW * 0.5;
+      const railStep = railTotW / (N - 1);
+      const spineW = clp(railTotW / (N * 2.4), 8, 22);
+      /* the active-work readout that floats above the rail */
+      const ai = Math.round(clp(disp, 0, N - 1));
+      window.__wkActive = ai;   /* the index hover-scrub must NOT re-pin to (it's the big card) */
+      if (readEl && ai !== lastActive) {
+        lastActive = ai; const wk = WORKS[ai];
+        readEl.innerHTML = '<b>' + wk.ix + '</b>&nbsp;&nbsp;' + wkShort(wk) +
+          '<span>' + String(ai + 1).padStart(2, "0") + ' / ' + String(N).padStart(2, "0") + '</span>';
+      }
+      if (readEl) readEl.style.opacity = (smooth(0.45, 0.95, eS) * (1 - close)).toFixed(3);
+      /* the self-square (the period · 自我) rides the skyline at the live scrub
+         position, so the index reads as a continuous nav even between bars */
+      if (selfEl) {
+        const di = clp(disp, 0, N - 1);
+        const lo = Math.floor(di), hi = Math.min(lo + 1, N - 1);
+        const hAt = lerp(OVR_BARS[lo], OVR_BARS[hi], di - lo);
+        const selfH = railMaxH * (0.40 + 0.60 * hAt);
+        const sx = railLeft + di * railStep - 4.5;
+        const sy = railBaseY - selfH - 11;
+        selfEl.style.transform = "translate(" + sx.toFixed(1) + "px," + sy.toFixed(1) + "px)";
+        selfEl.style.opacity = (smooth(0.5, 0.95, eS) * (1 - close)).toFixed(3);
+      }
 
       cards.forEach((card, i) => {
-        const off = i - (N - 1) / 2;
-
-        /* closed (bar) geometry — straight off the live logo (fallback formula
-           only if it wasn't measured). */
+        /* closed (bar) geometry — straight off the live logo. */
         const bc = barRects && barRects[i];
-        const barX = bc ? bc.x : (cx0 + i * (cw + cgap));
-        const barW = bc ? bc.w : cw;
-        const barH = bc ? bc.h : (OVR_BARS[i] * cMax);
-        const barTop = bc ? bc.y : (cBase - barH);
+        const barX = bc ? bc.x : (W * 0.3 + i * 30);
+        const barW = bc ? bc.w : 14;
+        const barH = bc ? bc.h : (OVR_BARS[i] * H * 0.15);
+        const barTop = bc ? bc.y : (H * 0.46 - barH);
 
-        /* open (card) geometry + active emphasis.
-           `e` (emphasis) = bell focus × the smooth ramp, so it grows in
-           continuously from the open fan — never a hard on/off. */
+        /* emphasis — `big` is the gated focus that turns a slim spine into the
+           full card. The gate grows a card SOONER and lets it LINGER (0.16→0.90),
+           so through a swap a card is always present at centre — no blank beat. */
         const dd = i - disp;
-        const bell = Math.exp(-(dd * dd) / 0.42);        /* tighter focus — one card at a time */
-        const e = bell * focus;                          /* emphasis grows in with the ramp */
-        const rec = (1 - bell) * focus;                  /* the inverse — how "backgrounded" a card is */
+        const bell = Math.exp(-(dd * dd) / 0.34);
+        const e = bell * focus;
+        const big = smooth(0.16, 0.90, e);
 
-        /* the focused card STRETCHES horizontally, in place over its own slot,
-           clamped to stay on screen; neighbours stay narrow behind it. */
-        const wOpen = lerp(cardW, focusW, e);
-        const hOpen = lerp(cardH, focusH, e);
-        /* the focused card glides to screen centre so it sits directly above the
-           centred showcase below — aligned, not drifting left/right; neighbours
-           keep their fan slots. */
-        const slotCx = lerp(fanCx + off * step, fanCx, e);
-        const cCx = clp(slotCx, marginX + wOpen / 2, W - marginX - wOpen / 2);
-        const cardX = cCx - wOpen / 2;
-        /* the focused work rises clear of the deck; the rest sink + recede,
-           so the active poster and the still-encoded ones never blur together */
-        const cardTop = fanTop + Math.abs(off) * 6 - 34 * e + 16 * rec;
-        const ang = (off * angStep) * (1 - 0.96 * e);
-        const sclRec = 1 - 0.14 * rec;                   /* backgrounded ≈-14%; focus grows via width */
+        /* this work's home in the skyline index (slim bar, height = logo rhythm) */
+        const hSig = OVR_BARS[i % OVR_BARS.length];
+        const spineH = railMaxH * (0.40 + 0.60 * hSig);
+        const spineCx = railLeft + i * railStep;
+        const spineTop = railBaseY - spineH;
 
-        /* stretch the bar into the card — same element, continuous geometry */
-        const x = lerp(barX, cardX, eGeo);
-        const w = lerp(barW, wOpen, eGeo);
-        const h = lerp(barH, hOpen, eGeo);
-        const top = lerp(barTop, cardTop, eGeo);
-        const rot = ang * eGeo;
-        const scale = lerp(1, sclRec, eGeo);
+        /* OPEN target = blend between the slim spine and the big card. As `big`
+           grows the bar glides from its rail slot toward centre and stretches up. */
+        const oW = lerp(spineW, bigW, big);
+        const oH = lerp(spineH, bigH, big);
+        /* centre quickly as it grows, so the two cards mid-swap meet stacked at
+           centre (incoming opaque on top) rather than leaving the middle empty */
+        const cen = smooth(0.0, 0.5, big);
+        const oCx = lerp(spineCx, bigCx, cen);
+        const oTop = lerp(spineTop, bigTop, big);
+        const oX = oCx - oW / 2;
+
+        /* unfold the bar into its open target — same element, continuous geometry */
+        const x = lerp(barX, oX, eGeo);
+        const w = lerp(barW, oW, eGeo);
+        const h = lerp(barH, oH, eGeo);
+        const top = lerp(barTop, oTop, eGeo);
 
         card.style.width = w.toFixed(1) + "px";
         card.style.height = h.toFixed(1) + "px";
-        card.style.transform = "translate(" + x.toFixed(1) + "px," + top.toFixed(1) +
-          "px) rotate(" + rot.toFixed(2) + "deg) scale(" + scale.toFixed(3) + ")";
-        /* the slim skyline body (bars + number) fades out as the wide face
-           (name + honors) decodes in. 条/号 → 名/荣誉. */
-        const fullOp = (smooth(0.42, 0.95, e) * eGeo);
-        bodies[i].style.opacity = (smooth(0.46, 0.92, eS) * (1 - fullOp)).toFixed(3);
-        if (fulls[i]) fulls[i].style.opacity = fullOp.toFixed(3);
-        /* border + drop-shadow are the only things that read "card not bar" —
-           toggled once (CSS eases them) so a bar never carries a shadow. */
-        card.classList.toggle("solid", eS > 0.34);
-        /* visibility hierarchy: the active poster stays full-strength; the
-           not-yet-decoded works recede to ~0.42 so they read as a quiet index,
-           clearly separated from the one in focus. */
-        const dim = 1 - rec * 0.58;
-        /* the card is OPAQUE the instant it leaves the bar (no fade-in): it is
-           identical to the bar it covers, so the logo can fade off the top of
-           it with nothing to dissolve. Reverses cleanly on reconverge. */
+        card.style.transform = "translate(" + x.toFixed(1) + "px," + top.toFixed(1) + "px)";
+
+        /* faces: the big card content (media + text) decodes in with `big`; the
+           slim spine is just a flip hit-target, live only while the bar is slim. */
+        const fullOp = big * eGeo;
+        if (fulls[i]) {
+          fulls[i].style.opacity = fullOp.toFixed(3);
+          const live = fullOp > 0.02;
+          fulls[i].style.pointerEvents = fullOp > 0.6 ? "auto" : "none";
+          /* drop the 7 inactive dossiers out of the a11y tree + tab order —
+             opacity:0 alone leaves their links/media keyboard-reachable behind
+             an invisible layer (inert neutralises the nested controls too) */
+          fulls[i].style.visibility = live ? "visible" : "hidden";
+          fulls[i].toggleAttribute("inert", !live);
+        }
+        if (spines[i]) spines[i].style.pointerEvents = (big < 0.2 && eS > 0.5) ? "auto" : "none";
+        /* pause a film once its card leaves focus — an opacity:0 video keeps playing */
+        if (fullOp < 0.4) { const v = card.querySelector("video"); if (v && !v.paused) v.pause(); }
+        /* border + drop-shadow only once the card has grown clear of the rail —
+           a slim bar must read flat, like the logo skyline it came from. */
+        card.classList.toggle("solid", big > 0.06);
+        card.classList.toggle("on", big > 0.5);
+        /* a card turns opaque as it grows so it cleanly COVERS the one it is
+           replacing; rail bars sit back as a quiet index */
         const appear = smooth(0.0, 0.05, eS);
+        const dim = lerp(0.46, 1, smooth(0.0, 0.42, big));
         card.style.opacity = (appear * dim).toFixed(3);
-        card.style.zIndex = String(100 - Math.round(Math.abs(dd) * 6) - Math.abs(Math.round(off)));
+        /* the card nearest the scrub target rides on top, so the incoming work
+           covers the outgoing through the swap — no ghost, no blank */
+        card.style.zIndex = String(40 + Math.round(big * 80) - Math.round(Math.abs(i - target) * 3));
       });
-
-      /* the work showcase below — the active work, crossfaded */
-      works.forEach((wEl, i) => {
-        const d = disp - i;
-        const op = clp(1 - Math.abs(d) / 0.62, 0, 1) * smooth(0.05, 0.35, focus) * (1 - close);
-        wEl.style.opacity = op.toFixed(3);
-        wEl.style.transform = "translateY(" + (-d * 26).toFixed(1) + "px)";
-        wEl.style.pointerEvents = op > 0.6 ? "auto" : "none";
-      });
-
-      if (active !== lastActive) {
-        if (cur) cur.textContent = String(active + 1).padStart(2, "0");
-        lastActive = active;
-      }
-      foot.style.opacity = (smooth(0.05, 0.35, focus) * (1 - close)).toFixed(3);
     };
 
     if (!window.__addLoop) { tick(); return; }
@@ -679,16 +689,12 @@ function Works({ jump }) {
   }, []);
 
   useSecEffect(() => {
-    const esc = (ev) => { if (ev.key === "Escape") setOpen(null); };
     /* the hover selection STICKS — it won't fly back to the scrubbed card when the
        pointer leaves. Scrolling is what hands control back to the scroll-scrub. */
     const onScroll = () => { hoverRef.current = null; };
-    window.addEventListener("keydown", esc);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { window.removeEventListener("keydown", esc); window.removeEventListener("scroll", onScroll); };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const od = open != null ? WORKS[open] : null;
 
   return (
     <section className="works3 chapter" id="works" data-tone="paper" data-prog="works" data-screen-label="WORKS">
@@ -704,107 +710,60 @@ function Works({ jump }) {
 
           <div className="wk-fan" aria-hidden="false"
                onPointerMove={(ev) => {
-                 /* hover-scrub, movement-driven: focus whichever card is actually
-                    under the pointer. Using pointermove (not pointerenter) means a
-                    card sliding under a STILL cursor never re-triggers — no float. */
+                 /* hover-scrub: once the deck is open, sweeping the pointer across the
+                    skyline index pulls focus to the bar under it — no scrolling needed. */
                  if ((window.__wkOpen || 0) <= 0.55) return;
                  const card = ev.target.closest(".wk-card");
-                 if (card && card.dataset.i != null) hoverRef.current = +card.dataset.i;
+                 /* ignore the ballooned card (it fills the upper stage) — only the
+                    slim rail bars pull focus, so the skyline sweep actually works */
+                 if (card && card.dataset.i != null && +card.dataset.i !== window.__wkActive) hoverRef.current = +card.dataset.i;
                }}>
             {WORKS.map((wk, i) => (
-              <button key={i} type="button" data-i={i}
-                      className={"wk-card" + (wk.dark ? " ink" : "")} data-hov
-                      onClick={() => setOpen(i)} aria-label={wk.ix + " " + wk.t}>
-                <span className="wc-body">
-                  <span className="wc-top mono"><span>{wk.tag}</span><span>{wk.year}</span></span>
-                  <span className="wc-band" aria-hidden="true">
-                    {wk.band.map((h, j) => <i key={j} style={{ "--h": h }}></i>)}
-                    <i className="sq"></i>
-                  </span>
-                  <span className="wc-spacer"></span>
-                  <span className="wc-no">{String(i + 1).padStart(2, "0")}</span>
-                </span>
-                <span className="wc-full">
-                  <span className="wc-l">
-                    <span className="wc-fmeta mono"><span className="ix">{wk.ix}</span><span>{wk.tag} · {wk.year}</span></span>
-                    <span className="wc-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></span>
-                    <span className="wc-fsub mono">{wk.role[0]} · {wk.role[1]}</span>
-                  </span>
-                  <span className="wc-r">
-                    <span className="wc-faw mono">{wk.award}</span>
-                    <span className="wc-fmx">
-                      {wk.metrics.map(([b, l], j) => (<span className="m" key={j}><b>{b}</b><span>{l}</span></span>))}
-                    </span>
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-
-          <div className="wk-show">
-            {WORKS.map((wk, i) => (
-              <div key={i} className={"wk-show-item" + (wk.dark ? " ink" : "")}>
-                <div className="sc-top mono">
-                  <span className="l"><span className="dot"></span><span>{wk.ix}</span><b>{wk.tag} · {wk.year}</b></span>
-                  <span className="r">{wk.mediaLabel || (wk.poster ? "PRODUCT FILM · 路演视频" : wk.doc ? "PORTFOLIO · 作品集 PDF" : "ARCHIVE · 作品本体待上线 / TBD")}</span>
-                </div>
-                <div className="sc-frame">
-                  <span className="sc-rail l mono" aria-hidden="true">
-                    <span className="rl-t">{wk.ix}</span>
-                    <span className="rl-tick"></span>
-                    <span className="rl-b">{wk.mediaLabel || "ARCHIVE"}</span>
-                  </span>
-                  <WorkMedia wk={wk} />
-                  <span className="sc-rail r mono" aria-hidden="true">
-                    <span className="rl-t">{wk.role[0]}</span>
-                    <span className="rl-tick"></span>
-                    <span className="rl-b">{wk.tag} · {wk.year}</span>
-                  </span>
-                </div>
-                <div className="sc-foot">
-                  {wk.link ? (
-                    <a className="sc-name" href={wk.link} target="_blank" rel="noopener" data-hov>
-                      {wkShort(wk)}<i className="psq" aria-hidden="true"></i><span className="go mono">访问项目 ↗</span>
-                    </a>
-                  ) : wk.doc ? (
-                    <a className="sc-name" href={wk.doc} target="_blank" rel="noopener" data-hov>
-                      {wkShort(wk)}<i className="psq" aria-hidden="true"></i><span className="go mono">查看作品集 ↗</span>
-                    </a>
-                  ) : (
-                    <span className="sc-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></span>
-                  )}
-                  <span className="sc-cap">{wk.caption || (wk.ix + " · 待补充 / TBD")}</span>
+              <div key={i} data-i={i} className={"wk-card" + (wk.dark ? " ink" : "")}>
+                {/* the slim spine = a flip-to-me hit target (the card can't be a
+                    <button> because it now holds video / iframe / links inside) */}
+                <button className="wc-spine" type="button" data-hov
+                        aria-label={"View " + wk.ix + " · " + wk.t}
+                        onClick={() => {
+                          /* scroll to this work's browse position so click / Enter works
+                             whether the deck is open or still closed (keyboard entry too) */
+                          const sec = document.getElementById("works");
+                          const wrap = sec && sec.querySelector(".wk-wrap");
+                          if (wrap) {
+                            const top = wrap.getBoundingClientRect().top + window.scrollY;
+                            const span = Math.max(wrap.offsetHeight - window.innerHeight, 1);
+                            const pp = 0.40 + (i / (WORKS.length - 1)) * 0.42;
+                            window.scrollTo(0, Math.round(top + pp * span));
+                          }
+                          hoverRef.current = i;
+                        }}></button>
+                {/* the BIG card face — media on the left, the full dossier on the right */}
+                <div className="wc-full">
+                  <div className="wf-media"><WorkMedia wk={wk} /></div>
+                  <div className="wf-text">
+                    <div className="wf-meta mono"><span className="ix">{wk.ix}</span><span>{wk.tag} · {wk.year}</span></div>
+                    <h3 className="wf-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></h3>
+                    <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
+                    <div className="wf-award mono">{wk.award}</div>
+                    <div className="wf-metrics">
+                      {wk.metrics.map(([b, l], j) => (<div className="m" key={j}><b>{b}</b><span>{l}</span></div>))}
+                    </div>
+                    <p className="wf-body">{wk.body}</p>
+                    <p className="wf-zh zh">{wk.zh}</p>
+                    {wk.link ? (
+                      <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>VISIT LIVE · 访问项目 ↗</a>
+                    ) : wk.doc ? (
+                      <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>PORTFOLIO · 查看作品集 ↗</a>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="wk-foot mono">
-            <span className="wf-l"><span className="wk-cur">01</span> / 0{WORKS.length} · 解码中</span>
-            <span className="wf-r">SCROLL OR HOVER TO BROWSE · CLICK FOR DOSSIER · 滑动或悬停浏览，点击查看档案</span>
-          </div>
+          <div className="wk-railread mono" ref={readRef} role="status" aria-live="polite"></div>
+          <i className="wk-railself" ref={selfRef} aria-hidden="true"></i>
         </div>
-      </div>
-
-      <div className={"dossier" + (open != null ? " on" : "")} aria-hidden={open == null}>
-        <div className="scrim" onClick={() => setOpen(null)}></div>
-        {od && (
-          <div className="sheet">
-            <button className="x" data-hov onClick={() => setOpen(null)}>✕</button>
-            <div className="dk">{od.ix} · {od.tag} · {od.year} — DOSSIER / 档案</div>
-            <h2>{od.t}</h2>
-            <div className="drule"></div>
-            <div className="role">{od.role[0]} — <i>{od.role[1]}</i></div>
-            <div className="daward">{od.award}</div>
-            <p>{od.body}</p>
-            <div className="dmetrics">
-              {od.metrics.map(([b, l], i) => <div className="m" key={i}><b>{b}</b><span>{l}</span></div>)}
-            </div>
-            <div className="dzh">{od.zh}</div>
-            {od.link && <a className="dlink" data-hov href={od.link} target="_blank" rel="noopener">VISIT LIVE · 访问项目 ↗</a>}
-            {od.doc && <a className="dlink" data-hov href={od.doc} target="_blank" rel="noopener">查看作品集 · PORTFOLIO ↗</a>}
-          </div>
-        )}
       </div>
     </section>
   );
@@ -854,8 +813,8 @@ function Contact() {
             <div className="crow">
               <span className="cl">WeChat</span><span className="cv">ID_0912</span>
             </div>
-            <a className="crow" href="https://github.com/leemenuong" target="_blank" rel="noopener" data-hov>
-              <span className="cl">GitHub</span><span className="cv">@leemenuong&nbsp;↗</span>
+            <a className="crow" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" data-hov>
+              <span className="cl">GitHub</span><span className="cv">@leemenuong-prog&nbsp;↗</span>
             </a>
             <a className="crow" href="https://pearwork.netlify.app/" target="_blank" rel="noopener" data-hov>
               <span className="cl">Pear · Web</span><span className="cv">pearwork.netlify.app&nbsp;↗</span>
