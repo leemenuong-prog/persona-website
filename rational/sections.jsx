@@ -366,6 +366,9 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (e0, e1, x) => { const t = clp((x - e0) / (e1 - e0 || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
 const eOut = (t) => 1 - Math.pow(1 - t, 3);
 const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
+/* each work answers to one of the three identities — the deck's spine echoing
+   the Dex index. Positional, matching W·NN: 1–3 AIPM · 4 DEV · 5–8 Arc. 字⇄身份. */
+const wkIdentity = (i) => (i <= 2 ? "AIPM" : i === 3 ? "DEV" : "Arc");
 
 /* ── the portfolio flip-book — for the architecture works whose body
    lives as作品集 spreads. The same .sc-media 16:9 frame, but the A3 page
@@ -747,12 +750,18 @@ function Works({ jump }) {
                           }
                           hoverRef.current = i;
                         }}></button>
-                {/* the BIG card face — media on the left, the full dossier on the right */}
+                {/* the BIG card face — a full-width title header, then media on the
+                    left + the dossier on the right. The right column now leads with the
+                    identity (AIPM / DEV / Arc) since the name moved up top. */}
                 <div className="wc-full">
+                  <div className="wf-head">
+                    <span className="wf-ix mono">{wk.ix}</span>
+                    <h3 className="wf-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></h3>
+                    <span className="wf-tag mono">{wk.tag} · {wk.year}</span>
+                  </div>
                   <div className="wf-media"><WorkMedia wk={wk} /></div>
                   <div className="wf-text">
-                    <div className="wf-meta mono"><span className="ix">{wk.ix}</span><span>{wk.tag} · {wk.year}</span></div>
-                    <h3 className="wf-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></h3>
+                    <div className="wf-ident">{wkIdentity(i)}<i className="psq" aria-hidden="true"></i></div>
                     <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
                     <div className="wf-award mono">{wk.award}</div>
                     <div className="wf-metrics">
