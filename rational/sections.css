@@ -263,33 +263,18 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
    cobalt / ink ground. 大卡 = 影片 + 档案. */
 .wc-full { position: absolute; inset: 0; z-index: 2; display: grid;
   grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
-  grid-template-areas: "head head" "media text";
-  column-gap: clamp(16px, 1.7vw, 34px); row-gap: clamp(10px, 1.3vh, 20px);
+  gap: clamp(16px, 1.7vw, 34px);
   padding: clamp(16px, 1.7vw, 30px) clamp(18px, 1.9vw, 34px);
   align-items: stretch; opacity: 0; color: var(--paper); }
-/* the full-width title header — serial + name (the card's headline) on the
-   left, category · year parked on the right. The name lives here now, not in
-   the dossier column. 序号 + 大标题 → 卡顶. */
-.wf-head { grid-area: head; display: flex; align-items: baseline;
-  gap: clamp(12px, 1.4vw, 22px);
-  border-bottom: 1px solid rgba(239, 236, 230, .14);
-  padding-bottom: clamp(8px, 1vh, 14px); }
-.wf-ix { font-size: 11px; letter-spacing: .22em; font-weight: 700; opacity: .92; white-space: nowrap; }
-.wf-tag { margin-left: auto; font-size: 9.5px; letter-spacing: .2em; opacity: .7; white-space: nowrap; }
-.wf-media { grid-area: media; display: flex; align-items: center; justify-content: center;
+.wf-media { display: flex; align-items: center; justify-content: center;
   min-width: 0; min-height: 0; }
 /* the media pane reuses the .sc-media 16:9 frame; cap its height to the pane */
 .wf-media .sc-media, .wf-media .sc-ph { max-height: 100%; }
-.wf-text { grid-area: text; display: flex; flex-direction: column; gap: clamp(7px, .95vh, 13px);
+.wf-text { display: flex; flex-direction: column; gap: clamp(7px, .95vh, 13px);
   min-width: 0; max-height: 100%; overflow-y: auto; padding-right: 4px;
   justify-content: safe center; }
-.wf-name { font-size: clamp(23px, 2.5vw, 42px); font-weight: 800; letter-spacing: -.025em;
-  line-height: 1.02; display: inline-flex; align-items: baseline; gap: .35em; }
-.wf-name .psq { width: .13em; height: .13em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .06em; }
-.wk-card.ink .wf-name .psq { background: var(--blue-up); }
-/* the identity badge — fills the slot the title left behind in the dossier
-   column. AIPM / DEV / Arc, the three-identity spine; only the period 跳色. */
+/* the identity badge — leads the dossier column (the title now floats outside
+   the card). AIPM / DEV / Arc, the three-identity spine; only the period 跳色. */
 .wf-ident { font-size: clamp(20px, 1.9vw, 31px); font-weight: 800; letter-spacing: .01em;
   line-height: 1; display: inline-flex; align-items: baseline; gap: .3em; }
 .wf-ident .psq { width: .15em; height: .15em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .08em; }
@@ -384,6 +369,20 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
 .wk-railself { position: absolute; left: 0; top: 0; z-index: 131; width: 9px; height: 9px;
   background: var(--blue); opacity: 0; pointer-events: none; will-change: transform; }
 
+/* the work's headline — floats OUTSIDE the card, anchored to its top-left corner.
+   ink on the paper stage, sized big to read as the running title; only the square
+   period takes the 跳色. JS parks it just above the focused card. 大标题 → 卡外左上. */
+.wk-headline { position: absolute; left: 0; top: 0; z-index: 132;
+  display: flex; flex-direction: column; gap: 7px;
+  opacity: 0; pointer-events: none; will-change: transform, opacity; color: var(--fg); }
+.wk-headline .wh-kick { font-family: var(--mono); font-size: 11px; letter-spacing: .24em;
+  color: var(--fg-dim); white-space: nowrap; }
+.wk-headline .wh-name { font-size: clamp(40px, 4.6vw, 74px); font-weight: 800;
+  letter-spacing: -.03em; line-height: .94; white-space: nowrap;
+  display: inline-flex; align-items: flex-end; gap: .14em; }
+.wk-headline .wh-sq { width: .12em; height: .12em; background: var(--acc);
+  margin-bottom: .15em; flex: none; }
+
 @media (max-height: 720px) {
   .wk-intro { top: 9vh; }
   .wk-zh { font-size: clamp(22px, 4vw, 44px); }
@@ -395,14 +394,14 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
 @media (max-width: 900px) {
   .wk-wrap { height: 560vh; }
   .wk-zh { font-size: clamp(24px, 7vw, 46px); }
-  /* the big card folds to a single column: header, then media, then dossier */
-  .wc-full { grid-template-columns: 1fr; grid-template-rows: auto auto minmax(0, 1fr);
-    grid-template-areas: "head" "media" "text";
-    column-gap: 0; row-gap: clamp(12px, 2vh, 20px); padding: clamp(14px, 4vw, 22px); align-items: stretch; }
+  /* the big card folds to a single column: media on top, the dossier below */
+  .wc-full { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(12px, 2vh, 20px); padding: clamp(14px, 4vw, 22px); align-items: stretch; }
   .wf-media { height: auto; }
   .wf-text { justify-content: flex-start; }
-  .wf-name { font-size: clamp(24px, 6.8vw, 38px); }
   .wf-ident { font-size: clamp(19px, 5.4vw, 28px); }
+  .wk-headline .wh-name { font-size: clamp(30px, 8vw, 46px); }
+  .wk-headline .wh-kick { font-size: 9.5px; letter-spacing: .2em; }
   .wf-body { -webkit-line-clamp: 4; }
   .wf-zh { -webkit-line-clamp: 2; }
 }

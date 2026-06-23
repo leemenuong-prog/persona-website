@@ -473,6 +473,7 @@ function Works({ jump }) {
   const stageRef = useSecRef(null);
   const hoverRef = useSecRef(null);
   const readRef = useSecRef(null);
+  const headRef = useSecRef(null);
   const selfRef = useSecRef(null);
 
   /* the whole stage is driven by scroll progress — one rAF, only
@@ -485,6 +486,7 @@ function Works({ jump }) {
     const fulls = cards.map((c) => c.querySelector(".wc-full"));
     const intro = stage.querySelector(".wk-intro");
     const readEl = readRef.current;
+    const headEl = headRef.current;
     const selfEl = selfRef.current;
     const N = cards.length;
     let disp = 0, lastActive = -1;
@@ -583,7 +585,7 @@ function Works({ jump }) {
          carries everything: film + title + award + metrics + body. 条 → 天际线 + 大卡. */
       const narrow = W < 900;
       const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
-      const bigTop = H * (narrow ? 0.065 : 0.10);
+      const bigTop = H * (narrow ? 0.105 : 0.155);   /* lowered to clear the floating top-left headline */
       const bigBot = H * (narrow ? 0.865 : 0.68);
       const bigH = bigBot - bigTop;
       const bigCx = W * 0.5;
@@ -597,12 +599,24 @@ function Works({ jump }) {
       /* the active-work readout that floats above the rail */
       const ai = Math.round(clp(disp, 0, N - 1));
       window.__wkActive = ai;   /* the index hover-scrub must NOT re-pin to (it's the big card) */
-      if (readEl && ai !== lastActive) {
+      if (ai !== lastActive) {
         lastActive = ai; const wk = WORKS[ai];
-        readEl.innerHTML = '<b>' + wk.ix + '</b>&nbsp;&nbsp;' + wkShort(wk) +
+        if (readEl) readEl.innerHTML = '<b>' + wk.ix + '</b>&nbsp;&nbsp;' + wkShort(wk) +
           '<span>' + String(ai + 1).padStart(2, "0") + ' / ' + String(N).padStart(2, "0") + '</span>';
+        /* the floating headline — the work's title + serial, OUTSIDE the card */
+        if (headEl) headEl.innerHTML =
+          '<span class="wh-kick">' + wk.ix + ' · ' + wk.tag + ' · ' + wk.year + '</span>' +
+          '<span class="wh-name">' + wkShort(wk) + '<i class="wh-sq"></i></span>';
       }
-      if (readEl) readEl.style.opacity = (smooth(0.45, 0.95, eS) * (1 - close)).toFixed(3);
+      const railFade = (smooth(0.45, 0.95, eS) * (1 - close)).toFixed(3);
+      if (readEl) readEl.style.opacity = railFade;
+      /* park the headline at the focused card's top-left corner, just above it */
+      if (headEl) {
+        const hx = bigCx - bigW / 2;
+        const hy = Math.max(bigTop - (narrow ? 64 : 96), 10);
+        headEl.style.transform = "translate(" + Math.round(hx) + "px," + Math.round(hy) + "px)";
+        headEl.style.opacity = railFade;
+      }
       /* the self-square (the period · 自我) rides the skyline at the live scrub
          position, so the index reads as a continuous nav even between bars */
       if (selfEl) {
@@ -750,15 +764,10 @@ function Works({ jump }) {
                           }
                           hoverRef.current = i;
                         }}></button>
-                {/* the BIG card face — a full-width title header, then media on the
-                    left + the dossier on the right. The right column now leads with the
-                    identity (AIPM / DEV / Arc) since the name moved up top. */}
+                {/* the BIG card face — media on the left, the dossier on the right.
+                    The title + serial now float OUTSIDE the card (.wk-headline, top-left
+                    corner); the dossier column leads with the work's identity. */}
                 <div className="wc-full">
-                  <div className="wf-head">
-                    <span className="wf-ix mono">{wk.ix}</span>
-                    <h3 className="wf-name">{wkShort(wk)}<i className="psq" aria-hidden="true"></i></h3>
-                    <span className="wf-tag mono">{wk.tag} · {wk.year}</span>
-                  </div>
                   <div className="wf-media"><WorkMedia wk={wk} /></div>
                   <div className="wf-text">
                     <div className="wf-ident">{wkIdentity(i)}<i className="psq" aria-hidden="true"></i></div>
@@ -784,6 +793,7 @@ function Works({ jump }) {
             ))}
           </div>
 
+          <div className="wk-headline" ref={headRef} aria-hidden="true"></div>
           <div className="wk-railread mono" ref={readRef} role="status" aria-live="polite"></div>
           <i className="wk-railself" ref={selfRef} aria-hidden="true"></i>
         </div>
