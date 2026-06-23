@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# Netlify CLI local state (deploy is via CI — see .github/workflows/deploy.yml)
+.netlify/
+
 # originals kept OUT of the repo (exceed GitHub's 100MB limit) — the repo
 # ships compressed/web versions instead (see README). originals stay local.
 *.zip

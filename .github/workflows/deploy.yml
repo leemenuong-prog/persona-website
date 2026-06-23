@@ -1,0 +1,36 @@
+name: Deploy to Netlify
+
+# 工作流程：push 到 main → 自动把仓库根目录部署到 Netlify 站「alnt-med」。
+# 纯静态站（index.html 浏览器内 Babel 编译 jsx），无构建步骤。
+# 详见工作区 CLAUDE.md「部署」。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: netlify-deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Deploy to Netlify (alnt-med)
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx --yes netlify-cli@26 deploy \
+            --prod \
+            --dir . \
+            --site "$NETLIFY_SITE_ID" \
+            --message "CI ${GITHUB_SHA::7} · ${GITHUB_REF_NAME}"
