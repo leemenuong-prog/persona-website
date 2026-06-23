@@ -255,14 +255,14 @@ const WORKS = [
   {
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
     award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
-    link: "https://pearwork.netlify.app/",
+    link: "https://and-pear.netlify.app/login",
     links: [
-      { label: "PEARS APP · 访问应用 ↗", url: "https://pearwork.netlify.app/" },
+      { label: "PEARS APP · 访问应用 ↗", url: "https://and-pear.netlify.app/login" },
       { label: "OFFICIAL SITE · 官网 ↗", url: "https://pear-web-leemenuong.netlify.app/" },
     ],
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     mediaLabel: "PRODUCT FILM · 路演视频",
-    caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pearwork.netlify.app",
+    caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "and-pear.netlify.app",
     band: [0.5, 0.9, 0.65, 1, 0.7], role: ["Independent builder", "0 → launch"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
     zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件捕捉行为轨迹 → 蒸馏为可编辑 PRD → AI 编码 Agent 生成专属 Workflow Agent。可编辑 PRD 是观察层与执行层之间的契约。现场获企业对接意向最多的项目之一。",
@@ -271,7 +271,7 @@ const WORKS = [
   {
     ix: "W·02", t: "XTOOL Agent Platform", tag: "AI PLATFORM", year: "2026", dark: false,
     award: "0→1 SOLO · 9 TOOLS — ADOPTED BY 25+ OF A 48-PERSON DEPT",
-    poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://pearagent.netlify.app/",
+    poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://peersagent.netlify.app/",
     mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
     band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM / platform owner", "intern, dept. of 48"],
     body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, 3 candidates to pick from — drove three product generations. A self-built ROI board (0.39 h/$) keeps the platform honest.",
@@ -849,11 +849,11 @@ function Contact() {
             <a className="crow" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" data-hov>
               <span className="cl">GitHub</span><span className="cv">@leemenuong-prog&nbsp;↗</span>
             </a>
-            <a className="crow" href="https://pearwork.netlify.app/" target="_blank" rel="noopener" data-hov>
-              <span className="cl">Pear · Web</span><span className="cv">pearwork.netlify.app&nbsp;↗</span>
+            <a className="crow" href="https://and-pear.netlify.app/login" target="_blank" rel="noopener" data-hov>
+              <span className="cl">Pear · Web</span><span className="cv">and-pear.netlify.app&nbsp;↗</span>
             </a>
-            <a className="crow" href="https://pearagent.netlify.app/" target="_blank" rel="noopener" data-hov>
-              <span className="cl">Pear · Agent</span><span className="cv">pearagent.netlify.app&nbsp;↗</span>
+            <a className="crow" href="https://peersagent.netlify.app/" target="_blank" rel="noopener" data-hov>
+              <span className="cl">Pear · Agent</span><span className="cv">peersagent.netlify.app&nbsp;↗</span>
             </a>
           </div>
         </div>
