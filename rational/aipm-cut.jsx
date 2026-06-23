@@ -49,13 +49,37 @@ function buildCut(W, H) {
   return { W, H, dots, nx, ny, uMin, uMax, sy };
 }
 
+/* the period is a SQUARE everywhere on the site (.psq / .bmp / .bsq); the
+   apex resolves into one. A rounded square whose corner radius lerps to 0
+   reads as a dot FOCUSING into the mark. half = half-extent (≈ radius). */
+function cutRoundSq(ctx, cx, cy, half, r, fill) {
+  const s = half * 2, x = cx - half, y = cy - half;
+  r = Math.max(0, Math.min(r, half));
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + s, y, x + s, y + s, r);
+  ctx.arcTo(x + s, y + s, x, y + s, r);
+  ctx.arcTo(x, y + s, x, y, r);
+  ctx.arcTo(x, y, x + s, y, r);
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+}
+function strokeRoundSq(ctx, cx, cy, half, r) { cutRoundSq(ctx, cx, cy, half, r, null); ctx.stroke(); }
+
 function AipmCut() {
   const sref = React.useRef(null);
   const ref = useCanvas((ctx, W, H, now) => {
     if (!W || !H) return;
     let p = window.__progress && window.__progress.aipm;
     p = (p == null) ? 0 : p;
-    if (p <= -0.06 || p >= 1.12) { ctx.clearRect(0, 0, W, H); return; }
+
+    /* edge envelope — the MARKS rise from / sink to nothing across the
+       section's first/last sliver of scroll, so nothing pops in/out. The
+       paper fill stays opaque (body tone is paper, so it's seamless); only
+       the ink/blue marks fade, carried by A() below. */
+    const edge = aSeg(p, -0.08, 0.06) * (1 - aSeg(p, 0.96, 1.12));
+    if (edge <= 0.001) { ctx.clearRect(0, 0, W, H); return; }
+    const eAlpha = aEase(aClamp(edge, 0, 1));
 
     const rW = Math.round(W), rH = Math.round(H);
     let S = sref.current;
@@ -64,74 +88,164 @@ function AipmCut() {
     const pc = aClamp(p, 0, 1);
     const minWH = Math.min(W, H);
     const baseR = Math.max(1.4, Math.min(2.4, minWH / 480));
-    const sweep = aEase(aSeg(pc, 0.22, 0.5));   /* the diagonal cut sweeps   */
-    const snap  = aEase(aSeg(pc, 0.5, 0.78));   /* survivors snap to a spine */
-    const fin   = aSeg(pc, 0.78, 1.0);          /* the apex ignites          */
-    const idle  = (window.__calm ? 0 : 1) * (1 - aClamp(pc / 0.22, 0, 1));
+    const K = S.sy.length;
+    /* phases (over the 600vh stage):
+       .02–.14 field materialises (渐显) + slow drift · .22–.52 sweep ·
+       .54–.82 snap + spine telescopes out · .80–.86 anticipation · .86–1 ignite */
+    const sweep = aEase(aSeg(pc, 0.22, 0.52));   /* the diagonal cut sweeps         */
+    const finA  = aSeg(pc, 0.80, 0.86);          /* the apex coils (anticipation)   */
+    const finR  = aSeg(pc, 0.86, 1.0);           /* the apex ignites (release)      */
+    /* the field FADES IN then drifts slowly; flow keeps a living wander going
+       until the cut reaches each dot — fades smoothly INTO the sweep, so there
+       is no global freeze/lurch right before the incision */
+    const fieldIn = aEase(aSeg(pc, 0.02, 0.14));
+    const settle  = 1 - aEase(aSeg(pc, 0.02, 0.14));          /* converge from a scatter as they appear */
+    const flow    = (window.__calm ? 0 : 1) * (1 - aEase(aSeg(pc, 0.20, 0.34)));
     const t = now / 1000;
-    const drift = baseR * 0.85;
+    const drift = baseR * 2.8;                   /* larger, gentler wander = slow "flow" */
     const fly = minWH * 0.13;
 
-    ctx.fillStyle = CUT_PAPER; ctx.fillRect(0, 0, W, H);
+    /* every mark fades with the section edges AND the opening field reveal */
+    const A = (a) => { ctx.globalAlpha = a * eAlpha * fieldIn; };
+
+    /* transparent — the paper is the BODY background (paper tone), which
+       app.jsx crossfades blue→paper as ONE piece on entry. Painting our own
+       opaque sheet here was the hard white block that dropped in over the
+       still-blue Dex; letting the body show through makes the colour
+       transition seamless. */
+    ctx.clearRect(0, 0, W, H);
 
     for (const d of S.dots) {
       const res = d.un < sweep;
       if (d.keep) {
+        const i = d.slot, f = K > 1 ? i / (K - 1) : 0;
+        /* per-slot staggered snap, top→bottom, with a bounded settle */
+        const sLocal = aSeg(pc, 0.52 + f * 0.06, 0.74 + f * 0.06);
+        const snapE = aEase(sLocal) + Math.sin(sLocal * Math.PI) * (1 - sLocal) * 0.12;
         let x = d.hx, y = d.hy;
-        if (!res && idle > 0) { x += Math.sin(t * 0.8 + d.ph) * drift * idle; y += Math.cos(t * 0.7 + d.ph) * drift * idle; }
-        const sx = W * 0.5, sly = S.sy[d.slot];
-        x = aLerp(x, sx, snap); y = aLerp(y, sly, snap);
-        const apex = d.slot === 0;
-        let rad = baseR, al = res ? 1 : 0.5, col = cutInk(1);
-        if (res) { const bump = 1 - aClamp((sweep - d.un) / 0.05, 0, 1); rad = baseR * (1 + 1.4 * bump); }
-        if (fin > 0) {
-          if (apex) { rad = aLerp(baseR * 1.15, baseR * 3.0, aEase(fin)); col = cutBlue(1); al = 1; }
-          else { al = aLerp(1, 0.16, fin); rad = aLerp(baseR, baseR * 0.7, fin); }
+        if (sLocal < 1) {
+          x += d.ex * minWH * 0.05 * settle;
+          y += d.ey * minWH * 0.05 * settle;
+          if (!res && flow > 0) {
+            const amp = drift * (0.5 + 0.7 * (1 - d.r2)) * flow;
+            const fr = 0.4 + 0.3 * d.r2;
+            x += Math.sin(t * fr + d.ph) * amp;
+            y += Math.cos(t * fr * 0.85 + d.ph) * amp * 0.85;
+          }
         }
-        ctx.globalAlpha = al; ctx.fillStyle = col;
+        x = aLerp(x, W * 0.5, snapE); y = aLerp(y, S.sy[i], snapE);
+
+        const apex = i === 0;
+        /* arrival "tick": a brief radius pop as the dot lands in the spine */
+        const land = aClamp((sLocal - 0.85) / 0.15, 0, 1);
+        let rad = baseR * (1 + Math.sin(land * Math.PI) * 0.5);
+        let al = res ? 1 : 0.5, col = cutInk(1);
+        /* flinch as the blade passes — the chosen react to the cut */
+        if (res) { const bump = 1 - aClamp((sweep - d.un) / 0.07, 0, 1); rad = Math.max(rad, baseR * (1 + 1.2 * bump)); }
+
+        if (apex && (finA > 0 || finR > 0)) {
+          const coil = aEase(finA) * (1 - finR);                       /* shrink ~18% before release */
+          const rRel = aLerp(baseR, baseR * 3.0, aEase(finR));
+          const settleR = Math.sin(finR * Math.PI) * (1 - finR) * 0.10;/* elastic catch on release    */
+          const side = rRel * (1 + settleR) * (1 - 0.18 * coil);
+          const ignite = aEase(aSeg(pc, 0.86, 0.92));                  /* ink → cobalt, timed to release */
+          const cr = Math.round(aLerp(11, 0, ignite)), cg = Math.round(aLerp(11, 71, ignite)), cb = Math.round(aLerp(14, 171, ignite));
+          const corner = aLerp(side, 0, aEase(aSeg(pc, 0.86, 0.98)));  /* circle → hard square, late  */
+          A(1); cutRoundSq(ctx, x, y, side, corner, `rgba(${cr},${cg},${cb},1)`);
+          /* two thin square rings — an ignition bloom, not one fat circle */
+          const lw = Math.max(1.2, minWH * 0.0016);
+          ctx.strokeStyle = cutBlue(1); ctx.lineWidth = lw;
+          const r1 = aEase(aSeg(pc, 0.86, 0.94));
+          A((1 - aSeg(pc, 0.86, 0.96)) * 0.9);
+          strokeRoundSq(ctx, x, y, aLerp(side * 1.4, minWH * 0.16, r1), aLerp(side, 0, r1));
+          const r2 = aEase(aSeg(pc, 0.88, 1.0));
+          A((1 - aSeg(pc, 0.88, 1.0)) * 0.4);
+          strokeRoundSq(ctx, x, y, aLerp(side * 1.4, minWH * 0.24, r2), 0);
+          ctx.globalAlpha = 1;
+          continue;
+        }
+        if (finA > 0 || finR > 0) {
+          /* non-apex survivors recede, staggered outward from the period */
+          const dimT = aEase(aSeg(pc, 0.80 + f * 0.08, 0.96));
+          al = aLerp(al, 0.18, dimT);
+          rad = aLerp(rad, baseR * 0.7, dimT);
+        }
+        A(al); ctx.fillStyle = col;
         ctx.beginPath(); ctx.arc(x, y, rad, 0, 6.2832); ctx.fill();
-        if (apex && fin > 0) {
-          ctx.globalAlpha = (1 - fin) * 0.9; ctx.strokeStyle = cutBlue(1); ctx.lineWidth = Math.max(1.2, minWH * 0.0016);
-          ctx.beginPath(); ctx.arc(x, y, aEase(fin) * minWH * 0.34, 0, 6.2832); ctx.stroke();
-        }
       } else if (!res) {
+        /* weak signals still on the sheet — sized & inked by strength (r2) */
         let x = d.hx, y = d.hy;
-        if (idle > 0) { x += Math.sin(t * 0.8 + d.ph) * drift * idle; y += Math.cos(t * 0.7 + d.ph) * drift * idle; }
-        ctx.globalAlpha = 0.46; ctx.fillStyle = cutInk(1);
-        ctx.beginPath(); ctx.arc(x, y, baseR * 0.78, 0, 6.2832); ctx.fill();
+        x += d.ex * minWH * 0.05 * settle;
+        y += d.ey * minWH * 0.05 * settle;
+        if (flow > 0) {
+          const amp = drift * (0.5 + 0.7 * (1 - d.r2)) * flow;
+          const fr = 0.4 + 0.3 * d.r2;
+          x += Math.sin(t * fr + d.ph) * amp;
+          y += Math.cos(t * fr * 0.85 + d.ph) * amp * 0.85;
+        }
+        A(aLerp(0.22, 0.6, d.r2)); ctx.fillStyle = cutInk(1);
+        ctx.beginPath(); ctx.arc(x, y, baseR * (0.6 + 0.5 * d.r2), 0, 6.2832); ctx.fill();
       } else {
-        const tt = aClamp((sweep - d.un) / 0.12, 0, 1), k = aEase(tt), a = (1 - tt) * 0.6;
-        if (a > 0.01) {
-          ctx.globalAlpha = a; ctx.fillStyle = cutInk(1);
-          ctx.beginPath(); ctx.arc(d.hx + d.ex * fly * k, d.hy + d.ey * fly * k, baseR * 0.78 * (1 - 0.5 * tt), 0, 6.2832); ctx.fill();
+        /* deleted — torn out along the radial, faster for stronger dots */
+        const tt = aClamp((sweep - d.un) / 0.16, 0, 1), k = aEase(tt), a = (1 - tt) * 0.6;
+        if (a > 0.001) {
+          const flyK = fly * k * (0.7 + 0.6 * d.r2);
+          const px = d.hx + d.ex * flyK, py = d.hy + d.ey * flyK;
+          A(a); ctx.fillStyle = cutInk(1);
+          ctx.beginPath(); ctx.arc(px, py, baseR * (0.6 + 0.5 * d.r2) * (1 - 0.5 * tt), 0, 6.2832); ctx.fill();
+          if (tt < 0.3) {   /* velocity streak at the moment of the cut */
+            A(a * 0.5 * (1 - tt / 0.3)); ctx.strokeStyle = cutInk(1); ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(d.hx + d.ex * flyK * 0.4, d.hy + d.ey * flyK * 0.4);
+            ctx.lineTo(px, py); ctx.stroke();
+          }
         }
       }
     }
     ctx.globalAlpha = 1;
 
-    /* the cut — a hairline that sweeps, then rotates into the spine's axis */
+    /* the cut — a diagonal hairline with a bright leading kerf. It sweeps the
+       sheet and then simply LEAVES (no rotation); the spine forms separately. */
     if (sweep > 0) {
-      const axis = aEase(aSeg(pc, 0.5, 0.74));
-      const lineA = 1 - aSeg(pc, 0.76, 0.9);
+      const lineA = 1 - aSeg(pc, 0.50, 0.62);
       if (lineA > 0.01) {
-        let nx = aLerp(S.nx, 1, axis), ny = aLerp(S.ny, 0, axis);
-        const nn = Math.hypot(nx, ny) || 1; nx /= nn; ny /= nn;
-        const val = aLerp(aLerp(S.uMin, S.uMax, sweep), W * 0.5, axis);
+        const nx = S.nx, ny = S.ny;
+        const val = aLerp(S.uMin, S.uMax, sweep);
         const px = nx * val, py = ny * val, dx = -ny, dy = nx;
-        ctx.globalAlpha = lineA;
-        ctx.strokeStyle = axis > 0.5 ? cutInk(0.4) : cutInk(0.85);
-        ctx.lineWidth = 1;
+        A(lineA); ctx.strokeStyle = cutInk(0.85); ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(px - dx * 3000, py - dy * 3000); ctx.lineTo(px + dx * 3000, py + dy * 3000); ctx.stroke();
+        /* leading kerf — a denser, heavier ink blade at the live cut front */
+        const cutFront = 1 - aSeg(pc, 0.46, 0.52);
+        if (cutFront > 0.01) {
+          A(cutFront * lineA * 0.9); ctx.strokeStyle = cutInk(1); ctx.lineWidth = 2.0;
+          ctx.beginPath(); ctx.moveTo(px - dx * 3000, py - dy * 3000); ctx.lineTo(px + dx * 3000, py + dy * 3000); ctx.stroke();
+        }
         ctx.globalAlpha = 1;
       }
     }
 
-    /* the live decision counter — fades out as the payoff arrives */
-    const capA = 0.62 * (1 - aEase(aSeg(pc, 0.8, 0.92)));
+    /* the priority spine — after the cut, a vertical line TELESCOPES out from
+       the lower-middle of the sheet, threading the survivors top→bottom, then
+       persists faintly as the axis they hang off. (It grows — it never rotates
+       in, and it never just vanishes.) */
+    const grow = aEase(aSeg(pc, 0.54, 0.82));
+    if (grow > 0.001) {
+      const cx = W * 0.5;
+      const yTop = S.sy[0] - baseR * 3, yBot = S.sy[K - 1] + baseR * 2;
+      const seed = aLerp(yTop, yBot, 0.72);            /* the lower-middle anchor it grows from */
+      const fade = aLerp(1, 0.5, aSeg(pc, 0.9, 1.0));
+      A(grow * 0.55 * fade); ctx.strokeStyle = cutInk(1); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx, aLerp(seed, yTop, grow)); ctx.lineTo(cx, aLerp(seed, yBot, grow)); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    /* the live decision counter — counts down to the TRUE survivor count,
+       then clears before the period lights */
+    const capA = 0.62 * (1 - aEase(aSeg(pc, 0.80, 0.88)));
     if (capA > 0.01) {
-      const kept = Math.max(1, Math.round(aLerp(1800, 1, aEase(aSeg(pc, 0.22, 0.94)))));
+      const kept = Math.max(1, Math.round(aLerp(1800, K, aEase(aSeg(pc, 0.22, 0.52)))));
       const fs = Math.max(10, Math.min(13, W * 0.0105));
-      ctx.globalAlpha = capA; ctx.fillStyle = cutInk(1);
+      A(capA); ctx.fillStyle = cutInk(1);
       ctx.font = fs + 'px ui-monospace, "SF Mono", Menlo, monospace';
       ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
       ctx.fillText("SIGNALS 1800 · KEPT " + (kept < 10 ? "0" + kept : kept), 40, H - 40);

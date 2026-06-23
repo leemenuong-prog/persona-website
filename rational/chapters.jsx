@@ -63,11 +63,18 @@ function useCutStage(id, ref) {
     const el = ref.current; if (!el) return;
     let last = -2;
     const stop = window.__addLoop(() => {
-      const p = aClamp((window.__progress && window.__progress[id]) || 0, 0, 1);
-      if (Math.abs(p - last) < 0.0006) return;
-      last = p;
+      const praw = (window.__progress && window.__progress[id]) || 0;
+      const p = aClamp(praw, 0, 1);
+      if (Math.abs(praw - last) < 0.0006) return;
+      last = praw;
       el.style.setProperty("--p", p.toFixed(4));
-      el.style.setProperty("--pay", aEase(aSeg(p, 0.82, 0.95)).toFixed(3));
+      /* payoff (title "An AIPM" + copy) rises IN SYNC with the spine line
+         telescoping out (canvas grows it ~0.54–0.82), so the words arrive as
+         the structure resolves — then DISSOLVES after you scroll past the
+         stage bottom (praw>1), symmetric with the canvas edge fade */
+      const payIn = aEase(aSeg(p, 0.58, 0.86));
+      const payOut = aEase(aSeg(praw, 1.0, 1.08));
+      el.style.setProperty("--pay", (payIn * (1 - payOut)).toFixed(3));
     });
     return () => stop();
   }, []);

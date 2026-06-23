@@ -230,21 +230,59 @@ function App() {
     if (loading) return;
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* tone background crossfade — interpolated in JS because the body's
-       CSS background-color transition stalls in this engine. setTone
-       flips data-tone (which switches --fg / --line / --acc instantly)
-       and kicks off an rAF fade of the page background-color. */
-    const TONE_RGB = { blue: [0, 71, 171], paper: [239, 236, 230], ink: [11, 11, 14] };
-    let bgFrom = TONE_RGB[document.body.dataset.tone] || TONE_RGB.blue;
-    let bgTo = bgFrom, bgStart = 0, bgFade = false;
-    const BG_DUR = reduce ? 0 : 640;
-    document.body.style.backgroundColor = `rgb(${bgFrom.join(",")})`;
+    /* tone recolor crossfade — the WHOLE page recolors as ONE piece (bg +
+       inherited text + lines + accents), interpolated in JS. We can't lean
+       on CSS transitions: var()-driven transitions on the tone tokens stall
+       in this engine, and flipping data-tone alone SNAPS --fg/--line/--acc
+       instantly while only the background fades — that mismatch is the
+       "闪屏" flicker (worst on the blue→paper entry into AIPM). So setTone
+       keeps flipping data-tone (for non-color selectors like .bsq / .cur),
+       but every tone-derived COLOR var is interpolated per-frame as a
+       literal rgb()/rgba() inline on <body>, which outranks the
+       body[data-tone] rule. Same idiom as the per-frame card colour lerp in
+       sections.jsx (Works).
+       ⚠ Tone colours now live in TWO places: the body[data-tone] rules in
+       base.css (seed / fallback) AND this TONE_VARS table (runtime). Change
+       a tone → edit both. */
+    const TONE_VARS = {
+      blue:  { bg: [0, 71, 171, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.62], line: [239, 236, 230, 0.32], ghost: [8, 10, 26, 0.20],     hard: [11, 11, 14, 1],    accKey: "--blue-dn" },
+      paper: { bg: [239, 236, 230, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.28],    ghost: [11, 11, 14, 0.06],    hard: [11, 11, 14, 1],    accKey: "--blue" },
+      ink:   { bg: [11, 11, 14, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.55], line: [239, 236, 230, 0.22], ghost: [239, 236, 230, 0.05], hard: [239, 236, 230, 1], accKey: "--blue-up" },
+    };
+    const VK = ["bg", "fg", "fgDim", "line", "ghost", "hard", "acc"];
+    const CSSVAR = { bg: "--bg", fg: "--fg", fgDim: "--fg-dim", line: "--line", ghost: "--ghost", hard: "--hard", acc: "--acc" };
+    const parseColor = (v) => {
+      v = (v || "").trim();
+      if (v[0] === "#") { const n = parseInt(v.slice(1), 16); return v.length >= 7 ? [(n >> 16) & 255, (n >> 8) & 255, n & 255, 1] : [0, 71, 171, 1]; }
+      const m = (v.match(/-?\d+(\.\d+)?/g) || []).map(Number);
+      return m.length >= 3 ? [m[0], m[1], m[2], m.length >= 4 ? m[3] : 1] : [0, 71, 171, 1];
+    };
+    const toneSnapshot = (tone) => {
+      const t = TONE_VARS[tone] || TONE_VARS.blue;
+      /* --acc is tweakable (--blue / --blue-up / --blue-dn live on :root) → resolve live */
+      const acc = parseColor(getComputedStyle(document.documentElement).getPropertyValue(t.accKey));
+      return { bg: t.bg, fg: t.fg, fgDim: t.fgDim, line: t.line, ghost: t.ghost, hard: t.hard, acc };
+    };
+    const emit = (vals) => {
+      const c = vals.bg;
+      document.body.style.backgroundColor = `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
+      for (const k of VK) {
+        const v = vals[k], a = v[3] == null ? 1 : v[3];
+        document.body.style.setProperty(CSSVAR[k],
+          a >= 1 ? `rgb(${v[0] | 0},${v[1] | 0},${v[2] | 0})`
+                 : `rgba(${v[0] | 0},${v[1] | 0},${v[2] | 0},${a.toFixed(3)})`);
+      }
+    };
+    const BG_DUR = reduce ? 0 : 700;
+    let cur = toneSnapshot(document.body.dataset.tone || "blue");
+    let from = cur, to = cur, bgStart = 0, bgFade = false;
+    emit(cur);   /* seed frame 0 — inline literals consistent from the start (no FOUC mismatch) */
     const setTone = (tone) => {
       document.body.dataset.tone = tone;
-      const next = TONE_RGB[tone]; if (!next) return;
-      const cs = (getComputedStyle(document.body).backgroundColor.match(/\d+/g) || []).map(Number);
-      bgFrom = cs.length >= 3 ? cs : bgTo;
-      bgTo = next; bgStart = performance.now(); bgFade = true;
+      if (!TONE_VARS[tone]) return;
+      from = cur;                  /* start from the current (maybe mid-fade) value → no jump on reverse */
+      to = toneSnapshot(tone);     /* --acc resolved live (accent tweak aware) */
+      bgStart = performance.now(); bgFade = true;
     };
 
     /* counters — run when a stage reveals */
@@ -343,13 +381,18 @@ function App() {
         if (ss + vh * 0.72 > o.top) { o.done = true; o.el.classList.add("in"); runCounters(o.el); }
       });
 
-      /* drive the tone background crossfade */
+      /* drive the tone recolor crossfade — bg + text + lines + accents as one */
       if (bgFade) {
         const t = BG_DUR ? Math.min((now - bgStart) / BG_DUR, 1) : 1;
         const e = t * t * (3 - 2 * t);
-        const ch = (k) => Math.round(bgFrom[k] + (bgTo[k] - bgFrom[k]) * e);
-        document.body.style.backgroundColor = `rgb(${ch(0)},${ch(1)},${ch(2)})`;
-        if (t >= 1) bgFade = false;
+        const next = {};
+        for (const k of VK) {
+          const a = from[k], b = to[k];
+          const aa = a[3] == null ? 1 : a[3], ba = b[3] == null ? 1 : b[3];
+          next[k] = [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e, aa + (ba - aa) * e];
+        }
+        cur = next; emit(cur);
+        if (t >= 1) { cur = to; emit(cur); bgFade = false; }
       }
 
       /* tone — section under the viewport's midline */
@@ -437,6 +480,8 @@ function App() {
       stopE();
       removeEventListener("resize", measure);
       clearTimeout(t1); clearTimeout(t2);
+      document.body.style.removeProperty("background-color");
+      Object.values(CSSVAR).forEach((v) => document.body.style.removeProperty(v));
     };
   }, [loading]);
 
