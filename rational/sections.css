@@ -262,7 +262,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
    decoded in by JS opacity as a work rises into focus. paper text on the card's
    cobalt / ink ground. 大卡 = 影片 + 档案. */
 .wc-full { position: absolute; inset: 0; z-index: 2; display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
   gap: clamp(16px, 1.7vw, 34px);
   padding: clamp(16px, 1.7vw, 30px) clamp(18px, 1.9vw, 34px);
   align-items: stretch; opacity: 0; color: var(--paper); }

@@ -256,6 +256,10 @@ const WORKS = [
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
     award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
     link: "https://pearwork.netlify.app/",
+    links: [
+      { label: "PEARS APP · 访问应用 ↗", url: "https://pearwork.netlify.app/" },
+      { label: "OFFICIAL SITE · 官网 ↗", url: "https://pear-web-leemenuong.netlify.app/" },
+    ],
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     mediaLabel: "PRODUCT FILM · 路演视频",
     caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "pearwork.netlify.app",
@@ -575,9 +579,9 @@ function Works({ jump }) {
          bar per work) and the focused work RISES out of it into one BIG card that
          carries everything: film + title + award + metrics + body. 条 → 天际线 + 大卡. */
       const narrow = W < 900;
-      const bigW = Math.min(W * (narrow ? 0.95 : 0.93), 1320);
-      const bigTop = H * (narrow ? 0.065 : 0.045);
-      const bigBot = H * (narrow ? 0.865 : 0.82);
+      const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
+      const bigTop = H * (narrow ? 0.065 : 0.10);
+      const bigBot = H * (narrow ? 0.865 : 0.68);
       const bigH = bigBot - bigTop;
       const bigCx = W * 0.5;
       /* the skyline index rail — slim bars along the bottom edge */
@@ -605,7 +609,7 @@ function Works({ jump }) {
         const selfH = railMaxH * (0.40 + 0.60 * hAt);
         const sx = railLeft + di * railStep - 4.5;
         const sy = railBaseY - selfH - 11;
-        selfEl.style.transform = "translate(" + sx.toFixed(1) + "px," + sy.toFixed(1) + "px)";
+        selfEl.style.transform = "translate(" + Math.round(sx) + "px," + Math.round(sy) + "px)";
         selfEl.style.opacity = (smooth(0.5, 0.95, eS) * (1 - close)).toFixed(3);
       }
 
@@ -648,9 +652,15 @@ function Works({ jump }) {
         const h = lerp(barH, oH, eGeo);
         const top = lerp(barTop, oTop, eGeo);
 
-        card.style.width = w.toFixed(1) + "px";
-        card.style.height = h.toFixed(1) + "px";
-        card.style.transform = "translate(" + x.toFixed(1) + "px," + top.toFixed(1) + "px)";
+        /* snap to whole pixels — the card is a will-change:transform layer, and a
+           sub-pixel translate makes its composited text render blurry */
+        card.style.width = Math.round(w) + "px";
+        card.style.height = Math.round(h) + "px";
+        card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(top) + "px)";
+        /* drop GPU promotion once the card settles big — composited layers render
+           text softer (no sub-pixel AA), so the resting card should de-promote to
+           the main layer and stay razor-sharp; re-promote only while it moves */
+        card.style.willChange = big > 0.85 ? "auto" : "transform";
 
         /* faces: the big card content (media + text) decodes in with `big`; the
            slim spine is just a flip hit-target, live only while the bar is slim. */
@@ -719,7 +729,7 @@ function Works({ jump }) {
                  if (card && card.dataset.i != null && +card.dataset.i !== window.__wkActive) hoverRef.current = +card.dataset.i;
                }}>
             {WORKS.map((wk, i) => (
-              <div key={i} data-i={i} className={"wk-card" + (wk.dark ? " ink" : "")}>
+              <div key={i} data-i={i} className="wk-card ink">
                 {/* the slim spine = a flip-to-me hit target (the card can't be a
                     <button> because it now holds video / iframe / links inside) */}
                 <button className="wc-spine" type="button" data-hov
@@ -750,7 +760,11 @@ function Works({ jump }) {
                     </div>
                     <p className="wf-body">{wk.body}</p>
                     <p className="wf-zh zh">{wk.zh}</p>
-                    {wk.link ? (
+                    {wk.links ? (
+                      wk.links.map((ln, j) => (
+                        <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
+                      ))
+                    ) : wk.link ? (
                       <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>VISIT LIVE · 访问项目 ↗</a>
                     ) : wk.doc ? (
                       <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>PORTFOLIO · 查看作品集 ↗</a>
