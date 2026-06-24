@@ -147,7 +147,7 @@
    One pinned 16:9 frame; 9 Pears slides cross-dissolve through it.
    Chrome is site-language only (cobalt only on the self-square). The
    slide layer defaults to opacity 0 here — the rAF hook drives it. */
-.reel .ch-wrap { height: 800vh; }
+.reel .ch-wrap { height: 880vh; }   /* 9 提案帧 + 1 路演视频帧，留足停顿 */
 .reel .ch-stage { background: var(--bg); }   /* matte = page paper */
 
 .reel-frame {
@@ -159,12 +159,30 @@
   background: var(--bg);
   overflow: hidden; z-index: 2;
 }
-.reel-img {
+.reel-cell {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: contain; background: var(--bg);
   opacity: 0; will-change: opacity, transform;
+}
+.reel-img {
+  object-fit: contain; background: var(--bg);
   user-select: none; -webkit-user-drag: none;
 }
+/* the closing frame — the W·01 Pears roadshow video, click to play */
+.reel-video { background: var(--bg); pointer-events: none; }
+.reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
+.reel-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 74px; height: 74px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--line); background: rgba(239, 236, 230, .72);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  display: grid; place-items: center; transition: transform .3s var(--ez), background .3s var(--ez);
+}
+.reel-play::before {
+  content: ""; width: 0; height: 0; margin-left: 5px;
+  border-left: 17px solid var(--fg);
+  border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+}
+.reel-play:hover { transform: translate(-50%, -50%) scale(1.08); background: rgba(239, 236, 230, .92); }
 
 /* the bar-column read vertically — hairline spine + passed/ahead ticks */
 .reel-spine {
@@ -173,7 +191,7 @@
 }
 .reel-tick {
   position: absolute; left: -3px; width: 7px; height: 1px;
-  top: calc((var(--n) / 8) * 100%);
+  top: calc((var(--n) / 9) * 100%);
   background: var(--line); transition: background .45s var(--ez);
 }
 .reel-tick.passed { background: var(--fg); }
@@ -203,7 +221,7 @@
 .reel-out .arr { font-size: 15px; letter-spacing: 0; margin-left: 4px; }
 
 @media (max-width: 900px) {
-  .reel .ch-wrap { height: 720vh; }
+  .reel .ch-wrap { height: 800vh; }
   .reel-frame { width: 92vw; }
   .reel-spine, .reel-self { display: none; }
   .reel-head { max-width: 80vw; }
