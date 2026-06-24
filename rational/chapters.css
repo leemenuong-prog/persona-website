@@ -142,3 +142,71 @@
   .c4-ann::before { display: none; }
   .c4-ann b { font-size: 20px; }
 }
+
+/* ── 03·B · THE EVIDENCE — THE REEL · 一帧一帧 (tone: paper) ─────────
+   One pinned 16:9 frame; 9 Pears slides cross-dissolve through it.
+   Chrome is site-language only (cobalt only on the self-square). The
+   slide layer defaults to opacity 0 here — the rAF hook drives it. */
+.reel .ch-wrap { height: 800vh; }
+.reel .ch-stage { background: var(--bg); }   /* matte = page paper */
+
+.reel-frame {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(90vw, calc((100vh - 300px) * 16 / 9));
+  max-width: 1280px;          /* never upscale the 1920 source past ~native — keeps text crisp on big/Retina screens */
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  overflow: hidden; z-index: 2;
+}
+.reel-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; background: var(--bg);
+  opacity: 0; will-change: opacity, transform;
+  user-select: none; -webkit-user-drag: none;
+}
+
+/* the bar-column read vertically — hairline spine + passed/ahead ticks */
+.reel-spine {
+  position: absolute; left: 40px; top: 14vh; height: 72vh; width: 1px;
+  background: var(--line); z-index: 4; opacity: var(--chrome, 0);
+}
+.reel-tick {
+  position: absolute; left: -3px; width: 7px; height: 1px;
+  top: calc((var(--n) / 8) * 100%);
+  background: var(--line); transition: background .45s var(--ez);
+}
+.reel-tick.passed { background: var(--fg); }
+/* the period · self — the ONLY cobalt, riding the spine */
+.reel-self {
+  position: absolute; left: -3.5px; width: 8px; height: 8px;
+  top: calc(var(--self, 0) * 100%); transform: translateY(-4px);
+  background: var(--acc); z-index: 5; opacity: var(--chrome, 0); will-change: top;
+}
+
+.reel-head { position: absolute; left: 40px; top: 72px; z-index: 5; max-width: 54vw; }
+.reel-subkick { margin-top: 10px; font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
+
+.reel-ix { position: absolute; right: 40px; top: 72px; z-index: 5; text-align: right; opacity: var(--chrome, 0); }
+.reel-ixc { display: block; animation: reelSwap .55s var(--ez) both; }
+.reel-ix .ix { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--fg); }
+.reel-ix .tot { font-size: 10.5px; letter-spacing: .12em; color: var(--fg-dim); }
+.reel-ix .ln { display: inline-block; width: 24px; height: 1px; margin: 0 0 3px 10px; vertical-align: middle; background: var(--line); }
+.reel-ix .lab { margin-left: 10px; font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
+.reel-ix .gloss { display: block; margin: 9px 0 0 auto; max-width: 26ch; font-size: 11px; letter-spacing: .02em; line-height: 1.5; color: var(--fg-dim); }
+@keyframes reelSwap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.reel-out {
+  position: absolute; right: 40px; bottom: 7vh; z-index: 5; text-align: right;
+  font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); opacity: var(--kill, 0);
+}
+.reel-out .arr { font-size: 15px; letter-spacing: 0; margin-left: 4px; }
+
+@media (max-width: 900px) {
+  .reel .ch-wrap { height: 720vh; }
+  .reel-frame { width: 92vw; }
+  .reel-spine, .reel-self { display: none; }
+  .reel-head { max-width: 80vw; }
+  .reel-ix .gloss { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .reel-ixc { animation: none; } }

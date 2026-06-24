@@ -334,4 +334,114 @@ function ChArch({ jump }) {
   );
 }
 
-Object.assign(window, { ChAipm, ChDev, ChArch, Structure3D });
+/* ════════════════════════════════════════════════════════════
+   03·B · THE EVIDENCE — THE REEL · 一帧一帧 (tone: paper)
+   The payoff of the Developer thesis: 9 Pears product slides — the
+   flagship the governed agent actually built — cross-dissolve
+   through ONE pinned 16:9 frame. The chrome is pure site language:
+   a hairline progress spine, passed/ahead ticks (the .bc-col read
+   vertically), the cobalt self-square (period · self) riding the
+   spine, and a mono NN/09 index. The cream slides sit on a var(--bg)
+   matte = the page paper, so the only foreign note is the deck's own
+   green — quarantined to the framed rectangle and forced to opacity 0
+   BEFORE the ink lerp, so green and ink never co-occupy the frame.
+   Exit: slide 9 (生态) widens out, the frame deconstructs to the bare
+   bar-column, and the engine's standard paper→ink midline lerp carries
+   the page into the Architect (场). No custom recolor code.
+   ════════════════════════════════════════════════════════════ */
+const REEL = [
+  { ix: "01", zh: "封面",       g: "看你做一遍，剩下的交给它" },
+  { ix: "02", zh: "看你做一遍", g: "把重复工作交给 Pears" },
+  { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚" },
+  { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始" },
+  { ix: "05", zh: "乐观与学习", g: "每一次点击与切换，都在告诉它什么值得自动化" },
+  { ix: "06", zh: "工作流拍板", g: "自动化到哪一步，由你拍板" },
+  { ix: "07", zh: "隐私设计",   g: "只在你开口时才记，停止任务记录立即结束" },
+  { ix: "08", zh: "Agent 构建", g: "拍板之后，工作流开始成为 Agent" },
+  { ix: "09", zh: "产品生态",   g: "你的做法，不只为你工作 · Agent App 生态" },
+];
+
+/* the reel driver — a clone of useCutStage; pure style writes off
+   window.__progress.reel. onIndex fires only when the integer slide
+   changes (≤9 times) so React state churn stays minimal. NOTE: slide
+   opacity defaults to 0 in CSS (not inline) so a setState re-render
+   never resets what this loop is imperatively driving. */
+function useReelStage(id, ref, onIndex) {
+  useChE(() => {
+    const el = ref.current; if (!el) return;
+    const imgs = [...el.querySelectorAll(".reel-img")];
+    const ticks = [...el.querySelectorAll(".reel-tick")];
+    let last = -2, lastI = -1;
+    const stop = window.__addLoop(() => {
+      const praw = (window.__progress && window.__progress[id]) || 0;
+      if (Math.abs(praw - last) < 0.0006) return;
+      last = praw;
+      const p = aClamp(praw, 0, 1);
+      const calm = window.__calm;
+      const raw = aSeg(p, 0.10, 0.96) * 9;        /* 0…9 across the deck */
+      const k = Math.min(Math.floor(raw), 8);
+      const frac = raw - k;
+      const enter = aEase(aSeg(p, 0.05, 0.12));    /* slides + chrome fade up from the cream field */
+      const kill = aSeg(p, 0.90, 0.95);            /* forced to 0 BEFORE the paper→ink seam */
+      let incoming = k < 8 ? aEase(aSeg(frac, 0.78, 1)) : 0;   /* only the last 22% of a band dissolves */
+      if (calm) incoming = (k < 8 && frac >= 0.5) ? 1 : 0;     /* reduced-motion → hard cut */
+      const vis = enter * (1 - kill);
+      imgs.forEach((im, i) => {
+        let o = 0;
+        if (i === k) o = 1 - incoming * 0.70;       /* current dwells, dips to .30 in the dissolve (lit-center co-presence) */
+        else if (i === k + 1) o = incoming;         /* next locks in */
+        im.style.opacity = (o * vis).toFixed(3);
+        im.style.transform = (!calm && i === k + 1) ? "scale(" + (1.012 - 0.012 * incoming).toFixed(4) + ")" : "scale(1)";
+      });
+      el.style.setProperty("--chrome", enter.toFixed(3));
+      el.style.setProperty("--self", aClamp(raw / 8, 0, 1).toFixed(4));
+      el.style.setProperty("--kill", aEase(aSeg(p, 0.90, 0.975)).toFixed(3));
+      ticks.forEach((t, n) => t.classList.toggle("passed", n <= k));
+      const i = kill > 0.5 ? 8 : k;
+      if (i !== lastI) { lastI = i; onIndex(i); }
+    });
+    return () => stop();
+  }, []);
+}
+
+function ChReel({ jump }) {
+  const ref = useChR(null);
+  const [i, setI] = React.useState(0);
+  useReelStage("reel", ref, setI);
+  const s = REEL[i];
+  return (
+    <section className="chapter reel" id="reel" data-tone="paper" data-prog="reel"
+             data-screen-label="03·B · The Evidence — REEL">
+      {/* silent entry depends on ChDev above staying data-tone="paper" — do not change */}
+      <div className="ch-wrap reel-wrap">
+        <div className="ch-stage reel-stage" data-ob ref={ref}>
+          <div className="reel-spine" aria-hidden="true">
+            {REEL.map((_, n) => <i key={n} className="reel-tick" style={{ "--n": n }}></i>)}
+            <span className="reel-self"></span>
+          </div>
+          <div className="reel-head">
+            <div className="kick lm"><span>03·B — THE EVIDENCE / 证据 · VIBE CODING 实证</span></div>
+            <div className="reel-subkick mono" data-rv style={{ "--rd": ".2s" }}>我治理的 Agent 造出了这些</div>
+          </div>
+          <div className="reel-frame">
+            {REEL.map((slide, n) => (
+              <img key={n} className="reel-img" src={"works/pears-deck/" + slide.ix + ".jpg"}
+                   alt={"Pears " + slide.ix + " " + slide.zh} decoding="async"
+                   loading={n < 2 ? "eager" : "lazy"} draggable="false" />
+            ))}
+          </div>
+          <div className="reel-ix mono" aria-hidden="true">
+            <div key={i} className="reel-ixc">
+              <span className="ix">{s.ix}</span><span className="tot"> / 09</span>
+              <span className="ln"></span><span className="lab">{s.zh}</span>
+              <span className="gloss zh">{s.g}</span>
+            </div>
+          </div>
+          <div className="reel-out mono" aria-hidden="true">证物完毕 — 力造出形 <span className="arr">↘</span></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { ChAipm, ChDev, ChArch, ChReel, Structure3D });
