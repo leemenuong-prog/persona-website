@@ -367,8 +367,8 @@ const smooth = (e0, e1, x) => { const t = clp((x - e0) / (e1 - e0 || 1e-6), 0, 1
 const eOut = (t) => 1 - Math.pow(1 - t, 3);
 const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
 /* each work answers to one of the three identities — the deck's spine echoing
-   the Dex index. Positional, matching W·NN: 1–3 AIPM · 4 DEV · 5–8 Arc. 字⇄身份. */
-const wkIdentity = (i) => (i <= 2 ? "AIPM" : i === 3 ? "DEV" : "Arc");
+   the Dex index. Positional, matching W·NN: 1–3 AIPM · 4 Developer · 5–8 Architect. 字⇄身份. */
+const wkIdentity = (i) => (i <= 2 ? "AIPM" : i === 3 ? "Developer" : "Architect");
 
 /* ── the portfolio flip-book — for the architecture works whose body
    lives as作品集 spreads. The same .sc-media 16:9 frame, but the A3 page

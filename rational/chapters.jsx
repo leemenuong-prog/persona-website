@@ -288,12 +288,6 @@ function ChDev({ jump }) {
    no circle, no contour ring — the rectangle + the blue self.
    ════════════════════════════════════════════════════════════ */
 
-const C4_FORCES = [
-  { en: "WATER", zh: "水", st: { left: "36%", top: "17%" } },
-  { en: "NOISE", zh: "噪声", st: { right: "5%", top: "36%" } },
-  { en: "ENERGY", zh: "能量", st: { left: "47%", bottom: "10%" } },
-  { en: "WIND", zh: "风", st: { right: "9%", bottom: "20%" } },
-];
 const C4_ANNS = [
   { b: "T1", l: "《建筑学报》 2ND AUTHOR — AIGC 三维空间优化", st: { right: "5%", top: "11%" }, th: 0.48 },
   { b: "TOP 1%", l: "挑战杯 GRAND PRIZE 特等奖 — 蒋巷文脉 · 科链智谷 2.0", st: { right: "5%", bottom: "22%" }, th: 0.6 },
@@ -322,12 +316,6 @@ function ChArch({ jump }) {
               <span className="arr">↘</span>
             </div>
           </div>
-          <div className="c4-vzh" aria-hidden="true">把场地的力——水 · 噪声 · 能量 · 风——化成理性、可住的形</div>
-          {C4_FORCES.map((f) => (
-            <div key={f.en} className="c4-f mono" data-th="0.5" style={f.st}>
-              <span className="ln"></span><span>{f.en} {f.zh}</span>
-            </div>
-          ))}
           {C4_ANNS.map((a) => (
             <div key={a.b} className="c4-ann" data-th={a.th} style={a.st}>
               <span className="sq"></span><b>{a.b}</b><span className="l">{a.l}</span>

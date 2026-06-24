@@ -274,7 +274,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
   min-width: 0; max-height: 100%; overflow-y: auto; padding-right: 4px;
   justify-content: safe center; }
 /* the identity badge — leads the dossier column (the title now floats outside
-   the card). AIPM / DEV / Arc, the three-identity spine; only the period 跳色. */
+   the card). AIPM / Developer / Architect, the three-identity spine; only the period 跳色. */
 .wf-ident { font-size: clamp(20px, 1.9vw, 31px); font-weight: 800; letter-spacing: .01em;
   line-height: 1; display: inline-flex; align-items: baseline; gap: .3em; }
 .wf-ident .psq { width: .15em; height: .15em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .08em; }

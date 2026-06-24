@@ -483,7 +483,6 @@ function SiteForm3D() {
     const lift = aEase(aSeg(p, 0.32, 0.70));
     const solid = aEase(aSeg(p, 0.44, 0.78));
     const groundV = aEase(aSeg(p, 0.46, 0.80));
-    const selfV = aEase(aSeg(p, 0.82, 0.97));
 
     /* live drift + pointer parallax, only once the form is 3D */
     const live = aSeg(p, 0.62, 0.82);
@@ -584,15 +583,8 @@ function SiteForm3D() {
         }
       }
 
-      /* the blue period — the self — nested in the mark, dissolving as the
-         colonnade rises (it returns as the cobalt block at the threshold). */
-      const perV = aClamp(1 - grow * 1.2, 0, 1);
-      if (perV > 0.01) {
-        const hs = 0.16, pz = cz + 0.42;
-        rect(-hs, hs, pz - hs, pz + hs);
-        ctx.fillStyle = blu(0.9 * perV); ctx.fill();
-        ctx.strokeStyle = bluep(0.9 * perV); ctx.lineWidth = 1.2; ctx.stroke();
-      }
+      /* (the blue self is held back here — it arrives once, as the cobalt
+         block at the threshold; no period nested in the rising colonnade.) */
 
       /* left ink scrim — fades IN with the chapter; a soft, low veil only at
          the far edge, just enough to seat the title; never a hard dark band */
@@ -692,38 +684,8 @@ function SiteForm3D() {
       }
     }
 
-    /* ── the self — a cobalt block at the front threshold ── */
-    if (selfV > 0.01) {
-      const sy = TPL.HY + 1.35;
-      const verts = [];
-      const x0 = -0.22, x1 = 0.22, y0 = sy - 0.22, y1 = sy + 0.22, z1 = 0.42 * selfV;
-      const P = (x, y, z) => project(x, y, z);
-      const sf = [
-        [[x0, y1, 0], [x1, y1, 0], [x1, y1, z1], [x0, y1, z1]],
-        [[x1, y1, 0], [x1, y0, 0], [x1, y0, z1], [x1, y1, z1]],
-        [[x0, y0, 0], [x0, y1, 0], [x0, y1, z1], [x0, y0, z1]],
-        [[x0, y1, z1], [x1, y1, z1], [x1, y0, z1], [x0, y0, z1]],
-      ].map((pts) => {
-        const proj = pts.map((q) => P(q[0], q[1], q[2]));
-        let depth = 0; for (const q of proj) depth += q[2]; depth /= proj.length;
-        const nrm = v3norm(v3cross(v3sub(pts[1], pts[0]), v3sub(pts[2], pts[0])));
-        const lum = aClamp(v3dot(nrm, T_LIGHT) * 0.5 + 0.5, 0, 1);
-        return { proj, depth, lum };
-      }).sort((a, b) => a.depth - b.depth);
-      for (const d of sf) {
-        ctx.beginPath();
-        d.proj.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-        ctx.closePath();
-        ctx.fillStyle = blu((0.55 + d.lum * 0.40) * selfV); ctx.fill();
-        ctx.strokeStyle = bluep(0.9 * selfV); ctx.lineWidth = 1.2; ctx.stroke();
-      }
-      /* a dashed threshold line drawn toward the temple */
-      const a = project(0, sy, 0.02), b = project(0, TPL.HY + 0.4, 0.02);
-      ctx.strokeStyle = paper(0.32 * selfV); ctx.lineWidth = 1.2;
-      ctx.setLineDash([3, 5]);
-      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-      ctx.setLineDash([]);
-    }
+    /* (no cobalt self block at the threshold — the architect canvas reads as
+       pure massing; the blue self lives only in the title period + badges.) */
 
     /* left ink scrim — a soft, low veil beneath the DOM title, but FADED OUT
        as the chapter exits (p→1) so it never lingers as a grey band once the

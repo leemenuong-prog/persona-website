@@ -140,8 +140,21 @@ function AipmCut() {
         const land = aClamp((sLocal - 0.85) / 0.15, 0, 1);
         let rad = baseR * (1 + Math.sin(land * Math.PI) * 0.5);
         let al = res ? 1 : 0.5, col = cutInk(1);
-        /* flinch as the blade passes — the chosen react to the cut */
-        if (res) { const bump = 1 - aClamp((sweep - d.un) / 0.07, 0, 1); rad = Math.max(rad, baseR * (1 + 1.2 * bump)); }
+        /* the cut CATCHES the chosen — at the instant the blade crosses a
+           survivor it pops and a cobalt square-ring pings outward and fades:
+           clear feedback that THIS signal was kept. The dot itself stays ink;
+           only the apex sustains cobalt into the period (色只在「点」上). */
+        if (res) {
+          const bump = 1 - aClamp((sweep - d.un) / 0.10, 0, 1);
+          if (bump > 0.001) {
+            rad = Math.max(rad, baseR * (1 + 1.5 * bump));
+            const ringHalf = baseR * (1.9 + 5.2 * (1 - bump));
+            A(bump * 0.85);
+            ctx.strokeStyle = cutBlue(1); ctx.lineWidth = Math.max(1.2, minWH * 0.0015);
+            strokeRoundSq(ctx, x, y, ringHalf, 0);
+            ctx.globalAlpha = 1;
+          }
+        }
 
         if (apex && (finA > 0 || finR > 0)) {
           const coil = aEase(finA) * (1 - finR);                       /* shrink ~18% before release */
