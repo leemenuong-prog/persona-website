@@ -487,7 +487,7 @@ function App() {
 
   useAppEffect(() => { document.body.style.overflow = loading ? "hidden" : ""; }, [loading]);
 
-  const { Hero, Whoami, Dex, Works, Contact, ChAipm, ChDev, ChReel, ChArch } = window;
+  const { Hero, Whoami, Dex, Works, Contact, ChAipm, ChAipmPlatform, ChDev, ChReel, ChArch } = window;
 
   return (
     <>
@@ -500,6 +500,7 @@ function App() {
         <Whoami />
         <Dex jump={jump} />
         <ChAipm jump={jump} />
+        <ChAipmPlatform jump={jump} />
         <ChDev jump={jump} />
         <ChReel jump={jump} />
         <ChArch jump={jump} />

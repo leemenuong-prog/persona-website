@@ -120,6 +120,156 @@ function ChAipm({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
+   02·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
+   Two quiet Chinese pages explain the platform thesis; only then does the
+   product film appear beside the title.
+   ════════════════════════════════════════════════════════════ */
+const APX_INTRO_PAGES = [
+  {
+    ix: "01",
+    tag: "平台定义",
+    title: "不是单个工具，是生产系统。",
+    body: "XTOOL 把调研、脚本、审核、复测放进同一个闭环。每个动作不再分散，都会回到统一的结构里。",
+  },
+  {
+    ix: "02",
+    tag: "专属 Agent",
+    title: "一个 Agent 记住你的判断。",
+    body: "它记住你的选题口味、审核规则、失败原因和复测结果。下一次生成，不是重新开始，而是在已有判断上继续推进。",
+  },
+];
+
+const APX_VISUALS = [
+  { key: "system", label: "生产链汇入一个系统" },
+  { key: "memory", label: "Agent 记住你的判断" },
+];
+
+const APX_STRIP = [
+  "1 个专属 Agent",
+  "9 个生产工具",
+  "220K 行代码交付",
+  "ROI 0.39 H/$",
+];
+
+function useApxStage(id, ref) {
+  useChE(() => {
+    const el = ref.current; if (!el) return;
+    const sec = el.closest("section");
+    const pages = [...el.querySelectorAll(".apx-page")];
+    const visuals = [...el.querySelectorAll(".apx-visual")];
+    const video = el.querySelector(".apx-video");
+    let last = -2, lastStep = -1;
+    const stop = window.__addLoop(() => {
+      const top = sec ? sec.getBoundingClientRect().top + window.scrollY : el.getBoundingClientRect().top + window.scrollY;
+      const span = Math.max((sec ? sec.offsetHeight : el.offsetHeight) - innerHeight, 1);
+      const praw = (window.scrollY - top) / span;
+      const p = aClamp(praw, 0, 1);
+      if (Math.abs(praw - last) < 0.0006) return;
+      last = praw;
+      el.style.setProperty("--p", p.toFixed(4));
+      const step = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
+      if (step === lastStep) return;
+      lastStep = step;
+      el.dataset.step = String(step);
+      pages.forEach((n, i) => n.classList.toggle("on", i === Math.min(step, pages.length - 1)));
+      visuals.forEach((n, i) => {
+        const on = step === i;
+        n.classList.toggle("on", on);
+        n.style.setProperty("opacity", on ? "1" : "0", "important");
+        n.style.setProperty("transform", on ? "none" : "translateY(18px)", "important");
+      });
+      if (video) {
+        video.classList.toggle("on", step === 2);
+        video.style.setProperty("opacity", step === 2 ? "1" : "0", "important");
+        video.style.setProperty("transform", step === 2 ? "none" : "translateX(28px) scale(.992)", "important");
+      }
+    });
+    return () => stop();
+  }, []);
+}
+
+function ChAipmPlatform({ jump }) {
+  const ref = useChR(null);
+  useApxStage("aipmPlatform", ref);
+  return (
+    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="02·B · XTOOL Agent Platform">
+      <div className="ch-wrap">
+        <div className="ch-stage apx-stage" data-ob ref={ref} data-step="0">
+          <div className="apx-kicker mono">
+            <span>02·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+          </div>
+
+          <div className="apx-hero">
+            <div className="apx-copy">
+              <div className="apx-cap mono">XTOOL / 内容生产 Agent OS</div>
+              <h2 className="apx-title">XTOOL<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
+
+              <div className="apx-intro">
+                {APX_INTRO_PAGES.map((page, i) => (
+                  <article key={page.ix} className={"apx-page" + (i === 0 ? " on" : "")}>
+                    <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
+                    <h3>{page.title}</h3>
+                    <p>{page.body}</p>
+                  </article>
+                ))}
+                <article className="apx-page apx-page-video">
+                  <div className="apx-page-k mono"><span>03</span><b>视频演示</b></div>
+                  <h3>现在看它如何工作。</h3>
+                  <p>前两面说明平台逻辑；这一面只保留产品本身，让视频成为主角。</p>
+                </article>
+              </div>
+            </div>
+
+            <div className="apx-media">
+              <div className="apx-visuals" aria-hidden="true">
+                <div className="apx-visual apx-visual-system on">
+                  <div className="apx-visual-cap mono">{APX_VISUALS[0].label}</div>
+                  <div className="apx-system-diagram">
+                    <div className="apx-toolstack">
+                      {["调研", "脚本", "审核", "复测"].map((item) => (
+                        <div className="apx-tool" key={item}><i></i><span>{item}</span></div>
+                      ))}
+                    </div>
+                    <div className="apx-join" aria-hidden="true"></div>
+                    <div className="apx-system-core">
+                      <span>内容生产系统</span>
+                      <b>统一记忆<br />统一规则<br />统一数据</b>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="apx-visual apx-visual-memory">
+                  <div className="apx-visual-cap mono">{APX_VISUALS[1].label}</div>
+                  <div className="apx-memory-diagram">
+                    <div className="apx-memory-core">
+                      <i></i>
+                      <span>你的专属 Agent</span>
+                    </div>
+                    {["选题口味", "审核规则", "失败原因", "复测结果"].map((item, i) => (
+                      <div className={"apx-memory-node n" + (i + 1)} key={item}>
+                        <b>{String(i + 1).padStart(2, "0")}</b><span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="apx-video" aria-label="XTOOL Agent Platform video">
+                <iframe src="xtool/" title="XTOOL Agent Platform film" loading="lazy" allow="autoplay; fullscreen"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div className="apx-strip mono" aria-hidden="true">
+            {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
    03 · A DEVELOPER — AXONOMETRIC STRUCTURE · 体 (tone: paper)
    ════════════════════════════════════════════════════════════ */
 const C3_BARS = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
@@ -449,4 +599,4 @@ function ChReel({ jump }) {
   );
 }
 
-Object.assign(window, { ChAipm, ChDev, ChArch, ChReel, Structure3D });
+Object.assign(window, { ChAipm, ChAipmPlatform, ChDev, ChArch, ChReel, Structure3D });
