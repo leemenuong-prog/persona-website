@@ -87,7 +87,11 @@ function AipmCut() {
 
     const pc = aClamp(p, 0, 1);
     const minWH = Math.min(W, H);
-    const baseR = Math.max(1.4, Math.min(2.4, minWH / 480));
+    /* on a narrow PORTRAIT phone frame minWH is the ~375px width, so the desktop
+       formula clamps every dot to the 1.4px floor and the field reads empty.
+       Lift the floor (and grow it with the narrow side) so the 1800-signal
+       scatter is actually visible before "the cut". 条 still ink, just legible. */
+    const baseR = minWH < 480 ? Math.max(1.9, minWH / 200) : Math.max(1.4, Math.min(2.4, minWH / 480));
     const K = S.sy.length;
     /* phases (over the 600vh stage):
        .02–.14 field materialises (渐显) + slow drift · .22–.52 sweep ·

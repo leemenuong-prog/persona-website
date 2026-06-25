@@ -140,6 +140,17 @@ body[data-tone="ink"] .bc-self { background: var(--blue-up); }
   .bc-col i { width: 74%; margin: 0 13%; }
 }
 
+/* phone — tappable year columns (the chart scrubs on TAP now, not hover).
+   The column already spans the full chart height as the hit area; extend it a
+   little above/below so finger taps land, and thin the bars + year labels. */
+@media (max-width: 600px) {
+  .bc-chart { height: clamp(128px, 24vh, 172px); }
+  .bc-col i { width: 56%; margin: 0 22%; }
+  .bc-col::after { content: ""; position: absolute; left: 0; right: 0; top: -14px; bottom: -16px; }
+  .bc-col b { font-size: 7.5px; letter-spacing: 0; }
+  .bc-col:not(.on) b { opacity: .5; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bmw .gl, .in .bmw .gl { animation: none !important; transform: none !important; }
   .bmw .bars { display: none; }

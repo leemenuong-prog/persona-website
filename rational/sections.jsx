@@ -112,7 +112,7 @@ function Whoami() {
       </div>
 
       <div className="who-chrono">
-        <div className="kick" data-rv style={{ "--rd": "1.95s" }}><span>CHRONO / 成就时间柱 — HOVER TO SCRUB · 悬停回看</span></div>
+        <div className="kick" data-rv style={{ "--rd": "1.95s" }}><span>CHRONO / 成就时间柱 — TAP A YEAR · 点选回看</span></div>
         <BarChrono items={WHO_CHRONO} />
       </div>
     </section>
@@ -377,12 +377,21 @@ const wkIdentity = (i) => (i <= 2 ? "AIPM" : i === 3 ? "Developer" : "Architect"
    the period motif, doubling as the page index. 条 → 页. ── */
 function WorkGallery({ wk }) {
   const [idx, setIdx] = useSecState(0);
+  const tsx = useSecRef(null);
   const n = wk.pages.length;
   const go = (d, ev) => { if (ev) { ev.preventDefault(); ev.stopPropagation(); } setIdx((i) => (i + d + n) % n); };
   return (
     <div className="sc-media gallery"
          tabIndex={0}
-         onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1, e); else if (e.key === "ArrowRight") go(1, e); }}>
+         onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1, e); else if (e.key === "ArrowRight") go(1, e); }}
+         onTouchStart={(e) => { tsx.current = e.touches[0].clientX; }}
+         onTouchEnd={(e) => {
+           /* horizontal swipe flips the spread; the deck's vertical scroll-scrub
+              is untouched. stopPropagation so a flip doesn't also nudge the scrub. */
+           if (tsx.current == null) return;
+           const dx = e.changedTouches[0].clientX - tsx.current; tsx.current = null;
+           if (Math.abs(dx) > 40) { e.stopPropagation(); go(dx < 0 ? 1 : -1); }
+         }}>
       {wk.pages.map((src, i) => (
         <img key={i} className={"sc-still gl-page" + (i === idx ? " on" : "")}
              src={src} alt={wkShort(wk) + " · 作品集 " + (i + 1) + "/" + n}
@@ -489,6 +498,9 @@ function Works({ jump }) {
     const headEl = headRef.current;
     const selfEl = selfRef.current;
     const N = cards.length;
+    /* touch has no hover; scrolling is the ONLY way to browse, so a film must
+       not pause the instant the scrub drifts — only when its card is truly gone */
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     let disp = 0, lastActive = -1;
 
     /* TRUE MORPH — not a crossfade. The cards ARE the logo's bars, grown.
@@ -585,8 +597,8 @@ function Works({ jump }) {
          carries everything: film + title + award + metrics + body. 条 → 天际线 + 大卡. */
       const narrow = W < 900;
       const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
-      const bigTop = H * (narrow ? 0.105 : 0.155);   /* lowered to clear the floating top-left headline */
-      const bigBot = H * (narrow ? 0.865 : 0.68);
+      const bigTop = H * (narrow ? 0.165 : 0.155);   /* phone: drop the card enough to fit the floating title BELOW the fixed nav */
+      const bigBot = H * (narrow ? 0.915 : 0.68);    /* phone: taller card so media + dossier fit without inner-scroll (unreachable on touch) */
       const bigH = bigBot - bigTop;
       const bigCx = W * 0.5;
       /* the skyline index rail — slim bars along the bottom edge */
@@ -613,7 +625,8 @@ function Works({ jump }) {
       /* park the headline at the focused card's top-left corner, just above it */
       if (headEl) {
         const hx = bigCx - bigW / 2;
-        const hy = Math.max(bigTop - (narrow ? 64 : 96), 10);
+        /* phone: keep the floating title clear of the ~64px fixed nav */
+        const hy = Math.max(bigTop - (narrow ? 70 : 96), narrow ? 70 : 10);
         headEl.style.transform = "translate(" + Math.round(hx) + "px," + Math.round(hy) + "px)";
         headEl.style.opacity = railFade;
       }
@@ -693,8 +706,10 @@ function Works({ jump }) {
           fulls[i].toggleAttribute("inert", !live);
         }
         if (spines[i]) spines[i].style.pointerEvents = (big < 0.2 && eS > 0.5) ? "auto" : "none";
-        /* pause a film once its card leaves focus — an opacity:0 video keeps playing */
-        if (fullOp < 0.4) { const v = card.querySelector("video"); if (v && !v.paused) v.pause(); }
+        /* pause a film once its card leaves focus — an opacity:0 video keeps playing.
+           on touch, hold until the card is essentially gone (fullOp<0.02) so a small
+           scrub doesn't stop playback; on desktop keep the tighter 0.4 cutoff. */
+        if (fullOp < 0.02 || (fullOp < 0.4 && !coarse)) { const v = card.querySelector("video"); if (v && !v.paused) v.pause(); }
         /* border + drop-shadow only once the card has grown clear of the rail —
            a slim bar must read flat, like the logo skyline it came from. */
         card.classList.toggle("solid", big > 0.06);
@@ -825,7 +840,7 @@ function IamFinale() {
 function Contact() {
   return (
     <section className="contact sec" id="contact" data-tone="paper" data-ob data-screen-label="CONTACT" style={{ paddingLeft: 0, paddingRight: 0 }}>
-      <div style={{ padding: "0 40px" }}>
+      <div style={{ padding: "0 clamp(20px, 5vw, 40px)" }}>
         <div className="kick lm"><span>06 · CONTACT / 联系 — OPEN TO AI PRODUCT ROLES · 深圳</span></div>
         <div style={{ marginTop: "3vh" }}>
           <IamFinale />

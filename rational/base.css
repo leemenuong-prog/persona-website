@@ -183,6 +183,29 @@ body[data-tone="ink"] .brandmorph .band .bdot { background: var(--blue-up); }
   .nav .wordmark .logoslot { width: 88px; height: 20px; }
 }
 
+/* ── phone (≤600px) — the nav must fit 375px and the fly-logo must
+   DOCK short enough to sit inside the bar. The band keeps a wider
+   aspect here so the width-then-height-capped dock (Math.min in
+   app.jsx) lands ~20px tall instead of overhanging content. ─────── */
+@media (max-width: 600px) {
+  /* compact nav: keep the .IAM. mark + three mono labels; drop the
+     decorative @handle (it's duplicated in Contact) and the slashes */
+  .nav { padding: 11px 16px 9px; }
+  .nav .handle { display: none; }
+  .nav .wordmark small { display: none; }
+  .nav .wordmark { gap: 0; }
+  .nav .menu { gap: 0; font-size: 10px; letter-spacing: .1em; }
+  .nav .menu .sl { display: none; }
+  /* ≥44px touch targets with a visible resting state (no hover dep) */
+  .nav .menu a { padding: 12px 9px; min-height: 44px; display: flex; align-items: center; opacity: .92; }
+  /* wider, shorter band → the dock fits the nav; hero/footer logo
+     reads as a skyline strip rather than a near-square block */
+  .brandmorph, .band-slot, .fband-slot { height: 22vh; min-height: 128px; }
+  /* loader breathing room on a narrow screen */
+  .loader .lbar, .loader .lrow { width: min(84vw, 440px); }
+  .loader .lrow { letter-spacing: .16em; }
+}
+
 /* ── reveal system — 滚动显影 ────────────────────────────── */
 [data-rv] { opacity: 0; transform: translateY(44px); transition: opacity 1s var(--ez), transform 1.1s var(--ez); transition-delay: var(--rd, 0s); }
 .in [data-rv], [data-rv].in { opacity: 1; transform: none; }

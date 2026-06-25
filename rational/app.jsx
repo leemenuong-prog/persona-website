@@ -208,7 +208,11 @@ function App() {
   /* cursor */
   useAppEffect(() => {
     const cur = curRef.current; if (!cur) return;
-    if (!tweaks.cursor) { cur.style.display = "none"; return; }
+    /* the custom cursor is hidden on coarse pointers (base.css); also skip the
+       rAF loop + pointer listeners entirely so phones don't burn a frame
+       writing transforms to a display:none node. */
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    if (!tweaks.cursor || coarse) { cur.style.display = "none"; return; }
     cur.style.display = "";
     let x = -100, y = -100, tx = -100, ty = -100;
     const mv = (e) => { tx = e.clientX; ty = e.clientY; };
@@ -347,7 +351,11 @@ function App() {
           baseL: br.left, baseT: br.top,
           slotL: sr.left, slotT: sr.top + window.scrollY,
           dockL: lr.left - nr.left, dockT: lr.top - nr.top,
-          s: lr.width / Math.max(sr.width, 1),
+          /* fit the docked mark inside the nav by BOTH axes — width alone
+             leaves a near-square phone band ~3x too tall (it hung over the
+             page on mobile). min() keeps the logo's aspect and guarantees it
+             never exceeds the nav-slot height. */
+          s: Math.min(lr.width / Math.max(sr.width, 1), lr.height / Math.max(sr.height, 1)),
           M: Math.max(sr.top + window.scrollY + sr.height, 1),
           fslotL: fr ? fr.left : 0, fslotT: fr ? fr.top + window.scrollY : 0,
           maxScroll,
@@ -357,7 +365,18 @@ function App() {
       }
     };
     measure();
-    addEventListener("resize", measure);
+    /* On phones the URL bar shows/hides while scrolling, firing 'resize' with a
+       changed innerHeight but the SAME width. A full measure() mid-scroll snaps
+       every section top + the brandmorph phase math → a visible jump. So gate the
+       remeasure on a real WIDTH change (orientation / rotate) and debounce it;
+       height-only changes just refresh vh for the progress denominator. */
+    let lastW = innerWidth, rzT = null;
+    const onResize = () => {
+      if (innerWidth === lastW) { vh = innerHeight; return; }
+      lastW = innerWidth;
+      clearTimeout(rzT); rzT = setTimeout(measure, 150);
+    };
+    addEventListener("resize", onResize);
     const t1 = setTimeout(measure, 700), t2 = setTimeout(measure, 2200);
 
     let ss = scrollY, lastT = performance.now(), lastTone = "";
@@ -478,7 +497,7 @@ function App() {
     });
     return () => {
       stopE();
-      removeEventListener("resize", measure);
+      removeEventListener("resize", onResize); clearTimeout(rzT);
       clearTimeout(t1); clearTimeout(t2);
       document.body.style.removeProperty("background-color");
       Object.values(CSSVAR).forEach((v) => document.body.style.removeProperty(v));

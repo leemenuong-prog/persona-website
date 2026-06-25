@@ -513,6 +513,7 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
     const ticks = [...el.querySelectorAll(".reel-tick")];
     const vid = el.querySelector(".reel-video video");
     const LAST = REEL_N - 1;
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     let lastP = -2, lastI = -1;
     const stop = window.__addLoop(() => {
       const praw = (window.__progress && window.__progress[id]) || 0;
@@ -540,7 +541,9 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
       if (vcell) {
         const liveOp = +vcell.style.opacity;
         vcell.style.pointerEvents = liveOp > 0.5 ? "auto" : "none";
-        if (vid && liveOp < 0.4 && !vid.paused) { vid.pause(); onVideoExit && onVideoExit(); }
+        /* on touch (scroll = the only nav) don't pause until the frame is nearly
+           gone, so a small scrub mid-playback doesn't stop the roadshow film */
+        if (vid && liveOp < (coarse ? 0.1 : 0.4) && !vid.paused) { vid.pause(); onVideoExit && onVideoExit(); }
       }
       el.style.setProperty("--chrome", enter.toFixed(3));
       el.style.setProperty("--self", aClamp(raw / LAST, 0, 1).toFixed(4));

@@ -412,3 +412,46 @@
   .reel-ix .gloss { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .reel-ixc { animation: none; } }
+
+/* ════════════════════════════════════════════════════════════
+   PHONE (≤600px) — chapter stages reflow for a 375px portrait
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  /* AIPM "The Cut" payoff — tighter title + stat row for 335px */
+  .c2x-pay { padding: 10vh 20px 6vh; gap: 18px; }
+  .c2x-title { font-size: clamp(38px, 13vw, 60px); }
+  .c2x-stats { gap: 6vw; flex-wrap: wrap; }
+  .c2x-stats .st .n { font-size: clamp(22px, 8vw, 34px); }
+
+  /* Developer + Architect — the absolutely-anchored head/motto/stats overlap
+     once the 100vh stage collapses to a phone height. Push the motto up, drop
+     the type, and move the stats to the LEFT so they clear the right-rail
+     award annotations. */
+  .ch3 .ch-motto, .ch4 .ch-motto { bottom: 26vh; max-width: 92vw; }
+  .ch3 .ch-motto .mt, .ch4 .ch-motto .mt { font-size: clamp(26px, 8vw, 36px); }
+  .ch3 .ch-motto .st, .ch4 .ch-motto .st { font-size: 13px; line-height: 1.55; }
+  .ch3 .ch-stats, .ch4 .ch-stats { left: 20px; right: auto; bottom: 7vh; gap: 9vw; }
+  .c4-title .c4-big { margin-left: 4vw; font-size: clamp(34px, 11vw, 56px); }
+  .c4-ann { max-width: 46vw; }
+  .c4-ann b { font-size: 16px; }
+  .c4-ann .l { font-size: 8px; }
+
+  /* The Reel — give the 16:9 frame max width, lift it, and RESTORE the per-slide
+     gloss caption below it (it was hidden ≤900px, leaving bare thumbnails) */
+  .reel-frame { width: 94vw; top: 40%; }
+  .reel-ix { left: 20px; right: 40px; top: auto; bottom: 9vh; text-align: left; }
+  .reel-ix .gloss { display: block; margin: 8px 0 0; max-width: none; font-size: 12px; line-height: 1.5; }
+  .reel-ix .lab { margin-left: 8px; }
+  .reel-out { right: 20px; bottom: 3vh; }
+}
+
+/* ── touch — neutralise hover-only emphasis + scroll-trapping ── */
+@media (max-width: 600px), (pointer: coarse) {
+  /* roadshow play button: hold its prominent resting state (no hover scale) */
+  .reel-play { transform: translate(-50%, -50%); background: rgba(239, 236, 230, .95); }
+  .reel-play:hover { transform: translate(-50%, -50%); background: rgba(239, 236, 230, .95); }
+  /* the xtool platform film iframe must not trap the page scroll */
+  .apx-video iframe { touch-action: pan-y; }
+  /* developer skyline canvas: drop the misleading grab cursor on touch */
+  .c3-art canvas { cursor: default; }
+}

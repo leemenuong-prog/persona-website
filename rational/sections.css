@@ -470,10 +470,16 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .hlow { grid-template-columns: 1fr; }
   .hl-right { border-top: 1px solid var(--line); padding: 2vh 4px 0; margin-top: 2vh; }
   .hl-left { border-right: none; }
-  .dex-it { grid-template-columns: 30px 1fr; gap: 10px 14px; padding: 2.6vh 0; }
+  .dex-it { grid-template-columns: 30px 1fr; gap: 10px 14px; padding: 2.6vh 0; padding-right: 26px; }
   .dex-it .side { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap; text-align: left; gap: 12px; }
   .dex-it .side .zh { white-space: normal; }
-  .dex-it .arr { display: none; }
+  /* no hover on touch → keep the → as a PERSISTENT tap cue, floated at the row's
+     right edge; :active gives the tap its feedback (replacing the hover focus) */
+  .dex-it .arr { display: block; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    opacity: .5; font-size: 20px; }
+  .dex-it:active { opacity: 1; }
+  .dex-it:active .arr { opacity: 1; }
+  .dex-it:active .ix { color: var(--fg); }
   .dex-head { flex-direction: column; gap: 6px; }
   .ch-head, .ch-motto { max-width: 86vw; }
   .ch-rule, .ch-sub { max-width: 60vw; }
@@ -483,4 +489,67 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .code-panel { display: none; }
   .iamf .real, .iamf .echo { font-size: clamp(32px, 9.4vw, 70px); }
   .c-list { flex-basis: 100%; max-width: 100%; }
+}
+
+/* ── phone (≤600px) — type scale + stacking for a 335px column ──── */
+@media (max-width: 600px) {
+  /* hero — calm the decorative ghost rows so they don't read as stray text */
+  .hl-ghost { font-size: 22px; line-height: 1.5; opacity: .6; }
+
+  /* whoami — ease the desktop-drama floors; stack the ID card label column */
+  .who-q { font-size: clamp(40px, 13vw, 60px); }
+  .who-a { font-size: clamp(26px, 7.5vw, 40px); }
+  .who-lead { font-size: clamp(18px, 5.4vw, 24px); margin-top: 20px; }
+  .who-sub { font-size: clamp(13px, 4vw, 16px); }
+  .who-row { grid-template-columns: 60px 1fr; gap: 12px; padding: 14px 0; }
+
+  /* dex — smaller title floor for the long "An Architect" */
+  .dex-it .tx { font-size: clamp(30px, 9vw, 52px); }
+
+  /* works — the floating running title wraps instead of overflowing; the intro
+     caption drops below the docked logo band; cap the media so the dossier fits */
+  .wk-headline { max-width: 92vw; }
+  .wk-headline .wh-name { white-space: normal; line-height: .98; font-size: clamp(26px, 7vw, 40px); }
+  .wk-intro { top: 19vh; width: 90vw; }
+  .wk-zh { font-size: clamp(22px, 6.4vw, 34px); }
+  .wf-media .sc-media { max-height: 38vh; }
+  .wf-ident { font-size: clamp(20px, 6vw, 28px); }
+
+  /* contact — stack each row label-over-value so long URLs wrap, not clip */
+  .crow { flex-direction: column; align-items: flex-start; gap: 4px; padding: 13px 2px;
+    min-height: 48px; box-sizing: border-box; }
+  .crow .cv { white-space: normal; text-align: left; overflow-wrap: anywhere; max-width: 100%; }
+  .iamf .real, .iamf .echo { font-size: clamp(26px, 8.4vw, 70px); }
+  .iamf .echo { left: 1.2vw; top: 1vw; }
+  /* footer — stack the three credits so the CJK middle line doesn't overrun */
+  .foot { flex-direction: column; align-items: center; text-align: center; gap: 6px;
+    padding: 16px 20px 24px; letter-spacing: .18em; }
+}
+
+/* ── touch (phone OR coarse pointer) — promote every hover-gated affordance to
+   a permanent, finger-sized control. Gated on width too so it's verifiable and
+   covers phones regardless of pointer emulation. ───────────────────────────── */
+@media (max-width: 600px), (pointer: coarse) {
+  /* VIDEO entry — a bold, always-visible round play button. The old faint
+     hover-scaled square read as chrome on touch; this is unmistakably tappable. */
+  .sc-play { width: 66px; height: 66px; border-radius: 50%;
+    background: rgba(8, 10, 20, .60); border: 2px solid #fff; }
+  .sc-play .tri { border-left-width: 20px; border-top-width: 12px; border-bottom-width: 12px; }
+  /* drop the corner brackets on touch so the play mark dominates the poster */
+  .sc-media::before, .sc-media::after { display: none; }
+  /* a primary CTA must clear 44px and read at arm's length */
+  .wf-cta { padding: 13px 20px; font-size: 10.5px; min-height: 44px;
+    display: inline-flex; align-items: center; }
+
+  /* gallery flip-book — arrows + pips can't hide behind hover, and pips are tappable */
+  .sc-media.gallery .gl-nav { opacity: .95; width: 48px; height: 64px; background: rgba(8, 10, 20, .55); }
+  .gl-pips { bottom: 10px; gap: 12px; padding: 9px 14px; }
+  .gl-pips i { width: 13px; height: 13px; }
+
+  /* contact rows — persistent cobalt value marks the tappable links (vs WeChat),
+     and :active gives the tap the same cue hover gives a mouse */
+  a.crow .cv { color: var(--blue); }
+  body[data-tone="ink"] a.crow .cv, body[data-tone="blue"] a.crow .cv { color: var(--blue-up); }
+  a.crow:active { padding-left: 12px; border-bottom-color: var(--blue); }
+  body[data-tone="ink"] a.crow:active, body[data-tone="blue"] a.crow:active { border-bottom-color: var(--blue-up); }
 }

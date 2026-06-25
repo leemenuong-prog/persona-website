@@ -452,8 +452,11 @@ function SiteForm3D() {
   const simR = useIaRef(null);
   if (!simR.current) simR.current = { mx: 0, my: 0, tmx: 0, tmy: 0, last: 0 };
 
-  /* pointer parallax — a gentle live camera nudge once it's 3D */
+  /* pointer parallax — a gentle live camera nudge once it's 3D.
+     skip on touch: there pointermove fires on every scroll gesture, so the
+     temple would jitter as you scroll. The ambient idle drift covers motion. */
   useIaEffect(() => {
+    if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return;
     const S = simR.current;
     const mv = (e) => { S.tmx = e.clientX / innerWidth - 0.5; S.tmy = e.clientY / innerHeight - 0.5; };
     addEventListener("pointermove", mv, { passive: true });
