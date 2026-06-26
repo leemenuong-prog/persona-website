@@ -340,7 +340,16 @@ function Stage({
   persistKey = 'animstage',
   children,
 }) {
+  /* embed flag — when the persona site loads us as `xtool/?fresh=1` (the platform
+     chapter does this only once the viewer scrolls onto the video page), ignore the
+     persisted playhead and always begin at 0, so the film "just starts" right then
+     rather than resuming mid-way from a prior visit / a background pre-roll. */
+  const __fresh = (() => { try { return new URLSearchParams(location.search).has('fresh'); } catch { return false; } })();
+  /* embedded as the AIPM platform film (?fresh=1) → play 1.2× for a brisker
+     keynote pace; the standalone film stays 1×. */
+  const RATE = __fresh ? 1.2 : 1;
   const [time, setTime] = React.useState(() => {
+    if (__fresh) return 0;
     try {
       const v = parseFloat(localStorage.getItem(persistKey + ':t') || '0');
       return isFinite(v) ? clamp(v, 0, duration) : 0;
@@ -355,8 +364,9 @@ function Stage({
   const rafRef = React.useRef(null);
   const lastTsRef = React.useRef(null);
 
-  // Persist playhead
+  // Persist playhead (skip in fresh/embed mode — neither resume nor clobber the standalone position)
   React.useEffect(() => {
+    if (__fresh) return;
     try { localStorage.setItem(persistKey + ':t', String(time)); } catch {}
   }, [time, persistKey]);
 
@@ -393,7 +403,7 @@ function Stage({
       const dt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
       setTime((t) => {
-        let next = t + dt;
+        let next = t + dt * RATE;
         if (next >= duration) {
           if (loop) next = next % duration;
           else { next = duration; setPlaying(false); }
@@ -531,11 +541,15 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
       const t = timeFromEvent(e);
       onSeek(t);
     };
-    window.addEventListener('mouseup', onUp);
-    window.addEventListener('mousemove', onMove);
+    /* pointer events, not mouse — so the scrub bar can be DRAGGED on a touchscreen
+       (mouse* events never fire from a finger, which is why it was un-draggable). */
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+    window.addEventListener('pointermove', onMove);
     return () => {
-      window.removeEventListener('mouseup', onUp);
-      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      window.removeEventListener('pointermove', onMove);
     };
   }, [dragging, timeFromEvent, onSeek]);
 
@@ -544,33 +558,28 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
     const total = Math.max(0, t);
     const m = Math.floor(total / 60);
     const s = Math.floor(total % 60);
-    const cs = Math.floor((total * 100) % 100);
-    return `${String(m).padStart(1, '0')}:${String(s).padStart(2, '0')}.${String(cs).padStart(2, '0')}`;
+    return `${m}:${String(s).padStart(2, '0')}`;   // m:ss — cleaner than centiseconds
   };
 
   const mono = 'JetBrains Mono, ui-monospace, SFMono-Regular, monospace';
 
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', gap: 12,
-      padding: '8px 16px',
-      background: 'rgba(20,20,20,0.92)',
+      display: 'flex', alignItems: 'center', gap: 11,
+      padding: '7px 14px',
+      background: 'rgba(16,16,16,0.94)',
       borderTop: '1px solid rgba(255,255,255,0.08)',
       width: '100%',
       maxWidth: 680,
       alignSelf: 'center',
-
       borderRadius: 8,
       color: '#f6f4ef',
       fontFamily: 'Inter, system-ui, sans-serif',
       userSelect: 'none',
       flexShrink: 0,
     }}>
-      <IconButton onClick={onReset} title="Return to start (0)">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M3 2v10M12 2L5 7l7 5V2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"/>
-        </svg>
-      </IconButton>
+      {/* play/pause only — reset + the second time field were clutter on the small
+          embed; the scrub track now owns the width and is the single clear control */}
       <IconButton onClick={onPlayPause} title="Play/pause (space)">
         {playing ? (
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -584,35 +593,26 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
         )}
       </IconButton>
 
-      {/* Current time: fixed width so it doesn't thrash */}
-      <div style={{
-        fontFamily: mono,
-        fontSize: 12,
-        fontVariantNumeric: 'tabular-nums',
-        width: 64, textAlign: 'right',
-        color: '#f6f4ef',
-      }}>
-        {fmt(time)}
-      </div>
-
-      {/* Scrub track */}
+      {/* Scrub track — POINTER events (drags on touch), tall hit area + larger thumb */}
       <div
         ref={trackRef}
-        onMouseMove={onTrackMove}
-        onMouseLeave={onTrackLeave}
-        onMouseDown={onTrackDown}
+        onPointerMove={onTrackMove}
+        onPointerLeave={onTrackLeave}
+        onPointerDown={(e) => { try { e.currentTarget.setPointerCapture(e.pointerId); } catch {} onTrackDown(e); }}
+        onPointerUp={() => setDragging(false)}
         style={{
           flex: 1,
-          height: 22,
+          height: 32,
           position: 'relative',
           cursor: 'pointer',
           display: 'flex', alignItems: 'center',
+          touchAction: 'none',
         }}
       >
         <div style={{
           position: 'absolute',
           left: 0, right: 0, height: 4,
-          background: 'rgba(255,255,255,0.12)',
+          background: 'rgba(255,255,255,0.14)',
           borderRadius: 2,
         }}/>
         <div style={{
@@ -624,23 +624,23 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
         <div style={{
           position: 'absolute',
           left: `${pct}%`, top: '50%',
-          width: 12, height: 12,
-          marginLeft: -6, marginTop: -6,
+          width: 16, height: 16,
+          marginLeft: -8, marginTop: -8,
           background: '#fff',
-          borderRadius: 6,
-          boxShadow: '0 2px 4px rgba(0,0,0,0.4)',
+          borderRadius: 8,
+          boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
         }}/>
       </div>
 
-      {/* Duration: fixed width */}
+      {/* one compact readout instead of two fixed-width fields */}
       <div style={{
         fontFamily: mono,
-        fontSize: 12,
+        fontSize: 11.5,
         fontVariantNumeric: 'tabular-nums',
-        width: 64, textAlign: 'left',
-        color: 'rgba(246,244,239,0.55)',
+        whiteSpace: 'nowrap',
+        color: 'rgba(246,244,239,0.82)',
       }}>
-        {fmt(duration)}
+        {fmt(time)} / {fmt(duration)}
       </div>
     </div>
   );

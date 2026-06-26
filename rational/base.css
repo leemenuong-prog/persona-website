@@ -45,6 +45,8 @@ body {
    this engine and leave the page stuck on the previous tone's color. */
 body[data-tone="blue"]  { background: #0047AB;  --bg: var(--blue);  --fg: var(--paper); --fg-dim: rgba(239,236,230,.62); --line: rgba(239,236,230,.32); --ghost: rgba(8,10,26,.20); --hard: var(--ink);   --acc: var(--blue-dn); }
 body[data-tone="paper"] { background: #efece6; --bg: var(--paper); --fg: var(--ink);   --fg-dim: rgba(11,11,14,.55);    --line: rgba(11,11,14,.28);    --ghost: rgba(11,11,14,.06); --hard: var(--ink);   --acc: var(--blue); }
+/* snow — cool near-white matching the Pears deck slides (see TONE_VARS in app.jsx) */
+body[data-tone="snow"]  { background: #f5f5f7; --bg: #f5f5f7;       --fg: var(--ink);   --fg-dim: rgba(11,11,14,.55);    --line: rgba(11,11,14,.22);    --ghost: rgba(11,11,14,.05); --hard: var(--ink);   --acc: var(--blue); }
 body[data-tone="ink"]   { background: #0b0b0e;   --bg: var(--ink);   --fg: var(--paper); --fg-dim: rgba(239,236,230,.55); --line: rgba(239,236,230,.22); --ghost: rgba(239,236,230,.05); --hard: var(--paper); --acc: var(--blue-up); }
 
 /* 跳色点缀 — --acc is the accent that POPS against the tone's text

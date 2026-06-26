@@ -251,6 +251,10 @@ function App() {
     const TONE_VARS = {
       blue:  { bg: [0, 71, 171, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.62], line: [239, 236, 230, 0.32], ghost: [8, 10, 26, 0.20],     hard: [11, 11, 14, 1],    accKey: "--blue-dn" },
       paper: { bg: [239, 236, 230, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.28],    ghost: [11, 11, 14, 0.06],    hard: [11, 11, 14, 1],    accKey: "--blue" },
+      /* snow — a cool near-white that MATCHES the Pears deck slides (rgb 245,245,247);
+         the Reel uses it so the engine crossfades paper→snow as you arrive at the
+         deck and snow→ink as you leave, instead of the slides clashing on warm paper. */
+      snow:  { bg: [245, 245, 247, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.22],    ghost: [11, 11, 14, 0.05],    hard: [11, 11, 14, 1],    accKey: "--blue" },
       ink:   { bg: [11, 11, 14, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.55], line: [239, 236, 230, 0.22], ghost: [239, 236, 230, 0.05], hard: [239, 236, 230, 1], accKey: "--blue-up" },
     };
     const VK = ["bg", "fg", "fgDim", "line", "ghost", "hard", "acc"];
