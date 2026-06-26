@@ -73,12 +73,16 @@ function AipmCut() {
     let p = window.__progress && window.__progress.aipm;
     p = (p == null) ? 0 : p;
 
-    /* edge envelope — the MARKS rise from / sink to nothing across the
-       section's first/last sliver of scroll, so nothing pops in/out. The
-       paper fill stays opaque (body tone is paper, so it's seamless); only
-       the ink/blue marks fade, carried by A() below. */
-    const edge = aSeg(p, -0.08, 0.06) * (1 - aSeg(p, 0.96, 1.12));
-    if (edge <= 0.001) { ctx.clearRect(0, 0, W, H); return; }
+    /* edge envelope — the MARKS rise from nothing across the section's first
+       sliver of scroll (so nothing pops in), then HOLD at full strength. The
+       resolved frame (cobalt period · spine · survivors) must persist as the
+       sticky stage slides away into the next chapter — no sink-to-nothing, or
+       the climax dissolves mid-handoff and the page reads as blank between
+       sections. (pc clamps to 1 below, so p>1 keeps redrawing the final frame.)
+       Clear only once fully off the top — the 600vh stage exits the viewport at
+       p≈1.2, so cut the ~2000-dot redraw past p>1.3 to spare the rest of the page. */
+    const edge = aSeg(p, -0.08, 0.06);
+    if (edge <= 0.001 || p > 1.3) { ctx.clearRect(0, 0, W, H); return; }
     const eAlpha = aEase(aClamp(edge, 0, 1));
 
     const rW = Math.round(W), rH = Math.round(H);
@@ -221,25 +225,9 @@ function AipmCut() {
     }
     ctx.globalAlpha = 1;
 
-    /* the cut — a diagonal hairline with a bright leading kerf. It sweeps the
-       sheet and then simply LEAVES (no rotation); the spine forms separately. */
-    if (sweep > 0) {
-      const lineA = 1 - aSeg(pc, 0.50, 0.62);
-      if (lineA > 0.01) {
-        const nx = S.nx, ny = S.ny;
-        const val = aLerp(S.uMin, S.uMax, sweep);
-        const px = nx * val, py = ny * val, dx = -ny, dy = nx;
-        A(lineA); ctx.strokeStyle = cutInk(0.85); ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(px - dx * 3000, py - dy * 3000); ctx.lineTo(px + dx * 3000, py + dy * 3000); ctx.stroke();
-        /* leading kerf — a denser, heavier ink blade at the live cut front */
-        const cutFront = 1 - aSeg(pc, 0.46, 0.52);
-        if (cutFront > 0.01) {
-          A(cutFront * lineA * 0.9); ctx.strokeStyle = cutInk(1); ctx.lineWidth = 2.0;
-          ctx.beginPath(); ctx.moveTo(px - dx * 3000, py - dy * 3000); ctx.lineTo(px + dx * 3000, py + dy * 3000); ctx.stroke();
-        }
-        ctx.globalAlpha = 1;
-      }
-    }
+    /* (the visible diagonal cut LINE was removed by request — felt like a
+       redundant element. The dots still clear along the same diagonal wavefront
+       via `d.un < sweep`, so the subtractive "cut" reads without drawing a blade.) */
 
     /* the priority spine — after the cut, a vertical line TELESCOPES out from
        the lower-middle of the sheet, threading the survivors top→bottom, then

@@ -65,6 +65,10 @@
   .c2x-right { align-items: flex-start; text-align: left; max-width: 92vw; }
   .c2x-loop { display: none; }
   .c2x-stats { gap: 7vw; }
+  /* the spine/dots can't crowd the payoff copy on a narrow screen: as the words
+     resolve (engine drives --pay 0→1) the canvas recedes so the text reads clean.
+     Full strength while the cut is still playing (--pay 0). */
+  .c2x-art { opacity: calc(1 - 0.74 * var(--pay, 0)); }
 }
 
 /* ── 02·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL ───────── */
@@ -78,7 +82,7 @@
   background: var(--paper);
   color: var(--ink);
 }
-.apx .ch-wrap { height: 430vh; background: var(--paper); }
+.apx .ch-wrap { height: 240vh; background: var(--paper); }   /* 3 步（定义 / Agent / 视频）— 缩短滚动，翻页更快 */
 .apx-stage { padding: 84px 40px 34px; background: var(--paper); color: var(--ink); }
 .apx-kicker {
   position: relative; z-index: 4; display: flex; justify-content: space-between; gap: 18px;
@@ -210,6 +214,9 @@
 .apx-stage[data-step="2"] .apx-video,
 .apx-video.on { opacity: 1; transform: none; }
 .apx-video iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
+/* tap-to-play poster — DESKTOP auto-loads the film (button hidden); phone/tablet
+   shows this obvious labelled play affordance and loads xtool/?fresh=1 on tap. */
+.apx-video-play { display: none; }
 
 .apx-strip {
   position: absolute; left: 40px; right: 40px; bottom: 28px; z-index: 3;
@@ -231,23 +238,58 @@
 
 @media (max-width: 900px) {
   .apx .ch-wrap { height: auto; }
-  .apx .ch-stage { position: relative; height: auto; min-height: 100vh; overflow: visible; padding: 84px 20px 38px; }
+  .apx .ch-stage { position: relative; height: auto; min-height: 0; overflow: visible; padding: 80px 20px 38px; }
   .apx-kicker { flex-direction: column; letter-spacing: .18em; }
-  .apx-hero, .apx-stage[data-step="2"] .apx-hero { height: auto; display: block; margin-top: 30px; }
-  .apx-title, .apx-stage[data-step="2"] .apx-title { font-size: clamp(48px, 16vw, 86px); }
-  .apx-intro, .apx-stage[data-step="2"] .apx-intro { width: 100%; min-height: 0; }
-  .apx-page { position: relative; opacity: 1; transform: none; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
-  .apx-page + .apx-page { margin-top: 8px; }
-  .apx-media, .apx-stage[data-step="2"] .apx-media { margin-top: 18px; aspect-ratio: auto; transform: none; }
-  .apx-visuals, .apx-video { position: relative; inset: auto; display: block; }
-  .apx-visual { position: relative; min-height: 330px; opacity: 1 !important; transform: none !important; margin-top: 16px; }
-  .apx-system-diagram, .apx-memory-diagram { inset: 58px 18px 28px; }
-  .apx-system-diagram { grid-template-columns: 1fr; gap: 14px; }
+
+  /* ── pair each explanation with the diagram/film it describes — ONE-TO-ONE ──
+     The desktop keynote is two columns (all text | all visuals) cross-faded by step.
+     On a phone that reads as "text, then a pile of posters" and the step-toggling
+     hid the off-step ones. Flatten both columns (display:contents) into the hero's
+     flex flow and re-order the leaves so every .apx-page is immediately followed by
+     its visual: 定义→系统图 · 专属Agent→记忆图 · 视频→影片. ──────────────────── */
+  .apx-hero, .apx-stage[data-step="2"] .apx-hero {
+    height: auto; display: flex; flex-direction: column; margin-top: 26px; }
+  .apx-copy, .apx-intro, .apx-media, .apx-visuals,
+  .apx-stage[data-step="2"] .apx-media { display: contents; }
+
+  .apx-cap { order: 0; }
+  .apx-title, .apx-stage[data-step="2"] .apx-title { order: 1; font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
+
+  /* one continuous flow — no hairline separators between the text/diagram pairs,
+     tight vertical rhythm so they read as ONE board, not three (用户: 全部连在一起) */
+  .apx-page { position: relative; opacity: 1 !important; transform: none !important;
+    width: 100%; min-height: 0; margin: 0; padding: 12px 0 6px; border: 0; }
+  .apx-page-0 { order: 2; }
+  .apx-page-1 { order: 4; }
+  .apx-page-video { order: 6; }
+
+  /* the diagram board hugs its content (was a 300px box with big empty grid bands
+     top & bottom — 用户: 中间不要留空) */
+  .apx-visual { position: relative; inset: auto; width: 100%; min-height: 0; height: 240px;
+    opacity: 1 !important; transform: none !important; margin: 0 0 4px; }
+  .apx-visual-system { order: 3; }
+  .apx-visual-memory { order: 5; }
+
+  .apx-system-diagram, .apx-memory-diagram { inset: 40px 14px 12px; }
+  .apx-system-diagram { grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
   .apx-join { display: none; }
-  .apx-system-core { min-height: 150px; }
-  .apx-memory-core { width: 150px; }
-  .apx-memory-node { width: 120px; }
-  .apx-video { margin-top: 20px; aspect-ratio: 16 / 9; opacity: 1 !important; transform: none !important; }
+  .apx-toolstack { gap: 8px; align-content: space-between; }
+  .apx-tool { padding: 7px 0; }
+  .apx-system-core { min-height: 0; height: 100%; padding: 16px; justify-content: center; gap: 8px; }
+  .apx-memory-core { width: 124px; }
+  .apx-memory-node { width: 104px; }
+  .apx-video { position: relative; inset: auto; order: 7; width: 100%; margin: 4px 0 0;
+    aspect-ratio: 16 / 9; opacity: 1 !important; transform: none !important; }
+  .apx-video-play { display: flex; position: absolute; inset: 0; z-index: 3;
+    flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    padding: 0; border: 0; background: var(--ink); cursor: pointer; overflow: hidden; }
+  .apx-video-play img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .42; }
+  .apx-play-ico { position: relative; width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid var(--paper); background: rgba(11, 11, 14, .5); display: grid; place-items: center; }
+  .apx-play-ico::before { content: ""; width: 0; height: 0; margin-left: 5px;
+    border-left: 18px solid var(--paper); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
+  .apx-play-cap { position: relative; color: var(--paper); font-size: 11px; letter-spacing: .2em;
+    background: rgba(11, 11, 14, .62); padding: 7px 14px; }
   .apx-strip { position: relative; left: auto; right: auto; bottom: auto; margin-top: 24px; flex-wrap: wrap; }
 }
 
@@ -282,7 +324,11 @@
 .c4-f .ln { display: block; width: 36px; height: 1px; background: var(--line); }
 .c4-f.on { opacity: .14; }
 
-/* scattered proof annotations — plan callouts */
+/* scattered proof annotations — plan callouts.
+   The .c4-anns wrapper is transparent to layout on desktop (display:contents) so
+   each callout still positions absolutely off its inline style; on a phone the
+   wrapper becomes the flex row that holds them (see the mobile reflow). */
+.c4-anns { display: contents; }
 .c4-ann { position: absolute; z-index: 3; max-width: 250px;
   opacity: 0; transform: translateY(14px);
   transition: opacity .8s var(--ez), transform .9s var(--ez); }
@@ -312,26 +358,59 @@
 }
 
 @media (max-width: 900px) {
+  /* dead .ch2 chapter (pre-THE CUT) — kept harmless */
   .ch2 .ch-head { max-width: 88vw; }
   .ch2 .ch-rule { max-width: 60vw; }
   .c2-flow { display: none; }
   .c2-art { opacity: .7; }
-  .ch3 .ch-head, .ch4 .ch-head { max-width: 88vw; }
-  .ch3 .ch-rule, .ch3 .ch-sub { max-width: 64vw; }
-  .ch3 .ch-title { font-size: clamp(34px, 8.4vw, 64px); }
-  .c3-art { opacity: .8; }
+
+  /* ── 03 Developer + 04 Architect — TOP title · MIDDLE animation · BOTTOM identity ──
+     On desktop the head, motto, stats and the full-bleed canvas free-float on top of
+     one another; on a phone that collapses into a pile (text sitting on the artwork,
+     callouts scattered mid-screen). Reflow the sticky stage into a FLEX COLUMN so the
+     three zones stack and the canvas (flex:1) absorbs the slack — no overlap at any
+     height, the artwork shrinks gracefully on short screens. ───────────────────── */
+  .ch3 .ch-stage, .ch4 .ch-stage {
+    display: flex; flex-direction: column; gap: 1.8vh; padding: 70px 20px 22px; }
+
+  /* TOP — the identity title */
+  .ch3 .ch-head, .ch4 .ch-head { order: 1; position: relative; max-width: 100%; flex: 0 0 auto; z-index: 4; }
+  .ch3 .ch-rule, .ch3 .ch-sub { max-width: 100%; }
+  .ch3 .ch-title { font-size: clamp(34px, 8.4vw, 60px); }
   .c4-vzh { display: none; }
-  .c4-title .c4-big { font-size: clamp(38px, 9.6vw, 78px); margin-left: 8vw; }
-  .c4-ann { max-width: 170px; }
+  .c4-title .c4-big { font-size: clamp(36px, 9.6vw, 70px); margin-left: 7vw; }
+
+  /* MIDDLE — the canvas, a flow band that takes whatever height is left */
+  .c3-art, .c4-art { order: 2; position: relative; inset: auto; width: 100%;
+    flex: 1 1 auto; min-height: 22vh; opacity: 1; }
+
+  /* BOTTOM — the identity block (motto + statement), then the proof row */
+  .ch3 .ch-motto, .ch4 .ch-motto { order: 3; position: relative;
+    left: auto; right: auto; bottom: auto; max-width: 100%; flex: 0 0 auto; }
+
+  /* Developer proof — the stat trio as ONE compact row (each label wraps inside its
+     own column instead of the whole items wrapping into a tall pile) */
+  .ch3 .ch-stats { order: 4; position: relative; left: auto; right: auto; bottom: auto;
+    flex: 0 0 auto; gap: 4vw; justify-content: space-between; text-align: left; flex-wrap: nowrap; }
+  .ch3 .ch-stats .st { flex: 1 1 0; min-width: 0; }
+  .ch3 .ch-stats .st .l { letter-spacing: .12em; line-height: 1.4; }
+
+  /* Architect proof — the three scattered callouts (T1 sat on the title, TOP 1% on
+     the body) collapse into the wrapper's bottom row */
+  .c4-anns { order: 4; display: flex; gap: 4vw; align-items: flex-start; flex: 0 0 auto; }
+  .c4-ann { position: relative !important; inset: auto !important; top: auto !important;
+    left: auto !important; right: auto !important; bottom: auto !important;
+    flex: 1 1 0; min-width: 0; max-width: none; opacity: 1; transform: none; z-index: 4; }
   .c4-ann::before { display: none; }
-  .c4-ann b { font-size: 20px; }
+  .c4-ann b { font-size: clamp(15px, 5vw, 20px); margin-top: 5px; }
+  .c4-ann .l { font-size: 7.5px; -webkit-line-clamp: 3; }
 }
 
 /* ── 03·B · THE EVIDENCE — THE REEL · 一帧一帧 (tone: paper) ─────────
    One pinned 16:9 frame; 9 Pears slides cross-dissolve through it.
    Chrome is site-language only (cobalt only on the self-square). The
    slide layer defaults to opacity 0 here — the rAF hook drives it. */
-.reel .ch-wrap { height: 880vh; }   /* 9 提案帧 + 1 路演视频帧，留足停顿 */
+.reel .ch-wrap { height: 790vh; }   /* 8 提案帧 + 1 路演视频帧（去掉封面后按比例缩短，每帧停顿不变） */
 .reel .ch-stage { background: var(--bg); }   /* matte = page paper */
 
 .reel-frame {
@@ -354,19 +433,38 @@
 /* the closing frame — the W·01 Pears roadshow video, click to play */
 .reel-video { background: var(--bg); pointer-events: none; }
 .reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
+/* play affordance — must read as obviously clickable on the cream poster:
+   a cobalt-ringed disc + an explicit mono caption telling the viewer to click. */
 .reel-play {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: 74px; height: 74px; border-radius: 50%; cursor: pointer;
-  border: 1px solid var(--line); background: rgba(239, 236, 230, .72);
+  display: flex; flex-direction: column; align-items: center; gap: 15px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  transition: transform .3s var(--ez);
+}
+.reel-play-ico {
+  width: 92px; height: 92px; border-radius: 50%;
+  border: 2px solid var(--acc); background: rgba(239, 236, 230, .94);
   -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-  display: grid; place-items: center; transition: transform .3s var(--ez), background .3s var(--ez);
+  display: grid; place-items: center;
+  box-shadow: 0 10px 34px rgba(11, 11, 14, .3);
+  transition: transform .3s var(--ez), background .3s var(--ez);
 }
-.reel-play::before {
-  content: ""; width: 0; height: 0; margin-left: 5px;
-  border-left: 17px solid var(--fg);
-  border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+.reel-play-ico::before {
+  content: ""; width: 0; height: 0; margin-left: 7px;
+  border-left: 22px solid var(--acc);
+  border-top: 14px solid transparent; border-bottom: 14px solid transparent;
 }
-.reel-play:hover { transform: translate(-50%, -50%) scale(1.08); background: rgba(239, 236, 230, .92); }
+.reel-play-cap {
+  font-size: 11px; letter-spacing: .2em; color: var(--fg);
+  background: rgba(239, 236, 230, .94); border: 1px solid var(--line);
+  padding: 7px 15px; white-space: nowrap;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+.reel-play:hover { transform: translate(-50%, -50%) scale(1.05); }
+.reel-play:hover .reel-play-ico { background: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .reel-play, .reel-play:hover { transition: none; transform: translate(-50%, -50%); }
+}
 
 /* the bar-column read vertically — hairline spine + passed/ahead ticks */
 .reel-spine {
@@ -405,7 +503,7 @@
 .reel-out .arr { font-size: 15px; letter-spacing: 0; margin-left: 4px; }
 
 @media (max-width: 900px) {
-  .reel .ch-wrap { height: 800vh; }
+  .reel .ch-wrap { height: 720vh; }
   .reel-frame { width: 92vw; }
   .reel-spine, .reel-self { display: none; }
   .reel-head { max-width: 80vw; }
@@ -423,26 +521,37 @@
   .c2x-stats { gap: 6vw; flex-wrap: wrap; }
   .c2x-stats .st .n { font-size: clamp(22px, 8vw, 34px); }
 
-  /* Developer + Architect — the absolutely-anchored head/motto/stats overlap
-     once the 100vh stage collapses to a phone height. Push the motto up, drop
-     the type, and move the stats to the LEFT so they clear the right-rail
-     award annotations. */
-  .ch3 .ch-motto, .ch4 .ch-motto { bottom: 26vh; max-width: 92vw; }
-  .ch3 .ch-motto .mt, .ch4 .ch-motto .mt { font-size: clamp(26px, 8vw, 36px); }
-  .ch3 .ch-motto .st, .ch4 .ch-motto .st { font-size: 13px; line-height: 1.55; }
-  .ch3 .ch-stats, .ch4 .ch-stats { left: 20px; right: auto; bottom: 7vh; gap: 9vw; }
-  .c4-title .c4-big { margin-left: 4vw; font-size: clamp(34px, 11vw, 56px); }
-  .c4-ann { max-width: 46vw; }
-  .c4-ann b { font-size: 16px; }
-  .c4-ann .l { font-size: 8px; }
+  /* Developer + Architect — phone type scale for the three-zone flex column (set up
+     at ≤900px above). Clamp the statement so the motto block stays bounded and the
+     canvas keeps a usable middle band even on a short phone. */
+  .ch3 .ch-motto .mt, .ch4 .ch-motto .mt { font-size: clamp(24px, 7.6vw, 34px); }
+  .ch3 .ch-motto .st, .ch4 .ch-motto .st { font-size: 12.5px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .ch3 .ch-motto .st .zh, .ch4 .ch-motto .st .zh { display: none; }   /* English only — keep the band short */
+  .ch3 .ch-stats .st .n { font-size: clamp(22px, 7vw, 32px); }
+  .c4-title .c4-big { margin-left: 4vw; font-size: clamp(34px, 11vw, 54px); }
+  .c4-ann b { font-size: clamp(14px, 4.6vw, 18px); }
+  .c4-ann .l { font-size: 7px; -webkit-line-clamp: 3; }
 
-  /* The Reel — give the 16:9 frame max width, lift it, and RESTORE the per-slide
-     gloss caption below it (it was hidden ≤900px, leaving bare thumbnails) */
-  .reel-frame { width: 94vw; top: 40%; }
-  .reel-ix { left: 20px; right: 40px; top: auto; bottom: 9vh; text-align: left; }
-  .reel-ix .gloss { display: block; margin: 8px 0 0; max-width: none; font-size: 12px; line-height: 1.5; }
-  .reel-ix .lab { margin-left: 8px; }
-  .reel-out { right: 20px; bottom: 3vh; }
+  /* ── 03·B THE REEL — full-bleed VERTICAL flow (issue: 垂直流式 · 满铺) ──
+     On a phone the pinned single-frame cross-dissolve is a tiny ~350px window you
+     scrub 720vh to flip; unreadable. Reflow the 9 Pears slides + the roadshow film
+     into a full-width stack you just scroll. (useReelStage no-ops at ≤600 so its
+     per-frame opacity writes don't fight this.) */
+  .reel .ch-wrap { height: auto; }
+  .reel .ch-stage { position: relative; top: auto; height: auto; min-height: 0;
+    overflow: visible; padding: 72px 0 5vh; display: block; }
+  .reel-spine, .reel-self, .reel-ix, .reel-out { display: none; }
+  .reel-frame { position: relative; left: auto; top: auto; transform: none;
+    width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; border: 0;
+    overflow: visible; display: flex; flex-direction: column; gap: 0;
+    background: var(--bg); }   /* matte == the snow tone == the slides' own base → seamless */
+  .reel-cell { position: relative !important; inset: auto !important;
+    width: 100%; height: auto; opacity: 1 !important; transform: none !important;
+    will-change: auto; }
+  .reel-img { position: relative; width: 100%; height: auto; display: block; object-fit: contain; }
+  .reel-video { aspect-ratio: 16 / 9; pointer-events: auto !important; background: var(--ink); }
+  .reel-video video { position: relative; width: 100%; height: 100%; }
 }
 
 /* ── touch — neutralise hover-only emphasis + scroll-trapping ── */

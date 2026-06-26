@@ -70,11 +70,11 @@ function useCutStage(id, ref) {
       el.style.setProperty("--p", p.toFixed(4));
       /* payoff (title "An AIPM" + copy) rises IN SYNC with the spine line
          telescoping out (canvas grows it ~0.54–0.82), so the words arrive as
-         the structure resolves — then DISSOLVES after you scroll past the
-         stage bottom (praw>1), symmetric with the canvas edge fade */
+         the structure resolves — then HOLDS. It stays lit as the sticky stage
+         slides away (no dissolve at praw>1), matching the held canvas frame, so
+         the resolved mark carries intact into the next chapter. */
       const payIn = aEase(aSeg(p, 0.58, 0.86));
-      const payOut = aEase(aSeg(praw, 1.0, 1.08));
-      el.style.setProperty("--pay", (payIn * (1 - payOut)).toFixed(3));
+      el.style.setProperty("--pay", payIn.toFixed(3));
     });
     return () => stop();
   }, []);
@@ -158,12 +158,45 @@ function useApxStage(id, ref) {
     const pages = [...el.querySelectorAll(".apx-page")];
     const visuals = [...el.querySelectorAll(".apx-visual")];
     const video = el.querySelector(".apx-video");
-    let last = -2, lastStep = -1;
+    const frame = el.querySelector(".apx-video iframe");
+    let last = -2, lastStep = -1, vidOn = false, mobileReset = false;
     const stop = window.__addLoop(() => {
+      /* PHONE/TABLET: the section is a vertical stack that pairs each explanation with
+         its diagram/film (CSS). The keynote step-toggling must NOT run here — it sets
+         opacity:0 inline on the non-active visuals, so the diagrams "disappear" as you
+         scroll (the bug). Clear anything it set, force everything visible, and bail.
+         Re-checked every frame so a resize back to desktop restores the keynote. */
+      if (window.matchMedia && window.matchMedia("(max-width: 900px)").matches) {
+        if (!mobileReset) {
+          mobileReset = true;
+          visuals.forEach((n) => { n.style.removeProperty("opacity"); n.style.removeProperty("transform"); n.classList.add("on"); });
+          if (video) { video.style.removeProperty("opacity"); video.style.removeProperty("transform"); }
+          pages.forEach((n) => n.classList.add("on"));
+        }
+        return;
+      }
+      mobileReset = false;
       const top = sec ? sec.getBoundingClientRect().top + window.scrollY : el.getBoundingClientRect().top + window.scrollY;
       const span = Math.max((sec ? sec.offsetHeight : el.offsetHeight) - innerHeight, 1);
       const praw = (window.scrollY - top) / span;
       const p = aClamp(praw, 0, 1);
+
+      /* video iframe — load + autoplay the film FRESH (xtool/?fresh=1 → starts at 0:00)
+         only while the video page is actually on screen (last third of the pinned
+         stage); unload to about:blank before it (no background pre-roll) and after it
+         (stop once scrolled past). Keyed to RAW progress + its own flag so it still
+         fires when praw>1 freezes the step at 2; re-entering reloads → always from 0. */
+      /* DESKTOP only: the pinned keynote auto-loads + auto-unloads the film as it
+         scrolls through its page. On a phone/tablet the stage is a vertical stack
+         (height:auto) so this praw window is unreliable — the film sits at the
+         bottom and praw is already >1.04 by the time it's on screen, so it never
+         loaded (the "看不到内容" bug). There the film loads on an explicit TAP
+         instead (see the .apx-video-play poster button) — leave src alone. */
+      if (frame && !(window.matchMedia && window.matchMedia("(max-width: 900px)").matches)) {
+        const want = praw >= 0.66 && praw <= 1.04;
+        if (want !== vidOn) { vidOn = want; frame.src = want ? "xtool/?fresh=1" : "about:blank"; }
+      }
+
       if (Math.abs(praw - last) < 0.0006) return;
       last = praw;
       el.style.setProperty("--p", p.toFixed(4));
@@ -190,6 +223,8 @@ function useApxStage(id, ref) {
 
 function ChAipmPlatform({ jump }) {
   const ref = useChR(null);
+  const frameRef = useChR(null);
+  const [filmOn, setFilmOn] = React.useState(false);
   useApxStage("aipmPlatform", ref);
   return (
     <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="02·B · XTOOL Agent Platform">
@@ -206,7 +241,7 @@ function ChAipmPlatform({ jump }) {
 
               <div className="apx-intro">
                 {APX_INTRO_PAGES.map((page, i) => (
-                  <article key={page.ix} className={"apx-page" + (i === 0 ? " on" : "")}>
+                  <article key={page.ix} className={"apx-page apx-page-" + i + (i === 0 ? " on" : "")}>
                     <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
                     <h3>{page.title}</h3>
                     <p>{page.body}</p>
@@ -255,7 +290,19 @@ function ChAipmPlatform({ jump }) {
               </div>
 
               <div className="apx-video" aria-label="XTOOL Agent Platform video">
-                <iframe src="xtool/" title="XTOOL Agent Platform film" loading="lazy" allow="autoplay; fullscreen"></iframe>
+                {/* DESKTOP: src stays blank until the viewer reaches the video page —
+                    useApxStage swaps it to xtool/?fresh=1 on arrival and back to
+                    about:blank on leave, so it never pre-rolls in the background.
+                    PHONE/TABLET: the poster button below loads it on an explicit tap. */}
+                <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
+                {!filmOn && (
+                  <button className="apx-video-play" type="button" data-hov aria-label="播放 XTOOL 平台影片"
+                          onClick={() => { setFilmOn(true); const f = frameRef.current; if (f) f.src = "xtool/?fresh=1"; }}>
+                    <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" draggable="false" />
+                    <span className="apx-play-ico" aria-hidden="true"></span>
+                    <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -450,11 +497,13 @@ function ChArch({ jump }) {
             </h2>
             <div className="rule ch-rule c4-rule" style={{ "--rd": ".4s" }}></div>
           </div>
-          {C4_ANNS.map((a) => (
-            <div key={a.b} className="c4-ann" data-th={a.th} style={a.st}>
-              <span className="sq"></span><b>{a.b}</b><span className="l">{a.l}</span>
-            </div>
-          ))}
+          <div className="c4-anns">
+            {C4_ANNS.map((a, i) => (
+              <div key={a.b} className={"c4-ann ann-" + i} data-th={a.th} style={a.st}>
+                <span className="sq"></span><b>{a.b}</b><span className="l">{a.l}</span>
+              </div>
+            ))}
+          </div>
           <div className="ch-motto">
             <div className="mt lm" style={{ "--rd": ".3s" }}><span>Form is Function<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
@@ -484,7 +533,12 @@ function ChArch({ jump }) {
    the page into the Architect (场). No custom recolor code.
    ════════════════════════════════════════════════════════════ */
 const REEL = [
-  { ix: "01", zh: "封面",       g: "看你做一遍，剩下的交给它" },
+  /* the cover (01.jpg) is intentionally gone — it opened the reel on an empty
+     frame that slowly faded into a redundant Pears title card (too slow a beat),
+     and the Pears identity already returns on the closing roadshow frame. Start
+     straight on the substance. `ix` doubles as the image filename, so the kept
+     slides keep their 02–09 names; the displayed index is renumbered 01–08 in
+     the render. */
   { ix: "02", zh: "看你做一遍", g: "把重复工作交给 Pears" },
   { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚" },
   { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始" },
@@ -500,7 +554,7 @@ const REEL = [
    controls), pauses + resets when scrolled off. preload="none" so the 73MB
    file only downloads on play; the poster shows meanwhile. */
 const REEL_VIDEO = { src: "works/pears-roadshow.mp4", poster: "works/pears-roadshow-cover.jpg", zh: "路演", g: "Pears 产品路演 · Demo Day" };
-const REEL_N = REEL.length + 1;   /* 9 提案帧 + 1 路演视频帧 = 10 cells */
+const REEL_N = REEL.length + 1;   /* 8 提案帧 + 1 路演视频帧 = 9 cells */
 
 /* the reel driver — a clone of useCutStage; pure style writes off
    window.__progress.reel. onIndex fires only when the integer frame
@@ -513,9 +567,13 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
     const ticks = [...el.querySelectorAll(".reel-tick")];
     const vid = el.querySelector(".reel-video video");
     const LAST = REEL_N - 1;
-    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     let lastP = -2, lastI = -1;
     const stop = window.__addLoop(() => {
+      /* PHONE: the reel is a plain full-bleed VERTICAL stack (CSS) — the pinned
+         cross-dissolve scrub is off. Skip every per-frame write so nothing fights
+         the stacked layout or pauses the film mid-scroll. Checked each frame, so a
+         resize back to desktop recovers the scrub automatically. */
+      if (window.matchMedia && window.matchMedia("(max-width: 600px)").matches) return;
       const praw = (window.__progress && window.__progress[id]) || 0;
       if (Math.abs(praw - lastP) < 0.0006) return;
       lastP = praw;
@@ -524,11 +582,19 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
       const raw = aSeg(p, 0.10, 0.93) * REEL_N;     /* 0…N across the 9 frames + video */
       const k = Math.min(Math.floor(raw), LAST);
       const frac = raw - k;
-      const enter = aEase(aSeg(p, 0.05, 0.12));     /* cells + chrome fade up from the cream field */
-      const kill = aSeg(p, 0.93, 0.97);             /* deconstruct AFTER the video frame, before the ink seam */
+      /* enter — keyed to the RAW (unclamped) progress so the first slide + chrome
+         fade up DURING the reel's scroll-in and are already full the instant it
+         pins. No more empty bordered frame sitting on screen waiting for a slide
+         to appear (that opening beat read as dead/slow). */
+      const enter = aEase(aSeg(praw, -0.06, 0.0));
+      const kill = aSeg(p, 0.93, 0.97);             /* end-of-reel marker (drives the exit caption + index) */
       let incoming = k < LAST ? aEase(aSeg(frac, 0.78, 1)) : 0;   /* last 22% of a band dissolves */
       if (calm) incoming = (k < LAST && frac >= 0.5) ? 1 : 0;     /* reduced-motion → hard cut */
-      const vis = enter * (1 - kill);
+      /* HOLD the last frame — cells no longer deconstruct to empty at the end
+         (was enter * (1 - kill)). The closing frame (the Pears roadshow video)
+         stays lit and rides up intact as the sticky stage slides into the
+         Architect, instead of dissolving to a bare rectangle mid-handoff. */
+      const vis = enter;
       cells.forEach((c, i) => {
         let o = 0;
         if (i === k) o = 1 - incoming * 0.70;       /* current dwells, dips to .30 in the dissolve */
@@ -536,14 +602,17 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
         c.style.opacity = (o * vis).toFixed(3);
         c.style.transform = (!calm && i === k + 1) ? "scale(" + (1.012 - 0.012 * incoming).toFixed(4) + ")" : "scale(1)";
       });
-      /* the video cell is clickable only while live; pause + reset when scrolled off */
+      /* the video cell is clickable + playing only while it's the centred frame
+         and the stage hasn't begun to release. Keyed to progress (NOT to cell
+         opacity — that now holds at 1), so the roadshow film still pauses + resets
+         the instant you scroll off it, in either direction: no audio bleeding on
+         into the Architect, and a generous ~0.15 dwell band so a small touch scrub
+         mid-playback doesn't stop it. */
       const vcell = cells[LAST];
       if (vcell) {
-        const liveOp = +vcell.style.opacity;
-        vcell.style.pointerEvents = liveOp > 0.5 ? "auto" : "none";
-        /* on touch (scroll = the only nav) don't pause until the frame is nearly
-           gone, so a small scrub mid-playback doesn't stop the roadshow film */
-        if (vid && liveOp < (coarse ? 0.1 : 0.4) && !vid.paused) { vid.pause(); onVideoExit && onVideoExit(); }
+        const live = k >= LAST && praw < 1.0;
+        vcell.style.pointerEvents = live ? "auto" : "none";
+        if (vid && !live && !vid.paused) { vid.pause(); onVideoExit && onVideoExit(); }
       }
       el.style.setProperty("--chrome", enter.toFixed(3));
       el.style.setProperty("--self", aClamp(raw / LAST, 0, 1).toFixed(4));
@@ -565,9 +634,11 @@ function ChReel({ jump }) {
   const isVideo = i >= REEL.length;
   const s = isVideo ? REEL_VIDEO : REEL[i];
   return (
-    <section className="chapter reel" id="reel" data-tone="paper" data-prog="reel"
+    <section className="chapter reel" id="reel" data-tone="snow" data-prog="reel"
              data-screen-label="03·B · The Evidence — REEL">
-      {/* silent entry depends on ChDev above staying data-tone="paper" — do not change */}
+      {/* tone is "snow" (cool near-white) — the engine crossfades paper(ChDev)→snow as
+         you arrive at the Pears deck so the slides sit on a MATCHING ground, then
+         snow→ink into the Architect. The slides' own base is rgb(245,245,247). */}
       <div className="ch-wrap reel-wrap">
         <div className="ch-stage reel-stage" data-ob ref={ref}>
           <div className="reel-spine" aria-hidden="true">
@@ -585,12 +656,15 @@ function ChReel({ jump }) {
                      preload="none" playsInline controls={playing}
                      onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)}></video>
               {!playing && <button className="reel-play" aria-label="播放 Pears 路演视频"
-                onClick={() => { const v = vidRef.current; if (v) v.play(); }}></button>}
+                onClick={() => { const v = vidRef.current; if (v) v.play(); }}>
+                <span className="reel-play-ico" aria-hidden="true"></span>
+                <span className="reel-play-cap mono">点击播放 · PEARS 路演 DEMO DAY</span>
+              </button>}
             </div>
           </div>
           <div className="reel-ix mono" aria-hidden="true">
             <div key={i} className="reel-ixc">
-              <span className="ix">{isVideo ? "▶" : s.ix}</span>{!isVideo && <span className="tot"> / 09</span>}
+              <span className="ix">{isVideo ? "▶" : String(i + 1).padStart(2, "0")}</span>{!isVideo && <span className="tot"> / {String(REEL.length).padStart(2, "0")}</span>}
               <span className="ln"></span><span className="lab">{s.zh}</span>
               <span className="gloss zh">{s.g}</span>
             </div>
