@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#1a2a1e" flood-opacity="0.05"/>
+    </filter>
+    <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#16161a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="dn" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L5,8 L9,1" fill="none" stroke="#8C9690" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text{ fill:#18181C; }
+      .h1{ font-weight:800; stroke:#18181C; stroke-width:0.7; }
+      .h2{ font-weight:800; stroke:#18181C; stroke-width:0.5; }
+      .b { font-weight:800; stroke:#18181C; stroke-width:0.3; }
+      .acc{ fill:#2A6346; }
+      .accb{ fill:#2A6346; font-weight:800; stroke:#2A6346; stroke-width:0.4; }
+      .gray{ fill:#76767C; }
+      .faint{ fill:#9A9AA0; }
+      .item{ fill:#3A3A40; }
+      .tag{ fill:#4E8C5A; }
+    </style>
+    <symbol id="pear" viewBox="0 0 100 120">
+      <ellipse cx="65" cy="25" rx="11" ry="6" fill="#7C9A45" transform="rotate(-32 65 25)"/>
+      <path d="M50,30 C50,22 52,17 57,13" fill="none" stroke="#6E7B3A" stroke-width="4.6" stroke-linecap="round"/>
+      <ellipse cx="50" cy="48" rx="18" ry="21" fill="#A8B854"/>
+      <ellipse cx="50" cy="84" rx="34" ry="30" fill="#A8B854"/>
+    </symbol>
+  </defs>
+
+  <rect width="1280" height="720" fill="#F5F5F7"/>
+
+  <!-- header -->
+  <use href="#pear" x="58" y="40" width="30" height="34"/>
+  <text x="104" y="66" font-size="28" class="b">Pears</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">05 · 隐私设计</text>
+
+  <!-- headline -->
+  <text x="62" y="142" font-size="42" class="h1" letter-spacing="-0.5">只在你开口时才记。停止任务，记录立即结束。</text>
+
+  <!-- ===== LEFT CARD ===== -->
+  <rect x="64" y="188" width="556" height="484" rx="22" fill="#E0E8E3" filter="url(#soft)"/>
+
+  <!-- left text column -->
+  <text x="92" y="234" font-size="15" class="acc" font-weight="600" letter-spacing="0.5">明确的任务边界</text>
+  <text x="92" y="284" font-size="29" class="h2">记录权，</text>
+  <text x="92" y="320" font-size="29" class="h2">始终在你手里</text>
+  <text x="92" y="360" font-size="14.5" class="gray">主动开始。</text>
+  <text x="92" y="382" font-size="14.5" class="gray">清楚可见。随时停止。</text>
+
+  <!-- 正在采集 chip → arrow → 停止采集 button -->
+  <rect x="92" y="436" width="184" height="48" rx="12" fill="#FFFFFF" filter="url(#soft2)"/>
+  <text x="184" y="466" font-size="16" class="b" text-anchor="middle">正在采集</text>
+  <line x1="184" y1="492" x2="184" y2="520" stroke="#8C9690" stroke-width="1.6" marker-end="url(#dn)"/>
+  <rect x="92" y="528" width="184" height="48" rx="12" fill="#D5483F"/>
+  <text x="184" y="558" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">停止采集</text>
+
+  <!-- ===== white app mock (task list) ===== -->
+  <rect x="336" y="214" width="260" height="404" rx="16" fill="#FFFFFF" filter="url(#soft2)"/>
+  <!-- title bar -->
+  <text x="352" y="240" font-size="10" fill="#42424A">Pears — 把重复工作变成专属 Agent</text>
+  <!-- pin (neutral grey) -->
+  <g stroke="#A6ACA8" stroke-width="1.3" fill="none" stroke-linecap="round">
+    <circle cx="565" cy="234" r="3" fill="#A6ACA8" stroke="none"/>
+    <line x1="565" y1="237" x2="565" y2="242"/>
+  </g>
+  <text x="582" y="240" font-size="11" fill="#8A8F8B" text-anchor="end">✕</text>
+  <line x1="336" y1="252" x2="596" y2="252" stroke="#EFEFF1" stroke-width="1"/>
+  <!-- account -->
+  <use href="#pear" x="349" y="265" width="15" height="17"/>
+  <text x="372" y="278" font-size="14" class="b">Pears</text>
+  <text x="580" y="278" font-size="14" fill="#70757A" text-anchor="end">↻</text>
+  <text x="352" y="298" font-size="11" class="faint">admin2@distill.local</text>
+  <!-- description -->
+  <text x="352" y="320" font-size="9.5" class="gray">选一个任务开始采集——之后照常做事，任务</text>
+  <text x="352" y="334" font-size="9.5" class="gray">期间访问的所有网站都自动记录，停止后到</text>
+  <text x="352" y="348" font-size="9.5" class="gray">网页端看 AI 生成的工作流。</text>
+
+  <!-- list rows -->
+  <g font-size="10">
+    <text x="352" y="382" class="item">垂类日榜文案生成</text>
+    <rect x="522" y="371" width="56" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="550" y="382" font-size="9" class="tag" text-anchor="middle">PRD 就绪</text>
+    <line x1="352" y1="394" x2="580" y2="394" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="406" class="item">重复工作处理</text>
+    <rect x="540" y="395" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="406" font-size="9" class="tag" text-anchor="middle">学习中</text>
+    <line x1="352" y1="418" x2="580" y2="418" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="430" class="item">每两天去 YouTube/TikTok 抓取…</text>
+    <rect x="540" y="419" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="430" font-size="9" class="tag" text-anchor="middle">学习中</text>
+    <line x1="352" y1="442" x2="580" y2="442" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="454" class="item">例如：每两天去 YouTube 抓我和…</text>
+    <rect x="540" y="443" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="454" font-size="9" class="tag" text-anchor="middle">学习中</text>
+    <line x1="352" y1="466" x2="580" y2="466" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="478" class="item">篮球训练日更文案</text>
+    <rect x="540" y="467" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="478" font-size="9" class="tag" text-anchor="middle">学习中</text>
+    <line x1="352" y1="490" x2="580" y2="490" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="502" class="item">目标成果梳理</text>
+    <rect x="540" y="491" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="502" font-size="9" class="tag" text-anchor="middle">学习中</text>
+    <line x1="352" y1="514" x2="580" y2="514" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="526" class="item">P 脚本复刻</text>
+    <rect x="540" y="515" width="38" height="15" rx="7.5" fill="#E7EFE9" stroke="#BBD3C0" stroke-width="0.8"/><text x="559" y="526" font-size="9" class="tag" text-anchor="middle">已交付</text>
+    <line x1="352" y1="538" x2="580" y2="538" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="550" class="item">P 视频管家</text>
+    <rect x="540" y="539" width="38" height="15" rx="7.5" fill="#E7EFE9" stroke="#BBD3C0" stroke-width="0.8"/><text x="559" y="550" font-size="9" class="tag" text-anchor="middle">已交付</text>
+    <line x1="352" y1="562" x2="580" y2="562" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="574" class="item">小红书日更文案</text>
+    <rect x="522" y="563" width="56" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="550" y="574" font-size="9" class="tag" text-anchor="middle">PRD 就绪</text>
+    <line x1="352" y1="586" x2="580" y2="586" stroke="#F0F2F0" stroke-width="1"/>
+    <text x="352" y="598" class="item">我是一个小红书自媒体博主，每天…</text>
+    <rect x="540" y="587" width="38" height="15" rx="7.5" fill="#EDF4EE" stroke="#C2DBC7" stroke-width="0.8"/><text x="559" y="598" font-size="9" class="tag" text-anchor="middle">学习中</text>
+  </g>
+
+  <!-- ===== RIGHT CARD ===== -->
+  <rect x="644" y="188" width="572" height="484" rx="22" fill="#FFFFFF" filter="url(#soft)"/>
+  <text x="676" y="236" font-size="20" class="h2">隐私不是说明文字，而是可感知的交互。</text>
+  <text x="676" y="264" font-size="13.5" class="gray">每一个边界，都在界面中被看见。</text>
+
+  <!-- timeline connector -->
+  <line x1="702" y1="337" x2="702" y2="533" stroke="#CDD6D0" stroke-width="2"/>
+  <!-- row boxes -->
+  <rect x="676" y="294" width="508" height="86" rx="14" fill="#F3F3F3" stroke="#E5E5E7" stroke-width="1"/>
+  <rect x="676" y="392" width="508" height="86" rx="14" fill="#F3F3F3" stroke="#E5E5E7" stroke-width="1"/>
+  <rect x="676" y="490" width="508" height="86" rx="14" fill="#F3F3F3" stroke="#E5E5E7" stroke-width="1"/>
+  <!-- circles + numbers -->
+  <circle cx="702" cy="337" r="21" fill="#FFFFFF" stroke="#CDD6D0" stroke-width="1.6"/>
+  <text x="702" y="343" font-size="15" class="acc" font-weight="700" text-anchor="middle">01</text>
+  <circle cx="702" cy="435" r="21" fill="#FFFFFF" stroke="#CDD6D0" stroke-width="1.6"/>
+  <text x="702" y="441" font-size="15" class="acc" font-weight="700" text-anchor="middle">02</text>
+  <circle cx="702" cy="533" r="21" fill="#FFFFFF" stroke="#CDD6D0" stroke-width="1.6"/>
+  <text x="702" y="539" font-size="15" class="acc" font-weight="700" text-anchor="middle">03</text>
+  <!-- row text -->
+  <text x="744" y="332" font-size="19" class="h2">明确开始</text>
+  <text x="744" y="357" font-size="12.5" class="gray">只有用户主动发起任务，Pears 才会记录。</text>
+  <text x="744" y="430" font-size="19" class="h2">即时停止</text>
+  <text x="744" y="455" font-size="12.5" class="gray">结束任务的同时，采集立即停止。</text>
+  <text x="744" y="528" font-size="19" class="h2">敏感输入不记录</text>
+  <text x="744" y="553" font-size="12.5" class="gray">学习工作流程，不读取不该读取的内容。</text>
+
+  <!-- banner -->
+  <rect x="676" y="592" width="508" height="56" rx="14" fill="#EAEFEB"/>
+  <text x="930" y="627" font-size="17" class="accb" text-anchor="middle">开始可见，停止即时，敏感内容不记录。</text>
+</svg>
