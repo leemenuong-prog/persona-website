@@ -543,7 +543,7 @@ const REEL = [
   { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚" },
   { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始" },
   { ix: "05", zh: "乐观与学习", g: "每一次点击与切换，都在告诉它什么值得自动化", ext: "svg" },  /* vector recreation — crisp at any size (orig 05.jpg kept as backup) */
-  { ix: "06", zh: "工作流拍板", g: "自动化到哪一步，由你拍板" },
+  { ix: "06", zh: "工作流拍板", g: "自动化到哪一步，由你拍板", ext: "svg" },  /* vector recreation — crisp UI dashboard (orig 06.jpg kept as backup) */
   { ix: "07", zh: "隐私设计",   g: "只在你开口时才记，停止任务记录立即结束", ext: "svg" },  /* vector recreation — crisp at any size (orig 07.jpg kept as backup) */
   { ix: "08", zh: "Agent 构建", g: "拍板之后，工作流开始成为 Agent" },
   { ix: "09", zh: "产品生态",   g: "你的做法，不只为你工作 · Agent App 生态" },
