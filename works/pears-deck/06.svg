@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="lap" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="26" flood-color="#2a2a1e" flood-opacity="0.16"/>
+    </filter>
+    <style>
+      text{ fill:#18181C; }
+      .h1{ font-weight:800; stroke:#18181C; stroke-width:0.7; }
+      .h2{ font-weight:800; stroke:#18181C; stroke-width:0.5; }
+      .b { font-weight:800; stroke:#18181C; stroke-width:0.3; }
+      .acc{ fill:#2A6346; }
+      .gray{ fill:#76767C; }
+      .faint{ fill:#9A9AA0; }
+      .tag{ fill:#3E8259; }
+      .ui{ fill:#4A4A50; }
+      .uin{ fill:#8A8A90; }
+    </style>
+    <symbol id="pear" viewBox="0 0 100 120">
+      <ellipse cx="65" cy="25" rx="11" ry="6" fill="#7C9A45" transform="rotate(-32 65 25)"/>
+      <path d="M50,30 C50,22 52,17 57,13" fill="none" stroke="#6E7B3A" stroke-width="4.6" stroke-linecap="round"/>
+      <ellipse cx="50" cy="48" rx="18" ry="21" fill="#A8B854"/>
+      <ellipse cx="50" cy="84" rx="34" ry="30" fill="#A8B854"/>
+    </symbol>
+  </defs>
+
+  <rect width="1280" height="720" fill="#F5F5F7"/>
+
+  <!-- header -->
+  <use href="#pear" x="58" y="40" width="30" height="34"/>
+  <text x="104" y="66" font-size="28" class="b">Pears</text>
+  <text x="200" y="66" font-size="20" class="gray">AI Agent</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">07 · 工作流拍板</text>
+
+  <!-- headline (two lines) -->
+  <text x="62" y="132" font-size="42" class="h1" letter-spacing="-0.5">自动化到哪一步，</text>
+  <text x="62" y="182" font-size="42" class="h1" letter-spacing="-0.5">由你拍板。</text>
+
+  <!-- ===== left column ===== -->
+  <text x="64" y="272" font-size="16" class="acc" font-weight="600" letter-spacing="0.4">关键不是全自动。</text>
+  <text x="64" y="322" font-size="30" class="h2">而是把判断权，</text>
+  <text x="64" y="364" font-size="30" class="h2">留在正确的位置。</text>
+  <text x="64" y="406" font-size="14" class="gray">Pears 把真实工作拆成清晰步骤，</text>
+  <text x="64" y="428" font-size="14" class="gray">让每一步都能回看、比较与修改。</text>
+  <text x="64" y="450" font-size="14" class="gray">确认之后，工作流才真正进入搭建。</text>
+  <!-- A -->
+  <circle cx="82" cy="516" r="18" fill="#2A6346"/>
+  <text x="82" y="521" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">A</text>
+  <text x="114" y="512" font-size="19" class="b">交给 Agent</text>
+  <text x="114" y="534" font-size="13" class="gray">重复 · 稳定 · 可验证</text>
+  <!-- B -->
+  <circle cx="82" cy="578" r="18" fill="#CBD2CC"/>
+  <text x="82" y="583" font-size="15" font-weight="700" fill="#6E7B73" text-anchor="middle">B</text>
+  <text x="114" y="574" font-size="19" class="b">保留人工</text>
+  <text x="114" y="596" font-size="13" class="gray">判断 · 创意 · 责任</text>
+  <line x1="64" y1="634" x2="432" y2="634" stroke="rgba(11,11,14,.16)" stroke-width="1"/>
+  <text x="64" y="664" font-size="15" class="b">可检查 · 可修改 · 可确认</text>
+
+  <!-- ===== MacBook ===== -->
+  <!-- base / deck (3D wedge: top surface + front edge) -->
+  <g filter="url(#lap)">
+    <path d="M540,656 L1244,656 L1270,676 L514,676 Z" fill="#DCDB8E"/>
+    <path d="M514,676 L1270,676 L1262,687 Q1260,691 1254,691 L530,691 Q524,691 522,687 Z" fill="#CFCE7B"/>
+    <path d="M860,676 L924,676 L919,683 L865,683 Z" fill="#BCBB6C"/>
+  </g>
+  <!-- hinge shadow under lid -->
+  <rect x="540" y="650" width="704" height="8" rx="2" fill="#101014"/>
+  <!-- screen bezel -->
+  <rect x="538" y="212" width="708" height="442" rx="13" fill="#17171B"/>
+  <circle cx="892" cy="219" r="2.2" fill="#3A3A3E"/>
+
+  <!-- ===== screen UI (local coords via translate) ===== -->
+  <g transform="translate(550,226)">
+    <clipPath id="scr"><rect x="0" y="0" width="684" height="414" rx="4"/></clipPath>
+    <g clip-path="url(#scr)">
+      <rect x="0" y="0" width="684" height="414" fill="#FFFFFF"/>
+
+      <!-- browser tab bar -->
+      <rect x="0" y="0" width="684" height="22" fill="#E9E9EC"/>
+      <circle cx="16" cy="11" r="3.2" fill="#FF5F57"/><circle cx="27" cy="11" r="3.2" fill="#FEBC2E"/><circle cx="38" cy="11" r="3.2" fill="#28C840"/>
+      <path d="M50,9 l4,4 l4,-4" fill="none" stroke="#9A9A9E" stroke-width="1"/>
+      <rect x="70" y="3" width="150" height="17" rx="5" fill="#FCFCFD"/>
+      <use href="#pear" x="78" y="6" width="10" height="11"/>
+      <text x="92" y="15" font-size="9" class="ui">Pears</text>
+      <text x="210" y="15" font-size="9" class="uin" text-anchor="end">✕</text>
+      <text x="232" y="15" font-size="11" class="uin">+</text>
+      <text x="640" y="15" font-size="9" class="uin">🔍 ☆ ⬇ ⋮</text>
+
+      <!-- address bar -->
+      <rect x="0" y="22" width="684" height="26" fill="#F3F3F5"/>
+      <text x="14" y="39" font-size="11" class="uin">←</text>
+      <text x="30" y="39" font-size="11" class="uin">→</text>
+      <text x="46" y="39" font-size="10" class="uin">↻</text>
+      <rect x="62" y="26" width="500" height="17" rx="8.5" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1"/>
+      <text x="74" y="38" font-size="8" class="uin">pear-work-web.netlify.app/tasks/b9798d4b-616d-4534-b2ac-3f58298e4596</text>
+      <text x="668" y="38" font-size="9" class="uin" text-anchor="end">☆  ⬇  ⋮</text>
+
+      <!-- app top bar -->
+      <text x="14" y="63" font-size="9.5" class="ui">☰　任务详情</text>
+      <text x="670" y="63" font-size="8" class="uin" text-anchor="end">返回首页 · 获取 Pear 插件 · 来宾版 · 新手引导　v0.4.2</text>
+      <line x1="0" y1="72" x2="684" y2="72" stroke="#ECECEE" stroke-width="1"/>
+
+      <!-- sidebar -->
+      <rect x="0" y="72" width="146" height="342" fill="#FAFAFA"/>
+      <line x1="146" y1="72" x2="146" y2="414" stroke="#ECECEE" stroke-width="1"/>
+      <g class="ui" font-size="9.5">
+        <rect x="16" y="86" width="11" height="11" rx="2.5" fill="none" stroke="#9AA0A4" stroke-width="1"/><text x="36" y="95">新任务</text>
+        <rect x="16" y="106" width="11" height="11" rx="2.5" fill="none" stroke="#9AA0A4" stroke-width="1"/><text x="36" y="115">智能体</text>
+        <rect x="16" y="126" width="11" height="11" rx="2.5" fill="none" stroke="#9AA0A4" stroke-width="1"/><text x="36" y="135">工具应用</text>
+        <rect x="16" y="146" width="11" height="11" rx="2.5" fill="none" stroke="#9AA0A4" stroke-width="1"/><text x="36" y="155">集市</text>
+        <rect x="16" y="166" width="11" height="11" rx="2.5" fill="none" stroke="#9AA0A4" stroke-width="1"/><text x="36" y="175">插件</text>
+      </g>
+      <line x1="16" y1="188" x2="130" y2="188" stroke="#ECECEE" stroke-width="1"/>
+      <text x="16" y="206" font-size="8" class="uin">我的应用</text>
+      <text x="20" y="226" font-size="9" class="ui">▷　P视频管家</text>
+      <text x="20" y="246" font-size="9" class="ui">▷　P脚本复刻</text>
+      <rect x="16" y="384" width="114" height="20" rx="6" fill="#FFFFFF" stroke="#E2E2E4" stroke-width="1"/>
+      <text x="73" y="397" font-size="8.5" class="uin" text-anchor="middle">退出登录</text>
+
+      <!-- main: header -->
+      <text x="160" y="92" font-size="8.5" class="uin">Agent 工作台</text>
+      <text x="160" y="112" font-size="14" class="b">垂类日榜文案生成</text>
+      <rect x="298" y="101" width="36" height="15" rx="7.5" fill="#E1ECE5"/>
+      <text x="316" y="112" font-size="8" class="tag" text-anchor="middle">已生成</text>
+      <rect x="160" y="124" width="510" height="2.4" rx="1.2" fill="#E2E2E2"/>
+      <rect x="160" y="133" width="468" height="2.4" rx="1.2" fill="#E6E6E6"/>
+      <!-- access box -->
+      <rect x="160" y="146" width="510" height="22" rx="5" fill="#F5F6F2" stroke="#E8EAE2" stroke-width="1"/>
+      <text x="170" y="160" font-size="7.6" fill="#6C7A66">开放授权（访客）：本浏览器独享数据，插件与此访客 ID 一致。注意后可迁移到个人空间。</text>
+
+      <!-- stepper -->
+      <g font-size="8.5">
+        <circle cx="172" cy="190" r="7" fill="#DCE6DF"/><text x="172" y="193" font-size="7" class="tag" text-anchor="middle">✓</text>
+        <text x="184" y="193" class="uin">准备</text>
+        <line x1="222" y1="190" x2="252" y2="190" stroke="#DADADA" stroke-width="1"/>
+        <rect x="258" y="181" width="96" height="18" rx="9" fill="#2B2B30"/>
+        <circle cx="270" cy="190" r="6" fill="#FFFFFF"/><text x="270" y="193" font-size="7" fill="#2B2B30" text-anchor="middle">2</text>
+        <text x="282" y="193" font-size="8.5" fill="#FFFFFF">确定工作流</text>
+        <line x1="360" y1="190" x2="392" y2="190" stroke="#DADADA" stroke-width="1"/>
+        <circle cx="402" cy="190" r="7" fill="#EDEDED"/><text x="402" y="193" font-size="7" class="uin" text-anchor="middle">3</text>
+        <text x="414" y="193" class="uin">Agent 搭建</text>
+        <line x1="476" y1="190" x2="508" y2="190" stroke="#DADADA" stroke-width="1"/>
+        <circle cx="518" cy="190" r="7" fill="#EDEDED"/><text x="518" y="193" font-size="7" class="uin" text-anchor="middle">4</text>
+        <text x="530" y="193" class="uin">生成构建包</text>
+      </g>
+
+      <!-- workflow heading -->
+      <text x="160" y="224" font-size="7.6" class="uin">P2 · 确定工作流</text>
+      <text x="160" y="244" font-size="14" class="b">逐步拍板工作流</text>
+      <text x="160" y="260" font-size="7.8" class="gray">先确认每一步交给 Agent 的边界，签完后在拍板区拍板成搭建。</text>
+      <text x="670" y="260" font-size="8" class="acc" text-anchor="end">0 / 4 已拍板</text>
+
+      <!-- left: step list -->
+      <text x="160" y="284" font-size="7.4" class="uin">步骤编排</text>
+      <rect x="158" y="290" width="196" height="30" rx="6" fill="#FFFFFF" stroke="#2A6346" stroke-width="1.3"/>
+      <circle cx="173" cy="305" r="7" fill="#2A6346"/><text x="173" y="308" font-size="7.5" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="188" y="308" font-size="9" class="b">先定赛道和口径</text>
+      <rect x="296" y="298" width="50" height="14" rx="7" fill="#EAF1EC"/><text x="321" y="308" font-size="7" class="tag" text-anchor="middle">载入拍板</text>
+
+      <rect x="158" y="326" width="196" height="28" rx="6" fill="#FAFAFA" stroke="#ECECEC" stroke-width="1"/>
+      <circle cx="173" cy="340" r="7" fill="#E6E6E6"/><text x="173" y="343" font-size="7.5" class="uin" text-anchor="middle">2</text>
+      <text x="188" y="338" font-size="8.5" class="ui">每天抓取并整理数据</text>
+      <text x="188" y="349" font-size="6.6" class="uin">简转可自动化</text>
+
+      <rect x="158" y="360" width="196" height="28" rx="6" fill="#FAFAFA" stroke="#ECECEC" stroke-width="1"/>
+      <circle cx="173" cy="374" r="7" fill="#E6E6E6"/><text x="173" y="377" font-size="7.5" class="uin" text-anchor="middle">3</text>
+      <text x="188" y="372" font-size="8.5" class="ui">生成日榜单</text>
+      <text x="188" y="383" font-size="6.6" class="uin">简转可自动化</text>
+
+      <rect x="158" y="394" width="196" height="26" rx="6" fill="#FAFAFA" stroke="#ECECEC" stroke-width="1"/>
+      <circle cx="173" cy="407" r="7" fill="#E6E6E6"/><text x="173" y="410" font-size="7.5" class="uin" text-anchor="middle">4</text>
+      <text x="188" y="405" font-size="8.5" class="ui">生成小红书文案</text>
+      <rect x="296" y="400" width="50" height="13" rx="6.5" fill="#EAF1EC"/><text x="321" y="409" font-size="6.8" class="tag" text-anchor="middle">载入拍板</text>
+
+      <!-- right: edit panel -->
+      <rect x="362" y="288" width="312" height="132" rx="8" fill="#FCFCFC" stroke="#E6E6E8" stroke-width="1"/>
+      <text x="372" y="304" font-size="9" class="b">编辑内容</text>
+      <text x="666" y="303" font-size="6.6" class="uin" text-anchor="end">↑ 上移　↓ 下移　删除</text>
+      <text x="372" y="322" font-size="9" class="b">1. 先定赛道和口径</text>
+      <text x="372" y="335" font-size="6.8" class="uin">先把范围说清楚，后面每一拍才不会跑偏。</text>
+      <!-- two sub-boxes -->
+      <rect x="372" y="342" width="142" height="46" rx="5" fill="#F5F5F5"/>
+      <text x="380" y="355" font-size="7" fill="#666">现状 · 部分自动化</text>
+      <rect x="380" y="362" width="120" height="2.2" rx="1.1" fill="#D8D8D8"/><rect x="380" y="369" width="126" height="2.2" rx="1.1" fill="#DCDCDC"/><rect x="380" y="376" width="96" height="2.2" rx="1.1" fill="#DCDCDC"/>
+      <rect x="522" y="342" width="142" height="46" rx="5" fill="#EEF4EF"/>
+      <text x="530" y="355" font-size="7" class="tag">优化后 · Agent 兜底</text>
+      <rect x="530" y="362" width="120" height="2.2" rx="1.1" fill="#CDE0D2"/><rect x="530" y="369" width="126" height="2.2" rx="1.1" fill="#CDE0D2"/><rect x="530" y="376" width="100" height="2.2" rx="1.1" fill="#CDE0D2"/>
+      <text x="372" y="402" font-size="6.6" class="uin">为什么这么建议：重复、可验证 —— 让规则清晰，每天结果稳定。</text>
+      <!-- choice (compact, bottom of panel) -->
+      <rect x="372" y="408" width="142" height="9" rx="4.5" fill="#F2F2F2"/>
+      <circle cx="380" cy="412.5" r="2.4" fill="none" stroke="#AAA" stroke-width="1"/><text x="388" y="415" font-size="6.6" class="uin">交给 Agent 自动做</text>
+      <rect x="522" y="406" width="142" height="12" rx="6" fill="#EAF4EC" stroke="#2A6346" stroke-width="1"/>
+      <circle cx="531" cy="412" r="2.6" fill="#2A6346"/><text x="539" y="415" font-size="6.8" class="acc">我自己来 · 保留开关</text>
+    </g>
+  </g>
+</svg>
