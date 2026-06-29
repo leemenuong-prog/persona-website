@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" fill="#18181C" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#1a2a1e" flood-opacity="0.05"/></filter>
+    <filter id="soft2" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#16161a" flood-opacity="0.06"/></filter>
+    <filter id="lap" x="-15%" y="-15%" width="130%" height="150%"><feDropShadow dx="0" dy="16" stdDeviation="30" flood-color="#2a2a1e" flood-opacity="0.16"/></filter>
+    <style>
+      .h1{ font-weight:800; stroke:#18181C; stroke-width:0.7; }
+      .h2{ font-weight:800; stroke:#18181C; stroke-width:0.5; }
+      .b { font-weight:800; stroke:#18181C; stroke-width:0.3; }
+      .acc{ fill:#2A6346; } .accb{ fill:#2A6346; font-weight:800; stroke:#2A6346; stroke-width:0.4; }
+      .gray{ fill:#76767C; } .faint{ fill:#9A9AA0; } .tag{ fill:#3E8259; } .ui{ fill:#4A4A50; } .uin{ fill:#8A8A90; }
+    </style>
+    <symbol id="pear" viewBox="0 0 100 120">
+      <ellipse cx="65" cy="25" rx="11" ry="6" fill="#7C9A45" transform="rotate(-32 65 25)"/>
+      <path d="M50,30 C50,22 52,17 57,13" fill="none" stroke="#6E7B3A" stroke-width="4.6" stroke-linecap="round"/>
+      <ellipse cx="50" cy="48" rx="18" ry="21" fill="#A8B854"/>
+      <ellipse cx="50" cy="84" rx="34" ry="30" fill="#A8B854"/>
+    </symbol>
+  </defs>
+  <rect width="1280" height="720" fill="#F5F5F7"/>
+
+  <!-- header -->
+  <use href="#pear" x="58" y="40" width="30" height="34"/>
+  <text x="104" y="66" font-size="28" class="b">Pears</text>
+  <text x="200" y="66" font-size="20" class="gray">AI Agent</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">10 · 产品生态</text>
+
+  <!-- headline (two lines) -->
+  <text x="62" y="132" font-size="44" class="h1" letter-spacing="-0.5">你的做法，</text>
+  <text x="62" y="184" font-size="44" class="h1" letter-spacing="-0.5">不只为你工作。</text>
+
+  <!-- ===== left column ===== -->
+  <text x="64" y="288" font-size="16" class="accb" letter-spacing="0.3">工作流开始像知识一样流动。</text>
+  <text x="64" y="320" font-size="14" class="gray">每个被验证的工作流，都可以发布为 Agent App。</text>
+  <text x="64" y="342" font-size="14" class="gray">其他用户能够发现并一键拉取，</text>
+  <text x="64" y="364" font-size="14" class="gray">再按照自己的习惯继续调整。</text>
+
+  <!-- step 01 -->
+  <circle cx="82" cy="438" r="18" fill="none" stroke="#CBD2CC" stroke-width="1.6"/>
+  <text x="82" y="443" font-size="13" font-weight="700" class="gray" text-anchor="middle">01</text>
+  <text x="114" y="434" font-size="19" class="b">发布</text>
+  <text x="114" y="456" font-size="13" class="gray">把成熟做法变成 Agent App</text>
+  <!-- step 02 -->
+  <circle cx="82" cy="500" r="18" fill="none" stroke="#CBD2CC" stroke-width="1.6"/>
+  <text x="82" y="505" font-size="13" font-weight="700" class="gray" text-anchor="middle">02</text>
+  <text x="114" y="496" font-size="19" class="b">发现</text>
+  <text x="114" y="518" font-size="13" class="gray">从真实场景找到可用工作流</text>
+  <!-- step 03 -->
+  <circle cx="82" cy="562" r="18" fill="#2A6346"/>
+  <text x="82" y="567" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">03</text>
+  <text x="114" y="558" font-size="19" class="b">一键拉取</text>
+  <text x="114" y="580" font-size="13" class="gray">带回自己的工作区继续调整</text>
+
+  <line x1="64" y1="624" x2="432" y2="624" stroke="rgba(11,11,14,.16)" stroke-width="1"/>
+  <text x="64" y="654" font-size="16" class="b">被分享。被复用。</text>
+  <text x="64" y="680" font-size="16" class="b">也被继续改进。</text>
+
+  <!-- ===== MacBook ===== -->
+  <!-- base / deck (3D wedge: top surface + front edge) -->
+  <g filter="url(#lap)">
+    <path d="M540,656 L1244,656 L1270,676 L514,676 Z" fill="#DCDB8E"/>
+    <path d="M514,676 L1270,676 L1262,687 Q1260,691 1254,691 L530,691 Q524,691 522,687 Z" fill="#CFCE7B"/>
+    <path d="M860,676 L924,676 L919,683 L865,683 Z" fill="#BCBB6C"/>
+  </g>
+  <!-- hinge shadow under lid -->
+  <rect x="540" y="650" width="704" height="8" rx="2" fill="#101014"/>
+  <!-- screen bezel -->
+  <rect x="538" y="194" width="708" height="460" rx="13" fill="#17171B"/>
+  <circle cx="892" cy="201" r="2.2" fill="#3A3A3E"/>
+
+  <!-- ===== screen UI (local coords via translate) ===== -->
+  <g transform="translate(550,208)">
+    <clipPath id="scr"><rect x="0" y="0" width="684" height="432" rx="4"/></clipPath>
+    <g clip-path="url(#scr)">
+      <rect x="0" y="0" width="684" height="432" fill="#FBFBFA"/>
+
+      <!-- top bar: 集市 -->
+      <text x="20" y="32" font-size="17" class="b">集市</text>
+      <text x="20" y="50" font-size="8.6" class="uin">分享你的应用，发现别人的创意，一键拉取到你的工作区。</text>
+      <!-- publish button -->
+      <rect x="556" y="18" width="108" height="22" rx="11" fill="#2A6346"/>
+      <text x="610" y="33" font-size="9.5" fill="#FFFFFF" text-anchor="middle" font-weight="600">+ 发布我的应用</text>
+
+      <!-- search input -->
+      <rect x="20" y="62" width="644" height="26" rx="6" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1"/>
+      <circle cx="36" cy="75" r="4" fill="none" stroke="#A8A8AE" stroke-width="1.3"/>
+      <line x1="39" y1="78" x2="43" y2="82" stroke="#A8A8AE" stroke-width="1.3" stroke-linecap="round"/>
+      <text x="50" y="79" font-size="9.5" class="uin">搜索应用名、用途、标签…</text>
+
+      <!-- filter chips -->
+      <rect x="20" y="100" width="68" height="20" rx="10" fill="#2A6346"/>
+      <text x="54" y="114" font-size="9" fill="#FFFFFF" text-anchor="middle" font-weight="600">🔥 最多人用</text>
+      <rect x="96" y="100" width="66" height="20" rx="10" fill="#FFFFFF" stroke="#E2E2E5" stroke-width="1"/>
+      <text x="129" y="114" font-size="9" class="ui" text-anchor="middle">✦ 最新上架</text>
+
+      <!-- ===== card grid: 3 cols x 2 rows ===== -->
+      <!-- column x: 20, 244, 468 ; card w 196 ; row y: 134, 290 ; card h 144 -->
+
+      <!-- helper geometry repeated per card -->
+      <!-- CARD 1 -->
+      <g>
+        <rect x="20" y="134" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="32" y="146" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="45" y="164" font-size="12" text-anchor="middle">🎬</text>
+        <rect x="146" y="148" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="175" y="160" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="32" y="192" font-size="11.5" class="b">视频转知识笔记</text>
+        <text x="32" y="207" font-size="8" class="faint">@luna · 10天前</text>
+        <text x="32" y="223" font-size="8" class="gray">把 B站/YouTube 视频一键转成可编辑</text>
+        <text x="32" y="235" font-size="8" class="gray">的 Notion 笔记，自动提炼关键论点…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="32" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="49" y="253" text-anchor="middle">#视频</text>
+          <rect x="70" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="87" y="253" text-anchor="middle">#笔记</text>
+          <rect x="108" y="244" width="44" height="13" rx="6.5" fill="#EEF4EF"/><text x="130" y="253" text-anchor="middle">#Notion</text>
+        </g>
+        <text x="32" y="271" font-size="8" class="uin">♡ 69　　⬇ 234　　💬 12</text>
+      </g>
+
+      <!-- CARD 2 -->
+      <g>
+        <rect x="244" y="134" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="256" y="146" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="269" y="164" font-size="12" text-anchor="middle">📊</text>
+        <rect x="370" y="148" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="399" y="160" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="256" y="192" font-size="11.5" class="b">周报自动生成器</text>
+        <text x="256" y="207" font-size="8" class="faint">@kai · 14天前</text>
+        <text x="256" y="223" font-size="8" class="gray">读取本周日历、待办和沟通记录，30</text>
+        <text x="256" y="235" font-size="8" class="gray">秒生成一份条理清晰的周报草稿…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="256" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="273" y="253" text-anchor="middle">#汇报</text>
+          <rect x="294" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="311" y="253" text-anchor="middle">#效率</text>
+          <rect x="332" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="349" y="253" text-anchor="middle">#日历</text>
+        </g>
+        <text x="256" y="271" font-size="8" class="uin">♡ 63　　⬇ 187　　💬 8</text>
+      </g>
+
+      <!-- CARD 3 -->
+      <g>
+        <rect x="468" y="134" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="480" y="146" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="493" y="164" font-size="12" text-anchor="middle">📄</text>
+        <rect x="594" y="148" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="623" y="160" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="480" y="192" font-size="11.5" class="b">合同归档 &amp; 提醒</text>
+        <text x="480" y="207" font-size="8" class="faint">@maya · 19天前</text>
+        <text x="480" y="223" font-size="8" class="gray">扫描邮件附件中的合同，提取关键条</text>
+        <text x="480" y="235" font-size="8" class="gray">款、到期日和对方主体，自动建台账…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="480" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="497" y="253" text-anchor="middle">#合同</text>
+          <rect x="518" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="535" y="253" text-anchor="middle">#法务</text>
+          <rect x="556" y="244" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="573" y="253" text-anchor="middle">#提醒</text>
+        </g>
+        <text x="480" y="271" font-size="8" class="uin">♡ 51　　⬇ 156　　💬 5</text>
+      </g>
+
+      <!-- CARD 4 -->
+      <g>
+        <rect x="20" y="290" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="32" y="302" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="45" y="320" font-size="12" text-anchor="middle">📰</text>
+        <rect x="146" y="304" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="175" y="316" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="32" y="348" font-size="11.5" class="b">竞品动态快报</text>
+        <text x="32" y="363" font-size="8" class="faint">@rio · 12天前</text>
+        <text x="32" y="379" font-size="8" class="gray">每天早上自动抓取指定竞品的官网更</text>
+        <text x="32" y="391" font-size="8" class="gray">新、发布公告和社媒动态，整理成…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="32" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="49" y="409" text-anchor="middle">#竞品</text>
+          <rect x="70" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="87" y="409" text-anchor="middle">#监控</text>
+          <rect x="108" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="125" y="409" text-anchor="middle">#日报</text>
+        </g>
+        <text x="32" y="427" font-size="8" class="uin">♡ 44　　⬇ 132　　💬 6</text>
+      </g>
+
+      <!-- CARD 5 -->
+      <g>
+        <rect x="244" y="290" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="256" y="302" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="269" y="320" font-size="12" text-anchor="middle">🧑‍💼</text>
+        <rect x="370" y="304" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="399" y="316" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="256" y="348" font-size="11.5" class="b">简历智能筛选</text>
+        <text x="256" y="363" font-size="8" class="faint">@nova · 16天前</text>
+        <text x="256" y="379" font-size="8" class="gray">粘贴岗位 JD，上传简历批量附件，</text>
+        <text x="256" y="391" font-size="8" class="gray">Agent 自动评分并按匹配度排序…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="256" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="273" y="409" text-anchor="middle">#招聘</text>
+          <rect x="294" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="311" y="409" text-anchor="middle">#效率</text>
+          <rect x="332" y="400" width="30" height="13" rx="6.5" fill="#EEF4EF"/><text x="347" y="409" text-anchor="middle">#HR</text>
+        </g>
+        <text x="256" y="427" font-size="8" class="uin">♡ 38　　⬇ 121　　💬 4</text>
+      </g>
+
+      <!-- CARD 6 -->
+      <g>
+        <rect x="468" y="290" width="196" height="144" rx="9" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1"/>
+        <rect x="480" y="302" width="26" height="26" rx="6" fill="#EEF2EA"/>
+        <text x="493" y="320" font-size="12" text-anchor="middle">📈</text>
+        <rect x="594" y="304" width="58" height="18" rx="9" fill="#2A6346"/>
+        <text x="623" y="316" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="600">⬇ 一键拉取</text>
+        <text x="480" y="348" font-size="11.5" class="b">数据报表一键生成</text>
+        <text x="480" y="363" font-size="8" class="faint">@zhen · 21天前</text>
+        <text x="480" y="379" font-size="8" class="gray">连接电商后台，每周自动跑销售漏</text>
+        <text x="480" y="391" font-size="8" class="gray">斗、退款率和 TOP SKU 分析…</text>
+        <g font-size="7.4" class="tag">
+          <rect x="480" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="497" y="409" text-anchor="middle">#电商</text>
+          <rect x="518" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="535" y="409" text-anchor="middle">#报表</text>
+          <rect x="556" y="400" width="34" height="13" rx="6.5" fill="#EEF4EF"/><text x="573" y="409" text-anchor="middle">#数据</text>
+        </g>
+        <text x="480" y="427" font-size="8" class="uin">♡ 57　　⬇ 203　　💬 9</text>
+      </g>
+
+    </g>
+  </g>
+</svg>

@@ -99,9 +99,9 @@ function ChAipm({ jump }) {
           <div className="c2x-pay">
             <div className="c2x-left">
               <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
-              <div className="c2x-motto">Order is the Product<i className="psq" aria-hidden="true"></i></div>
-              <p className="c2x-st">Telemetry finds the leak, judgment writes the prescription, shipping proves it. Requirements aren't gathered — structure forces them out.
-                <span className="zh">秩序即产品。埋点找到漏点，产品判断开出处方，ship 去验证。需求不是收集来的，是被结构逼出来的。</span>
+              <div className="c2x-motto">Making AI fit real situations<i className="psq" aria-hidden="true"></i></div>
+              <p className="c2x-st">I rarely ask how to make the current process faster. I'd rather ask whether a person should be doing it at all.
+                <span className="zh">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。</span>
               </p>
               <a className="ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
                 <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
@@ -468,10 +468,10 @@ function ChDev({ jump }) {
           </div>
           <CodePanel />
           <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>Discipline is Leverage<i className="psq" aria-hidden="true"></i></span></div>
+            <div className="mt lm" style={{ "--rd": ".3s" }}><span>From idea to shipped<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
-              I don't type the code — I govern the agent that does. Incident becomes rule, rule becomes test, test becomes gate. One builder, three ends shipped, zero recurrence.
-              <span className="zh">纪律即杠杆。我不敲代码——我治理那个敲代码的 Agent。事故沉淀为规则，规则固化为测试，测试落为门禁。单人交付 Web + 插件 + 后端三端。</span>
+              I write code myself, and I also direct agents that write it. When I want to test an idea, the fastest path is usually just to build it.
+              <span className="zh">我自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做出来。</span>
             </div>
             <a className="ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov data-rv style={{ "--rd": ".58s" }}>
               <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
@@ -528,10 +528,10 @@ function ChArch({ jump }) {
             ))}
           </div>
           <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>Form is Function<i className="psq" aria-hidden="true"></i></span></div>
+            <div className="mt lm" style={{ "--rd": ".3s" }}><span>Scattered needs into a system<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
-              Architecture taught me to read a site's forces — water, noise, energy, wind — and resolve them into rational, livable form. It is the root system under everything I ship.
-              <span className="zh">形式即功能。建筑教我读懂场地的力——水、噪声、能量、风——并把它们化成理性、可住的形。这是根，不是主角。</span>
+              Architecture is taking a pile of constraints that push against each other — light, circulation, scale — and turning them into something people want to stay in.
+              <span className="zh">建筑，就是把一堆互相影响的限制——光线、动线、尺度——变成一个让人想待下去的东西。</span>
             </div>
           </div>
         </div>
@@ -562,14 +562,14 @@ const REEL = [
      straight on the substance. `ix` doubles as the image filename, so the kept
      slides keep their 02–09 names; the displayed index is renumbered 01–08 in
      the render. */
-  { ix: "02", zh: "看你做一遍", g: "把重复工作交给 Pears" },
-  { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚" },
-  { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始" },
+  { ix: "02", zh: "看你做一遍", g: "把重复工作交给 Pears", ext: "svg" },  /* vector recreation — crisp text (orig 02.jpg kept as backup) */
+  { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚", ext: "svg" },  /* vector recreation (orig 03.jpg kept as backup) */
+  { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始", ext: "svg" },  /* vector recreation (orig 04.jpg kept as backup) */
   { ix: "05", zh: "乐观与学习", g: "每一次点击与切换，都在告诉它什么值得自动化", ext: "svg" },  /* vector recreation — crisp at any size (orig 05.jpg kept as backup) */
   { ix: "06", zh: "工作流拍板", g: "自动化到哪一步，由你拍板", ext: "svg" },  /* vector recreation — crisp UI dashboard (orig 06.jpg kept as backup) */
   { ix: "07", zh: "隐私设计",   g: "只在你开口时才记，停止任务记录立即结束", ext: "svg" },  /* vector recreation — crisp at any size (orig 07.jpg kept as backup) */
-  { ix: "08", zh: "Agent 构建", g: "拍板之后，工作流开始成为 Agent" },
-  { ix: "09", zh: "产品生态",   g: "你的做法，不只为你工作 · Agent App 生态" },
+  { ix: "08", zh: "Agent 构建", g: "拍板之后，工作流开始成为 Agent", ext: "svg" },  /* vector recreation (orig 08.jpg kept as backup) */
+  { ix: "09", zh: "产品生态",   g: "你的做法，不只为你工作 · Agent App 生态", ext: "svg" },  /* vector recreation (orig 09.jpg kept as backup) */
 ];
 
 /* the Pears roadshow video is the reel's 10th (closing) frame — the pitch
@@ -583,14 +583,14 @@ const REEL_N = REEL.length + 1;   /* 8 提案帧 + 1 路演视频帧 = 9 cells *
    window.__progress.reel. onIndex fires only when the integer frame
    changes. Cell opacity defaults to 0 in CSS (not inline) so a setState
    re-render never resets what this loop is imperatively driving. */
-function useReelStage(id, ref, onIndex, onVideoExit) {
+function useReelStage(id, ref, onIndex) {
   useChE(() => {
     const el = ref.current; if (!el) return;
     const cells = [...el.querySelectorAll(".reel-cell")];
     const ticks = [...el.querySelectorAll(".reel-tick")];
     const vid = el.querySelector(".reel-video video");
     const LAST = REEL_N - 1;
-    let lastP = -2, lastI = -1;
+    let lastP = -2, lastI = -1, vidStarted = false;
     const stop = window.__addLoop(() => {
       /* PHONE: the reel is a plain full-bleed VERTICAL stack (CSS) — the pinned
          cross-dissolve scrub is off. Skip every per-frame write so nothing fights
@@ -625,17 +625,22 @@ function useReelStage(id, ref, onIndex, onVideoExit) {
         c.style.opacity = (o * vis).toFixed(3);
         c.style.transform = (!calm && i === k + 1) ? "scale(" + (1.012 - 0.012 * incoming).toFixed(4) + ")" : "scale(1)";
       });
-      /* the video cell is clickable + playing only while it's the centred frame
-         and the stage hasn't begun to release. Keyed to progress (NOT to cell
-         opacity — that now holds at 1), so the roadshow film still pauses + resets
-         the instant you scroll off it, in either direction: no audio bleeding on
-         into the Architect, and a generous ~0.15 dwell band so a small touch scrub
-         mid-playback doesn't stop it. */
+      /* the video cell is interactive (native controls + the BGM button) while it's
+         the centred frame and the stage hasn't begun to release. AUTO-PLAY it muted
+         the moment it becomes the centred frame — fires once, from 0:00. After that
+         it is never auto-paused: scrolling on (down into the Architect) lets the film
+         keep playing, and if the viewer unmuted it for BGM the sound rides along
+         (request: 往下也会继续播放). A manual pause via the controls therefore sticks. */
       const vcell = cells[LAST];
       if (vcell) {
         const live = k >= LAST && praw < 1.0;
         vcell.style.pointerEvents = live ? "auto" : "none";
-        if (vid && !live && !vid.paused) { vid.pause(); onVideoExit && onVideoExit(); }
+        if (vid && live && !vidStarted) {
+          vidStarted = true;
+          vid.muted = true;
+          try { vid.currentTime = 0; } catch (e) {}
+          const pr = vid.play(); if (pr && pr.catch) pr.catch(() => {});
+        }
       }
       el.style.setProperty("--chrome", enter.toFixed(3));
       el.style.setProperty("--self", aClamp(raw / LAST, 0, 1).toFixed(4));
@@ -652,8 +657,24 @@ function ChReel({ jump }) {
   const ref = useChR(null);
   const vidRef = useChR(null);
   const [i, setI] = React.useState(0);
-  const [playing, setPlaying] = React.useState(false);
-  useReelStage("reel", ref, setI, () => setPlaying(false));
+  const [muted, setMuted] = React.useState(true);   /* roadshow film auto-plays muted; the BGM button unmutes */
+  useReelStage("reel", ref, setI);
+  /* PHONE: the reel is a plain vertical stack (useReelStage no-ops ≤600px), so the
+     desktop loop can't drive auto-play. Observe the film and auto-play it muted once
+     it scrolls into view; like desktop it is never paused on exit. */
+  useChE(() => {
+    if (!(window.matchMedia && window.matchMedia("(max-width: 600px)").matches)) return;
+    const v = vidRef.current; if (!v || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach((en) => {
+        if (en.isIntersecting && en.intersectionRatio > 0.6 && v.paused) {
+          v.muted = true; const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+        }
+      });
+    }, { threshold: [0, 0.6, 1] });
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
   /* closing CTA — the reel is the Developer's evidence (Pears); link straight to
      the live product, same as the Developer identity chapter (WORKS[0]). */
   const devWk = (window.WORKS || [])[0];
@@ -680,12 +701,20 @@ function ChReel({ jump }) {
             ))}
             <div className="reel-cell reel-video">
               <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
-                     preload="none" playsInline controls={playing}
-                     onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)}></video>
-              {!playing && <button className="reel-play" aria-label="播放 Pears 路演视频"
-                onClick={() => { const v = vidRef.current; if (v) v.play(); }}>
-                <span className="reel-play-ico" aria-hidden="true"></span>
-                <span className="reel-play-cap mono">点击播放 · PEARS 路演 DEMO DAY</span>
+                     preload="none" playsInline muted controls
+                     onVolumeChange={(e) => setMuted(e.currentTarget.muted)}></video>
+              {/* default muted; this prominent control turns on the sound (BGM). Once
+                  unmuted it hides — the native controls handle re-muting / volume. */}
+              {muted && <button className="reel-play reel-bgm" type="button" aria-label="开启声音 · BGM"
+                onClick={() => { const v = vidRef.current; if (!v) return; v.muted = false; if (v.paused) v.play(); }}>
+                <span className="reel-play-ico reel-bgm-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--acc)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 9.4v5.2h3.3L12 18.4V5.6L7.3 9.4H4z" fill="var(--acc)" stroke="none"/>
+                    <path d="M15.4 9.2a4 4 0 0 1 0 5.6"/>
+                    <path d="M17.9 6.7a7.5 7.5 0 0 1 0 10.6"/>
+                  </svg>
+                </span>
+                <span className="reel-play-cap mono">点击开启声音 · BGM ♪</span>
               </button>}
             </div>
           </div>

@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" fill="#18181C" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#1a2a1e" flood-opacity="0.05"/></filter>
+    <filter id="soft2" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#16161a" flood-opacity="0.06"/></filter>
+    <filter id="lap" x="-15%" y="-15%" width="130%" height="150%"><feDropShadow dx="0" dy="16" stdDeviation="30" flood-color="#2a2a1e" flood-opacity="0.16"/></filter>
+    <style>
+      .h1{ font-weight:800; stroke:#18181C; stroke-width:0.7; }
+      .h2{ font-weight:800; stroke:#18181C; stroke-width:0.5; }
+      .b { font-weight:800; stroke:#18181C; stroke-width:0.3; }
+      .acc{ fill:#2A6346; } .accb{ fill:#2A6346; font-weight:800; stroke:#2A6346; stroke-width:0.4; }
+      .gray{ fill:#76767C; } .faint{ fill:#9A9AA0; } .tag{ fill:#3E8259; } .ui{ fill:#4A4A50; } .uin{ fill:#8A8A90; }
+    </style>
+    <symbol id="pear" viewBox="0 0 100 120">
+      <ellipse cx="65" cy="25" rx="11" ry="6" fill="#7C9A45" transform="rotate(-32 65 25)"/>
+      <path d="M50,30 C50,22 52,17 57,13" fill="none" stroke="#6E7B3A" stroke-width="4.6" stroke-linecap="round"/>
+      <ellipse cx="50" cy="48" rx="18" ry="21" fill="#A8B854"/>
+      <ellipse cx="50" cy="84" rx="34" ry="30" fill="#A8B854"/>
+    </symbol>
+  </defs>
+  <rect width="1280" height="720" fill="#F5F5F7"/>
+
+  <!-- header -->
+  <use href="#pear" x="58" y="40" width="30" height="34"/>
+  <text x="104" y="66" font-size="28" class="b">Pears</text>
+  <text x="200" y="66" font-size="20" class="gray">AI Agent</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">03 · 产品差异</text>
+
+  <!-- ===== centered headline (one line, two halves) ===== -->
+  <text x="640" y="118" font-size="34" text-anchor="middle" letter-spacing="-0.5"><tspan class="h1">Vibe Coding 从你说的开始。</tspan><tspan class="acc h1" dx="22">Pears 从你做的开始。</tspan></text>
+
+  <!-- ===== centered subtitle (three gray lines) ===== -->
+  <text x="640" y="158" font-size="15" text-anchor="middle" class="gray">一句 Prompt 能描述想要的结果，却很难完整说清工作中的<tspan class="acc">步骤、数据来源与判断</tspan>。</text>
+  <text x="640" y="183" font-size="15" text-anchor="middle" class="gray">Pears 让用户像平时一样完成一次任务，在真实操作中理解工作如何发生。</text>
+  <text x="640" y="208" font-size="15" text-anchor="middle" class="gray">从看见过程开始，把隐性经验沉淀为真正可用、可持续优化的 Agent。</text>
+
+  <!-- ============================================================ -->
+  <!-- LEFT laptop — smaller, slightly behind (传统 Vibe Coding)    -->
+  <!-- ============================================================ -->
+  <g filter="url(#lap)">
+    <!-- base / deck -->
+    <path d="M196,648 L548,648 L566,665 L178,665 Z" fill="#C9C97E"/>
+    <path d="M178,665 L566,665 L560,675 Q558,679 552,679 L192,679 Q186,679 184,675 Z" fill="#BCBC6E"/>
+    <path d="M340,665 L404,665 L400,672 L344,672 Z" fill="#ABAB60"/>
+  </g>
+  <!-- hinge shadow -->
+  <rect x="196" y="644" width="352" height="6" rx="2" fill="#101014"/>
+  <!-- bezel -->
+  <rect x="194" y="392" width="356" height="254" rx="11" fill="#17171B"/>
+  <circle cx="372" cy="398" r="1.8" fill="#3A3A3E"/>
+
+  <!-- LEFT screen UI -->
+  <g transform="translate(204,404)">
+    <clipPath id="scrL"><rect x="0" y="0" width="336" height="236" rx="4"/></clipPath>
+    <g clip-path="url(#scrL)">
+      <rect x="0" y="0" width="336" height="236" fill="#FBFBFA"/>
+
+      <text x="24" y="34" font-size="11" class="uin">传统 Vibe Coding</text>
+      <text x="24" y="60" font-size="20" class="b">先把工作，</text>
+      <text x="24" y="86" font-size="20" class="b">压缩成一句话。</text>
+
+      <!-- prompt input box -->
+      <rect x="24" y="104" width="288" height="44" rx="10" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1.2" filter="url(#soft2)"/>
+      <text x="38" y="124" font-size="11" class="ui">帮我做一个视频数据追踪 Agent。</text>
+      <path d="M298,138 l5,-5 M298,138 l5,0 M298,138 l0,-5" fill="none" stroke="#B6B6BC" stroke-width="1.1" stroke-linecap="round"/>
+
+      <!-- need-to-supply prompt -->
+      <text x="24" y="178" font-size="10.5" class="gray">为了开始生成，还需要补充：</text>
+      <g class="gray" font-size="10">
+        <text x="30" y="198">· 数据从哪里获取？</text>
+        <text x="30" y="216">· 哪些判断必须保留？</text>
+        <text x="30" y="234">· 清理到哪种程度算合格？</text>
+      </g>
+    </g>
+  </g>
+  <!-- faint footer just under the clip edge (still inside bezel area) -->
+  <text x="228" y="636" font-size="9.5" class="faint">目标说出来了，过程却丢失在经验里。</text>
+
+  <!-- ============================================================ -->
+  <!-- RIGHT laptop — larger, in front, overlapping (Pears install) -->
+  <!-- ============================================================ -->
+  <g filter="url(#lap)">
+    <!-- base / deck -->
+    <path d="M566,690 L1228,690 L1256,712 L538,712 Z" fill="#D6D689"/>
+    <path d="M538,712 L1256,712 L1248,724 Q1246,728 1240,728 L554,728 Q548,728 546,724 Z" fill="#C9C97B"/>
+    <path d="M868,712 L926,712 L921,719 L873,719 Z" fill="#B8B86C"/>
+  </g>
+  <!-- hinge shadow -->
+  <rect x="566" y="684" width="662" height="7" rx="2" fill="#101014"/>
+  <!-- bezel -->
+  <rect x="564" y="338" width="666" height="350" rx="13" fill="#17171B"/>
+  <circle cx="897" cy="344" r="2.1" fill="#3A3A3E"/>
+
+  <!-- RIGHT screen UI -->
+  <g transform="translate(576,351)">
+    <clipPath id="scrR"><rect x="0" y="0" width="642" height="326" rx="4"/></clipPath>
+    <g clip-path="url(#scrR)">
+      <rect x="0" y="0" width="642" height="326" fill="#FFFFFF"/>
+
+      <!-- browser tab bar -->
+      <rect x="0" y="0" width="642" height="22" fill="#E9E9EC"/>
+      <circle cx="16" cy="11" r="3.2" fill="#FF5F57"/><circle cx="27" cy="11" r="3.2" fill="#FEBC2E"/><circle cx="38" cy="11" r="3.2" fill="#28C840"/>
+      <rect x="62" y="3" width="150" height="17" rx="5" fill="#FCFCFD"/>
+      <use href="#pear" x="70" y="6" width="10" height="11"/>
+      <text x="84" y="15" font-size="9" class="ui">Pears</text>
+      <text x="202" y="15" font-size="9" class="uin" text-anchor="end">✕</text>
+      <text x="224" y="15" font-size="11" class="uin">+</text>
+      <text x="628" y="15" font-size="9" class="uin">☆  ⬇  ⋮</text>
+
+      <!-- address bar -->
+      <rect x="0" y="22" width="642" height="26" fill="#F3F3F5"/>
+      <text x="14" y="39" font-size="11" class="uin">←</text>
+      <text x="30" y="39" font-size="11" class="uin">→</text>
+      <text x="46" y="39" font-size="10" class="uin">↻</text>
+      <rect x="62" y="26" width="460" height="17" rx="8.5" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1"/>
+      <text x="74" y="38" font-size="9" class="uin">pear-work-web.netlify.app/install</text>
+      <text x="628" y="38" font-size="9" class="uin" text-anchor="end">☆  ⬇  ⋮</text>
+
+      <!-- ===== main install column (left of side panel) ===== -->
+      <!-- branding -->
+      <use href="#pear" x="208" y="64" width="16" height="18"/>
+      <text x="232" y="80" font-size="14" class="b">Pears</text>
+      <text x="245" y="124" font-size="20" class="b" text-anchor="middle">安装 Pears 插件</text>
+      <text x="245" y="146" font-size="9.5" class="gray" text-anchor="middle">装好后无需再次登录，开始任务即可照常做事。</text>
+
+      <!-- step ① 获取插件 -->
+      <rect x="86" y="166" width="318" height="78" rx="9" fill="#FCFCFC" stroke="#E8E8EA" stroke-width="1"/>
+      <text x="102" y="190" font-size="11" class="b">① 获取插件</text>
+      <!-- green download button -->
+      <rect x="102" y="200" width="286" height="26" rx="13" fill="#2A6346"/>
+      <text x="245" y="217" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">下载插件 ZIP</text>
+      <text x="245" y="238" font-size="8.5" class="uin" text-anchor="middle">怎么装? 看 4 步</text>
+
+      <!-- step ② 连接你的账号 -->
+      <rect x="86" y="254" width="318" height="56" rx="9" fill="#FCFCFC" stroke="#E8E8EA" stroke-width="1"/>
+      <text x="102" y="278" font-size="11" class="b">② 连接你的账号</text>
+      <text x="102" y="296" font-size="8.6" class="gray">还没检测到账号，完成第 1 步后回到本页，会自动连接。</text>
+
+      <!-- ===== right side chat / panel ===== -->
+      <line x1="424" y1="48" x2="424" y2="326" stroke="#ECECEE" stroke-width="1"/>
+      <rect x="424" y="48" width="218" height="278" fill="#FAFAFA"/>
+      <text x="438" y="68" font-size="8.6" class="ui">Pears — 把重复工作完成专属 Agent</text>
+      <line x1="424" y1="78" x2="642" y2="78" stroke="#ECECEE" stroke-width="1"/>
+
+      <use href="#pear" x="438" y="88" width="13" height="15"/>
+      <text x="458" y="100" font-size="11" class="b">Pears</text>
+      <text x="438" y="118" font-size="8" class="faint">admin2@distill.local</text>
+      <text x="438" y="134" font-size="7.4" class="uin">这一个任务为开始采集 —— 之后照</text>
+      <text x="438" y="144" font-size="7.4" class="uin">常做，任务期间访问的所有网站都</text>
+      <text x="438" y="154" font-size="7.4" class="uin">自动记录，停止后到网页端看 AI 生</text>
+      <text x="438" y="164" font-size="7.4" class="uin">成的工作流。</text>
+
+      <!-- generated-item rows with status pills -->
+      <g font-size="8.6">
+        <!-- row 1 -->
+        <text x="438" y="182" class="ui">垂类日榜文案生成</text>
+        <rect x="566" y="174" width="64" height="12.5" rx="6.2" fill="#E1ECE5"/>
+        <text x="598" y="183" font-size="6.8" class="tag" text-anchor="middle">PRO 就绪</text>
+        <line x1="438" y1="191" x2="630" y2="191" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 2 -->
+        <text x="438" y="205" class="ui">重复工作处理</text>
+        <rect x="584" y="197" width="46" height="12.5" rx="6.2" fill="#F3E7CF"/>
+        <text x="607" y="206" font-size="6.8" fill="#9A7B2E" text-anchor="middle">学习中</text>
+        <line x1="438" y1="214" x2="630" y2="214" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 3 -->
+        <text x="438" y="228" class="ui">篮球训练日更文案</text>
+        <rect x="584" y="220" width="46" height="12.5" rx="6.2" fill="#F3E7CF"/>
+        <text x="607" y="229" font-size="6.8" fill="#9A7B2E" text-anchor="middle">学习中</text>
+        <line x1="438" y1="237" x2="630" y2="237" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 4 -->
+        <text x="438" y="251" class="ui">目标成果梳理</text>
+        <rect x="584" y="243" width="46" height="12.5" rx="6.2" fill="#F3E7CF"/>
+        <text x="607" y="252" font-size="6.8" fill="#9A7B2E" text-anchor="middle">学习中</text>
+        <line x1="438" y1="260" x2="630" y2="260" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 5 -->
+        <text x="438" y="274" class="ui">P脚本复刻</text>
+        <rect x="584" y="266" width="46" height="12.5" rx="6.2" fill="#ECECEE"/>
+        <text x="607" y="275" font-size="6.8" class="gray" text-anchor="middle">已交付</text>
+        <line x1="438" y1="283" x2="630" y2="283" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 6 -->
+        <text x="438" y="297" class="ui">P视频管家</text>
+        <rect x="584" y="289" width="46" height="12.5" rx="6.2" fill="#ECECEE"/>
+        <text x="607" y="298" font-size="6.8" class="gray" text-anchor="middle">已交付</text>
+        <line x1="438" y1="306" x2="630" y2="306" stroke="#ECECEE" stroke-width="0.8"/>
+        <!-- row 7 -->
+        <text x="438" y="320" class="ui">小红书日更文案</text>
+        <rect x="566" y="312" width="64" height="12.5" rx="6.2" fill="#E1ECE5"/>
+        <text x="598" y="321" font-size="6.8" class="tag" text-anchor="middle">PRO 就绪</text>
+      </g>
+    </g>
+  </g>
+</svg>
