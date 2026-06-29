@@ -23,7 +23,7 @@
   <use href="#pear" x="58" y="40" width="30" height="34"/>
   <text x="104" y="66" font-size="28" class="b">Pears</text>
   <text x="200" y="66" font-size="20" class="gray">AI Agent</text>
-  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">03 · 产品差异</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">产品差异</text>
 
   <!-- ===== centered headline (one line, two halves) ===== -->
   <text x="640" y="118" font-size="34" text-anchor="middle" letter-spacing="-0.5"><tspan class="h1">Vibe Coding 从你说的开始。</tspan><tspan class="acc h1" dx="22">Pears 从你做的开始。</tspan></text>

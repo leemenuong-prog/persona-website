@@ -32,7 +32,7 @@
   <!-- ===== header ===== -->
   <use href="#pear" x="58" y="40" width="30" height="34"/>
   <text x="104" y="66" font-size="28" class="b">Pears</text>
-  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">06 · 示范与学习</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">示范与学习</text>
 
   <!-- ===== headline ===== -->
   <text x="62" y="142" font-size="42" class="h1" letter-spacing="-0.5">每一次点击与切换，都在告诉它什么值得自动化。</text>

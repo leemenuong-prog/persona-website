@@ -232,6 +232,28 @@
 .apx-stage[data-step="2"] .apx-video,
 .apx-video.on { opacity: 1; transform: none; }
 .apx-video iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
+/* loading poster — covers the iframe while the embedded film compiles/mounts, so
+   the frame is never a dead black rectangle (用户: 不给加载样式用户会直接翻走).
+   Hidden by default; toggled to flex imperatively by useApxStage / the tap handler,
+   hidden again on the iframe load event. Site language: pulsing data-bars (条) in
+   lifted cobalt on ink, with a mono caption. */
+.apx-video-loading {
+  position: absolute; inset: 0; z-index: 4; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: var(--ink); color: var(--paper); pointer-events: none;
+}
+.apx-load-bars { display: flex; align-items: flex-end; gap: 5px; height: 40px; }
+.apx-load-bars i {
+  width: 5px; height: 100%; background: var(--blue-up); transform-origin: bottom center;
+  animation: apxLoadBar 1.05s var(--ez) infinite;
+}
+.apx-load-bars i:nth-child(2) { animation-delay: .13s; }
+.apx-load-bars i:nth-child(3) { animation-delay: .26s; }
+.apx-load-bars i:nth-child(4) { animation-delay: .39s; }
+.apx-load-bars i:nth-child(5) { animation-delay: .52s; }
+.apx-load-cap { font-size: 10.5px; letter-spacing: .24em; color: rgba(239, 236, 230, .7); }
+@keyframes apxLoadBar { 0%, 100% { transform: scaleY(.26); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .apx-load-bars i { animation: none; transform: scaleY(.62); } }
 /* tap-to-play poster — DESKTOP auto-loads the film (button hidden); phone/tablet
    shows this obvious labelled play affordance and loads xtool/?fresh=1 on tap. */
 .apx-video-play { display: none; }
@@ -453,45 +475,25 @@
   object-fit: contain; background: var(--bg);
   user-select: none; -webkit-user-drag: none;
 }
-/* the closing frame — the W·01 Pears roadshow video, click to play */
+/* the closing frame — the W·01 Pears roadshow video; auto-plays muted on arrival,
+   native controls own play / seek (draggable progress bar) / fullscreen. */
 .reel-video { background: var(--bg); pointer-events: none; }
 .reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
-/* play affordance — must read as obviously clickable on the cream poster:
-   a cobalt-ringed disc + an explicit mono caption telling the viewer to click. */
-.reel-play {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  display: flex; flex-direction: column; align-items: center; gap: 15px;
-  padding: 0; border: 0; background: none; cursor: pointer;
-  transition: transform .3s var(--ez);
+/* sound hint — a SMALL, low-key chip in the video's TOP-RIGHT corner (用户: 右上角提示一下
+   就行，不需要那么显眼，字也别多). Shown only while the film is muted; one tap turns the BGM
+   on, then it hides and the native controls take over. Deliberately tiny and off to the
+   corner so it never covers the video body or the native scrubber. */
+.reel-sound {
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 11px; border: 0; cursor: pointer;
+  background: rgba(11, 11, 14, .56); color: var(--paper);
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  font-size: 10px; letter-spacing: .18em;
+  transition: background .25s var(--ez), opacity .25s var(--ez);
 }
-.reel-play-ico {
-  width: 92px; height: 92px; border-radius: 50%;
-  border: 2px solid var(--acc); background: rgba(239, 236, 230, .94);
-  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-  display: grid; place-items: center;
-  box-shadow: 0 10px 34px rgba(11, 11, 14, .3);
-  transition: transform .3s var(--ez), background .3s var(--ez);
-}
-.reel-play-ico::before {
-  content: ""; width: 0; height: 0; margin-left: 7px;
-  border-left: 22px solid var(--acc);
-  border-top: 14px solid transparent; border-bottom: 14px solid transparent;
-}
-.reel-play-cap {
-  font-size: 11px; letter-spacing: .2em; color: var(--fg);
-  background: rgba(239, 236, 230, .94); border: 1px solid var(--line);
-  padding: 7px 15px; white-space: nowrap;
-  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
-}
-.reel-play:hover { transform: translate(-50%, -50%) scale(1.05); }
-.reel-play:hover .reel-play-ico { background: #fff; }
-/* BGM / unmute control — same cobalt-ringed disc, but a speaker glyph instead of the
-   play triangle. Shown while the auto-playing film is muted so the BGM is one tap away. */
-.reel-bgm-ico::before { content: none; }
-.reel-bgm-ico svg { display: block; }
-@media (prefers-reduced-motion: reduce) {
-  .reel-play, .reel-play:hover { transition: none; transform: translate(-50%, -50%); }
-}
+.reel-sound svg { display: block; flex: 0 0 auto; }
+.reel-sound:hover { background: rgba(11, 11, 14, .82); }
 
 /* the bar-column read vertically — hairline spine + passed/ahead ticks */
 .reel-spine {
@@ -594,9 +596,6 @@
 
 /* ── touch — neutralise hover-only emphasis + scroll-trapping ── */
 @media (max-width: 600px), (pointer: coarse) {
-  /* roadshow play button: hold its prominent resting state (no hover scale) */
-  .reel-play { transform: translate(-50%, -50%); background: rgba(239, 236, 230, .95); }
-  .reel-play:hover { transform: translate(-50%, -50%); background: rgba(239, 236, 230, .95); }
   /* the xtool platform film iframe must not trap the page scroll */
   .apx-video iframe { touch-action: pan-y; }
   /* developer skyline canvas: drop the misleading grab cursor on touch */

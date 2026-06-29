@@ -84,11 +84,9 @@ function ChAipm({ jump }) {
   const { AipmCut } = window;
   const ref = useChR(null);
   useCutStage("aipm", ref);
-  /* this identity's live site = the platform it shipped (XTOOL Agent Platform,
-     the "AI PLATFORM" work). URL pulled from the canonical WORKS table so the
-     CTA never drifts from the deck. */
-  const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
-  const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
+  /* NOTE: the "VISIT XTOOL PLATFORM" CTA deliberately lives only on the platform
+     showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
+     page — having it on both read as a duplicate (用户: 动画页不要按钮). */
   return (
     <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE CUT">
       <div className="ch-wrap c2x-wrap">
@@ -103,9 +101,6 @@ function ChAipm({ jump }) {
               <p className="c2x-st">I rarely ask how to make the current process faster. I'd rather ask whether a person should be doing it at all.
                 <span className="zh">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。</span>
               </p>
-              <a className="ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
-                <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
-              </a>
             </div>
           </div>
         </div>
@@ -154,6 +149,16 @@ function useApxStage(id, ref) {
     const visuals = [...el.querySelectorAll(".apx-visual")];
     const video = el.querySelector(".apx-video");
     const frame = el.querySelector(".apx-video iframe");
+    /* loading poster — shown the instant we point the iframe at the film (the
+       embedded React/Babel app takes a beat to compile + mount), hidden once the
+       iframe finishes loading. Without it the frame is a blank black rectangle and
+       reads as "nothing happened", so viewers scroll past (用户反馈). Driven
+       imperatively (not React state) so it never fights the className/opacity the
+       loop already writes onto .apx-video. */
+    const loading = el.querySelector(".apx-video-loading");
+    const showLoad = () => { if (loading) loading.style.display = "flex"; };
+    const hideLoad = () => { if (loading) loading.style.display = "none"; };
+    if (frame) frame.addEventListener("load", hideLoad);
     let last = -2, lastStep = -1, vidOn = false, mobileReset = false;
     const stop = window.__addLoop(() => {
       /* PHONE/TABLET: the section is a vertical stack that pairs each explanation with
@@ -189,7 +194,7 @@ function useApxStage(id, ref) {
          instead (see the .apx-video-play poster button) — leave src alone. */
       if (frame && !(window.matchMedia && window.matchMedia("(max-width: 900px)").matches)) {
         const want = praw >= 0.66 && praw <= 1.04;
-        if (want !== vidOn) { vidOn = want; frame.src = want ? "xtool/?fresh=1" : "about:blank"; }
+        if (want !== vidOn) { vidOn = want; if (want) showLoad(); else hideLoad(); frame.src = want ? "xtool/?fresh=1" : "about:blank"; }
       }
 
       if (Math.abs(praw - last) < 0.0006) return;
@@ -212,7 +217,7 @@ function useApxStage(id, ref) {
         video.style.setProperty("transform", step === 2 ? "none" : "translateX(28px) scale(.992)", "important");
       }
     });
-    return () => stop();
+    return () => { stop(); if (frame) frame.removeEventListener("load", hideLoad); };
   }, []);
 }
 
@@ -294,9 +299,23 @@ function ChAipmPlatform({ jump }) {
                     about:blank on leave, so it never pre-rolls in the background.
                     PHONE/TABLET: the poster button below loads it on an explicit tap. */}
                 <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
+                {/* loading poster — animated data-bars (条) + label; sits above the
+                    iframe while the embedded film compiles/mounts. Shown by useApxStage
+                    on desktop auto-load and by the tap handler below on phone/tablet;
+                    hidden on the iframe's load event. */}
+                <div className="apx-video-loading mono" aria-hidden="true">
+                  <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
+                  <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
+                </div>
                 {!filmOn && (
                   <button className="apx-video-play" type="button" data-hov aria-label="播放 XTOOL 平台影片"
-                          onClick={() => { setFilmOn(true); const f = frameRef.current; if (f) f.src = "xtool/?fresh=1"; }}>
+                          onClick={() => {
+                            setFilmOn(true);
+                            const f = frameRef.current; if (!f) return;
+                            const lo = f.parentElement && f.parentElement.querySelector(".apx-video-loading");
+                            if (lo) lo.style.display = "flex";
+                            f.src = "xtool/?fresh=1";
+                          }}>
                     <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" draggable="false" />
                     <span className="apx-play-ico" aria-hidden="true"></span>
                     <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
@@ -438,11 +457,9 @@ function ChDev({ jump }) {
   const { BarWord, CodePanel } = window;
   const ref = useChR(null);
   useChProg("developer", ref);
-  /* this identity's live site = the first work in WORKS (Pears — the flagship the
-     governed agent built). URL pulled from the canonical WORKS table so the CTA
-     stays in sync with the deck's W·01. */
-  const devWk = (window.WORKS || [])[0];
-  const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
+  /* NOTE: the "VISIT PEARS" CTA deliberately lives only on the Reel showcase
+     chapter (ChReel · 介绍页), NOT here on the identity/animation page — it was
+     a duplicate otherwise (用户: 动画页不要按钮，介绍页出现). */
   return (
     <section className="chapter ch3" id="developer" data-tone="paper" data-prog="developer" data-screen-label="03 · A Developer — 3D">
       <div className="ch-wrap">
@@ -460,9 +477,6 @@ function ChDev({ jump }) {
               I write code myself, and I also direct agents that write it. When I want to test an idea, the fastest path is usually just to build it.
               <span className="zh">我自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做出来。</span>
             </div>
-            <a className="ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov data-rv style={{ "--rd": ".58s" }}>
-              <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
-            </a>
           </div>
         </div>
       </div>
@@ -539,8 +553,8 @@ const REEL = [
      the render. */
   { ix: "02", zh: "看你做一遍", g: "把重复工作交给 Pears", ext: "svg" },  /* vector recreation — crisp text (orig 02.jpg kept as backup) */
   { ix: "03", zh: "产品洞察",   g: "软件越来越容易生成，难的是把工作说清楚", ext: "svg" },  /* vector recreation (orig 03.jpg kept as backup) */
-  { ix: "04", zh: "产品展示",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始", ext: "svg" },  /* vector recreation (orig 04.jpg kept as backup) */
-  { ix: "05", zh: "乐观与学习", g: "每一次点击与切换，都在告诉它什么值得自动化", ext: "svg" },  /* vector recreation — crisp at any size (orig 05.jpg kept as backup) */
+  { ix: "04", zh: "产品差异",   g: "Vibe Coding 从你说的开始，Pears 从你做的开始", ext: "svg" },  /* zh matches the slide's own section tag (用户: Dev 内容不协调) */
+  { ix: "05", zh: "示范与学习", g: "每一次点击与切换，都在告诉它什么值得自动化", ext: "svg" },  /* zh matches the slide's own section tag */
   { ix: "06", zh: "工作流拍板", g: "自动化到哪一步，由你拍板", ext: "svg" },  /* vector recreation — crisp UI dashboard (orig 06.jpg kept as backup) */
   { ix: "07", zh: "隐私设计",   g: "只在你开口时才记，停止任务记录立即结束", ext: "svg" },  /* vector recreation — crisp at any size (orig 07.jpg kept as backup) */
   { ix: "08", zh: "Agent 构建", g: "拍板之后，工作流开始成为 Agent", ext: "svg" },  /* vector recreation (orig 08.jpg kept as backup) */
@@ -678,18 +692,18 @@ function ChReel({ jump }) {
               <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
                      preload="none" playsInline muted controls
                      onVolumeChange={(e) => setMuted(e.currentTarget.muted)}></video>
-              {/* default muted; this prominent control turns on the sound (BGM). Once
-                  unmuted it hides — the native controls handle re-muting / volume. */}
-              {muted && <button className="reel-play reel-bgm" type="button" aria-label="开启声音 · BGM"
+              {/* default muted; a SMALL top-right hint turns the sound on (用户: 右上角提示
+                  一下就行，不要那么显眼，字也别多). Once unmuted it hides — the native controls
+                  handle volume + the draggable progress bar. Off-centre so it never covers
+                  the video or the native scrubber. */}
+              {muted && <button className="reel-sound mono" type="button" aria-label="开启声音 · BGM"
                 onClick={() => { const v = vidRef.current; if (!v) return; v.muted = false; if (v.paused) v.play(); }}>
-                <span className="reel-play-ico reel-bgm-ico" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--acc)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 9.4v5.2h3.3L12 18.4V5.6L7.3 9.4H4z" fill="var(--acc)" stroke="none"/>
-                    <path d="M15.4 9.2a4 4 0 0 1 0 5.6"/>
-                    <path d="M17.9 6.7a7.5 7.5 0 0 1 0 10.6"/>
-                  </svg>
-                </span>
-                <span className="reel-play-cap mono">点击开启声音 · BGM ♪</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M4 9.4v5.2h3.3L12 18.4V5.6L7.3 9.4H4z" fill="currentColor" stroke="none"/>
+                  <path d="M15.4 9.2a4 4 0 0 1 0 5.6"/>
+                  <path d="M17.9 6.7a7.5 7.5 0 0 1 0 10.6"/>
+                </svg>
+                <span>声音</span>
               </button>}
             </div>
           </div>

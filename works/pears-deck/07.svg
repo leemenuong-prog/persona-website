@@ -6,8 +6,8 @@
     <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#16161a" flood-opacity="0.06"/>
     </filter>
-    <marker id="dn" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="8" markerHeight="8" orient="auto">
-      <path d="M1,1 L5,8 L9,1" fill="none" stroke="#8C9690" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <marker id="dn" viewBox="0 0 16 16" refX="8" refY="11" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="0">
+      <path d="M2.5,4.5 L8,11 L13.5,4.5" fill="none" stroke="#8C9690" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
     <style>
       .h1{ font-weight:800; stroke:#18181C; stroke-width:0.7; }
@@ -33,7 +33,7 @@
   <!-- header -->
   <use href="#pear" x="58" y="40" width="30" height="34"/>
   <text x="104" y="66" font-size="28" class="b">Pears</text>
-  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">05 · 隐私设计</text>
+  <text x="1216" y="60" font-size="17" class="gray" text-anchor="end" letter-spacing="0.3">隐私设计</text>
 
   <!-- headline -->
   <text x="62" y="142" font-size="42" class="h1" letter-spacing="-0.5">只在你开口时才记。停止任务，记录立即结束。</text>
@@ -51,7 +51,7 @@
   <!-- 正在采集 chip → arrow → 停止采集 button -->
   <rect x="92" y="436" width="184" height="48" rx="12" fill="#FFFFFF" filter="url(#soft2)"/>
   <text x="184" y="466" font-size="16" class="b" text-anchor="middle">正在采集</text>
-  <line x1="184" y1="492" x2="184" y2="520" stroke="#8C9690" stroke-width="1.6" marker-end="url(#dn)"/>
+  <line x1="184" y1="490" x2="184" y2="519" stroke="#8C9690" stroke-width="2" stroke-linecap="round" marker-end="url(#dn)"/>
   <rect x="92" y="528" width="184" height="48" rx="12" fill="#D5483F"/>
   <text x="184" y="558" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">停止采集</text>
 
