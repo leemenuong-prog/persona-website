@@ -485,6 +485,10 @@
 }
 .reel-play:hover { transform: translate(-50%, -50%) scale(1.05); }
 .reel-play:hover .reel-play-ico { background: #fff; }
+/* BGM / unmute control — same cobalt-ringed disc, but a speaker glyph instead of the
+   play triangle. Shown while the auto-playing film is muted so the BGM is one tap away. */
+.reel-bgm-ico::before { content: none; }
+.reel-bgm-ico svg { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .reel-play, .reel-play:hover { transition: none; transform: translate(-50%, -50%); }
 }
