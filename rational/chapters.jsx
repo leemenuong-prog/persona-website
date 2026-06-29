@@ -84,6 +84,11 @@ function ChAipm({ jump }) {
   const { AipmCut } = window;
   const ref = useChR(null);
   useCutStage("aipm", ref);
+  /* this identity's live site = the platform it shipped (XTOOL Agent Platform,
+     the "AI PLATFORM" work). URL pulled from the canonical WORKS table so the
+     CTA never drifts from the deck. */
+  const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
+  const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   return (
     <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE CUT">
       <div className="ch-wrap c2x-wrap">
@@ -98,6 +103,9 @@ function ChAipm({ jump }) {
               <p className="c2x-st">Telemetry finds the leak, judgment writes the prescription, shipping proves it. Requirements aren't gathered — structure forces them out.
                 <span className="zh">秩序即产品。埋点找到漏点，产品判断开出处方，ship 去验证。需求不是收集来的，是被结构逼出来的。</span>
               </p>
+              <a className="ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
+                <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
+              </a>
             </div>
             <div className="c2x-right">
               <div className="c2x-loop mono">
@@ -226,6 +234,10 @@ function ChAipmPlatform({ jump }) {
   const frameRef = useChR(null);
   const [filmOn, setFilmOn] = React.useState(false);
   useApxStage("aipmPlatform", ref);
+  /* closing CTA — after the platform film, the same live-site link as the AIPM
+     identity chapter (XTOOL Agent Platform). Resolved from WORKS. */
+  const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
+  const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   return (
     <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="02·B · XTOOL Agent Platform">
       <div className="ch-wrap">
@@ -310,6 +322,9 @@ function ChAipmPlatform({ jump }) {
           <div className="apx-strip mono" aria-hidden="true">
             {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
           </div>
+          <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
+            <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>
@@ -436,6 +451,11 @@ function ChDev({ jump }) {
   const { BarWord, CodePanel } = window;
   const ref = useChR(null);
   useChProg("developer", ref);
+  /* this identity's live site = the first work in WORKS (Pears — the flagship the
+     governed agent built). URL pulled from the canonical WORKS table so the CTA
+     stays in sync with the deck's W·01. */
+  const devWk = (window.WORKS || [])[0];
+  const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
   return (
     <section className="chapter ch3" id="developer" data-tone="paper" data-prog="developer" data-screen-label="03 · A Developer — 3D">
       <div className="ch-wrap">
@@ -453,6 +473,9 @@ function ChDev({ jump }) {
               I don't type the code — I govern the agent that does. Incident becomes rule, rule becomes test, test becomes gate. One builder, three ends shipped, zero recurrence.
               <span className="zh">纪律即杠杆。我不敲代码——我治理那个敲代码的 Agent。事故沉淀为规则，规则固化为测试，测试落为门禁。单人交付 Web + 插件 + 后端三端。</span>
             </div>
+            <a className="ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov data-rv style={{ "--rd": ".58s" }}>
+              <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
+            </a>
           </div>
           <div className="ch-stats">
             <div className="st" data-rv style={{ "--rd": ".5s" }}><div className="n" data-cnt="220" data-fmt="K">0</div><div className="l">LOC WITH AI AGENTS</div></div>
@@ -631,6 +654,10 @@ function ChReel({ jump }) {
   const [i, setI] = React.useState(0);
   const [playing, setPlaying] = React.useState(false);
   useReelStage("reel", ref, setI, () => setPlaying(false));
+  /* closing CTA — the reel is the Developer's evidence (Pears); link straight to
+     the live product, same as the Developer identity chapter (WORKS[0]). */
+  const devWk = (window.WORKS || [])[0];
+  const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
   const isVideo = i >= REEL.length;
   const s = isVideo ? REEL_VIDEO : REEL[i];
   return (
@@ -670,6 +697,9 @@ function ChReel({ jump }) {
             </div>
           </div>
           <div className="reel-out mono" aria-hidden="true">证物完毕 — 力造出形 <span className="arr">↘</span></div>
+          <a className="reel-cta ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
+            <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>
