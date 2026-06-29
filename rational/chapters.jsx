@@ -107,19 +107,6 @@ function ChAipm({ jump }) {
                 <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
               </a>
             </div>
-            <div className="c2x-right">
-              <div className="c2x-loop mono">
-                <div className="lh"><span>THE LOOP / 闭环</span><span>9 / 9 SHIPPED</span></div>
-                {C2_STEPS.map((s) => (
-                  <div key={s.ix} className="lr"><span className="sq"></span><b>{s.ix}</b><span className="en">{s.en}</span><span className="zh">{s.zh}</span></div>
-                ))}
-              </div>
-              <div className="c2x-stats">
-                <div className="st"><div className="n">9</div><div className="l">PRODUCTION TOOLS</div></div>
-                <div className="st"><div className="n">220K</div><div className="l">LINES SHIPPED</div></div>
-                <div className="st"><div className="n">0.39</div><div className="l">ROI · H/$</div></div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -477,11 +464,6 @@ function ChDev({ jump }) {
               <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
             </a>
           </div>
-          <div className="ch-stats">
-            <div className="st" data-rv style={{ "--rd": ".5s" }}><div className="n" data-cnt="220" data-fmt="K">0</div><div className="l">LOC WITH AI AGENTS</div></div>
-            <div className="st" data-rv style={{ "--rd": ".62s" }}><div className="n" data-cnt="3">0</div><div className="l">ENDS SHIPPED SOLO</div></div>
-            <div className="st" data-rv style={{ "--rd": ".74s" }}><div className="n" data-cnt="0">0</div><div className="l">INCIDENT RECURRENCE</div></div>
-          </div>
         </div>
       </div>
     </section>
@@ -519,13 +501,6 @@ function ChArch({ jump }) {
               <span className="c4-big"><BarWord text="Architect" delay={0.3} /></span>
             </h2>
             <div className="rule ch-rule c4-rule" style={{ "--rd": ".4s" }}></div>
-          </div>
-          <div className="c4-anns">
-            {C4_ANNS.map((a, i) => (
-              <div key={a.b} className={"c4-ann ann-" + i} data-th={a.th} style={a.st}>
-                <span className="sq"></span><b>{a.b}</b><span className="l">{a.l}</span>
-              </div>
-            ))}
           </div>
           <div className="ch-motto">
             <div className="mt lm" style={{ "--rd": ".3s" }}><span>Scattered needs into a system<i className="psq" aria-hidden="true"></i></span></div>

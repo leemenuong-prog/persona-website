@@ -81,14 +81,15 @@ function Whoami() {
             <span><span className="dim">I am&nbsp;</span>Alnt Med<i className="psq" aria-hidden="true"></i></span>
           </div>
           <p className="who-lead" data-rv style={{ "--rd": "1.6s" }}>
-            Trained as an architect; now I build AI products with the same instinct — turning constraints into form.
+            At the intersection of technology and product, I work in a few different roles:
           </p>
           <p className="who-sub" data-rv style={{ "--rd": "1.72s" }}>
-            I led an enterprise agent platform from zero to <span className="em">nine production tools</span>, alone —
-            220K lines of TypeScript, adopted by over half of a 48-person department.
-            Different mediums, one discipline: <span className="em">the art of rationality</span><i className="psq" aria-hidden="true"></i>
+            <span className="em">AIPM</span> — making AI fit real situations.<br />
+            <span className="em">Developer</span> — keeping a clear line from idea to shipped.<br />
+            <span className="em">Architect</span> — building scattered needs into a system that holds.<br />
+            The three support each other — it's how I've always worked.<i className="psq" aria-hidden="true"></i>
           </p>
-          <p className="who-zh zh" data-rv style={{ "--rd": "1.82s" }}>深圳大学建筑学（人工智能方向）硕士在读。单人主导企业内部 Agent 平台 0→1：9 个生产工具、22 万行 TypeScript，部门 48 人中超半数纳入日常工作流。建筑训练给了我「把约束变成形」的本能——如今用同一种理性做 AI 产品。</p>
+          <p className="who-zh zh" data-rv style={{ "--rd": "1.82s" }}>在技术与产品的交叉点上，我有不同的身份：AIPM，让 AI 能力贴合真实场景；Developer，保持从想法到落地的能力；Architect，负责把零散的需求搭成稳定的体系。三者互相支撑，也是我一直以来的工作方式。</p>
         </div>
 
         <dl className="who-card" data-rv style={{ "--rd": "1.7s" }}>
@@ -106,7 +107,7 @@ function Whoami() {
           </div>
           <div className="who-row">
             <dt className="k mono">NOW<span>当前</span></dt>
-            <dd className="v">XTOOL Agent Platform<span className="sub">9 tools · 220K LOC · ROI 0.39 H/$</span></dd>
+            <dd className="v">XTOOL Agent Platform<span className="sub">AI 产品实习 · Agent 方向</span></dd>
           </div>
         </dl>
       </div>
@@ -128,16 +129,13 @@ function Dex({ jump }) {
   const { BarWord, BarBand } = window;
   const items = [
     { id: "aipm", ix: "01", tx: "An AIPM", d: 0.2,
-      mt: "Order is the Product", zh: "秩序即产品",
-      meta: "9 TOOLS · 220K LINES · ROI 0.39 H/$",
+      mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
       band: [0.85, 0.6, 1, 0.55] },
     { id: "developer", ix: "02", tx: "A Developer", d: 0.55,
-      mt: "Discipline is Leverage", zh: "纪律即杠杆",
-      meta: "3 ENDS SOLO · 0 RECURRENCE",
+      mt: "From idea to shipped", zh: "保持从想法到落地的能力",
       band: [0.6, 1, 0.7, 0.9] },
     { id: "architect", ix: "03", tx: "An Architect", d: 0.9,
-      mt: "Form is Function", zh: "形式即功能",
-      meta: "T1 PAPER · TOP 1% · 30D→5D",
+      mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
       band: [1, 0.66, 0.5, 0.9] },
   ];
   return (
@@ -155,7 +153,7 @@ function Dex({ jump }) {
             <div className="side" data-rv style={{ "--rd": (0.5 + i * 0.35) + "s" }}>
               <BarBand h={it.band} />
               <div className="mt">{it.mt}</div>
-              <div className="zh">{it.zh} · {it.meta}</div>
+              <div className="zh">{it.zh}</div>
             </div>
             <span className="arr" aria-hidden="true">→</span>
           </div>

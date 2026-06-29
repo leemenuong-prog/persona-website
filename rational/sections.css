@@ -396,14 +396,25 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
   .wk-zh { font-size: clamp(24px, 7vw, 46px); }
   /* the big card folds to a single column: media on top, the dossier below */
   .wc-full { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr);
-    gap: clamp(12px, 2vh, 20px); padding: clamp(14px, 4vw, 22px); align-items: stretch; }
+    gap: clamp(16px, 2.6vh, 24px); padding: clamp(18px, 5vw, 26px); align-items: stretch; }
   .wf-media { height: auto; }
-  .wf-text { justify-content: flex-start; }
+  /* loosen the dossier so it breathes — the items were packed tight (用户: 太挤了)
+     with a ~8px gap. A wider per-item gap spreads them out and shrinks the slack
+     that used to pool at the bottom. (The CTA stays in flow — it must NOT be pushed
+     to the card's bottom edge, where it would collide with the floating .wk-railread
+     "W·NN" readout that rides just inside the tall mobile card.) */
+  .wf-text { justify-content: flex-start; gap: clamp(11px, 1.8vh, 18px); }
+  .wf-metrics { flex-wrap: wrap; row-gap: 8px; }
   .wf-ident { font-size: clamp(19px, 5.4vw, 28px); }
   .wk-headline .wh-name { font-size: clamp(30px, 8vw, 46px); }
   .wk-headline .wh-kick { font-size: 9.5px; letter-spacing: .2em; }
   .wf-body { -webkit-line-clamp: 4; }
-  .wf-zh { -webkit-line-clamp: 2; }
+  /* fold to English-only on the single-column card (site convention — cf. the
+     chapters drop their .zh glosses on mobile). The dense AI cards (2 CTAs + long
+     award) otherwise overflow the fixed-height card, and the flex column SLICES
+     the award/body mid-line to fit. Dropping the redundant Chinese gloss frees
+     enough height that every card fits cleanly at the looser gaps. */
+  .wf-zh { display: none; }
 }
 
 /* (dossier overlay removed — the body now lives inside the big card .wc-full) */
