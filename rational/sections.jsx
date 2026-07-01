@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   sections.jsx — Hero · Whoami · Dex · Chapter · Works · Contact
+   sections.jsx — Hero · Whoami · Chapter · Works · Contact
    English-led, Chinese annotations. Tone per section drives the
    full-page background (handled by the engine in app.jsx).
    ══════════════════════════════════════════════════════════════ */
@@ -62,8 +62,24 @@ const WHO_CHRONO = [
   { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
-function Whoami() {
-  const { BarWord, BarChrono } = window;
+/* the index — three identities, as a jump table. Left: number · BarWord
+   title (跳色 period) · motto + proof. Right (desktop): a life photo, matted
+   like a print with a drop shadow (用户: 左边索引，右边生活照，阴影卡一下).
+   Click a row jumps into its chapter; hover focuses the row, the rest recede. */
+const WHO_INDEX = [
+  { id: "developer", ix: "01", tx: "A Developer", d: 1.6,
+    mt: "From idea to shipped", zh: "保持从想法到落地的能力",
+    band: [0.6, 1, 0.7, 0.9] },
+  { id: "aipm", ix: "02", tx: "An AIPM", d: 1.95,
+    mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
+    band: [0.85, 0.6, 1, 0.55] },
+  { id: "architect", ix: "03", tx: "An Architect", d: 2.3,
+    mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
+    band: [1, 0.66, 0.5, 0.9] },
+];
+
+function Whoami({ jump }) {
+  const { BarWord, BarBand, BarChrono } = window;
   return (
     <section className="whoami sec" id="whoami" data-tone="blue" data-ob data-screen-label="WHOAMI">
       <div className="who-top">
@@ -75,27 +91,33 @@ function Whoami() {
       </h2>
       <div className="rule who-rule" style={{ "--rd": "1.3s" }}></div>
 
-      <div className="who-ids">
-        <div className="who-id">
-          <BarWord className="who-id-name" text="AIPM" delay={1.45} />
-          <p className="who-id-tag" data-rv style={{ "--rd": "1.7s" }}>
-            Making AI fit real situations.
-            <span className="zh">让 AI 能力贴合真实场景</span>
-          </p>
+      <div className="who-index">
+        <div className="who-index-list">
+          <div className="dex-head kick">
+            <span data-rv style={{ "--rd": "1.45s" }}>INDEX / 三个身份 — I AM …</span>
+            <span data-rv style={{ "--rd": "1.58s" }}>CLICK TO ENTER · 点击进入章节</span>
+          </div>
+          <div className="dex-list">
+            {WHO_INDEX.map((it, i) => (
+              <div key={it.id} className="dex-it" data-hov style={{ "--rd": (1.5 + i * 0.18) + "s" }} onClick={() => jump(it.id)}>
+                <span className="ix mono" data-rv style={{ "--rd": (1.65 + i * 0.35) + "s" }}>{it.ix}</span>
+                <BarWord className="tx" text={it.tx} delay={it.d} />
+                <div className="side" data-rv style={{ "--rd": (1.9 + i * 0.35) + "s" }}>
+                  <BarBand h={it.band} />
+                  <div className="mt">{it.mt}</div>
+                  <div className="zh">{it.zh}</div>
+                </div>
+                <span className="arr" aria-hidden="true">→</span>
+              </div>
+            ))}
+          </div>
+          <div className="dex-note kick" data-rv style={{ "--rd": "3.1s" }}>ONE DISCIPLINE · THREE PROOFS — 一种理性，三个证明</div>
         </div>
-        <div className="who-id">
-          <BarWord className="who-id-name" text="Developer" delay={1.6} />
-          <p className="who-id-tag" data-rv style={{ "--rd": "1.85s" }}>
-            Keeping a clear line from idea to shipped.
-            <span className="zh">保持从想法到落地的能力</span>
-          </p>
-        </div>
-        <div className="who-id">
-          <BarWord className="who-id-name" text="Architect" delay={1.75} />
-          <p className="who-id-tag" data-rv style={{ "--rd": "2s" }}>
-            Building scattered needs into a system that holds.
-            <span className="zh">把零散的需求搭成稳定的体系</span>
-          </p>
+        <div className="who-index-photo" data-rv style={{ "--rd": "1.5s" }}>
+          <figure className="who-photo-card">
+            <img src="uploads/whoami-portrait.jpg" alt="Lee Wenyuan · Alnt Med" loading="lazy" />
+            <figcaption className="mono">LEE WENYUAN · 李文苑</figcaption>
+          </figure>
         </div>
       </div>
 
@@ -103,50 +125,6 @@ function Whoami() {
         <div className="kick" data-rv style={{ "--rd": "1.95s" }}><span>CHRONO / 成就时间柱 — TAP A YEAR · 点选回看</span></div>
         <BarChrono items={WHO_CHRONO} />
       </div>
-    </section>
-  );
-}
-
-/* ── DEX — three identities · the index table ─────────────────
-   Each row: number · BarWord title with a 跳色 letter (the one
-   glyph that stays in the bar color — the logo's grammar) · the
-   identity's own skyline signature · motto + proof. Click jumps
-   into its chapter; hover focuses the row, the rest recede. */
-function Dex({ jump }) {
-  const { BarWord, BarBand } = window;
-  const items = [
-    { id: "developer", ix: "01", tx: "A Developer", d: 0.2,
-      mt: "From idea to shipped", zh: "保持从想法到落地的能力",
-      band: [0.6, 1, 0.7, 0.9] },
-    { id: "aipm", ix: "02", tx: "An AIPM", d: 0.55,
-      mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
-      band: [0.85, 0.6, 1, 0.55] },
-    { id: "architect", ix: "03", tx: "An Architect", d: 0.9,
-      mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
-      band: [1, 0.66, 0.5, 0.9] },
-  ];
-  return (
-    <section className="dex sec" id="dex" data-tone="blue" data-ob data-screen-label="IDENTITIES">
-      <div className="dex-ghost" data-parallax="0.12" aria-hidden="true">WHOAMI</div>
-      <div className="dex-head kick">
-        <span data-rv style={{ "--rd": ".05s" }}>INDEX / 三个身份 — I AM …</span>
-        <span data-rv style={{ "--rd": ".18s" }}>CLICK TO ENTER · 点击进入章节</span>
-      </div>
-      <div className="dex-list">
-        {items.map((it, i) => (
-          <div key={it.id} className="dex-it" data-hov style={{ "--rd": (0.1 + i * 0.18) + "s" }} onClick={() => jump(it.id)}>
-            <span className="ix mono" data-rv style={{ "--rd": (0.25 + i * 0.35) + "s" }}>{it.ix}</span>
-            <BarWord className="tx" text={it.tx} delay={it.d} />
-            <div className="side" data-rv style={{ "--rd": (0.5 + i * 0.35) + "s" }}>
-              <BarBand h={it.band} />
-              <div className="mt">{it.mt}</div>
-              <div className="zh">{it.zh}</div>
-            </div>
-            <span className="arr" aria-hidden="true">→</span>
-          </div>
-        ))}
-      </div>
-      <div className="dex-note kick" data-rv style={{ "--rd": "1.7s" }}>ONE DISCIPLINE · THREE PROOFS — 一种理性，三个证明</div>
     </section>
   );
 }
@@ -868,4 +846,4 @@ function Contact() {
   );
 }
 
-Object.assign(window, { Hero, Whoami, Dex, Chapter, CodePanel, Works, IamFinale, Contact, WORKS });
+Object.assign(window, { Hero, Whoami, Chapter, CodePanel, Works, IamFinale, Contact, WORKS });
