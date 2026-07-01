@@ -90,35 +90,22 @@ body.ready .hl-brand .zh { opacity: .8; }
 .who-q { margin-top: 26px; font-size: clamp(52px, 9.2vw, 168px); font-weight: 800; letter-spacing: -.03em; line-height: .98; }
 .who-rule { margin-top: 30px; }
 
-/* answer + body — editorial two-column: prose left, résumé card right */
-.who-grid { margin-top: 5vh; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .85fr);
-  gap: clamp(40px, 6vw, 110px); align-items: start; }
-.who-a { font-size: clamp(30px, 4vw, 64px); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
-.who-a .dim { color: var(--fg-dim); }
-.who-lead { margin-top: 28px; max-width: 17em;
-  font-size: clamp(21px, 2vw, 32px); font-weight: 800; line-height: 1.32; letter-spacing: -.015em; text-wrap: balance; }
-.who-sub { margin-top: 22px; max-width: 34em;
-  font-size: clamp(14px, 1.05vw, 17px); font-weight: 500; line-height: 1.72; letter-spacing: .004em; color: var(--fg); text-wrap: pretty; }
-.who-sub .em { font-weight: 700; }
-.who-zh { margin-top: 20px; max-width: 40em; font-size: 12.5px; line-height: 2; letter-spacing: .1em; font-weight: 400; color: var(--fg-dim); }
-
-/* the ID card — the résumé as scannable facts, not a wall of prose */
-.who-card { border-top: 1px solid var(--line); }
-.who-row { display: grid; grid-template-columns: 84px 1fr; gap: 18px; align-items: baseline;
-  padding: 16px 0; border-bottom: 1px solid var(--line); }
-.who-row .k { font-size: 9.5px; letter-spacing: .24em; color: var(--fg-dim); align-self: start; padding-top: 3px; }
-.who-row .k span { display: block; margin-top: 5px; letter-spacing: .14em; }
-.who-row .v { font-size: clamp(15px, 1.2vw, 19px); font-weight: 700; letter-spacing: -.005em; line-height: 1.2; }
-.who-row .v .sub { display: block; margin-top: 6px; font-size: 10.5px; font-weight: 400; letter-spacing: .08em; color: var(--fg-dim); }
-.who-row .v .sub.mono { letter-spacing: .12em; }
+/* the three identities, direct — no intro prose, no stats card
+   (用户: 不放介绍与坐标，直接放我的三个身份). Each name births from bars
+   (BarWord) like every other heading on the site, so this block gets the
+   same 字⇄条 entrance language instead of sitting there inert. */
+.who-ids { margin-top: 6vh; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6vh 40px; }
+.who-id-name { font-size: clamp(30px, 3.6vw, 54px); }
+.who-id-tag { margin-top: 16px; max-width: 22em;
+  font-size: clamp(14px, 1.05vw, 16px); font-weight: 500; line-height: 1.6; letter-spacing: .004em; color: var(--fg); text-wrap: pretty; }
+.who-id-tag .zh { display: block; margin-top: 8px; font-size: 12px; line-height: 1.8; letter-spacing: .08em; font-weight: 400; color: var(--fg-dim); }
 
 .who-chrono { margin-top: 8vh; }
 .who-chrono > .kick { margin-bottom: 26px; }
 
 @media (max-width: 900px) {
-  .who-grid { grid-template-columns: 1fr; gap: 5vh; }
+  .who-ids { grid-template-columns: 1fr; gap: 5vh; }
   .who-tag { display: none; }
-  .who-lead { max-width: none; }
 }
 
 /* ── DEX — the three identities ──────────────────────────── */
@@ -507,12 +494,9 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   /* hero — calm the decorative ghost rows so they don't read as stray text */
   .hl-ghost { font-size: 22px; line-height: 1.5; opacity: .6; }
 
-  /* whoami — ease the desktop-drama floors; stack the ID card label column */
+  /* whoami — ease the desktop-drama floor */
   .who-q { font-size: clamp(40px, 13vw, 60px); }
-  .who-a { font-size: clamp(26px, 7.5vw, 40px); }
-  .who-lead { font-size: clamp(18px, 5.4vw, 24px); margin-top: 20px; }
-  .who-sub { font-size: clamp(13px, 4vw, 16px); }
-  .who-row { grid-template-columns: 60px 1fr; gap: 12px; padding: 14px 0; }
+  .who-id-name { font-size: clamp(28px, 9vw, 40px); }
 
   /* dex — smaller title floor for the long "An Architect" */
   .dex-it .tx { font-size: clamp(30px, 9vw, 52px); }

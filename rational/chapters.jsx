@@ -118,19 +118,12 @@ const APX_INTRO_PAGES = [
     ix: "01",
     tag: "平台定义",
     title: "不是单个工具，是生产系统。",
-    body: "XTOOL 把调研、脚本、审核、复测放进同一个闭环。每个动作不再分散，都会回到统一的结构里。",
-  },
-  {
-    ix: "02",
-    tag: "专属 Agent",
-    title: "一个 Agent 记住你的判断。",
-    body: "它记住你的选题口味、审核规则、失败原因和复测结果。下一次生成，不是重新开始，而是在已有判断上继续推进。",
+    body: "把大家的需求收集起来，就变了 Agent。",
   },
 ];
 
 const APX_VISUALS = [
   { key: "system", label: "生产链汇入一个系统" },
-  { key: "memory", label: "Agent 记住你的判断" },
 ];
 
 const APX_STRIP = [
@@ -197,7 +190,7 @@ function useApxStage(id, ref) {
          praw window is unreliable; there the film loads on an explicit TAP instead (see the
          .apx-video-play poster button), which also shows the loader. */
       if (frame && !(window.matchMedia && window.matchMedia("(max-width: 900px)").matches)) {
-        if (!filmLoaded && praw >= 0.6) {
+        if (!filmLoaded && praw >= 0.42) {
           filmLoaded = true;
           showLoad();
           frame.src = "xtool/?fresh=1";
@@ -207,7 +200,9 @@ function useApxStage(id, ref) {
       if (Math.abs(praw - last) < 0.0006) return;
       last = praw;
       el.style.setProperty("--p", p.toFixed(4));
-      const step = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
+      /* two-phase keynote now (only one text/diagram page left after removing
+         "专属 Agent" — 用户: 只留不是单个工具是生产系统): 0 = text + diagram, 1 = video. */
+      const step = p < 0.5 ? 0 : 1;
       if (step === lastStep) return;
       lastStep = step;
       el.dataset.step = String(step);
@@ -219,9 +214,9 @@ function useApxStage(id, ref) {
         n.style.setProperty("transform", on ? "none" : "translateY(18px)", "important");
       });
       if (video) {
-        video.classList.toggle("on", step === 2);
-        video.style.setProperty("opacity", step === 2 ? "1" : "0", "important");
-        video.style.setProperty("transform", step === 2 ? "none" : "translateX(28px) scale(.992)", "important");
+        video.classList.toggle("on", step === 1);
+        video.style.setProperty("opacity", step === 1 ? "1" : "0", "important");
+        video.style.setProperty("transform", step === 1 ? "none" : "translateX(28px) scale(.992)", "important");
       }
     });
     return () => { stop(); removeEventListener("message", onFilmMsg); clearTimeout(safetyT); if (frame) frame.removeEventListener("load", onFrameLoad); };
@@ -281,21 +276,6 @@ function ChAipmPlatform({ jump }) {
                       <span>内容生产系统</span>
                       <b>统一记忆<br />统一规则<br />统一数据</b>
                     </div>
-                  </div>
-                </div>
-
-                <div className="apx-visual apx-visual-memory">
-                  <div className="apx-visual-cap mono">{APX_VISUALS[1].label}</div>
-                  <div className="apx-memory-diagram">
-                    <div className="apx-memory-core">
-                      <i></i>
-                      <span>你的专属 Agent</span>
-                    </div>
-                    {["选题口味", "审核规则", "失败原因", "复测结果"].map((item, i) => (
-                      <div className={"apx-memory-node n" + (i + 1)} key={item}>
-                        <b>{String(i + 1).padStart(2, "0")}</b><span>{item}</span>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -633,6 +613,8 @@ function useReelStage(id, ref, onIndex) {
         vcell.style.pointerEvents = live ? "auto" : "none";
         if (vid && live && !vidStarted) {
           vidStarted = true;
+          const lo = vcell.querySelector(".reel-video-loading");
+          if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
           vid.muted = true;
           try { vid.currentTime = 0; } catch (e) {}
           const pr = vid.play(); if (pr && pr.catch) pr.catch(() => {});
@@ -664,6 +646,8 @@ function ChReel({ jump }) {
     const io = new IntersectionObserver((ents) => {
       ents.forEach((en) => {
         if (en.isIntersecting && en.intersectionRatio > 0.6 && v.paused) {
+          const lo = v.parentElement && v.parentElement.querySelector(".reel-video-loading");
+          if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
           v.muted = true; const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
         }
       });
@@ -698,7 +682,23 @@ function ChReel({ jump }) {
             <div className="reel-cell reel-video">
               <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
                      preload="none" playsInline muted controls
-                     onVolumeChange={(e) => setMuted(e.currentTarget.muted)}></video>
+                     onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
+                     onPlaying={(e) => {
+                       const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
+                       if (lo) lo.style.display = "none";
+                     }}
+                     onError={(e) => {
+                       const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
+                       if (lo) lo.style.display = "none";
+                     }}></video>
+              {/* loading poster — same bars-and-caption language as the AIPM platform
+                  film's .apx-video-loading, recoloured for this chapter's light ground.
+                  Shown the instant autoplay is triggered; hidden on 'playing' (real
+                  playback started) or 'error', with an 8s safety timeout either way. */}
+              <div className="reel-video-loading mono" aria-hidden="true">
+                <span className="reel-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
+                <span className="reel-load-cap">影片加载中 · LOADING FILM</span>
+              </div>
               {/* default muted; a SMALL top-right hint turns the sound on (用户: 右上角提示
                   一下就行，不要那么显眼，字也别多). Once unmuted it hides — the native controls
                   handle volume + the draggable progress bar. Off-centre so it never covers

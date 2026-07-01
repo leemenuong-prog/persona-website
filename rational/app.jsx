@@ -522,10 +522,10 @@ function App() {
         <Hero />
         <Whoami />
         <Dex jump={jump} />
-        <ChAipm jump={jump} />
-        <ChAipmPlatform jump={jump} />
         <ChDev jump={jump} />
         <ChReel jump={jump} />
+        <ChAipm jump={jump} />
+        <ChAipmPlatform jump={jump} />
         <ChArch jump={jump} />
         <Works jump={jump} />
         <Contact />

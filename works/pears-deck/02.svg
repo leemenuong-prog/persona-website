@@ -40,27 +40,27 @@
   <text x="62" y="652" font-size="17" class="b">产品体验及设计负责人 · Vibe Coding 开发</text>
   <text x="62" y="684" font-size="15" class="faint">Pears v0.4.2 · 2026</text>
 
-  <!-- ===== MacBook (no hand) ===== -->
+  <!-- ===== MacBook (no hand) — landscape screen, ~16:10 ===== -->
   <!-- base / deck (3D wedge: top surface + front edge) -->
   <g filter="url(#lap)">
-    <path d="M812,656 L1252,656 L1268,676 L796,676 Z" fill="#DCDB8E"/>
-    <path d="M796,676 L1268,676 L1261,687 Q1259,691 1253,691 L811,691 Q805,691 803,687 Z" fill="#CFCE7B"/>
-    <path d="M1004,676 L1060,676 L1056,683 L1008,683 Z" fill="#BCBB6C"/>
+    <path d="M772,510 L1248,510 L1264,530 L756,530 Z" fill="#DCDB8E"/>
+    <path d="M756,530 L1264,530 L1257,541 Q1255,545 1249,545 L771,545 Q765,545 763,541 Z" fill="#CFCE7B"/>
+    <path d="M981,530 L1040,530 L1036,537 L985,537 Z" fill="#BCBB6C"/>
   </g>
   <!-- hinge shadow under lid -->
-  <rect x="812" y="650" width="440" height="8" rx="2" fill="#101014"/>
+  <rect x="770" y="504" width="480" height="8" rx="2" fill="#101014"/>
   <!-- screen bezel -->
-  <rect x="810" y="92" width="444" height="562" rx="13" fill="#17171B"/>
-  <circle cx="1032" cy="99" r="2.2" fill="#3A3A3E"/>
+  <rect x="770" y="180" width="480" height="328" rx="13" fill="#17171B"/>
+  <circle cx="1010" cy="187" r="2.2" fill="#3A3A3E"/>
 
   <!-- ===== screen UI (local coords via translate) ===== -->
-  <g transform="translate(821,106)">
-    <clipPath id="scr"><rect x="0" y="0" width="422" height="534" rx="4"/></clipPath>
+  <g transform="translate(781,194)">
+    <clipPath id="scr"><rect x="0" y="0" width="458" height="300" rx="4"/></clipPath>
     <g clip-path="url(#scr)">
-      <rect x="0" y="0" width="422" height="534" fill="#FFFFFF"/>
+      <rect x="0" y="0" width="458" height="300" fill="#FFFFFF"/>
 
       <!-- browser tab bar -->
-      <rect x="0" y="0" width="422" height="22" fill="#E9E9EC"/>
+      <rect x="0" y="0" width="458" height="22" fill="#E9E9EC"/>
       <circle cx="14" cy="11" r="3.2" fill="#FF5F57"/><circle cx="25" cy="11" r="3.2" fill="#FEBC2E"/><circle cx="36" cy="11" r="3.2" fill="#28C840"/>
       <path d="M48,9 l4,4 l4,-4" fill="none" stroke="#9A9A9E" stroke-width="1"/>
       <rect x="68" y="3" width="150" height="17" rx="5" fill="#FCFCFD"/>
@@ -68,62 +68,62 @@
       <text x="90" y="15" font-size="9" class="ui">Pears</text>
       <text x="208" y="15" font-size="9" class="uin" text-anchor="end">✕</text>
       <text x="230" y="15" font-size="11" class="uin">+</text>
-      <text x="410" y="15" font-size="9" class="uin" text-anchor="end">⋮</text>
+      <text x="446" y="15" font-size="9" class="uin" text-anchor="end">⋮</text>
 
       <!-- address bar -->
-      <rect x="0" y="22" width="422" height="26" fill="#F3F3F5"/>
-      <text x="14" y="39" font-size="11" class="uin">←</text>
-      <text x="30" y="39" font-size="11" class="uin">→</text>
-      <text x="46" y="39" font-size="10" class="uin">↻</text>
-      <rect x="62" y="26" width="300" height="17" rx="8.5" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1"/>
-      <text x="74" y="38" font-size="8.5" class="uin">pear-work-web.netlify.app</text>
-      <text x="410" y="38" font-size="9" class="uin" text-anchor="end">☆  ⬇  ⋮</text>
+      <rect x="0" y="22" width="458" height="24" fill="#F3F3F5"/>
+      <text x="14" y="38" font-size="11" class="uin">←</text>
+      <text x="30" y="38" font-size="11" class="uin">→</text>
+      <text x="46" y="38" font-size="10" class="uin">↻</text>
+      <rect x="62" y="25" width="336" height="16" rx="8" fill="#FFFFFF" stroke="#E4E4E7" stroke-width="1"/>
+      <text x="74" y="37" font-size="8.5" class="uin">pear-work-web.netlify.app</text>
+      <text x="446" y="37" font-size="9" class="uin" text-anchor="end">☆  ⬇  ⋮</text>
 
       <!-- app top bar -->
-      <text x="14" y="63" font-size="9" class="ui">▦　▤</text>
+      <text x="14" y="59" font-size="9" class="ui">▦　▤</text>
       <g text-anchor="end">
-        <rect x="218" y="55" width="98" height="14" rx="7" fill="#F2F2F4"/>
-        <text x="267" y="65" font-size="7.6" class="uin" text-anchor="middle">获取 Pear 插件 · 来宾版</text>
-        <rect x="322" y="55" width="44" height="14" rx="7" fill="#F2F2F4"/>
-        <text x="344" y="65" font-size="7.6" class="uin" text-anchor="middle">新手引导</text>
-        <rect x="372" y="55" width="36" height="14" rx="7" fill="#F2F2F4"/>
-        <text x="390" y="65" font-size="7.6" class="uin" text-anchor="middle">v0.4.2</text>
+        <rect x="254" y="51" width="98" height="14" rx="7" fill="#F2F2F4"/>
+        <text x="303" y="61" font-size="7.6" class="uin" text-anchor="middle">获取 Pear 插件 · 来宾版</text>
+        <rect x="358" y="51" width="44" height="14" rx="7" fill="#F2F2F4"/>
+        <text x="380" y="61" font-size="7.6" class="uin" text-anchor="middle">新手引导</text>
+        <rect x="408" y="51" width="36" height="14" rx="7" fill="#F2F2F4"/>
+        <text x="426" y="61" font-size="7.6" class="uin" text-anchor="middle">v0.4.2</text>
       </g>
-      <line x1="0" y1="78" x2="422" y2="78" stroke="#ECECEE" stroke-width="1"/>
+      <line x1="0" y1="78" x2="458" y2="78" stroke="#ECECEE" stroke-width="1"/>
 
       <!-- hero: pear + headline -->
-      <use href="#pear" x="86" y="150" width="34" height="38"/>
-      <text x="130" y="180" font-size="26" class="h2">把重复工作交给 Pears</text>
+      <use href="#pear" x="86" y="88" width="27" height="30"/>
+      <text x="122" y="112" font-size="19" class="h2">把重复工作交给 Pears</text>
 
       <!-- sub -->
-      <text x="211" y="212" font-size="10.5" class="gray" text-anchor="middle">Pears 会学习你的重复流程，沉淀成可运行、可持续优化的工作台。</text>
+      <text x="229" y="140" font-size="9.5" class="gray" text-anchor="middle">Pears 会学习你的重复流程，沉淀成可运行、可持续优化的工作台。</text>
 
       <!-- two-column rounded box -->
-      <rect x="40" y="238" width="342" height="166" rx="12" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1" filter="url(#soft)"/>
-      <line x1="211" y1="258" x2="211" y2="368" stroke="#EFEFF1" stroke-width="1"/>
+      <rect x="40" y="164" width="378" height="94" rx="12" fill="#FFFFFF" stroke="#EAEAEC" stroke-width="1" filter="url(#soft)"/>
+      <line x1="229" y1="176" x2="229" y2="240" stroke="#EFEFF1" stroke-width="1"/>
 
       <!-- left col: 工作流描述 -->
-      <text x="58" y="270" font-size="9.5" class="b">工作流描述</text>
-      <text x="58" y="292" font-size="8.4" class="uin">例如：每两天去 YouTube / TikTok 抓取和</text>
-      <text x="58" y="306" font-size="8.4" class="uin">对标账号的最新视频数据，填进一张追</text>
-      <text x="58" y="320" font-size="8.4" class="uin">踪表。</text>
-      <line x1="58" y1="378" x2="195" y2="378" stroke="#EFEFF1" stroke-width="1"/>
-      <text x="58" y="394" font-size="7.8" class="uin">🔗 联网搜索</text>
-      <text x="194" y="394" font-size="7.8" class="uin" text-anchor="end">可拖文件进来</text>
+      <text x="58" y="182" font-size="9" class="b">工作流描述</text>
+      <text x="58" y="197" font-size="7.9" class="uin">例如：每两天去 YouTube / TikTok 抓取和</text>
+      <text x="58" y="208" font-size="7.9" class="uin">对标账号的最新视频数据，填进一张追</text>
+      <text x="58" y="219" font-size="7.9" class="uin">踪表。</text>
+      <line x1="58" y1="234" x2="213" y2="234" stroke="#EFEFF1" stroke-width="1"/>
+      <text x="58" y="248" font-size="7.4" class="uin">🔗 联网搜索</text>
+      <text x="212" y="248" font-size="7.4" class="uin" text-anchor="end">可拖文件进来</text>
 
       <!-- right col: 成果 -->
-      <text x="227" y="270" font-size="9.5" class="b">成果</text>
-      <text x="227" y="292" font-size="8.4" class="uin">+ 加示例 想要的成果，或拖入 / 加</text>
-      <text x="227" y="306" font-size="8.4" class="uin">示例，例如：按日期追加的视频追</text>
-      <text x="227" y="320" font-size="8.4" class="uin">踪表</text>
+      <text x="247" y="182" font-size="9" class="b">成果</text>
+      <text x="247" y="197" font-size="7.9" class="uin">+ 加示例 想要的成果，或拖入 / 加</text>
+      <text x="247" y="208" font-size="7.9" class="uin">示例，例如：按日期追加的视频追</text>
+      <text x="247" y="219" font-size="7.9" class="uin">踪表</text>
 
       <!-- bottom row: 直接分析 + button -->
-      <text x="58" y="430" font-size="9" class="uin">直接分析</text>
-      <rect x="284" y="416" width="98" height="22" rx="11" fill="#2B2B30"/>
-      <text x="333" y="431" font-size="9" fill="#FFFFFF" text-anchor="middle">→ 开始分析</text>
+      <text x="58" y="278" font-size="8.5" class="uin">直接分析</text>
+      <rect x="320" y="266" width="98" height="20" rx="10" fill="#2B2B30"/>
+      <text x="369" y="280" font-size="8.5" fill="#FFFFFF" text-anchor="middle">→ 开始分析</text>
 
       <!-- very bottom centered -->
-      <text x="211" y="478" font-size="9" class="acc" text-anchor="middle">∨ 我的 Pears</text>
+      <text x="229" y="294" font-size="8" class="acc" text-anchor="middle">∨ 我的 Pears</text>
     </g>
   </g>
 </svg>

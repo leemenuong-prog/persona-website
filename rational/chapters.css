@@ -112,14 +112,14 @@
   display: grid; grid-template-columns: minmax(300px, .7fr) minmax(560px, 1.3fr); gap: 42px;
   align-items: center; min-height: 0;
 }
-.apx-stage[data-step="2"] .apx-hero { grid-template-columns: minmax(250px, .52fr) minmax(680px, 1.48fr); gap: 32px; }
+.apx-stage[data-step="1"] .apx-hero { grid-template-columns: minmax(250px, .52fr) minmax(680px, 1.48fr); gap: 32px; }
 .apx-copy { position: relative; min-width: 0; }
 .apx-cap { font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
 .apx-title {
   margin-top: 24px; font-size: clamp(54px, 6.5vw, 112px); font-weight: 800;
   letter-spacing: -.055em; line-height: .86;
 }
-.apx-stage[data-step="2"] .apx-title { font-size: clamp(44px, 5.1vw, 86px); }
+.apx-stage[data-step="1"] .apx-title { font-size: clamp(44px, 5.1vw, 86px); }
 .apx-title .psq {
   display: inline-block; width: .105em; height: .105em; margin-left: .11em; margin-bottom: .1em;
   background: var(--acc);
@@ -128,7 +128,7 @@
   position: relative; margin-top: 34px; width: min(35vw, 520px); min-height: 210px;
   border-top: 1px solid var(--line);
 }
-.apx-stage[data-step="2"] .apx-intro { width: min(22vw, 292px); }
+.apx-stage[data-step="1"] .apx-intro { width: min(22vw, 292px); }
 .apx-page {
   position: absolute; inset: 0 auto auto 0; width: 100%; padding-top: 18px;
   opacity: 0; transform: translateY(16px);
@@ -151,7 +151,7 @@
   position: relative; min-width: 0; width: 100%; aspect-ratio: 16 / 9;
   transition: transform .8s var(--ez);
 }
-.apx-stage[data-step="2"] .apx-media { transform: scale(1.04); transform-origin: center right; }
+.apx-stage[data-step="1"] .apx-media { transform: scale(1.04); transform-origin: center right; }
 .apx-visuals,
 .apx-video { position: absolute; inset: 0; min-width: 0; }
 .apx-visual {
@@ -195,33 +195,6 @@
 .apx-system-core span { font-size: clamp(24px, 2.8vw, 46px); font-weight: 800; letter-spacing: -.04em; line-height: .95; }
 .apx-system-core b { font-size: 13px; letter-spacing: .16em; line-height: 2; color: rgba(239, 236, 230, .68); font-family: var(--mono); }
 
-.apx-memory-diagram { position: absolute; inset: 62px 48px 42px; }
-.apx-memory-core {
-  position: absolute; left: 50%; top: 50%; width: min(30vw, 260px); aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  display: grid; place-items: center; background: var(--ink); color: var(--paper);
-}
-.apx-memory-core i { width: 14px; height: 14px; background: var(--acc); align-self: end; margin-bottom: 24px; }
-.apx-memory-core span {
-  align-self: start; max-width: 6em; text-align: center; font-size: clamp(24px, 2.4vw, 38px);
-  font-weight: 800; line-height: .98; letter-spacing: -.03em;
-}
-.apx-memory-node {
-  position: absolute; width: 170px; padding-top: 10px; border-top: 1px solid var(--line);
-  color: var(--fg);
-}
-.apx-memory-node b { display: block; font-family: var(--mono); font-size: 10px; color: var(--fg-dim); }
-.apx-memory-node span { display: block; margin-top: 7px; font-size: clamp(16px, 1.55vw, 24px); font-weight: 800; letter-spacing: .04em; }
-.apx-memory-node.n1 { left: 0; top: 8%; }
-.apx-memory-node.n2 { right: 0; top: 8%; text-align: right; }
-.apx-memory-node.n3 { left: 0; bottom: 10%; }
-.apx-memory-node.n4 { right: 0; bottom: 10%; text-align: right; }
-.apx-memory-diagram::before,
-.apx-memory-diagram::after {
-  content: ""; position: absolute; left: 50%; top: 50%; background: var(--line); transform: translate(-50%, -50%);
-}
-.apx-memory-diagram::before { width: 100%; height: 1px; }
-.apx-memory-diagram::after { width: 1px; height: 100%; }
 
 .apx-video {
   background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
@@ -229,7 +202,7 @@
   transition: opacity .8s var(--ez), transform 1s var(--ez);
   overflow: hidden;
 }
-.apx-stage[data-step="2"] .apx-video,
+.apx-stage[data-step="1"] .apx-video,
 .apx-video.on { opacity: 1; transform: none; }
 .apx-video iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
 /* loading poster — covers the iframe while the embedded film compiles/mounts, so
@@ -294,38 +267,33 @@
      On a phone that reads as "text, then a pile of posters" and the step-toggling
      hid the off-step ones. Flatten both columns (display:contents) into the hero's
      flex flow and re-order the leaves so every .apx-page is immediately followed by
-     its visual: 定义→系统图 · 专属Agent→记忆图 · 视频→影片. ──────────────────── */
-  .apx-hero, .apx-stage[data-step="2"] .apx-hero {
+     its visual: 定义→系统图 · 视频→影片. ──────────────────── */
+  .apx-hero, .apx-stage[data-step="1"] .apx-hero {
     height: auto; display: flex; flex-direction: column; margin-top: 26px; }
   .apx-copy, .apx-intro, .apx-media, .apx-visuals,
-  .apx-stage[data-step="2"] .apx-media { display: contents; }
+  .apx-stage[data-step="1"] .apx-media { display: contents; }
 
   .apx-cap { order: 0; }
-  .apx-title, .apx-stage[data-step="2"] .apx-title { order: 1; font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
+  .apx-title, .apx-stage[data-step="1"] .apx-title { order: 1; font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
 
   /* one continuous flow — no hairline separators between the text/diagram pairs,
      tight vertical rhythm so they read as ONE board, not three (用户: 全部连在一起) */
   .apx-page { position: relative; opacity: 1 !important; transform: none !important;
     width: 100%; min-height: 0; margin: 0; padding: 12px 0 6px; border: 0; }
   .apx-page-0 { order: 2; }
-  .apx-page-1 { order: 4; }
-  .apx-page-video { order: 6; }
+  .apx-page-video { order: 4; }
 
   /* the diagram board hugs its content (was a 300px box with big empty grid bands
      top & bottom — 用户: 中间不要留空) */
   .apx-visual { position: relative; inset: auto; width: 100%; min-height: 0; height: 240px;
     opacity: 1 !important; transform: none !important; margin: 0 0 4px; }
   .apx-visual-system { order: 3; }
-  .apx-visual-memory { order: 5; }
 
-  .apx-system-diagram, .apx-memory-diagram { inset: 40px 14px 12px; }
-  .apx-system-diagram { grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
+  .apx-system-diagram { inset: 40px 14px 12px; grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
   .apx-join { display: none; }
   .apx-toolstack { gap: 8px; align-content: space-between; }
   .apx-tool { padding: 7px 0; }
   .apx-system-core { min-height: 0; height: 100%; padding: 16px; justify-content: center; gap: 8px; }
-  .apx-memory-core { width: 124px; }
-  .apx-memory-node { width: 104px; }
   .apx-video { position: relative; inset: auto; order: 7; width: 100%; margin: 4px 0 0;
     aspect-ratio: 16 / 9; opacity: 1 !important; transform: none !important; }
   .apx-video-play { display: flex; position: absolute; inset: 0; z-index: 3;
@@ -484,6 +452,28 @@
    native controls own play / seek (draggable progress bar) / fullscreen. */
 .reel-video { background: var(--bg); pointer-events: none; }
 .reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
+/* loading poster — same site language as .apx-video-loading (the AIPM platform film),
+   recoloured for this chapter's light "snow" ground instead of ink, so the two video
+   loads read as one consistent motif. Shown the instant autoplay is triggered; hidden
+   on the video's native 'playing' event (fires once real playback begins) — more
+   reliable here than AIPM's postMessage handshake since there's no embedded iframe app
+   to wait on. */
+.reel-video-loading {
+  position: absolute; inset: 0; z-index: 4; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: var(--bg); color: var(--fg); pointer-events: none;
+}
+.reel-load-bars { display: flex; align-items: flex-end; gap: 5px; height: 40px; }
+.reel-load-bars i {
+  width: 5px; height: 100%; background: var(--acc); transform-origin: bottom center;
+  animation: apxLoadBar 1.05s var(--ez) infinite;
+}
+.reel-load-bars i:nth-child(2) { animation-delay: .13s; }
+.reel-load-bars i:nth-child(3) { animation-delay: .26s; }
+.reel-load-bars i:nth-child(4) { animation-delay: .39s; }
+.reel-load-bars i:nth-child(5) { animation-delay: .52s; }
+.reel-load-cap { font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
+@media (prefers-reduced-motion: reduce) { .reel-load-bars i { animation: none; transform: scaleY(.62); } }
 /* sound hint — a SMALL, low-key chip in the video's TOP-RIGHT corner (用户: 右上角提示一下
    就行，不需要那么显眼，字也别多). Shown only while the film is muted; one tap turns the BGM
    on, then it hides and the native controls take over. Deliberately tiny and off to the
@@ -592,6 +582,8 @@
   .reel-img { position: relative; width: 100%; height: auto; display: block; object-fit: contain; }
   .reel-video { aspect-ratio: 16 / 9; pointer-events: auto !important; background: var(--ink); }
   .reel-video video { position: relative; width: 100%; height: 100%; }
+  .reel-video-loading { background: var(--ink); color: var(--paper); }
+  .reel-load-cap { color: rgba(239, 236, 230, .7); }
   /* the closing CTA isn't part of the hidden chrome — show it after the roadshow film.
      the reel stage has no side padding (full-bleed slides), so centre it explicitly
      (auto margins don't centre an inline-flex) and keep it off the screen edges */

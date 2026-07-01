@@ -84,23 +84,25 @@ function BarChrono({ items, intro = true, className = "" }) {
   const user = React.useRef(false);
   const ref = React.useRef(null);
 
-  /* intro scrub — once the section reveals, the self walks
-     through history and settles at now */
+  /* intro scrub — once the CHART ITSELF is actually in view (not the section's
+     eager 72%-lookahead reveal, which fires well before the user has scrolled
+     far enough to see it — 用户: 没翻动就开始动了), the self walks through
+     history and settles at now. A dedicated IntersectionObserver on the chart
+     node (rather than the shared [data-ob]/.in system used for fade-ins
+     sitewide) is what makes "scrolled to it" genuine here. */
   React.useEffect(() => {
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!intro || reduce) { setAct(items.length - 1); return; }
-    const sec = ref.current && ref.current.closest("[data-ob]");
-    let timers = [], mo = null;
+    const el = ref.current;
+    let timers = [], io = null;
     const start = () => items.forEach((_, i) =>
       timers.push(setTimeout(() => { if (!user.current) setAct(i); }, 1150 + i * 380)));
-    if (!sec || sec.classList.contains("in")) start();
-    else {
-      mo = new MutationObserver(() => {
-        if (sec.classList.contains("in")) { start(); if (mo) { mo.disconnect(); mo = null; } }
-      });
-      mo.observe(sec, { attributes: true, attributeFilter: ["class"] });
-    }
-    return () => { timers.forEach(clearTimeout); if (mo) mo.disconnect(); };
+    if (!el || !("IntersectionObserver" in window)) { start(); return () => timers.forEach(clearTimeout); }
+    io = new IntersectionObserver((ents) => {
+      if (ents[0] && ents[0].isIntersecting) { start(); io.disconnect(); io = null; }
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => { timers.forEach(clearTimeout); if (io) io.disconnect(); };
   }, []);
 
   const pick = (i) => { user.current = true; setAct(i); };

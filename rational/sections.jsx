@@ -51,14 +51,14 @@ function Hero() {
 /* the time skyline — nine real periods, verified against the résumé.
    The pivot year dips on purpose: a reset before the peak. */
 const WHO_CHRONO = [
-  { y: "2020", h: 0.3,  tag: "ARCHITECTURE",     t: "GZHU — B.Arch begins",                       zh: "广州大学建筑学学士 · 「把约束变成形」训练的起点" },
+  { y: "2020", h: 0.3,  tag: "ARCHITECTURE",     t: "GZHU — B.Arch begins",                       zh: "广州大学建筑学学士" },
   { y: "2024", h: 0.56, tag: "ARCHITECTURE",     t: "Ring-World 环·世界 — NCDA 一等奖",            zh: "「NCDA」未来设计师全国数字设计大赛 一等奖 · 车辆段上盖 · 动态隔音幕墙" },
   { y: "2025", h: 0.84, tag: "ARCHITECTURE",     t: "挑战杯 Grand Prize 特等奖 — Top 1%",          zh: "蒋巷文脉·科链智谷 2.0 · 产村双向赋能 · 项目组长" },
   { y: "2025", h: 0.68, tag: "RESEARCH",         t: "《建筑学报》 T1 — 2nd Author",                  zh: "国内建筑领域 T1 核心期刊 · AIGC 三维空间优化" },
-  { y: "2025", h: 0.6,  tag: "ARCH × AI",        t: "UABB AIGC Pipeline · 板块唯一学生代表",        zh: "深港双年展 · 50+ 展品自动转译 · 30d → 5d" },
-  { y: "2025", h: 0.5,  tag: "THE PIVOT",        t: "SZU M.Arch · 转向 AI 产品",                    zh: "建筑学（AI 方向）硕士 · 垂直 Agent AIPM · Peear MVP" },
-  { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松季军",          zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
+  { y: "2025", h: 0.6,  tag: "ARCH × AI",        t: "UABB AIGC Pipeline · 板块唯一学生代表",        zh: "深港双年展 · 多模态 AIGC 负责人" },
+  { y: "2025", h: 0.5,  tag: "THE PIVOT",        t: "SZU M.Arch · 转向 AI 产品",                    zh: "建筑学（复合 AI 方向）硕士 · 垂直 Agent AIPM" },
   { y: "2026", h: 0.92, tag: "AI PRODUCT",       t: "议见 Yijian — 企业 Agent 黑客松亚军",          zh: "香港中文大学 · 决策共识 Agent · 四层共识 · 七角色审议" },
+  { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松季军",          zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
   { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
@@ -75,41 +75,28 @@ function Whoami() {
       </h2>
       <div className="rule who-rule" style={{ "--rd": "1.3s" }}></div>
 
-      <div className="who-grid">
-        <div className="who-text">
-          <div className="who-a lm" style={{ "--rd": "1.45s" }}>
-            <span><span className="dim">I am&nbsp;</span>Alnt Med<i className="psq" aria-hidden="true"></i></span>
-          </div>
-          <p className="who-lead" data-rv style={{ "--rd": "1.6s" }}>
-            At the intersection of technology and product, I work in a few different roles:
+      <div className="who-ids">
+        <div className="who-id">
+          <BarWord className="who-id-name" text="AIPM" delay={1.45} />
+          <p className="who-id-tag" data-rv style={{ "--rd": "1.7s" }}>
+            Making AI fit real situations.
+            <span className="zh">让 AI 能力贴合真实场景</span>
           </p>
-          <p className="who-sub" data-rv style={{ "--rd": "1.72s" }}>
-            <span className="em">AIPM</span> — making AI fit real situations.<br />
-            <span className="em">Developer</span> — keeping a clear line from idea to shipped.<br />
-            <span className="em">Architect</span> — building scattered needs into a system that holds.<br />
-            The three support each other — it's how I've always worked.<i className="psq" aria-hidden="true"></i>
-          </p>
-          <p className="who-zh zh" data-rv style={{ "--rd": "1.82s" }}>在技术与产品的交叉点上，我有不同的身份：AIPM，让 AI 能力贴合真实场景；Developer，保持从想法到落地的能力；Architect，负责把零散的需求搭成稳定的体系。三者互相支撑，也是我一直以来的工作方式。</p>
         </div>
-
-        <dl className="who-card" data-rv style={{ "--rd": "1.7s" }}>
-          <div className="who-row">
-            <dt className="k mono">BASE<span>坐标</span></dt>
-            <dd className="v">Shenzhen<span className="sub mono">22.54°N · 114.05°E</span></dd>
-          </div>
-          <div className="who-row">
-            <dt className="k mono">ROLE<span>角色</span></dt>
-            <dd className="v">Vertical-Agent AIPM<span className="sub">产品 × 工程 × 设计</span></dd>
-          </div>
-          <div className="who-row">
-            <dt className="k mono">EDU<span>训练</span></dt>
-            <dd className="v">M.Arch · AI direction<span className="sub">SZU 在读 · GZHU B.Arch</span></dd>
-          </div>
-          <div className="who-row">
-            <dt className="k mono">NOW<span>当前</span></dt>
-            <dd className="v">XTOOL Agent Platform<span className="sub">AI 产品实习 · Agent 方向</span></dd>
-          </div>
-        </dl>
+        <div className="who-id">
+          <BarWord className="who-id-name" text="Developer" delay={1.6} />
+          <p className="who-id-tag" data-rv style={{ "--rd": "1.85s" }}>
+            Keeping a clear line from idea to shipped.
+            <span className="zh">保持从想法到落地的能力</span>
+          </p>
+        </div>
+        <div className="who-id">
+          <BarWord className="who-id-name" text="Architect" delay={1.75} />
+          <p className="who-id-tag" data-rv style={{ "--rd": "2s" }}>
+            Building scattered needs into a system that holds.
+            <span className="zh">把零散的需求搭成稳定的体系</span>
+          </p>
+        </div>
       </div>
 
       <div className="who-chrono">
@@ -128,12 +115,12 @@ function Whoami() {
 function Dex({ jump }) {
   const { BarWord, BarBand } = window;
   const items = [
-    { id: "aipm", ix: "01", tx: "An AIPM", d: 0.2,
-      mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
-      band: [0.85, 0.6, 1, 0.55] },
-    { id: "developer", ix: "02", tx: "A Developer", d: 0.55,
+    { id: "developer", ix: "01", tx: "A Developer", d: 0.2,
       mt: "From idea to shipped", zh: "保持从想法到落地的能力",
       band: [0.6, 1, 0.7, 0.9] },
+    { id: "aipm", ix: "02", tx: "An AIPM", d: 0.55,
+      mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
+      band: [0.85, 0.6, 1, 0.55] },
     { id: "architect", ix: "03", tx: "An Architect", d: 0.9,
       mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
       band: [1, 0.66, 0.5, 0.9] },
@@ -300,7 +287,7 @@ const WORKS = [
   {
     ix: "W·05", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", dark: true,
     award: "深港双年展 UABB · 地外人居板块 SECTION REPRESENTATIVE — 火箭利用 × 地外人居",
-    doc: "uploads/portfolio.pdf#page=4", mediaLabel: "PORTFOLIO · 作品集",
+    doc: "uploads/portfolio.pdf#page=3", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/aftersilence-1.jpg", "works/portfolio/aftersilence-2.jpg"],
     caption: "PORTFOLIO · 作品集 · 地外人居",
     band: [0.95, 0.55, 0.78, 0.62, 1], role: ["Design lead", "UABB off-world section"],
@@ -311,7 +298,7 @@ const WORKS = [
   {
     ix: "W·06", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", dark: true,
     award: "「活力杯」大湾区高校设计大赛 · 1ST PRIZE 一等奖 — TOP 3%",
-    doc: "uploads/portfolio.pdf#page=6", mediaLabel: "PORTFOLIO · 作品集",
+    doc: "uploads/portfolio.pdf#page=5", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
     caption: "PORTFOLIO · 作品集 · 桥上书屋",
     band: [1, 0.66, 0.5, 0.9, 0.72], role: ["Project lead", "活力杯 2023"],
@@ -322,7 +309,7 @@ const WORKS = [
   {
     ix: "W·07", t: "风贯·立方 Air Cube", display: "风贯·立方", tag: "ARCHITECTURE", year: "2025", dark: true,
     award: "2025 优秀毕业设计展 · 卓越奖 — 产城融合 · 工业上楼",
-    doc: "uploads/portfolio.pdf#page=10", mediaLabel: "PORTFOLIO · 作品集",
+    doc: "uploads/portfolio.pdf#page=9", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/aircube-1.jpg", "works/portfolio/aircube-2.jpg", "works/portfolio/aircube-3.jpg"],
     caption: "PORTFOLIO · 作品集 · 产城融合",
     band: [0.7, 1, 0.6, 0.85, 0.55], role: ["Design lead", "毕业设计 2025"],
@@ -333,7 +320,7 @@ const WORKS = [
   {
     ix: "W·08", t: "环·世界 The Ring-World", display: "环·世界", tag: "ARCHITECTURE", year: "2024", dark: true,
     award: "「华灿奖」两岸新锐设计竞赛 · 1ST PRIZE 一等奖 — TOP 5%",
-    doc: "uploads/portfolio.pdf#page=19", mediaLabel: "PORTFOLIO · 作品集",
+    doc: "uploads/portfolio.pdf#page=18", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/ringworld-1.jpg", "works/portfolio/ringworld-2.jpg", "works/portfolio/ringworld-3.jpg"],
     caption: "PORTFOLIO · 作品集 · 声景社区",
     band: [0.78, 0.6, 0.95, 0.55, 0.84], role: ["Project lead", "华灿奖 2024"],
