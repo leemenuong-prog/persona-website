@@ -2,12 +2,11 @@
    chapters.jsx — the three identities · three expressions.
    One language (bars ⇄ glyphs · the blue period), three dimensions:
 
-   02 · An AIPM      — THE CUT 一刀 · FLAT 2D
-       Prioritisation as one decisive incision: ~1800 weak
-       signal-dots, a hairline cut deletes almost all of them,
-       the few survivors snap to a priority spine, the apex
-       ignites cobalt as the period. Luxury = subtraction.
-       Flat — nothing rises. (See aipm-cut.jsx.)
+   02 · An AIPM      — THE THREAD 一线穿点 · FLAT 2D
+       Prioritisation as one line stringing through a few signal
+       points; the one it lands on ignites cobalt as the period,
+       the rest recede on the line. A single horizontal line —
+       lays out the same on phone and desktop. (See aipm-cut.jsx.)
 
    03 · A Developer  — AXON 体 · 3D
        The .IAM. band extruded into an axonometric structure.
@@ -56,8 +55,8 @@ const C2_STEPS = [
     note: "ROI BOARD 0.39 H/$ — 中台合理性可被验证" },
 ];
 
-/* the cut stage driver — writes --p and --pay onto the stage.
-   (Pure style writes; the payoff copy only resolves after the cut.) */
+/* the thread stage driver — writes --p and --pay onto the stage.
+   (Pure style writes; the payoff copy only resolves after the thread lands.) */
 function useCutStage(id, ref) {
   useChE(() => {
     const el = ref.current; if (!el) return;
@@ -68,11 +67,11 @@ function useCutStage(id, ref) {
       if (Math.abs(praw - last) < 0.0006) return;
       last = praw;
       el.style.setProperty("--p", p.toFixed(4));
-      /* payoff (title "An AIPM" + copy) rises IN SYNC with the spine line
-         telescoping out (canvas grows it ~0.54–0.82), so the words arrive as
-         the structure resolves — then HOLDS. It stays lit as the sticky stage
-         slides away (no dissolve at praw>1), matching the held canvas frame, so
-         the resolved mark carries intact into the next chapter. */
+      /* payoff (title "An AIPM" + copy) rises IN SYNC with the thread's ignite
+         (canvas coils+releases ~0.58–0.88), so the words arrive as the mark
+         resolves — then HOLDS. It stays lit as the sticky stage slides away
+         (no dissolve at praw>1), matching the held canvas frame, so the
+         resolved mark carries intact into the next chapter. */
       const payIn = aEase(aSeg(p, 0.58, 0.86));
       el.style.setProperty("--pay", payIn.toFixed(3));
     });
@@ -88,12 +87,12 @@ function ChAipm({ jump }) {
      showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
      page — having it on both read as a duplicate (用户: 动画页不要按钮). */
   return (
-    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE CUT">
+    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE THREAD">
       <div className="ch-wrap c2x-wrap">
         <div className="ch-stage c2x-stage" data-ob ref={ref}>
           <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
 
-          {/* the payoff — appears only after the film resolves into the mark */}
+          {/* the payoff — appears only after the thread resolves into the mark */}
           <div className="c2x-pay">
             <div className="c2x-left">
               <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
