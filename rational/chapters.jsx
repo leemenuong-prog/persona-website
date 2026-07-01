@@ -148,17 +148,23 @@ function useApxStage(id, ref) {
     const visuals = [...el.querySelectorAll(".apx-visual")];
     const video = el.querySelector(".apx-video");
     const frame = el.querySelector(".apx-video iframe");
-    /* loading poster — shown the instant we point the iframe at the film (the
-       embedded React/Babel app takes a beat to compile + mount), hidden once the
-       iframe finishes loading. Without it the frame is a blank black rectangle and
-       reads as "nothing happened", so viewers scroll past (用户反馈). Driven
-       imperatively (not React state) so it never fights the className/opacity the
-       loop already writes onto .apx-video. */
+    /* loading poster — shown the instant we point the iframe at the film, hidden the
+       moment the embedded film signals it has painted its first frame ('pearmovie:ready').
+       The iframe's own 'load' event fires too early — before the in-iframe React/Babel app
+       compiles + renders — so hiding on it left a black gap (用户: 视频先黑屏). Driven
+       imperatively (not React state) so it never fights the className/opacity the loop
+       writes onto .apx-video. */
     const loading = el.querySelector(".apx-video-loading");
     const showLoad = () => { if (loading) loading.style.display = "flex"; };
     const hideLoad = () => { if (loading) loading.style.display = "none"; };
-    if (frame) frame.addEventListener("load", hideLoad);
-    let last = -2, lastStep = -1, vidOn = false, mobileReset = false;
+    const onFilmMsg = (e) => { if (e && e.data === "pearmovie:ready") hideLoad(); };
+    addEventListener("message", onFilmMsg);
+    /* safety net — if that signal never arrives (e.g. a stale cached film), hide the
+       poster a few seconds after the iframe document loads so it can't get stuck. */
+    let safetyT = 0;
+    const onFrameLoad = () => { clearTimeout(safetyT); safetyT = setTimeout(hideLoad, 3200); };
+    if (frame) frame.addEventListener("load", onFrameLoad);
+    let last = -2, lastStep = -1, filmLoaded = false, mobileReset = false;
     const stop = window.__addLoop(() => {
       /* PHONE/TABLET: the section is a vertical stack that pairs each explanation with
          its diagram/film (CSS). The keynote step-toggling must NOT run here — it sets
@@ -180,20 +186,22 @@ function useApxStage(id, ref) {
       const praw = (window.scrollY - top) / span;
       const p = aClamp(praw, 0, 1);
 
-      /* video iframe — load + autoplay the film FRESH (xtool/?fresh=1 → starts at 0:00)
-         only while the video page is actually on screen (last third of the pinned
-         stage); unload to about:blank before it (no background pre-roll) and after it
-         (stop once scrolled past). Keyed to RAW progress + its own flag so it still
-         fires when praw>1 freezes the step at 2; re-entering reloads → always from 0. */
-      /* DESKTOP only: the pinned keynote auto-loads + auto-unloads the film as it
-         scrolls through its page. On a phone/tablet the stage is a vertical stack
-         (height:auto) so this praw window is unreliable — the film sits at the
-         bottom and praw is already >1.04 by the time it's on screen, so it never
-         loaded (the "看不到内容" bug). There the film loads on an explicit TAP
-         instead (see the .apx-video-play poster button) — leave src alone. */
+      /* video iframe — load the film ONCE, the moment the viewer scrolls onto the video
+         page (≈ last third of the pinned stage), then KEEP it loaded. It is NOT unloaded
+         on further scrolling, so scrubbing up/down around the video page never reloads it
+         (用户: 不管怎么动，滑到视频页就开始加载→播放，别重新加载). The film is silent, so leaving it
+         mounted while scrolled away is harmless. It ships src="about:blank" so it never
+         pre-rolls before arrival; xtool/?fresh=1 → starts at 0:00 and posts 'pearmovie:ready'
+         when it paints (→ hides the loading poster). */
+      /* DESKTOP only — on phone/tablet the stage is a vertical stack (height:auto) so this
+         praw window is unreliable; there the film loads on an explicit TAP instead (see the
+         .apx-video-play poster button), which also shows the loader. */
       if (frame && !(window.matchMedia && window.matchMedia("(max-width: 900px)").matches)) {
-        const want = praw >= 0.66 && praw <= 1.04;
-        if (want !== vidOn) { vidOn = want; if (want) showLoad(); else hideLoad(); frame.src = want ? "xtool/?fresh=1" : "about:blank"; }
+        if (!filmLoaded && praw >= 0.6) {
+          filmLoaded = true;
+          showLoad();
+          frame.src = "xtool/?fresh=1";
+        }
       }
 
       if (Math.abs(praw - last) < 0.0006) return;
@@ -216,7 +224,7 @@ function useApxStage(id, ref) {
         video.style.setProperty("transform", step === 2 ? "none" : "translateX(28px) scale(.992)", "important");
       }
     });
-    return () => { stop(); if (frame) frame.removeEventListener("load", hideLoad); };
+    return () => { stop(); removeEventListener("message", onFilmMsg); clearTimeout(safetyT); if (frame) frame.removeEventListener("load", onFrameLoad); };
   }, []);
 }
 
@@ -293,15 +301,15 @@ function ChAipmPlatform({ jump }) {
               </div>
 
               <div className="apx-video" aria-label="XTOOL Agent Platform video">
-                {/* DESKTOP: src stays blank until the viewer reaches the video page —
-                    useApxStage swaps it to xtool/?fresh=1 on arrival and back to
-                    about:blank on leave, so it never pre-rolls in the background.
-                    PHONE/TABLET: the poster button below loads it on an explicit tap. */}
+                {/* DESKTOP: src stays blank until the viewer reaches the video page, then
+                    useApxStage points it at xtool/?fresh=1 ONCE and leaves it (never reverts
+                    — the film is silent, so it just keeps playing; scrolling around never
+                    reloads it). PHONE/TABLET: the poster button below loads it on a tap. */}
                 <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
-                {/* loading poster — animated data-bars (条) + label; sits above the
-                    iframe while the embedded film compiles/mounts. Shown by useApxStage
-                    on desktop auto-load and by the tap handler below on phone/tablet;
-                    hidden on the iframe's load event. */}
+                {/* loading poster — animated data-bars (条) + label; sits above the iframe
+                    while the embedded film compiles/mounts. Shown when the film starts
+                    loading; hidden when the film posts 'pearmovie:ready' (its first painted
+                    frame), with a timeout safety net. */}
                 <div className="apx-video-loading mono" aria-hidden="true">
                   <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
                   <span className="apx-load-cap">影片加载中 · LOADING FILM</span>

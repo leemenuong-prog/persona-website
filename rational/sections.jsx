@@ -52,14 +52,14 @@ function Hero() {
    The pivot year dips on purpose: a reset before the peak. */
 const WHO_CHRONO = [
   { y: "2020", h: 0.3,  tag: "ARCHITECTURE",     t: "GZHU — B.Arch begins",                       zh: "广州大学建筑学学士 · 「把约束变成形」训练的起点" },
-  { y: "2023", h: 0.46, tag: "ARCHITECTURE",     t: "Upper-Via 上桥 — 活力杯一等奖",             zh: "大湾区高校设计大赛 · 把公共空间「上桥」外置水面" },
-  { y: "2024", h: 0.56, tag: "ARCHITECTURE",     t: "Ring-World 环·世界 — 华灿奖一等奖",          zh: "两岸新锐设计竞赛 · 车辆段上盖 · 动态隔音幕墙" },
+  { y: "2024", h: 0.56, tag: "ARCHITECTURE",     t: "Ring-World 环·世界 — NCDA 一等奖",            zh: "「NCDA」未来设计师全国数字设计大赛 一等奖 · 车辆段上盖 · 动态隔音幕墙" },
   { y: "2025", h: 0.84, tag: "ARCHITECTURE",     t: "挑战杯 Grand Prize 特等奖 — Top 1%",          zh: "蒋巷文脉·科链智谷 2.0 · 产村双向赋能 · 项目组长" },
   { y: "2025", h: 0.68, tag: "RESEARCH",         t: "《建筑学报》 T1 — 2nd Author",                  zh: "国内建筑领域 T1 核心期刊 · AIGC 三维空间优化" },
-  { y: "2025", h: 0.6,  tag: "ARCH × AI",        t: "UABB AIGC Pipeline — 30d → 5d",               zh: "深港双年展 · 50+ 展品自动转译 · 板块唯一代表" },
+  { y: "2025", h: 0.6,  tag: "ARCH × AI",        t: "UABB AIGC Pipeline · 板块唯一学生代表",        zh: "深港双年展 · 50+ 展品自动转译 · 30d → 5d" },
   { y: "2025", h: 0.5,  tag: "THE PIVOT",        t: "SZU M.Arch · 转向 AI 产品",                    zh: "建筑学（AI 方向）硕士 · 垂直 Agent AIPM · Peear MVP" },
-  { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松二等奖",        zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
-  { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "9 个生产工具 · 22 万行 · 48 人部门过半采用 · ROI 0.39 H/$" },
+  { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松季军",          zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
+  { y: "2026", h: 0.92, tag: "AI PRODUCT",       t: "议见 Yijian — 企业 Agent 黑客松亚军",          zh: "香港中文大学 · 决策共识 Agent · 四层共识 · 七角色审议" },
+  { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
 function Whoami() {

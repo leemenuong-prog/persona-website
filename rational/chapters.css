@@ -265,8 +265,13 @@
   font-size: 9.5px; letter-spacing: .2em; color: var(--fg-dim);
 }
 .apx-strip span { white-space: nowrap; }
-/* 02·B closing CTA — visit the live platform you just watched (lower-left, above the strip) */
-.apx-cta { position: absolute; left: 40px; bottom: 64px; z-index: 4; margin-top: 0; }
+/* 02·B closing CTA — visit the live platform you just watched (lower-left, above the
+   strip). Deliberately COMPACT (smaller than the base .ch-cta) so it stays inside the
+   left copy column and never bleeds over the film on the right (用户: 按钮太大挡住视频). */
+.apx-cta { position: absolute; left: 40px; bottom: 64px; z-index: 4; margin-top: 0;
+  padding: 11px 17px; gap: 9px; font-size: 10px; letter-spacing: .12em; }
+.apx-cta .sq { width: 7px; height: 7px; }
+.apx-cta .arr { font-size: 13px; }
 
 @media (max-height: 760px) {
   .apx-cta { bottom: 56px; }

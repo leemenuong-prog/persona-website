@@ -370,6 +370,21 @@ function Stage({
     try { localStorage.setItem(persistKey + ':t', String(time)); } catch {}
   }, [time, persistKey]);
 
+  // Embedded as the platform film (?fresh=1): once mounted AND the first frame has
+  // painted (two rAFs), tell the host page so it can hide its loading poster exactly
+  // when the film appears. The iframe 'load' event fires before this app renders, so
+  // the host can't rely on it (it left a black gap). No-op in the standalone view.
+  React.useEffect(() => {
+    if (!__fresh) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        try { parent.postMessage('pearmovie:ready', '*'); } catch (e) {}
+      });
+    });
+    return () => { cancelAnimationFrame(raf1); cancelAnimationFrame(raf2); };
+  }, []);
+
   // Auto-scale to fit viewport
   React.useEffect(() => {
     if (!stageRef.current) return;
