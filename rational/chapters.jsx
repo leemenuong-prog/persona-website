@@ -2,19 +2,19 @@
    chapters.jsx — the three identities · three expressions.
    One language (bars ⇄ glyphs · the blue period), three dimensions:
 
-   04 · An AIPM      — THE THREAD 一线穿点 · FLAT 2D
+   03 · An AIPM      — THE THREAD 一线穿点 · FLAT 2D
        Prioritisation as one line stringing through a few signal
        points; the one it lands on ignites cobalt as the period,
        the rest recede on the line. A single horizontal line —
        lays out the same on phone and desktop. (See aipm-cut.jsx.)
 
-   03 · A Developer  — AXON 体 · 3D
+   02 · A Developer  — AXON 体 · 3D
        The .IAM. band extruded into an axonometric structure.
        Commits rain through three gates (rule / static test /
        merge gate); what passes lands and the skyline assembles.
        Drag to orbit.
 
-   05 · An Architect — FIELD 场 · ABSTRACT
+   04 · An Architect — FIELD 场 · ABSTRACT
        Forces as a particle field. Scroll condenses the flow
        into contour rings, and a plan figure — with the blue
        period at its threshold — emerges from the noise.
@@ -42,7 +42,7 @@ function useChProg(id, ref) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   04 · AN AIPM — FLAT SHEET · 平面 (tone: paper)
+   03 · AN AIPM — FLAT SHEET · 平面 (tone: paper)
    ════════════════════════════════════════════════════════════ */
 /* the thread stage driver — writes --p and --pay onto the stage.
    (Pure style writes; the payoff copy only resolves after the thread lands.) */
@@ -76,7 +76,7 @@ function ChAipm({ jump }) {
      showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
      page — having it on both read as a duplicate (用户: 动画页不要按钮). */
   return (
-    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="04 · An AIPM — THE THREAD">
+    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="03 · An AIPM — THE THREAD">
       <div className="ch-wrap c2x-wrap">
         <div className="ch-stage c2x-stage" data-ob ref={ref}>
           <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
@@ -99,7 +99,7 @@ function ChAipm({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   04·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
+   03·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
    Two quiet Chinese pages explain the platform thesis; only then does the
    product film appear beside the title.
    ════════════════════════════════════════════════════════════ */
@@ -224,11 +224,11 @@ function ChAipmPlatform({ jump }) {
   const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   return (
-    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="04·B · XTOOL Agent Platform">
+    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="03·B · XTOOL Agent Platform">
       <div className="ch-wrap">
         <div className="ch-stage apx-stage" data-ob ref={ref} data-step="0">
           <div className="apx-kicker mono">
-            <span>04·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+            <span>03·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
           </div>
 
           <div className="apx-hero">
@@ -316,7 +316,7 @@ function ChAipmPlatform({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   03 · A DEVELOPER — AXONOMETRIC STRUCTURE · 体 (tone: paper)
+   02 · A DEVELOPER — AXONOMETRIC STRUCTURE · 体 (tone: paper)
    ════════════════════════════════════════════════════════════ */
 const C3_BARS = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
 const c3X = (i) => -3.4 + i * 0.97;
@@ -343,7 +343,9 @@ function Structure3D() {
     const rot = S.rot + Math.sin(now / 4600) * 0.025;
     const cosR = Math.cos(rot), sinR = Math.sin(rot);
     const SC = Math.min(W * 0.082, H * 0.108);
-    const cx = W * 0.54, cy = H * 0.66, tilt = 0.46, ZF = SC * 0.82;
+    /* composition sits right-and-up of centre so the motto (bottom-left) and
+       the title keep clear ground — the skyline is a backdrop, not an obstacle */
+    const cx = W * 0.58, cy = H * 0.62, tilt = 0.46, ZF = SC * 0.82;
     const proj = (x, y, z) => {
       const rx = x * cosR - y * sinR, ry = x * sinR + y * cosR;
       return [cx + rx * SC, cy + ry * SC * tilt - z * ZF];
@@ -439,7 +441,7 @@ function ChDev({ jump }) {
      chapter (ChReel · 介绍页), NOT here on the identity/animation page — it was
      a duplicate otherwise (用户: 动画页不要按钮，介绍页出现). */
   return (
-    <section className="chapter ch3" id="developer" data-tone="paper" data-prog="developer" data-screen-label="03 · A Developer — 3D">
+    <section className="chapter ch3" id="developer" data-tone="paper" data-prog="developer" data-screen-label="02 · A Developer — 3D">
       <div className="ch-wrap">
         <div className="ch-stage sec c3" data-ob ref={ref}>
           <div className="ch-ghost" data-parallax="0.2" aria-hidden="true">STACK</div>
@@ -463,7 +465,7 @@ function ChDev({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   05 · AN ARCHITECT — SITE FORM · 场 (tone: ink)
+   04 · AN ARCHITECT — SITE FORM · 场 (tone: ink)
    The canvas (SiteForm3D) lives in identity-art.jsx — the same
    axonometric skeleton as the Developer's skyline, inverted in
    tone: a luminous paper massing assembles from a site grid as
@@ -476,7 +478,7 @@ function ChArch({ jump }) {
   const ref = useChR(null);
   useChProg("architect", ref);
   return (
-    <section className="chapter ch4" id="architect" data-tone="ink" data-prog="architect" data-screen-label="05 · An Architect — FIELD">
+    <section className="chapter ch4" id="architect" data-tone="ink" data-prog="architect" data-screen-label="04 · An Architect — FIELD">
       <div className="ch-wrap">
         <div className="ch-stage sec c4" data-ob ref={ref}>
           <div className="c4-art" aria-hidden="true"><SiteForm3D /></div>
@@ -502,19 +504,18 @@ function ChArch({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   03·B · THE EVIDENCE — THE REEL · 一帧一帧 (tone: paper)
-   The payoff of the Developer thesis: 9 Pears product slides — the
-   flagship the governed agent actually built — cross-dissolve
-   through ONE pinned 16:9 frame. The chrome is pure site language:
-   a hairline progress spine, passed/ahead ticks (the .bc-col read
-   vertically), the cobalt self-square (period · self) riding the
-   spine, and a mono NN/09 index. The cream slides sit on a var(--bg)
-   matte = the page paper, so the only foreign note is the deck's own
-   green — quarantined to the framed rectangle and forced to opacity 0
-   BEFORE the ink lerp, so green and ink never co-occupy the frame.
-   Exit: the closing roadshow frame holds, and the engine's standard
-   snow→paper midline lerp carries the page into the AIPM chapter
-   (the reel now sits Developer → AIPM). No custom recolor code.
+   02·B · THE EVIDENCE — PEARS · 两段式 (tone: paper)
+   The payoff of the Developer thesis, in NORMAL FLOW — no pinning,
+   no scrub (用户: deck 自动翻页 + 可手动，滚动照常走):
+   · Part 1 — the proposal deck: 8 paper-tinted SVG slides in one
+     16:9 frame that AUTO-TURNS every few seconds; click / ‹ › /
+     square pips take over (a manual action holds the auto-turn).
+   · Part 2 — the roadshow film under its own headline (「现在看它
+     如何工作」— the same beat as the XTOOL keynote), auto-plays
+     muted on arrival; the small BGM chip unmutes.
+   The slides' own background is re-tinted to the site paper
+   (#efece6), so the chapter stays on the page tone — no snow tone,
+   no recolor choreography.
    ════════════════════════════════════════════════════════════ */
 const REEL = [
   /* the cover (01.jpg) is intentionally gone — it opened the reel on an empty
@@ -533,184 +534,152 @@ const REEL = [
   { ix: "09", zh: "产品生态",   g: "你的做法，不只为你工作 · Agent App 生态", ext: "svg" },  /* vector recreation (orig 09.jpg kept as backup) */
 ];
 
-/* the Pears roadshow video is the reel's 10th (closing) frame — the pitch
-   deck culminating in the actual W·01 demo. Click-to-play (sound + native
-   controls), pauses + resets when scrolled off. preload="none" so the 73MB
-   file only downloads on play; the poster shows meanwhile. */
+/* the Pears roadshow video — Part 2 of the chapter now (no longer a deck
+   cell). preload="none" so the 69MB file only downloads when the film part
+   scrolls into view; the poster shows meanwhile. */
 const REEL_VIDEO = { src: "works/pears-roadshow.mp4", poster: "works/pears-roadshow-cover.jpg", zh: "路演", g: "Pears 产品路演 · Demo Day" };
-const REEL_N = REEL.length + 1;   /* 8 提案帧 + 1 路演视频帧 = 9 cells */
-
-/* the deck is CLICK-DRIVEN now (was an 8-screen scroll scrub): one pinned
-   frame, useState(idx) flips the slides — click / ‹ › / ← → / swipe. Discrete
-   class-toggle transitions (.reel-cell.on) are fine here; the "CSS transitions
-   stall" caveat only applies to continuous scrub-driven animation. The chrome
-   vars the old rAF loop wrote are now declarative: --chrome ← the stage's
-   data-ob .in class, --self ← an inline style off idx, --kill ← data-end. */
-const reelClamp = (v) => Math.max(0, Math.min(REEL_N - 1, v));
+const REEL_N = REEL.length;   /* 8 提案帧 — 影片是第二段，不再占 cell */
 
 function ChReel({ jump }) {
-  const ref = useChR(null);
+  const deckRef = useChR(null);
   const vidRef = useChR(null);
   const [idx, setIdx] = React.useState(0);
   const [muted, setMuted] = React.useState(true);   /* roadshow film auto-plays muted; the BGM button unmutes */
   const vidStarted = useChR(false);
+  const holdUntil = useChR(0);   /* a manual action holds the auto-turn for a while */
   const touchX = useChR(0);
-  const go = (d) => setIdx((v) => reelClamp(v + d));
-  const phone = () => window.matchMedia && window.matchMedia("(max-width: 600px)").matches;
+  const go = (d) => { holdUntil.current = Date.now() + 9000; setIdx((v) => (v + d + REEL_N) % REEL_N); };
+  const jumpTo = (n) => { holdUntil.current = Date.now() + 9000; setIdx(n); };
 
-  /* the closing frame — AUTO-PLAY the film muted the FIRST time the viewer flips
-     onto it, from 0:00 (never on page load — 用户: 滚动到达才播). Flipping BACK off
-     the video pauses it (in-deck retreat ≠ scrolling past, which keeps playing);
-     it never resets, so returning resumes where it left. */
+  /* auto-turn — 用户: 自动左右翻页，用户也可手动。Loops the 8 slides; skips
+     while the tab is hidden, the deck is off-screen, or a manual hold runs. */
   useChE(() => {
-    const v = vidRef.current; if (!v) return;
-    const onVideo = idx >= REEL.length;
-    if (onVideo && !vidStarted.current) {
-      vidStarted.current = true;
-      const lo = v.parentElement && v.parentElement.querySelector(".reel-video-loading");
-      if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
-      v.muted = true;
-      try { v.currentTime = 0; } catch (e) {}
-      const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
-    } else if (!onVideo && !v.paused && !phone()) {
-      v.pause();
-    }
-  }, [idx]);
-
-  /* ← → flip the deck, but ONLY while the stage is actually pinned full-screen —
-     never hijack the keys elsewhere on the page (and never Up/Down/Space: those
-     stay native scroll). The native <video> keeps its own key handling. */
-  useChE(() => {
-    const onKey = (e) => {
-      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-      if (phone()) return;
-      if (e.target && e.target.closest && e.target.closest("video, input, textarea")) return;
-      const st = ref.current; if (!st) return;
-      const r = st.getBoundingClientRect();
-      if (!(r.top <= 1 && r.bottom >= innerHeight - 1)) return;
-      e.preventDefault();
-      setIdx((v) => reelClamp(v + (e.key === "ArrowRight" ? 1 : -1)));
-    };
-    addEventListener("keydown", onKey);
-    return () => removeEventListener("keydown", onKey);
+    const t = setInterval(() => {
+      if (document.hidden || Date.now() < holdUntil.current) return;
+      const el = deckRef.current; if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.bottom < 120 || r.top > innerHeight - 120) return;
+      setIdx((v) => (v + 1) % REEL_N);
+    }, 4200);
+    return () => clearInterval(t);
   }, []);
-  /* PHONE: the reel is a plain vertical stack (useReelStage no-ops ≤600px), so the
-     desktop loop can't drive auto-play. Observe the film and auto-play it muted once
-     it scrolls into view; like desktop it is never paused on exit. */
+
+  /* the film — auto-play muted from 0:00 the FIRST time it scrolls into view
+     (never on page load — 用户: 滚动到达才播). Same behaviour at every
+     viewport; never auto-paused after, so a manual pause via the native
+     controls sticks and the BGM rides along if unmuted. */
   useChE(() => {
-    if (!(window.matchMedia && window.matchMedia("(max-width: 600px)").matches)) return;
     const v = vidRef.current; if (!v || !("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver((ents) => {
       ents.forEach((en) => {
-        if (en.isIntersecting && en.intersectionRatio > 0.6 && v.paused) {
+        if (en.isIntersecting && en.intersectionRatio > 0.5 && !vidStarted.current) {
+          vidStarted.current = true;
           const lo = v.parentElement && v.parentElement.querySelector(".reel-video-loading");
           if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
-          v.muted = true; const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+          v.muted = true;
+          try { v.currentTime = 0; } catch (e) {}
+          const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
         }
       });
-    }, { threshold: [0, 0.6, 1] });
+    }, { threshold: [0, 0.5, 1] });
     io.observe(v);
     return () => io.disconnect();
   }, []);
+
   /* closing CTA — the reel is the Developer's evidence (Pears); link straight to
      the live product, same as the Developer identity chapter (WORKS[0]). */
   const devWk = (window.WORKS || [])[0];
   const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
-  const isVideo = idx >= REEL.length;
-  const s = isVideo ? REEL_VIDEO : REEL[idx];
+  const s = REEL[idx];
   return (
-    <section className="chapter reel" id="reel" data-tone="snow" data-prog="reel"
-             data-screen-label="03·B · The Evidence — REEL">
-      {/* tone is "snow" (cool near-white) — the engine crossfades paper(ChDev)→snow as
-         you arrive at the Pears deck so the slides sit on a MATCHING ground, then
-         snow→paper into the AIPM chapter. The slides' own base is rgb(245,245,247). */}
-      <div className="ch-wrap reel-wrap">
-        <div className="ch-stage reel-stage" data-ob ref={ref}
-             data-end={isVideo ? "1" : "0"}
-             style={{ "--self": (idx / (REEL_N - 1)).toFixed(4) }}>
-          <div className="reel-spine" aria-hidden="true">
-            {Array.from({ length: REEL_N }, (_, n) => (
-              <i key={n} className={"reel-tick" + (n <= idx ? " passed" : "")} style={{ "--n": n }}
-                 onClick={() => setIdx(n)}></i>
-            ))}
-            <span className="reel-self"></span>
-          </div>
-          <div className="reel-frame"
-               onClick={(e) => {
-                 /* the whole frame advances — except real controls (links, buttons,
-                    the film's native UI). Phone is a plain vertical stack: no-op. */
-                 if (phone()) return;
-                 if (e.target.closest("a, button, video, iframe")) return;
-                 go(1);
-               }}
-               onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
-               onTouchEnd={(e) => {
-                 if (phone()) return;
-                 const dx = e.changedTouches[0].clientX - touchX.current;
-                 if (Math.abs(dx) > 42) go(dx < 0 ? 1 : -1);
-               }}>
+    <section className="chapter reel" id="reel" data-tone="paper"
+             data-screen-label="02·B · The Evidence — PEARS">
+      {/* ── PART 1 · 路演提案 deck — 大标题 = 作品信息 ── */}
+      <div className="reel-part sec" data-ob>
+        <div className="apx-kicker mono">
+          <span>02·B / THE EVIDENCE</span><span>PEARS DECK · 路演提案</span>
+        </div>
+        <header className="reel-head2">
+          <h2 className="reel-title lm" data-rv style={{ "--rd": ".1s" }}>
+            <span>Pears — AI Agent<i className="psq" aria-hidden="true"></i></span>
+          </h2>
+          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 黑客松 · 季军 3RD PLACE
+            <span className="en">The deck below turns by itself — click it to browse at your own pace.</span>
+          </p>
+        </header>
+        <div className="reel-deck" data-rv style={{ "--rd": ".4s" }} ref={deckRef}
+             onClick={(e) => { if (e.target.closest("a, button")) return; go(1); }}
+             onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+             onTouchEnd={(e) => {
+               const dx = e.changedTouches[0].clientX - touchX.current;
+               if (Math.abs(dx) > 42) go(dx < 0 ? 1 : -1);
+             }}>
+          <div className="reel-frame">
             {REEL.map((slide, n) => (
               <img key={n} className={"reel-cell reel-img" + (n === idx ? " on" : "")}
                    src={"works/pears-deck/" + slide.ix + "." + (slide.ext || "jpg")}
                    alt={"Pears " + slide.ix + " " + slide.zh} decoding="async"
                    loading="eager" draggable="false" />
             ))}
-            {idx > 0 && !isVideo && (
-              <button className="reel-nav prev" type="button" data-hov aria-label="上一页"
-                      onClick={() => go(-1)}><span>‹</span></button>
-            )}
-            {!isVideo && (
-              <button className="reel-nav next" type="button" data-hov aria-label="下一页"
-                      onClick={() => go(1)}><span>›</span></button>
-            )}
-            {isVideo && (
-              <button className="reel-nav prev on-video" type="button" data-hov aria-label="回看提案"
-                      onClick={() => go(-1)}><span>‹</span></button>
-            )}
-            <div className={"reel-cell reel-video" + (isVideo ? " on" : "")}>
-              <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
-                     preload="none" playsInline muted controls
-                     onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
-                     onPlaying={(e) => {
-                       const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
-                       if (lo) lo.style.display = "none";
-                     }}
-                     onError={(e) => {
-                       const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
-                       if (lo) lo.style.display = "none";
-                     }}></video>
-              {/* loading poster — same bars-and-caption language as the AIPM platform
-                  film's .apx-video-loading, recoloured for this chapter's light ground.
-                  Shown the instant autoplay is triggered; hidden on 'playing' (real
-                  playback started) or 'error', with an 8s safety timeout either way. */}
-              <div className="reel-video-loading mono" aria-hidden="true">
-                <span className="reel-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
-                <span className="reel-load-cap">影片加载中 · LOADING FILM</span>
-              </div>
-              {/* default muted; a SMALL top-right hint turns the sound on (用户: 右上角提示
-                  一下就行，不要那么显眼，字也别多). Once unmuted it hides — the native controls
-                  handle volume + the draggable progress bar. Off-centre so it never covers
-                  the video or the native scrubber. */}
-              {muted && <button className="reel-sound mono" type="button" aria-label="开启声音 · BGM"
-                onClick={() => { const v = vidRef.current; if (!v) return; v.muted = false; if (v.paused) v.play(); }}>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M4 9.4v5.2h3.3L12 18.4V5.6L7.3 9.4H4z" fill="currentColor" stroke="none"/>
-                  <path d="M15.4 9.2a4 4 0 0 1 0 5.6"/>
-                  <path d="M17.9 6.7a7.5 7.5 0 0 1 0 10.6"/>
-                </svg>
-                <span>声音</span>
-              </button>}
-            </div>
+            <button className="reel-nav prev" type="button" data-hov aria-label="上一页"
+                    onClick={() => go(-1)}><span>‹</span></button>
+            <button className="reel-nav next" type="button" data-hov aria-label="下一页"
+                    onClick={() => go(1)}><span>›</span></button>
           </div>
-          <div className="reel-ix mono" aria-hidden="true">
-            <div key={idx} className="reel-ixc">
-              <span className="ix">{isVideo ? "▶" : String(idx + 1).padStart(2, "0")}</span>{!isVideo && <span className="tot"> / {String(REEL.length).padStart(2, "0")}</span>}
-              <span className="ln"></span><span className="lab">{s.zh}</span>
-              <span className="gloss zh">{s.g}</span>
-            </div>
+          {/* deck bar — mono index + per-slide caption + square pips (period motif) */}
+          <div className="reel-deckbar mono">
+            <span className="reel-ix2" aria-live="polite"><b>{String(idx + 1).padStart(2, "0")}</b> / {String(REEL_N).padStart(2, "0")} · {s.zh} — {s.g}</span>
+            <span className="reel-pips" aria-hidden="true">
+              {REEL.map((_, n) => (
+                <i key={n} className={n === idx ? "on" : ""}
+                   onClick={(e) => { e.stopPropagation(); jumpTo(n); }}></i>
+              ))}
+            </span>
+            <span className="reel-autohint">自动翻页 · 点击可控</span>
           </div>
-          <div className="reel-hint mono" aria-hidden="true">点击翻页 · CLICK / ‹ › / ←→</div>
-          <div className="reel-out mono" aria-hidden="true">证物完毕 — 一线穿点 <span className="arr">↘</span></div>
+        </div>
+      </div>
+
+      {/* ── PART 2 · 路演影片 — 大标题与 XTOOL keynote 同拍 ── */}
+      <div className="reel-part reel-filmpart sec" data-ob>
+        <header className="reel-head2">
+          <h2 className="reel-title2 lm" data-rv style={{ "--rd": ".1s" }}>
+            <span>现在看它如何工作<i className="psq" aria-hidden="true"></i></span>
+          </h2>
+          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>PRODUCT FILM · 路演视频 — 到达自动播放，默认静音
+            <span className="en">Now, watch it work — the film starts muted as it scrolls into view.</span>
+          </p>
+        </header>
+        <div className="reel-filmcol" data-rv style={{ "--rd": ".4s" }}>
+          <div className="reel-video">
+            <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
+                   preload="none" playsInline muted controls
+                   onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
+                   onPlaying={(e) => {
+                     const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
+                     if (lo) lo.style.display = "none";
+                   }}
+                   onError={(e) => {
+                     const lo = e.currentTarget.parentElement.querySelector(".reel-video-loading");
+                     if (lo) lo.style.display = "none";
+                   }}></video>
+            {/* loading poster — same bars-and-caption language as the AIPM platform film */}
+            <div className="reel-video-loading mono" aria-hidden="true">
+              <span className="reel-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
+              <span className="reel-load-cap">影片加载中 · LOADING FILM</span>
+            </div>
+            {/* default muted; a SMALL top-right chip turns the sound on (用户: 右上角提示
+                一下就行). Once unmuted it hides — the native controls take over. */}
+            {muted && <button className="reel-sound mono" type="button" aria-label="开启声音 · BGM"
+              onClick={() => { const v = vidRef.current; if (!v) return; v.muted = false; if (v.paused) v.play(); }}>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M4 9.4v5.2h3.3L12 18.4V5.6L7.3 9.4H4z" fill="currentColor" stroke="none"/>
+                <path d="M15.4 9.2a4 4 0 0 1 0 5.6"/>
+                <path d="M17.9 6.7a7.5 7.5 0 0 1 0 10.6"/>
+              </svg>
+              <span>声音</span>
+            </button>}
+          </div>
           <a className="reel-cta ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
             <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
           </a>

@@ -423,86 +423,78 @@
   .c4-ann .l { font-size: 7.5px; -webkit-line-clamp: 3; }
 }
 
-/* ── 03·B · THE EVIDENCE — THE REEL · 一帧一帧 (tone: paper) ─────────
-   One pinned 16:9 frame; 9 Pears slides cross-dissolve through it.
-   Chrome is site-language only (cobalt only on the self-square). The
-   slide layer defaults to opacity 0 here — the rAF hook drives it. */
-.reel .ch-wrap { height: 150vh; }   /* 钉一屏点击翻页 deck — 滚动只管入场/离场，翻页交给点击 */
-.reel .ch-stage { background: var(--bg); }   /* matte = page paper */
+/* ── 02·B · THE EVIDENCE — PEARS · 两段式（正常滚动流） ─────────
+   Part 1: 大标题（作品信息）+ 自动翻页 16:9 deck（SVG 已重着为 paper 底）；
+   Part 2: 「现在看它如何工作」+ 路演影片。No pinning, no scrub —
+   the deck turns itself; clicks / ‹ › / pips take over. */
+.reel-part { min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  padding: 88px 40px 56px; }
+.reel-head2 { margin: 22px 0 26px; }
+.reel-title { font-size: clamp(40px, 4.8vw, 88px); font-weight: 800; letter-spacing: -.03em; line-height: .96; }
+.reel-title2 { font-size: clamp(32px, 3.6vw, 64px); font-weight: 800; letter-spacing: .01em; line-height: 1.15; }
+.reel-title .psq, .reel-title2 .psq { display: inline-block; width: .11em; height: .11em;
+  background: var(--acc); margin-left: .12em; }
+.reel-award { margin-top: 14px; font-size: clamp(14px, 1.05vw, 17px); font-weight: 600;
+  letter-spacing: .04em; color: var(--fg); opacity: .85; max-width: 44em; }
 
-/* chrome vars — declarative now (the old rAF scrub wrote these): --chrome rides
-   the engine's data-ob .in reveal, --self is inlined off idx, --kill off data-end */
-.reel-stage { --chrome: 0; --self: 0; --kill: 0; }
-.reel-stage.in { --chrome: 1; }
-.reel-stage[data-end="1"] { --kill: 1; }
-.reel-spine, .reel-self, .reel-ix, .reel-cta, .reel-hint { transition: opacity .9s var(--ez); }
-.reel-out { transition: opacity .5s var(--ez); }
-.reel-stage:not(.in) .reel-cell { opacity: 0; }   /* nothing shows before scroll arrival */
-
-.reel-frame {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: min(90vw, calc((100vh - 300px) * 16 / 9));
-  max-width: 1280px;          /* never upscale the 1920 source past ~native — keeps text crisp on big/Retina screens */
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  overflow: hidden; z-index: 2;
-}
-.reel-cell {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  opacity: 0; transition: opacity .5s var(--ez);
-}
+/* the deck — one 16:9 frame, slides crossfade by class. Width also capped by
+   viewport HEIGHT so header + frame + bar compose inside one screen. */
+.reel-deck { width: min(100%, 1040px, calc((100vh - 340px) * 16 / 9)); margin: 0 auto; align-self: center; cursor: pointer; }
+.reel-frame { position: relative; width: 100%; aspect-ratio: 16 / 9;
+  border: 1px solid var(--line); background: var(--bg); overflow: hidden; }
+.reel-cell { position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; transition: opacity var(--t-hover) var(--ez); }
 .reel-cell.on { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .reel-cell { transition-duration: 0s; } }
-/* the frame itself is the biggest "next" button */
-.reel-frame { cursor: pointer; }
-/* ‹ › — the flip affordance, same family as the portfolio flip-book (.gl-nav)
-   but always visible (not hover-gated): the deck must read as clickable at a glance */
+.reel-img { object-fit: contain; background: var(--bg); user-select: none; -webkit-user-drag: none; }
+/* ‹ › — always-visible flip affordance (same family as the flip-book .gl-nav) */
 .reel-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
   width: clamp(38px, 3.4vw, 52px); height: clamp(52px, 10vh, 84px); padding: 0;
   display: flex; align-items: center; justify-content: center;
   border: 0; background: rgba(8, 10, 20, .30); color: var(--paper); cursor: pointer;
-  font-size: 32px; line-height: 0; opacity: .62; transition: opacity .25s, background .25s; }
+  font-size: 32px; line-height: 0; opacity: .62; transition: opacity var(--t-micro), background var(--t-micro); }
 .reel-nav.prev { left: 0; } .reel-nav.next { right: 0; }
 .reel-nav span { transform: translateY(-2px); }
 .reel-nav:hover { background: rgba(0, 71, 171, .78); opacity: 1; }
-.reel-nav.on-video { opacity: .4; }
-.reel-nav.on-video:hover { opacity: 1; }
-.reel-img {
-  object-fit: contain; background: var(--bg);
-  user-select: none; -webkit-user-drag: none;
-}
-/* the closing frame — the W·01 Pears roadshow video; auto-plays muted on arrival,
-   native controls own play / seek (draggable progress bar) / fullscreen. */
-.reel-video { background: var(--bg); pointer-events: none; }
-.reel-video.on { pointer-events: auto; }
-.reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
-/* loading poster — same site language as .apx-video-loading (the AIPM platform film),
-   recoloured for this chapter's light "snow" ground instead of ink, so the two video
-   loads read as one consistent motif. Shown the instant autoplay is triggered; hidden
-   on the video's native 'playing' event (fires once real playback begins) — more
-   reliable here than AIPM's postMessage handshake since there's no embedded iframe app
-   to wait on. */
+
+/* deck bar — mono index + caption left, square pips + auto hint right */
+.reel-deckbar { display: flex; align-items: center; gap: 16px; margin-top: 13px;
+  font-size: 10.5px; letter-spacing: .14em; color: var(--fg-dim); cursor: default; }
+.reel-ix2 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reel-ix2 b { color: var(--fg); font-weight: 700; letter-spacing: .12em; }
+.reel-pips { display: flex; align-items: center; gap: 9px; margin-left: auto; flex: 0 0 auto; }
+.reel-pips i { position: relative; width: 8px; height: 8px; background: var(--line); cursor: pointer;
+  transition: background var(--t-micro), transform var(--t-micro); }
+.reel-pips i::after { content: ""; position: absolute; inset: -6px; }   /* finger-sized hit zone */
+.reel-pips i.on { background: var(--acc); transform: scale(1.2); }
+.reel-autohint { flex: 0 0 auto; white-space: nowrap; }
+
+/* Part 2 — the film column (ink frame on the paper page, like every site video) */
+.reel-filmcol { width: min(100%, 1040px, calc((100vh - 340px) * 16 / 9)); margin: 0 auto; align-self: center; }
+.reel-video { position: relative; width: 100%; aspect-ratio: 16 / 9;
+  background: var(--ink); border: 1px solid var(--line); }
+.reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--ink); display: block; }
+/* loading poster — same bars-and-caption language as .apx-video-loading. Shown the
+   instant autoplay is triggered; hidden on 'playing' / 'error' + an 8s safety net. */
 .reel-video-loading {
   position: absolute; inset: 0; z-index: 4; display: none;
   flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-  background: var(--bg); color: var(--fg); pointer-events: none;
+  background: var(--ink); color: var(--paper); pointer-events: none;
 }
 .reel-load-bars { display: flex; align-items: flex-end; gap: 5px; height: 40px; }
 .reel-load-bars i {
-  width: 5px; height: 100%; background: var(--acc); transform-origin: bottom center;
+  width: 5px; height: 100%; background: var(--blue-up); transform-origin: bottom center;
   animation: apxLoadBar 1.05s var(--ez) infinite;
 }
 .reel-load-bars i:nth-child(2) { animation-delay: .13s; }
 .reel-load-bars i:nth-child(3) { animation-delay: .26s; }
 .reel-load-bars i:nth-child(4) { animation-delay: .39s; }
 .reel-load-bars i:nth-child(5) { animation-delay: .52s; }
-.reel-load-cap { font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
+.reel-load-cap { font-size: 10.5px; letter-spacing: .24em; color: rgba(239, 236, 230, .7); }
 @media (prefers-reduced-motion: reduce) { .reel-load-bars i { animation: none; transform: scaleY(.62); } }
 /* sound hint — a SMALL, low-key chip in the video's TOP-RIGHT corner (用户: 右上角提示一下
    就行，不需要那么显眼，字也别多). Shown only while the film is muted; one tap turns the BGM
-   on, then it hides and the native controls take over. Deliberately tiny and off to the
-   corner so it never covers the video body or the native scrubber. */
+   on, then it hides and the native controls take over. */
 .reel-sound {
   position: absolute; top: 14px; right: 14px; z-index: 3;
   display: inline-flex; align-items: center; gap: 7px;
@@ -510,67 +502,15 @@
   background: rgba(11, 11, 14, .56); color: var(--paper);
   -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
   font-size: 10px; letter-spacing: .18em;
-  transition: background .25s var(--ez), opacity .25s var(--ez);
+  transition: background var(--t-micro) var(--ez), opacity var(--t-micro) var(--ez);
 }
 .reel-sound svg { display: block; flex: 0 0 auto; }
 .reel-sound:hover { background: rgba(11, 11, 14, .82); }
-
-/* the bar-column read vertically — hairline spine + passed/ahead ticks */
-.reel-spine {
-  position: absolute; left: 40px; top: 14vh; height: 72vh; width: 1px;
-  background: var(--line); z-index: 4; opacity: var(--chrome, 0);
-}
-.reel-tick {
-  position: absolute; left: -3px; width: 7px; height: 1px;
-  top: calc((var(--n) / 9) * 100%);
-  background: var(--line); transition: background .45s var(--ez);
-  cursor: pointer; pointer-events: auto;
-}
-.reel-tick::after { content: ""; position: absolute; inset: -7px -10px; }   /* finger-sized hit zone */
-.reel-tick.passed { background: var(--fg); }
-/* the period · self — the ONLY cobalt, riding the spine (glides between ticks) */
-.reel-self {
-  position: absolute; left: -3.5px; width: 8px; height: 8px;
-  top: calc(var(--self, 0) * 100%); transform: translateY(-4px);
-  background: var(--acc); z-index: 5; opacity: var(--chrome, 0);
-  transition: top .5s var(--ez), opacity .9s var(--ez);
-}
-
-.reel-head { position: absolute; left: 40px; top: 72px; z-index: 5; max-width: 54vw; }
-.reel-subkick { margin-top: 10px; font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
-
-.reel-ix { position: absolute; right: 40px; top: 72px; z-index: 5; text-align: right; opacity: var(--chrome, 0); }
-.reel-ixc { display: block; animation: reelSwap .55s var(--ez) both; }
-.reel-ix .ix { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--fg); }
-.reel-ix .tot { font-size: 10.5px; letter-spacing: .12em; color: var(--fg-dim); }
-.reel-ix .ln { display: inline-block; width: 24px; height: 1px; margin: 0 0 3px 10px; vertical-align: middle; background: var(--line); }
-.reel-ix .lab { margin-left: 10px; font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); }
-.reel-ix .gloss { display: block; margin: 9px 0 0 auto; max-width: 26ch; font-size: 11px; letter-spacing: .02em; line-height: 1.5; color: var(--fg-dim); }
-@keyframes reelSwap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
-/* flip hint — bottom-centre, quiet mono; tells the viewer the deck is clickable */
-.reel-hint {
-  position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); z-index: 5;
-  font-size: 10px; letter-spacing: .22em; color: var(--fg-dim); opacity: var(--chrome, 0);
-}
-.reel-stage[data-end="1"] .reel-hint { opacity: 0; }   /* the outro caption takes over */
-.reel-out {
-  position: absolute; right: 40px; bottom: 7vh; z-index: 5; text-align: right;
-  font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); opacity: var(--kill, 0);
-}
-.reel-out .arr { font-size: 15px; letter-spacing: 0; margin-left: 4px; }
-/* 03·B closing CTA — visit the live Pears product; rides the reel chrome (bottom-left,
-   opposite the bottom-right outro) so it's available throughout the deck + roadshow */
-.reel-cta { position: absolute; left: 40px; bottom: 7vh; z-index: 5; margin-top: 0; opacity: var(--chrome, 0); }
+.reel-cta { margin-top: 24px; }
 
 @media (max-width: 900px) {
-  .reel .ch-wrap { height: 150vh; }
-  .reel-frame { width: 92vw; }
-  .reel-spine, .reel-self { display: none; }
-  .reel-head { max-width: 80vw; }
-  .reel-ix .gloss { display: none; }
+  .reel-part { padding: 72px 20px 44px; }
 }
-@media (prefers-reduced-motion: reduce) { .reel-ixc { animation: none; } }
 
 /* ════════════════════════════════════════════════════════════
    PHONE (≤600px) — chapter stages reflow for a 375px portrait
@@ -597,32 +537,20 @@
   .c4-ann b { font-size: clamp(14px, 4.6vw, 18px); }
   .c4-ann .l { font-size: 7px; -webkit-line-clamp: 3; }
 
-  /* ── 03·B THE REEL — full-bleed VERTICAL flow (issue: 垂直流式 · 满铺) ──
-     On a phone the pinned single-frame cross-dissolve is a tiny ~350px window you
-     scrub 720vh to flip; unreadable. Reflow the 9 Pears slides + the roadshow film
-     into a full-width stack you just scroll. (useReelStage no-ops at ≤600 so its
-     per-frame opacity writes don't fight this.) */
-  .reel .ch-wrap { height: auto; }
-  .reel .ch-stage { position: relative; top: auto; height: auto; min-height: 0;
-    overflow: visible; padding: 72px 0 5vh; display: block; }
-  .reel-spine, .reel-self, .reel-ix, .reel-out, .reel-nav, .reel-hint { display: none; }
-  .reel-frame { position: relative; left: auto; top: auto; transform: none; cursor: default;
-    width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; border: 0;
-    overflow: visible; display: flex; flex-direction: column; gap: 0;
-    background: var(--bg); }   /* matte == the snow tone == the slides' own base → seamless */
-  .reel-cell { position: relative !important; inset: auto !important;
-    width: 100%; height: auto; opacity: 1 !important; transform: none !important;
-    will-change: auto; transition: none; }   /* 静态堆叠不需要过渡 — 也避免节流环境卡在过渡起点 */
-  .reel-img { position: relative; width: 100%; height: auto; display: block; object-fit: contain; }
-  .reel-video { aspect-ratio: 16 / 9; pointer-events: auto !important; background: var(--ink); }
-  .reel-video video { position: relative; width: 100%; height: 100%; }
-  .reel-video-loading { background: var(--ink); color: var(--paper); }
-  .reel-load-cap { color: rgba(239, 236, 230, .7); }
-  /* the closing CTA isn't part of the hidden chrome — show it after the roadshow film.
-     the reel stage has no side padding (full-bleed slides), so centre it explicitly
-     (auto margins don't centre an inline-flex) and keep it off the screen edges */
-  .reel-cta { position: relative; left: auto; bottom: auto; opacity: 1 !important;
-    display: flex; width: max-content; max-width: calc(100% - 40px); margin: 20px auto 0; }
+  /* ── 02·B PEARS 两段式 — phone tweaks: content-sized parts (no forced 100vh),
+     the deck keeps the same auto-turn + tap carousel as desktop. ── */
+  .reel-part { min-height: 0; padding: 64px 16px 36px; }
+  .reel-deck, .reel-filmcol { width: 100%; }   /* phone: full width, no height cap */
+  .reel-title { font-size: clamp(34px, 10.5vw, 52px); }
+  .reel-title2 { font-size: clamp(26px, 8vw, 40px); }
+  .reel-award { font-size: 13.5px; }
+  .reel-deckbar { flex-wrap: wrap; gap: 10px 14px; letter-spacing: .1em; }
+  .reel-ix2 { flex: 1 1 100%; white-space: normal; }
+  .reel-pips { margin-left: 0; gap: 12px; }
+  .reel-pips i { width: 10px; height: 10px; }
+  .reel-autohint { display: none; }
+  .reel-nav { opacity: .8; width: 44px; height: 60px; background: rgba(8, 10, 20, .45); }
+  .reel-cta { display: flex; width: max-content; max-width: 100%; margin: 20px auto 0; }
 }
 
 /* ── touch — neutralise hover-only emphasis + scroll-trapping ── */

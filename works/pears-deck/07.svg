@@ -28,7 +28,7 @@
     </symbol>
   </defs>
 
-  <rect width="1280" height="720" fill="#F5F5F7"/>
+  <rect width="1280" height="720" fill="#EFECE6"/>
 
   <!-- header -->
   <use href="#pear" x="58" y="40" width="30" height="34"/>

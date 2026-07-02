@@ -20,15 +20,16 @@ assert.match(chapters, /内容生产系统/, "system visual should name what the
 assert.match(chapters, /xtool\/\?fresh=1/, "platform film should embed the existing xtool interactive movie");
 assert.match(chapters, /Object\.assign\(window,\s*\{[^}]*ChAipmPlatform/s, "component should be exported on window");
 
-/* HR-first render order (2026-07-02 restructure): works right after whoami,
-   then the thinking chapters Dev → Reel → AIPM → Platform → Architect. */
+/* Render order (2026-07-02 rev. 2, user decision): chapters first, works closes
+   the page before contact — Whoami → Dev → Reel → AIPM → Platform → Arch → Works. */
 const at = (tag) => app.indexOf(tag);
-assert.ok(at("<Whoami jump={jump} />") < at("<Works jump={jump} />"), "Works should render right after Whoami");
-assert.ok(at("<Works jump={jump} />") < at("<ChDev jump={jump} />"), "Works should render before the identity chapters");
+assert.ok(at("<Whoami jump={jump} />") < at("<ChDev jump={jump} />"), "chapters follow Whoami");
 assert.ok(at("<ChDev jump={jump} />") < at("<ChReel jump={jump} />"), "Reel follows Developer");
 assert.ok(at("<ChReel jump={jump} />") < at("<ChAipm jump={jump} />"), "AIPM follows the reel");
 assert.ok(at("<ChAipm jump={jump} />") < at("<ChAipmPlatform jump={jump} />"), "platform showcase follows AIPM");
 assert.ok(at("<ChAipmPlatform jump={jump} />") < at("<ChArch jump={jump} />"), "Architect closes the chapters");
+assert.ok(at("<ChArch jump={jump} />") < at("<Works jump={jump} />"), "Works closes the page");
+assert.ok(at("<Works jump={jump} />") < at("<Contact jump={jump} />"), "Contact is last");
 assert.match(app, /const \{[^}]*ChAipmPlatform/s, "App should read ChAipmPlatform from window");
 
 /* the Pears reel is a click-through deck now, not a scroll scrub */

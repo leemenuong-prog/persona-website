@@ -530,12 +530,12 @@ function App() {
       <main>
         <Hero jump={jump} />
         <Whoami jump={jump} />
-        <Works jump={jump} />
         <ChDev jump={jump} />
         <ChReel jump={jump} />
         <ChAipm jump={jump} />
         <ChAipmPlatform jump={jump} />
         <ChArch jump={jump} />
+        <Works jump={jump} />
         <Contact jump={jump} />
       </main>
 

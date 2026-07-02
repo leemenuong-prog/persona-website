@@ -723,7 +723,7 @@ function Works({ jump }) {
           <div className="wk-ghost" data-parallax="0.12" aria-hidden="true">WORKS</div>
 
           <div className="wk-intro">
-            <div className="kick mono">02 · SELECTED WORK / 作品</div>
+            <div className="kick mono">05 · SELECTED WORK / 作品</div>
             <h2 className="wk-zh">每一份数据，支撑着一个作品<i className="psq" aria-hidden="true"></i></h2>
             <p className="wk-lead mono">SCROLL — THE MARK UNFOLDS INTO THE WORK · 滚动，标记展开为作品</p>
           </div>
