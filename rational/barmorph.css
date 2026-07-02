@@ -147,7 +147,7 @@ body[data-tone="ink"] .bc-self { background: var(--blue-up); }
   .bc-chart { height: clamp(128px, 24vh, 172px); }
   .bc-col i { width: 56%; margin: 0 22%; }
   .bc-col::after { content: ""; position: absolute; left: 0; right: 0; top: -14px; bottom: -16px; }
-  .bc-col b { font-size: 7.5px; letter-spacing: 0; }
+  .bc-col b { font-size: 9px; letter-spacing: 0; }   /* 7.5px 在手机上低于可读下限 */
   .bc-col:not(.on) b { opacity: .5; }
 }
 

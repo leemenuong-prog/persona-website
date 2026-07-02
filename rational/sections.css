@@ -527,6 +527,14 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
 
 /* ── phone (≤600px) — type scale + stacking for a 335px column ──── */
 @media (max-width: 600px) {
+  /* hero — the mono info bar duplicates the fixed nav right above it and
+     wraps into a jumble at 335px; one nav is enough (大气简洁) */
+  .hbar { display: none; }
+  /* wide-tracked mono lines wrap scruffily at 335px — tighten the tracking */
+  .kick { letter-spacing: .2em; }
+  /* the quick chips: allow wrapping on ultra-narrow screens + finger-sized */
+  .hero-chips { flex-wrap: wrap; }
+  .hero-chips a { min-height: 44px; }
   /* hero — calm the decorative ghost rows so they don't read as stray text */
   .hl-ghost { font-size: 22px; line-height: 1.5; opacity: .6; }
 
