@@ -2,7 +2,7 @@
    chapters.jsx — the three identities · three expressions.
    One language (bars ⇄ glyphs · the blue period), three dimensions:
 
-   02 · An AIPM      — THE THREAD 一线穿点 · FLAT 2D
+   04 · An AIPM      — THE THREAD 一线穿点 · FLAT 2D
        Prioritisation as one line stringing through a few signal
        points; the one it lands on ignites cobalt as the period,
        the rest recede on the line. A single horizontal line —
@@ -14,7 +14,7 @@
        merge gate); what passes lands and the skyline assembles.
        Drag to orbit.
 
-   04 · An Architect — FIELD 场 · ABSTRACT
+   05 · An Architect — FIELD 场 · ABSTRACT
        Forces as a particle field. Scroll condenses the flow
        into contour rings, and a plan figure — with the blue
        period at its threshold — emerges from the noise.
@@ -42,7 +42,7 @@ function useChProg(id, ref) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   02 · AN AIPM — FLAT SHEET · 平面 (tone: blue)
+   04 · AN AIPM — FLAT SHEET · 平面 (tone: paper)
    ════════════════════════════════════════════════════════════ */
 const C2_STEPS = [
   { ix: "01", en: "TELEMETRY", zh: "埋点 — 数据找到漏点", th: 0.18,
@@ -87,7 +87,7 @@ function ChAipm({ jump }) {
      showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
      page — having it on both read as a duplicate (用户: 动画页不要按钮). */
   return (
-    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="02 · An AIPM — THE THREAD">
+    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="04 · An AIPM — THE THREAD">
       <div className="ch-wrap c2x-wrap">
         <div className="ch-stage c2x-stage" data-ob ref={ref}>
           <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
@@ -109,7 +109,7 @@ function ChAipm({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   02·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
+   04·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
    Two quiet Chinese pages explain the platform thesis; only then does the
    product film appear beside the title.
    ════════════════════════════════════════════════════════════ */
@@ -233,11 +233,11 @@ function ChAipmPlatform({ jump }) {
   const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   return (
-    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="02·B · XTOOL Agent Platform">
+    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="04·B · XTOOL Agent Platform">
       <div className="ch-wrap">
         <div className="ch-stage apx-stage" data-ob ref={ref} data-step="0">
           <div className="apx-kicker mono">
-            <span>02·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+            <span>04·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
           </div>
 
           <div className="apx-hero">
@@ -303,7 +303,7 @@ function ChAipmPlatform({ jump }) {
                             if (lo) lo.style.display = "flex";
                             f.src = "xtool/?fresh=1";
                           }}>
-                    <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" draggable="false" />
+                    <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" loading="lazy" draggable="false" />
                     <span className="apx-play-ico" aria-hidden="true"></span>
                     <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
                   </button>
@@ -472,7 +472,7 @@ function ChDev({ jump }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   04 · AN ARCHITECT — SITE FORM · 场 (tone: ink)
+   05 · AN ARCHITECT — SITE FORM · 场 (tone: ink)
    The canvas (SiteForm3D) lives in identity-art.jsx — the same
    axonometric skeleton as the Developer's skyline, inverted in
    tone: a luminous paper massing assembles from a site grid as
@@ -491,7 +491,7 @@ function ChArch({ jump }) {
   const ref = useChR(null);
   useChProg("architect", ref);
   return (
-    <section className="chapter ch4" id="architect" data-tone="ink" data-prog="architect" data-screen-label="04 · An Architect — FIELD">
+    <section className="chapter ch4" id="architect" data-tone="ink" data-prog="architect" data-screen-label="05 · An Architect — FIELD">
       <div className="ch-wrap">
         <div className="ch-stage sec c4" data-ob ref={ref}>
           <div className="c4-art" aria-hidden="true"><SiteForm3D /></div>
@@ -527,9 +527,9 @@ function ChArch({ jump }) {
    matte = the page paper, so the only foreign note is the deck's own
    green — quarantined to the framed rectangle and forced to opacity 0
    BEFORE the ink lerp, so green and ink never co-occupy the frame.
-   Exit: slide 9 (生态) widens out, the frame deconstructs to the bare
-   bar-column, and the engine's standard paper→ink midline lerp carries
-   the page into the Architect (场). No custom recolor code.
+   Exit: the closing roadshow frame holds, and the engine's standard
+   snow→paper midline lerp carries the page into the AIPM chapter
+   (the reel now sits Developer → AIPM). No custom recolor code.
    ════════════════════════════════════════════════════════════ */
 const REEL = [
   /* the cover (01.jpg) is intentionally gone — it opened the reel on an empty
@@ -555,88 +555,60 @@ const REEL = [
 const REEL_VIDEO = { src: "works/pears-roadshow.mp4", poster: "works/pears-roadshow-cover.jpg", zh: "路演", g: "Pears 产品路演 · Demo Day" };
 const REEL_N = REEL.length + 1;   /* 8 提案帧 + 1 路演视频帧 = 9 cells */
 
-/* the reel driver — a clone of useCutStage; pure style writes off
-   window.__progress.reel. onIndex fires only when the integer frame
-   changes. Cell opacity defaults to 0 in CSS (not inline) so a setState
-   re-render never resets what this loop is imperatively driving. */
-function useReelStage(id, ref, onIndex) {
-  useChE(() => {
-    const el = ref.current; if (!el) return;
-    const cells = [...el.querySelectorAll(".reel-cell")];
-    const ticks = [...el.querySelectorAll(".reel-tick")];
-    const vid = el.querySelector(".reel-video video");
-    const LAST = REEL_N - 1;
-    let lastP = -2, lastI = -1, vidStarted = false;
-    const stop = window.__addLoop(() => {
-      /* PHONE: the reel is a plain full-bleed VERTICAL stack (CSS) — the pinned
-         cross-dissolve scrub is off. Skip every per-frame write so nothing fights
-         the stacked layout or pauses the film mid-scroll. Checked each frame, so a
-         resize back to desktop recovers the scrub automatically. */
-      if (window.matchMedia && window.matchMedia("(max-width: 600px)").matches) return;
-      const praw = (window.__progress && window.__progress[id]) || 0;
-      if (Math.abs(praw - lastP) < 0.0006) return;
-      lastP = praw;
-      const p = aClamp(praw, 0, 1);
-      const calm = window.__calm;
-      const raw = aSeg(p, 0.10, 0.93) * REEL_N;     /* 0…N across the 9 frames + video */
-      const k = Math.min(Math.floor(raw), LAST);
-      const frac = raw - k;
-      /* enter — keyed to the RAW (unclamped) progress so the first slide + chrome
-         fade up DURING the reel's scroll-in and are already full the instant it
-         pins. No more empty bordered frame sitting on screen waiting for a slide
-         to appear (that opening beat read as dead/slow). */
-      const enter = aEase(aSeg(praw, -0.06, 0.0));
-      const kill = aSeg(p, 0.93, 0.97);             /* end-of-reel marker (drives the exit caption + index) */
-      let incoming = k < LAST ? aEase(aSeg(frac, 0.78, 1)) : 0;   /* last 22% of a band dissolves */
-      if (calm) incoming = (k < LAST && frac >= 0.5) ? 1 : 0;     /* reduced-motion → hard cut */
-      /* HOLD the last frame — cells no longer deconstruct to empty at the end
-         (was enter * (1 - kill)). The closing frame (the Pears roadshow video)
-         stays lit and rides up intact as the sticky stage slides into the
-         Architect, instead of dissolving to a bare rectangle mid-handoff. */
-      const vis = enter;
-      cells.forEach((c, i) => {
-        let o = 0;
-        if (i === k) o = 1 - incoming * 0.70;       /* current dwells, dips to .30 in the dissolve */
-        else if (i === k + 1) o = incoming;         /* next locks in */
-        c.style.opacity = (o * vis).toFixed(3);
-        c.style.transform = (!calm && i === k + 1) ? "scale(" + (1.012 - 0.012 * incoming).toFixed(4) + ")" : "scale(1)";
-      });
-      /* the video cell is interactive (native controls + the BGM button) while it's
-         the centred frame and the stage hasn't begun to release. AUTO-PLAY it muted
-         the moment it becomes the centred frame — fires once, from 0:00. After that
-         it is never auto-paused: scrolling on (down into the Architect) lets the film
-         keep playing, and if the viewer unmuted it for BGM the sound rides along
-         (request: 往下也会继续播放). A manual pause via the controls therefore sticks. */
-      const vcell = cells[LAST];
-      if (vcell) {
-        const live = k >= LAST && praw < 1.0;
-        vcell.style.pointerEvents = live ? "auto" : "none";
-        if (vid && live && !vidStarted) {
-          vidStarted = true;
-          const lo = vcell.querySelector(".reel-video-loading");
-          if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
-          vid.muted = true;
-          try { vid.currentTime = 0; } catch (e) {}
-          const pr = vid.play(); if (pr && pr.catch) pr.catch(() => {});
-        }
-      }
-      el.style.setProperty("--chrome", enter.toFixed(3));
-      el.style.setProperty("--self", aClamp(raw / LAST, 0, 1).toFixed(4));
-      el.style.setProperty("--kill", aEase(aSeg(p, 0.93, 0.98)).toFixed(3));
-      ticks.forEach((t, n) => t.classList.toggle("passed", n <= k));
-      const i = kill > 0.5 ? LAST : k;
-      if (i !== lastI) { lastI = i; onIndex(i); }
-    });
-    return () => stop();
-  }, []);
-}
+/* the deck is CLICK-DRIVEN now (was an 8-screen scroll scrub): one pinned
+   frame, useState(idx) flips the slides — click / ‹ › / ← → / swipe. Discrete
+   class-toggle transitions (.reel-cell.on) are fine here; the "CSS transitions
+   stall" caveat only applies to continuous scrub-driven animation. The chrome
+   vars the old rAF loop wrote are now declarative: --chrome ← the stage's
+   data-ob .in class, --self ← an inline style off idx, --kill ← data-end. */
+const reelClamp = (v) => Math.max(0, Math.min(REEL_N - 1, v));
 
 function ChReel({ jump }) {
   const ref = useChR(null);
   const vidRef = useChR(null);
-  const [i, setI] = React.useState(0);
+  const [idx, setIdx] = React.useState(0);
   const [muted, setMuted] = React.useState(true);   /* roadshow film auto-plays muted; the BGM button unmutes */
-  useReelStage("reel", ref, setI);
+  const vidStarted = useChR(false);
+  const touchX = useChR(0);
+  const go = (d) => setIdx((v) => reelClamp(v + d));
+  const phone = () => window.matchMedia && window.matchMedia("(max-width: 600px)").matches;
+
+  /* the closing frame — AUTO-PLAY the film muted the FIRST time the viewer flips
+     onto it, from 0:00 (never on page load — 用户: 滚动到达才播). Flipping BACK off
+     the video pauses it (in-deck retreat ≠ scrolling past, which keeps playing);
+     it never resets, so returning resumes where it left. */
+  useChE(() => {
+    const v = vidRef.current; if (!v) return;
+    const onVideo = idx >= REEL.length;
+    if (onVideo && !vidStarted.current) {
+      vidStarted.current = true;
+      const lo = v.parentElement && v.parentElement.querySelector(".reel-video-loading");
+      if (lo) { lo.style.display = "flex"; setTimeout(() => { lo.style.display = "none"; }, 8000); }
+      v.muted = true;
+      try { v.currentTime = 0; } catch (e) {}
+      const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+    } else if (!onVideo && !v.paused && !phone()) {
+      v.pause();
+    }
+  }, [idx]);
+
+  /* ← → flip the deck, but ONLY while the stage is actually pinned full-screen —
+     never hijack the keys elsewhere on the page (and never Up/Down/Space: those
+     stay native scroll). The native <video> keeps its own key handling. */
+  useChE(() => {
+    const onKey = (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      if (phone()) return;
+      if (e.target && e.target.closest && e.target.closest("video, input, textarea")) return;
+      const st = ref.current; if (!st) return;
+      const r = st.getBoundingClientRect();
+      if (!(r.top <= 1 && r.bottom >= innerHeight - 1)) return;
+      e.preventDefault();
+      setIdx((v) => reelClamp(v + (e.key === "ArrowRight" ? 1 : -1)));
+    };
+    addEventListener("keydown", onKey);
+    return () => removeEventListener("keydown", onKey);
+  }, []);
   /* PHONE: the reel is a plain vertical stack (useReelStage no-ops ≤600px), so the
      desktop loop can't drive auto-play. Observe the film and auto-play it muted once
      it scrolls into view; like desktop it is never paused on exit. */
@@ -659,27 +631,58 @@ function ChReel({ jump }) {
      the live product, same as the Developer identity chapter (WORKS[0]). */
   const devWk = (window.WORKS || [])[0];
   const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
-  const isVideo = i >= REEL.length;
-  const s = isVideo ? REEL_VIDEO : REEL[i];
+  const isVideo = idx >= REEL.length;
+  const s = isVideo ? REEL_VIDEO : REEL[idx];
   return (
     <section className="chapter reel" id="reel" data-tone="snow" data-prog="reel"
              data-screen-label="03·B · The Evidence — REEL">
       {/* tone is "snow" (cool near-white) — the engine crossfades paper(ChDev)→snow as
          you arrive at the Pears deck so the slides sit on a MATCHING ground, then
-         snow→ink into the Architect. The slides' own base is rgb(245,245,247). */}
+         snow→paper into the AIPM chapter. The slides' own base is rgb(245,245,247). */}
       <div className="ch-wrap reel-wrap">
-        <div className="ch-stage reel-stage" data-ob ref={ref}>
+        <div className="ch-stage reel-stage" data-ob ref={ref}
+             data-end={isVideo ? "1" : "0"}
+             style={{ "--self": (idx / (REEL_N - 1)).toFixed(4) }}>
           <div className="reel-spine" aria-hidden="true">
-            {Array.from({ length: REEL_N }, (_, n) => <i key={n} className="reel-tick" style={{ "--n": n }}></i>)}
+            {Array.from({ length: REEL_N }, (_, n) => (
+              <i key={n} className={"reel-tick" + (n <= idx ? " passed" : "")} style={{ "--n": n }}
+                 onClick={() => setIdx(n)}></i>
+            ))}
             <span className="reel-self"></span>
           </div>
-          <div className="reel-frame">
+          <div className="reel-frame"
+               onClick={(e) => {
+                 /* the whole frame advances — except real controls (links, buttons,
+                    the film's native UI). Phone is a plain vertical stack: no-op. */
+                 if (phone()) return;
+                 if (e.target.closest("a, button, video, iframe")) return;
+                 go(1);
+               }}
+               onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+               onTouchEnd={(e) => {
+                 if (phone()) return;
+                 const dx = e.changedTouches[0].clientX - touchX.current;
+                 if (Math.abs(dx) > 42) go(dx < 0 ? 1 : -1);
+               }}>
             {REEL.map((slide, n) => (
-              <img key={n} className="reel-cell reel-img" src={"works/pears-deck/" + slide.ix + "." + (slide.ext || "jpg")}
+              <img key={n} className={"reel-cell reel-img" + (n === idx ? " on" : "")}
+                   src={"works/pears-deck/" + slide.ix + "." + (slide.ext || "jpg")}
                    alt={"Pears " + slide.ix + " " + slide.zh} decoding="async"
-                   loading={n < 2 ? "eager" : "lazy"} draggable="false" />
+                   loading="eager" draggable="false" />
             ))}
-            <div className="reel-cell reel-video">
+            {idx > 0 && !isVideo && (
+              <button className="reel-nav prev" type="button" data-hov aria-label="上一页"
+                      onClick={() => go(-1)}><span>‹</span></button>
+            )}
+            {!isVideo && (
+              <button className="reel-nav next" type="button" data-hov aria-label="下一页"
+                      onClick={() => go(1)}><span>›</span></button>
+            )}
+            {isVideo && (
+              <button className="reel-nav prev on-video" type="button" data-hov aria-label="回看提案"
+                      onClick={() => go(-1)}><span>‹</span></button>
+            )}
+            <div className={"reel-cell reel-video" + (isVideo ? " on" : "")}>
               <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
                      preload="none" playsInline muted controls
                      onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
@@ -715,13 +718,14 @@ function ChReel({ jump }) {
             </div>
           </div>
           <div className="reel-ix mono" aria-hidden="true">
-            <div key={i} className="reel-ixc">
-              <span className="ix">{isVideo ? "▶" : String(i + 1).padStart(2, "0")}</span>{!isVideo && <span className="tot"> / {String(REEL.length).padStart(2, "0")}</span>}
+            <div key={idx} className="reel-ixc">
+              <span className="ix">{isVideo ? "▶" : String(idx + 1).padStart(2, "0")}</span>{!isVideo && <span className="tot"> / {String(REEL.length).padStart(2, "0")}</span>}
               <span className="ln"></span><span className="lab">{s.zh}</span>
               <span className="gloss zh">{s.g}</span>
             </div>
           </div>
-          <div className="reel-out mono" aria-hidden="true">证物完毕 — 力造出形 <span className="arr">↘</span></div>
+          <div className="reel-hint mono" aria-hidden="true">点击翻页 · CLICK / ‹ › / ←→</div>
+          <div className="reel-out mono" aria-hidden="true">证物完毕 — 一线穿点 <span className="arr">↘</span></div>
           <a className="reel-cta ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
             <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
           </a>

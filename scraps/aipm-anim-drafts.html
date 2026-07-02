@@ -1,0 +1,674 @@
+<title>AIPM 动画 · 三个方向草稿 — Data to Dimension</title>
+<style>
+  :root{
+    --cobalt:#0047AB; --ink:#0b0b0e; --paper:#efece6;
+    --blue-up:#3b82f6; --blue-dn:#002a66;
+    --mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0}
+  .page{
+    background:
+      radial-gradient(120% 80% at 50% -10%, #06224f 0%, #04132f 55%, #020a1c 100%);
+    color:var(--paper); font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; line-height:1.6;
+    padding:clamp(20px,4vw,56px) clamp(16px,4vw,48px) 80px;
+  }
+  .wrap{max-width:980px;margin:0 auto}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .kick{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:#8fb4ee;opacity:.85}
+  h1{font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-.01em;line-height:1.08;margin:.4em 0 .2em}
+  h1 .dot{color:var(--blue-up)}
+  .lede{font-size:clamp(15px,1.7vw,18px);color:#d7e3f5;max-width:64ch;margin:.2em 0 0}
+  .lede .zh{display:block;color:#9fb6d8;font-size:.92em;margin-top:.25em}
+  .rule{height:1px;background:linear-gradient(90deg,#2f5da3,transparent);margin:34px 0}
+  .prob{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 8px}
+  .prob .c{background:rgba(8,28,64,.55);border:1px solid #1d3c74;border-radius:10px;padding:14px 14px}
+  .prob h4{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#8fb4ee;text-transform:uppercase}
+  .prob p{margin:5px 0;font-size:13.5px;color:#cdd9ee}
+  .prob .now{color:#c9b27a}
+  .prob .nxt{color:#9ec7ff}
+
+  .draft{margin:46px 0 0;border-top:1px solid #1d3c74;padding-top:30px}
+  .dhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .dix{font-family:var(--mono);font-size:13px;color:#7fa8e6;border:1px solid #2c5390;border-radius:6px;padding:2px 9px}
+  .dtitle{font-size:clamp(20px,2.6vw,27px);font-weight:800;letter-spacing:-.01em;margin:0}
+  .badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    background:var(--blue-up);color:#001230;border-radius:999px;padding:3px 10px;font-weight:700;align-self:center}
+  .tag{font-size:14.5px;color:#a9c2e6;margin:8px 0 2px;max-width:72ch}
+  .tag .zh{color:#7f9bc4}
+  .hook{font-size:14px;color:#dbe6f7;margin:10px 0 16px;max-width:74ch}
+
+  .stage{position:relative;width:100%;aspect-ratio:16/9;background:#020a1c;border-radius:12px;overflow:hidden;
+    border:1px solid #1d3c74;box-shadow:0 18px 60px -30px #000}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .stagelabel{position:absolute;left:14px;top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    color:#bcd2f4;text-shadow:0 1px 6px #000;pointer-events:none}
+  .stagelabel .wb{color:var(--blue-up)}
+  .tc{position:absolute;right:14px;top:12px;font-family:var(--mono);font-size:11px;color:#9fb6d8;text-shadow:0 1px 6px #000}
+
+  .ctl{display:flex;align-items:center;gap:12px;margin:12px 0 4px}
+  .pbtn{flex:none;width:38px;height:38px;border-radius:9px;border:1px solid #2c5390;background:rgba(10,32,72,.7);
+    color:var(--paper);cursor:pointer;font-size:15px;display:grid;place-items:center;transition:background .15s}
+  .pbtn:hover{background:rgba(20,52,108,.9)}
+  .scrub{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:3px;
+    background:#163363;outline:none;cursor:pointer}
+  .scrub::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+    background:var(--blue-up);border:2px solid #cfe0ff;cursor:pointer}
+  .scrub::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--blue-up);border:2px solid #cfe0ff;cursor:pointer}
+
+  .beats{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 18px}
+  .beat{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:#9fb6d8;
+    background:rgba(8,28,64,.5);border:1px solid #1d3c74;border-radius:6px;padding:4px 9px;cursor:pointer;transition:all .15s}
+  .beat:hover{border-color:#3a6cb5;color:#dce8fb}
+  .beat.on{background:var(--blue-dn);border-color:var(--blue-up);color:#eaf2ff}
+  .beat .w{color:var(--blue-up)}
+
+  .notes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px}
+  .note{background:rgba(8,28,64,.4);border:1px solid #16315f;border-radius:9px;padding:11px 13px}
+  .note h5{margin:0 0 5px;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#7fa8e6}
+  .note p{margin:0;font-size:13px;color:#cfdcef}
+
+  .refs{margin-top:18px}
+  .refs ul{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px 22px}
+  .refs li{font-size:13px;color:#c2d2ea}
+  .refs a{color:#9ec7ff;text-decoration:none;border-bottom:1px solid #2c5390}
+  .refs a:hover{border-color:#9ec7ff}
+  .refs .why{color:#8499bb;font-size:12px}
+
+  .verdict{margin-top:30px;background:linear-gradient(180deg,rgba(10,34,78,.7),rgba(6,20,48,.6));
+    border:1px solid #2c5390;border-radius:12px;padding:20px 22px}
+  .verdict h3{margin:0 0 6px;font-size:18px;font-weight:800}
+  .verdict p{margin:8px 0;font-size:14px;color:#d6e3f6}
+  .verdict .ax{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .verdict .ax div{border:1px solid #1d3c74;border-radius:9px;padding:12px 14px;background:rgba(4,16,40,.5)}
+  .verdict .ax b{color:#bcd2f4;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  @media(max-width:680px){.prob,.notes,.refs ul,.verdict .ax{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Three live animated design drafts for the AIPM hero animation — Telemetry Rain, Crystallisation, and Decode — each prototyping a data to charts to 3D dimensions sequence in the cobalt/ink/paper palette.</h2>
+
+<div class="page"><div class="wrap">
+
+  <div class="kick">An AIPM · Genesis — animation redesign · 草稿</div>
+  <h1>Data → Charts → Dimension<span class="dot">.</span></h1>
+  <p class="lede">Three live drafts for the AIPM hero. Each watches a system <em>think</em>: raw telemetry self-organises into a chart, the chart stands up into 3D dimensions, and the <span style="color:var(--blue-up)">.IAM.</span> mark resolves out of the noise — it was always there.
+    <span class="zh">拖动滑块或点击节点即可逐帧回看。三个方向都遵循：噪声 → 图表 → 三维维度 → 标记。蓝色句点是唯一的跳色。</span>
+  </p>
+
+  <div class="rule"></div>
+
+  <div class="kick">Why the current AIPM loses to the Developer</div>
+  <div class="prob">
+    <div class="c"><h4>Gesture</h4>
+      <p class="now">今 · 都在「把方块堆成天际线」</p>
+      <p class="nxt">→ AIPM 改为「数据自我变形」</p></div>
+    <div class="c"><h4>Character</h4>
+      <p class="now">今 · 实心 · 搭建 · 可旋转</p>
+      <p class="nxt">→ 流动 · 计算感 · 导演运镜</p></div>
+    <div class="c"><h4>Content</h4>
+      <p class="now">今 · 流星 → 立方 → 天际线</p>
+      <p class="nxt">→ 点 → 图表 → 维度 → 标记</p></div>
+  </div>
+  <p class="lede" style="font-size:13.5px;color:#9fb6d8">两者都终结于同一个物体（3D 的 .IAM. 天际线）、同一个手势（搭起来）——这就是「太像」的根源。差异化的杠杆是<strong style="color:#cfe0ff">运动性格</strong>：Developer 是你<em>旋转</em>的实体；AIPM 应是你<em>看它思考</em>的过程。</p>
+
+  <!-- DRAFT A -->
+  <section class="draft">
+    <div class="dhead">
+      <span class="dix">A</span>
+      <h3 class="dtitle">遥测之雨 · Telemetry Rain</h3>
+      <span class="badge">首席推荐</span>
+    </div>
+    <p class="tag">噪声落雨，自行归位，沉成那个标记——然后标记立起，长成维度。<span class="zh"> · Noise rains, sorts, settles into the mark — then the mark stands up into dimension.</span></p>
+    <p class="hook">一场约 1,800 点的遥测之雨落下、自行归入八根直方柱——而这八根柱正是 .IAM. 的节奏；扁平的柱子随即从图表平面立起为三维维度棱柱，蓝色句点落定。数据先变成品牌，再变成空间。</p>
+    <div class="stage">
+      <canvas data-scene="rain"></canvas>
+      <div class="stagelabel" data-label></div>
+      <div class="tc" data-tc></div>
+    </div>
+    <div class="ctl">
+      <button class="pbtn" data-play aria-label="play / pause">❚❚</button>
+      <input class="scrub" type="range" min="0" max="1000" value="0" step="1" data-scrub aria-label="scrub timeline">
+    </div>
+    <div class="beats" data-beats></div>
+    <div class="notes">
+      <div class="note"><h5>★ Wow beat</h5><p>pc≈0.40：你盯了半天当作噪声的雨，突然归位、分箱、堆叠，活跳的抖动在八根柱锁定到 .IAM. 节奏的同一帧里死去——剪影瞬间就是那个标记。是「认出」，不是「揭晓」：数据一直在拼这个 logo。</p></div>
+      <div class="note"><h5>与 Developer 的区别</h5><p>开场是 1,800 个抖动的点（实心方块的反面），全程不可拖拽（导演运镜），天际线只占最后 30%——前提是「排序」不是「搭建」。两者只在最后共享 .IAM. 剪影，却由相反路径抵达。</p></div>
+      <div class="note"><h5>三维 · 多维度</h5><p>八根扁平柱同时挤出深度成棱柱，相机从正视图抬到轴测；后排棱柱以航空雾向钴蓝褪去——「多个具象维度」用空气透视表达，靠明度不靠颜色。</p></div>
+      <div class="note"><h5>可行性 · 最高</h5><p>复用现有 project() 相机、pushBox、画家排序、settleA 落点闪光。点全部由 pc 纯函数定位、抖动只是 now 装饰 → 反向滚动稳定。1,800 个 arc 在收束后并入 8 个盒子，填充率持平。</p></div>
+    </div>
+  </section>
+
+  <!-- DRAFT B -->
+  <section class="draft">
+    <div class="dhead">
+      <span class="dix">B</span>
+      <h3 class="dtitle">结晶 · Crystallisation</h3>
+    </div>
+    <p class="tag">万千遥测寻得一根真轴，坍折成一枚澄澈的晶。<span class="zh"> · A storm of measurements finds one true axis, then folds into a single clear gem.</span></p>
+    <p class="hook">抖动的三维遥测群被一根回归主轴贯穿（流星式亮头绘出），随后把自身的点折叠成一枚低多边形晶体的棱面；晶体最终解理、重排成 .IAM. 天际线。分析即结晶，而非搭建——全站最像「珍宝」的一帧。</p>
+    <div class="stage">
+      <canvas data-scene="crystal"></canvas>
+      <div class="stagelabel" data-label></div>
+      <div class="tc" data-tc></div>
+    </div>
+    <div class="ctl">
+      <button class="pbtn" data-play aria-label="play / pause">❚❚</button>
+      <input class="scrub" type="range" min="0" max="1000" value="0" step="1" data-scrub aria-label="scrub timeline">
+    </div>
+    <div class="beats" data-beats></div>
+    <div class="notes">
+      <div class="note"><h5>★ Wow beat</h5><p>pc≈0.36–0.50：安静的点云在两三帧内「折」成一枚实心晶体——你当作噪声盯着的同一批点，正是这枚宝石的顶点，棱面在它们之间嵌入。混沌没有被替换，而是从溶液里析出。</p></div>
+      <div class="note"><h5>与 Developer 的区别</h5><p>主角历经四态（云→纺锤→晶→天际线），晶体/宝石这一形态全站独一无二，没人会把它和天际线搞混；相机是不可拖拽的导演式缓推。</p></div>
+      <div class="note"><h5>三维 · 多维度</h5><p>每个棱面 = 一个维度（研究建议 5–8 面最易读，正好 8）。深度全靠平面着色的高光边，钴蓝只落在棱线与顶点，绝不整面铺色——符合极简单色 3D 的「贵」。</p></div>
+      <div class="note"><h5>可行性 · 中（最高回报）</h5><p>约 240 点 + 16 棱面 + 8 柱 ≈ 300 面/帧，比现 genesis 还轻。风险只在「解理」：柱必须由晶体自己的棱面簇连续形变而来，不能淡入淡出——否则又像 Developer 的搭建。</p></div>
+    </div>
+  </section>
+
+  <!-- DRAFT C -->
+  <section class="draft">
+    <div class="dhead">
+      <span class="dix">C</span>
+      <h3 class="dtitle">解码 · Decode（字⇄条）</h3>
+    </div>
+    <p class="tag">每一个数字本来就是一栋楼，分析不过是学会去读它。<span class="zh"> · Every number was already a building; analysis is just learning to read it.</span></p>
+    <p class="hook">一片原始等宽数字像活遥测般抖动，在扫描读头下归位，沿本站自有的「字⇄条」语法折成图表——图表随即从纸面升起为一片维度高塔，相机直接<em>穿行</em>而过（透视，非轴测），最后退场留下 .IAM. 与蓝色句点。这是把品牌语法本身演成动画。</p>
+    <div class="stage">
+      <canvas data-scene="decode"></canvas>
+      <div class="stagelabel" data-label></div>
+      <div class="tc" data-tc></div>
+    </div>
+    <div class="ctl">
+      <button class="pbtn" data-play aria-label="play / pause">❚❚</button>
+      <input class="scrub" type="range" min="0" max="1000" value="0" step="1" data-scrub aria-label="scrub timeline">
+    </div>
+    <div class="beats" data-beats></div>
+    <div class="notes">
+      <div class="note"><h5>★ Wow beat</h5><p>pc 0.30–0.50：一列列看似随机的遥测数字「折」成柱子，且抖动在同一刻死去——你刚才在<em>读</em>的数字串，原来就是 .IAM. 的节奏。「读」即「解码」，把本站的 字⇄条 语法字面执行。</p></div>
+      <div class="note"><h5>与 Developer 的区别</h5><p>开场是纯排版（一团 2D 文字），全站独有；唯一使用<strong style="color:#cfe0ff">透视短焦</strong>让相机穿过塔林（消失点、视差冲刷）——正是 Developer 平行轴测正交的反面。</p></div>
+      <div class="note"><h5>三维 · 多维度</h5><p>主柱之外，暗弱的「被否决的假设」高塔从画面边缘掠过被甩在身后——「提炼」在视觉上就是穿过许多维度只留下站得住的那几根。</p></div>
+      <div class="note"><h5>可行性 · 中</h5><p>复用全部 3D 基元；新成本是约 220 个 fillText（封顶、远处剔除、morph>0.6 后停止绘制）。风险是品味而非性能：文字易「Matrix 感」——靠大量留白、单一读头、一次硬切 morph 化解。</p></div>
+    </div>
+  </section>
+
+  <!-- REFS -->
+  <section class="draft refs">
+    <div class="kick">References — what I looked at first</div>
+    <ul>
+      <li><a href="https://bruno-simon.com">Bruno Simon</a> <span class="why">— 整站就是一个「单一英雄时刻」，把导航变成可玩的物件</span></li>
+      <li><a href="https://activetheory.net">Active Theory</a> <span class="why">— 电影感而非装饰；滚动是穿越 3D 环境</span></li>
+      <li><a href="https://www.awwwards.com/sites/aristide-benoist">Aristide Benoist</a> <span class="why">— 克制即对比：九成安静，一记缓动转场说全部</span></li>
+      <li><a href="https://pudding.cool/process/how-to-implement-scrollytelling/">The Pudding · 散点→蜂群→面积图</a> <span class="why">— 对象恒常性：同一个点从散点走到柱</span></li>
+      <li><a href="https://css-tricks.com/lets-make-one-of-those-fancy-scrolling-animations-used-on-apple-product-pages/">Apple AirPods 滚动序列</a> <span class="why">— 滚动即时间轴，可逆、可端详</span></li>
+      <li><a href="https://threejs-journey.com/lessons/particles-morphing-shader">Particles Morphing</a> <span class="why">— 粒子在两套目标间插值 = 干净的「群→标记」</span></li>
+      <li><a href="http://www.bit-101.com/tutorials/perspective.html">bit-101 透视数学</a> · <a href="https://observablehq.com/@pamacha/the-painters-algorithm">画家算法</a> <span class="why">— 纯 2D canvas 假 3D 的全部把戏</span></li>
+      <li><a href="https://en.wikipedia.org/wiki/Radar_chart">雷达图 / 低多边形晶体</a> <span class="why">— 每个面 = 一个维度，5–8 面最易认</span></li>
+    </ul>
+    <p class="lede" style="font-size:12.5px;color:#7f9bc4;margin-top:14px">提炼出的两条最重要原则：① <strong style="color:#cfe0ff">对象恒常性</strong>——同一个点从散点移动到柱再到 3D 顶点（重生=装饰，重定位=推理）。② <strong style="color:#cfe0ff">高潮要「凝聚」不要「四散」</strong>——结晶之所以读作「洞见」，正因粒子向内汇聚。两条都验证了上面三稿的脊柱。</p>
+  </section>
+
+  <!-- VERDICT -->
+  <div class="verdict">
+    <h3>首席设计师的判断</h3>
+    <p>三稿共用同一条正确的脊柱：开场是被读作<em>噪声</em>的流动之物 → 在秩序到来的同一帧里杀死抖动 → 把 .IAM. 作为「认出」而非「揭晓」浮现 → 蓝色只触碰句点。它们都复用 genesis 的相机与 pushBox/雾/settleA 基元，构建成本有界，且因布局是 pc 的纯函数而可反向滚动。</p>
+    <p>你只需要做一个<strong style="color:#cfe0ff">气质判断</strong>，其余（数字、点数、穿行 vs 轴测）都是下游：</p>
+    <div class="ax">
+      <div><b>必然感 · Inevitable</b><p style="margin:6px 0 0;font-size:13px;color:#cfdcef">A 雨 / C 解码 —— 系统把噪声收敛成秩序，品牌作为显然的答案浮现。最易读、最低风险、单点 aha 最强。「秩序即产品」最干净的陈述。</p></div>
+      <div><b>珍宝感 · Precious</b><p style="margin:6px 0 0;font-size:13px;color:#cfdcef">B 结晶 —— 品牌作为从溶液析出的多面宝石，全站最美的物件，但最需要克制的导演，否则会滑向「好看的屏保」而丢掉认知论证。</p></div>
+    </div>
+    <p style="margin-top:14px"><strong style="color:var(--blue-up)">我的票：A 遥测之雨。</strong>它是「Order is the Product」最干净的视觉陈述、构建风险最低、单点 aha 最强；若日后想要更多奇观，B 的「结晶」折面节拍可作为可选中段华彩嫁接进来，不动脊柱。告诉我选哪个方向，我就把它实装进 <code>aipm-genesis.jsx</code>。</p>
+  </div>
+
+</div></div>
+
+<script>
+(function(){
+  "use strict";
+  var RHY=[0.97,0.58,1.0,0.66,0.9,0.52,0.74,1.0], COLS=8, SX=1.0, HB=2.45, HALF=0.30;
+  var PX=(COLS-1)/2*SX+1.15;
+  var COBALT=[8,40,108];               // fog / field target
+  function colX(c){return (c-(COLS-1)/2)*SX;}
+
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function seg(p,a,b){return clamp((p-a)/((b-a)||1e-6),0,1);}
+  function ease(t){return t*t*(3-2*t);}                  // smoothstep
+  function eOut(t){return 1-Math.pow(1-t,3);}
+  function mul(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
+  function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}
+  function norm(a){var m=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/m,a[1]/m,a[2]/m];}
+  var LIGHT=norm([-0.42,-0.46,0.78]);
+
+  function makeCam(az,el,rho,tgt,W,H){
+    var ce=Math.cos(el),se=Math.sin(el);
+    var eye=[tgt[0]+rho*ce*Math.cos(az), tgt[1]+rho*ce*Math.sin(az), tgt[2]+rho*se];
+    var f=norm(sub(tgt,eye)), rax=norm(cross(f,[0,0,1])), uax=cross(rax,f);
+    var focal=Math.min(W*0.92,H*1.46), cx=W*0.5, cy=H*0.58, near=0.12;
+    function project(P){
+      var dx=P[0]-eye[0],dy=P[1]-eye[1],dz=P[2]-eye[2];
+      var vz=dx*f[0]+dy*f[1]+dz*f[2]; if(vz<=near) return null;
+      var vx=dx*rax[0]+dy*rax[1]+dz*rax[2], vy=dx*uax[0]+dy*uax[1]+dz*uax[2];
+      var sc=focal/vz; return [cx+vx*sc, cy-vy*sc, vz];
+    }
+    return {eye:eye,focal:focal,project:project};
+  }
+
+  function field(ctx,W,H){
+    var g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,"rgb(3,28,72)"); g.addColorStop(0.55,"rgb(2,18,54)"); g.addColorStop(1,"rgb(1,9,28)");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    var vg=ctx.createRadialGradient(W*0.5,H*0.56,Math.min(W,H)*0.18,W*0.5,H*0.56,Math.max(W,H)*0.72);
+    vg.addColorStop(0,"rgba(0,8,30,0)"); vg.addColorStop(1,"rgba(0,4,16,0.6)");
+    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+  }
+
+  // box -> push quad faces
+  function pushBox(faces,cam,bx,by,z0,z1,hx,hy,alpha,kind){
+    var X0=bx-hx,X1=bx+hx,Y0=by-hy,Y1=by+hy, eye=cam.eye, project=cam.project;
+    var quads=[
+      {p:[[X0,Y0,z1],[X1,Y0,z1],[X1,Y1,z1],[X0,Y1,z1]],n:[0,0,1]},
+      {p:[[X0,Y0,z0],[X1,Y0,z0],[X1,Y0,z1],[X0,Y0,z1]],n:[0,-1,0]},
+      {p:[[X1,Y0,z0],[X1,Y1,z0],[X1,Y1,z1],[X1,Y0,z1]],n:[1,0,0]},
+      {p:[[X0,Y1,z0],[X0,Y0,z0],[X0,Y0,z1],[X0,Y1,z1]],n:[-1,0,0]},
+      {p:[[X1,Y1,z0],[X0,Y1,z0],[X0,Y1,z1],[X1,Y1,z1]],n:[0,1,0]}
+    ];
+    for(var i=0;i<quads.length;i++){
+      var q=quads[i];
+      var cx=(q.p[0][0]+q.p[1][0]+q.p[2][0]+q.p[3][0])/4;
+      var cy=(q.p[0][1]+q.p[1][1]+q.p[2][1]+q.p[3][1])/4;
+      var cz=(q.p[0][2]+q.p[1][2]+q.p[2][2]+q.p[3][2])/4;
+      if(q.n[0]*(eye[0]-cx)+q.n[1]*(eye[1]-cy)+q.n[2]*(eye[2]-cz)<=0) continue;
+      var pr=[project(q.p[0]),project(q.p[1]),project(q.p[2]),project(q.p[3])];
+      if(!pr[0]||!pr[1]||!pr[2]||!pr[3]) continue;
+      var dep=(pr[0][2]+pr[1][2]+pr[2][2]+pr[3][2])/4;
+      var lum=clamp((q.n[0]*LIGHT[0]+q.n[1]*LIGHT[1]+q.n[2]*LIGHT[2])*0.5+0.5,0,1);
+      faces.push({pr:pr,dep:dep,lum:lum,alpha:alpha,kind:kind});
+    }
+  }
+  function pushTri(faces,cam,a,b,c,alpha,kind,nrm){
+    var project=cam.project, eye=cam.eye;
+    var cx=(a[0]+b[0]+c[0])/3,cy=(a[1]+b[1]+c[1])/3,cz=(a[2]+b[2]+c[2])/3;
+    var pa=project(a),pb=project(b),pc=project(c); if(!pa||!pb||!pc) return;
+    var dep=(pa[2]+pb[2]+pc[2])/3;
+    var lum=nrm?clamp((nrm[0]*LIGHT[0]+nrm[1]*LIGHT[1]+nrm[2]*LIGHT[2])*0.5+0.5,0,1):0.6;
+    faces.push({pr:[pa,pb,pc],dep:dep,lum:lum,alpha:alpha,kind:kind});
+  }
+  function paint(ctx,faces){
+    faces.sort(function(a,b){return b.dep-a.dep;});
+    for(var i=0;i<faces.length;i++){
+      var fc=faces[i]; if(fc.alpha<=0.004) continue;
+      ctx.globalAlpha=fc.alpha;
+      ctx.beginPath();
+      for(var k=0;k<fc.pr.length;k++){var pp=fc.pr[k]; if(k)ctx.lineTo(pp[0],pp[1]);else ctx.moveTo(pp[0],pp[1]);}
+      ctx.closePath();
+      var fog=clamp((fc.dep-7)/24,0,0.82), r,g,b, sa=0.5;
+      if(fc.kind==="period"){ r=lerp(18,70,fc.lum); g=lerp(50,120,fc.lum); b=lerp(150,235,fc.lum); sa=0.9; }
+      else if(fc.kind==="facet"){ r=lerp(20,70,fc.lum); g=lerp(70,130,fc.lum); b=lerp(150,220,fc.lum); fog*=0.6; sa=0.7; }
+      else if(fc.kind==="ghost"){ r=lerp(30,90,fc.lum); g=lerp(50,110,fc.lum); b=lerp(90,150,fc.lum); fog=Math.max(fog,0.45); sa=0.25; }
+      else { var mv=lerp(150,244,fc.lum); r=mv; g=mv-3; b=mv-9; } // marble bar
+      r=lerp(r,COBALT[0],fog); g=lerp(g,COBALT[1],fog); b=lerp(b,COBALT[2],fog);
+      ctx.fillStyle="rgb("+(r|0)+","+(g|0)+","+(b|0)+")"; ctx.fill();
+      ctx.lineWidth=fc.kind==="facet"?0.8:1;
+      ctx.strokeStyle="rgba(220,232,255,"+(sa*(1-fog)*fc.alpha).toFixed(3)+")"; ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  // settle ring flash at a projected center
+  function ring(ctx,cam,center,W,H,amt,grow){
+    var c=cam.project(center); if(!c) return;
+    var SP=Math.min(W,H)/900;
+    if(amt>0.01&&amt<1){
+      ctx.globalAlpha=(1-amt)*0.85; ctx.strokeStyle="rgba(150,195,255,0.95)"; ctx.lineWidth=2.2;
+      ctx.beginPath(); ctx.arc(c[0],c[1],ease(amt)*Math.min(W,H)*0.26,0,6.2832); ctx.stroke(); ctx.globalAlpha=1;
+    }
+    if(grow>0.02){
+      var hg=ctx.createRadialGradient(c[0],c[1],0,c[0],c[1],95*SP);
+      hg.addColorStop(0,"rgba(90,150,255,"+(0.4*grow).toFixed(3)+")"); hg.addColorStop(1,"rgba(60,120,240,0)");
+      ctx.fillStyle=hg; ctx.fillRect(0,0,W,H);
+    }
+  }
+  function dot(ctx,x,y,r,a,hot){
+    ctx.globalAlpha=clamp(a,0,1);
+    ctx.fillStyle=hot?"rgba(255,255,255,1)":"rgba(150,195,255,0.95)";
+    ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fill();
+  }
+
+  /* ================= SCENE A — RAIN ================= */
+  var RAIN=(function(){
+    var rng=mul(0x51A7), dots=[], total=560, ws=RHY.slice(), sum=0,i,c;
+    for(i=0;i<8;i++)sum+=ws[i];
+    for(c=0;c<8;c++){
+      var n=Math.max(10,Math.round(total*ws[c]/sum)), cx=colX(c), Hc=RHY[c]*HB;
+      for(var j=0;j<n;j++){
+        var u=(j+0.5)/n;
+        dots.push({c:c,cx:cx,binX:cx+(rng()-0.5)*0.34,stackZ:u*Hc,
+          sX:cx+(rng()-0.5)*7.2,sY:(rng()-0.5)*2.2,sZ:0.4+rng()*3.4,
+          top:3.6+rng()*3.0,st:rng(),js:rng()*6.283,sp:0.6+rng()*0.9});
+      }
+    }
+    var hot=dots.filter(function(d){return d.c===2;}).sort(function(a,b){return b.stackZ-a.stackZ;})[0];
+    if(hot)hot.hot=true;
+    return dots;
+  })();
+  function drawRain(ctx,W,H,p,now){
+    field(ctx,W,H);
+    var reveal=ease(seg(p,0.50,1.0));
+    var el=lerp(0.045,0.34,ease(seg(p,0.46,0.86)));
+    var az=-1.5708-0.5*reveal;
+    var rho=lerp(7.0,11.4,reveal);
+    var tgt=[lerp(0.2,1.45,reveal),0,lerp(0.92,1.18,reveal)];
+    var cam=makeCam(az,el,rho,tgt,W,H);
+    var extr=ease(seg(p,0.50,0.80));
+    var barFade=ease(seg(p,0.34,0.52));   // dots vanish into bars
+    var t=now*0.001;
+
+    // chart baseline
+    var blA=seg(p,0.22,0.42)*(1-seg(p,0.66,0.82));
+    if(blA>0.02){
+      var a0=cam.project([-4.1,0,0]),a1=cam.project([4.1,0,0]);
+      if(a0&&a1){ctx.globalAlpha=blA*0.5;ctx.strokeStyle="rgba(120,165,240,0.6)";ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(a0[0],a0[1]);ctx.lineTo(a1[0],a1[1]);ctx.stroke();ctx.globalAlpha=1;}
+    }
+
+    // dots
+    ctx.globalCompositeOperation="lighter";
+    for(var i=0;i<RAIN.length;i++){
+      var d=RAIN[i];
+      var fall=ease(seg(p,0+d.st*0.10,0.13+d.st*0.10));
+      var sortA=ease(seg(p,0.18+d.st*0.12,0.40+d.st*0.12));
+      var zc=lerp(d.top,d.sZ,fall);
+      var x=lerp(d.sX,d.binX,sortA), y=lerp(d.sY,0,sortA), z=lerp(zc,d.stackZ,sortA);
+      var amp=0.16*(1-sortA)*fall;
+      if(amp>0.001){x+=Math.sin(t*d.sp+d.js)*amp; y+=Math.cos(t*d.sp*1.3+d.js)*amp; z+=Math.sin(t*d.sp*0.8+d.js*1.7)*amp;}
+      x=lerp(x,d.cx,barFade*0.7);                 // merge to centerline
+      var pr=cam.project([x,y,z]); if(!pr) continue;
+      var r=clamp(cam.focal/pr[2]*0.0065,0.8,3.0);
+      var a=(0.35+0.55*fall)*(1-barFade*0.92);
+      dot(ctx,pr[0],pr[1],r*(d.hot?1.5:1),a,d.hot);
+    }
+    ctx.globalCompositeOperation="source-over";
+
+    // bars + period
+    var faces=[];
+    for(var c=0;c<8;c++){
+      var grow=ease(seg(p,0.34+c*0.012,0.54+c*0.012)), hgt=RHY[c]*HB*grow;
+      if(hgt<0.03) continue;
+      var hy=lerp(0.02,HALF,extr), ba=clamp(grow*1.5,0,1);
+      pushBox(faces,cam,colX(c),0,0,hgt,HALF,hy,ba,"bar");
+    }
+    var pGrow=ease(seg(p,0.80,0.93));
+    if(pGrow>0.02) pushBox(faces,cam,PX,0,0,0.62*pGrow,0.30,0.30,clamp(pGrow*1.6,0,1),"period");
+    paint(ctx,faces);
+    ring(ctx,cam,[PX,0,0.31],W,H,ease(seg(p,0.82,1.0)),pGrow);
+  }
+
+  /* ================= SCENE B — CRYSTAL ================= */
+  var GEM=(function(){
+    var cz=1.45,R=1.5, M=8, verts=[[0,0,cz+1.55],[0,0,cz-1.55]], mids=[],i;
+    for(i=0;i<M;i++){var a=i/M*6.2832; mids.push([Math.cos(a)*R,Math.sin(a)*R,cz]); verts.push(mids[i]);}
+    var facets=[];
+    for(i=0;i<M;i++){var a=2+i,b=2+(i+1)%M; facets.push([0,a,b],[1,b,a]);}
+    return {verts:verts,facets:facets,M:M,cz:cz};
+  })();
+  var CRYS=(function(){
+    var rng=mul(0x9E37), pts=[], N=230, perCol=[0,0,0,0,0,0,0,0],i;
+    for(i=0;i<N;i++){
+      var mid=i%GEM.M;                       // 0..7 -> column & gem mid vert
+      var vIdx=2+mid;
+      // occasionally pull to an apex for gem fullness
+      if(i%9===0) vIdx=0; else if(i%13===0) vIdx=1;
+      var col=mid, u=(perCol[col]+0.5); perCol[col]++;
+      var th=rng()*6.2832, ph=Math.acos(2*rng()-1), rr=rng();
+      pts.push({
+        sx:Math.sin(ph)*Math.cos(th)*2.6, sy:Math.sin(ph)*Math.sin(th)*1.7, sz:GEM.cz+Math.cos(ph)*1.9,
+        vIdx:vIdx, col:col, u:u, st:rng(), js:rng()*6.283, sp:0.5+rng()*0.9, off:[(rng()-0.5)*0.18,(rng()-0.5)*0.18,(rng()-0.5)*0.18]
+      });
+    }
+    for(i=0;i<8;i++) for(var k=0;k<pts.length;k++) if(pts[k].col===i) pts[k].cn=perCol[i];
+    pts[7].hot=true;                          // anomaly
+    return pts;
+  })();
+  function drawCrystal(ctx,W,H,p,now){
+    field(ctx,W,H);
+    var reveal=ease(seg(p,0.58,1.0));
+    var idle=Math.sin(now*0.00014)*0.05;
+    var el=lerp(0.18,0.34,ease(seg(p,0.58,0.9)));
+    var az=-1.5708-0.55*reveal+idle*(1-reveal);
+    var rho=lerp(8.6,11.2,reveal);
+    var tgt=[lerp(0,1.4,reveal),0,lerp(GEM.cz,1.15,reveal)];
+    var cam=makeCam(az,el,rho,tgt,W,H);
+    var t=now*0.001;
+
+    var axisHead=lerp(-3.2,3.4,ease(seg(p,0.18,0.38)));
+    var facetA=seg(p,0.46,0.60)*(1-seg(p,0.66,0.82));
+    var barGrow=ease(seg(p,0.66,0.86));
+    var extr=ease(seg(p,0.70,0.92));
+
+    // gem vertex world positions (current) computed from points target; verts are static
+    var V=GEM.verts;
+    // points
+    var hotScreen=null;
+    var ptList=[];
+    for(var i=0;i<CRYS.length;i++){
+      var d=CRYS[i];
+      var sig=ease(clamp((axisHead-d.sx)/1.3,0,1));        // signal sweep
+      var lx=lerp(d.sx,d.sx,1), ly=lerp(d.sy,0,sig*0.7), lz=lerp(d.sz,GEM.cz,sig*0.55); // lean to axis
+      var fold=ease(seg(p,0.36+d.st*0.12,0.56+d.st*0.12));
+      var vt=V[d.vIdx];
+      var gx=lerp(lx,vt[0]+d.off[0],fold), gy=lerp(ly,vt[1]+d.off[1],fold), gz=lerp(lz,vt[2]+d.off[2],fold);
+      // cleave -> bar column
+      var cv=ease(seg(p,0.62+d.st*0.08,0.84+d.st*0.08));
+      var bx,by,bz;
+      if(d.hot){ bx=lerp(gx,PX,cv); by=lerp(gy,0,cv); bz=lerp(gz,0.31,cv); }
+      else{ var frac=(d.u+0.5)/d.cn; bx=lerp(gx,colX(d.col),cv); by=lerp(gy,0,cv); bz=lerp(gz,frac*RHY[d.col]*HB,cv); }
+      var amp=0.42*(1-sig)*(1-fold);
+      if(amp>0.001){bx+=Math.sin(t*d.sp+d.js)*amp; by+=Math.cos(t*d.sp*1.2+d.js)*amp*0.6; bz+=Math.sin(t*d.sp*0.9+d.js*1.6)*amp;}
+      var pr=cam.project([bx,by,bz]); if(!pr) continue;
+      var fadeIn=ease(seg(p,0,0.14));
+      var a=fadeIn*(1-barGrow*(d.hot?0:1));
+      if(d.hot){a=Math.max(a,fadeIn*0.9); hotScreen=pr;}
+      ptList.push({pr:pr,r:clamp(cam.focal/pr[2]*0.006,0.8,2.6)*(d.hot?1.7:1),a:a,hot:d.hot});
+    }
+
+    // facets + bars + period into faces
+    var faces=[];
+    if(facetA>0.02){
+      for(var f=0;f<GEM.facets.length;f++){
+        var fa=GEM.facets[f], A=V[fa[0]],B=V[fa[1]],C=V[fa[2]];
+        var n=norm(cross(sub(B,A),sub(C,A)));
+        pushTri(faces,cam,A,B,C,facetA*0.5,"facet",n);
+      }
+    }
+    for(var c=0;c<8;c++){
+      var hgt=RHY[c]*HB*barGrow; if(hgt<0.03) continue;
+      pushBox(faces,cam,colX(c),0,0,hgt,HALF,lerp(0.02,HALF,extr),clamp(barGrow*1.5,0,1),"bar");
+    }
+    var pGrow=ease(seg(p,0.82,0.94));
+    if(pGrow>0.02) pushBox(faces,cam,PX,0,0,0.62*pGrow,0.30,0.30,clamp(pGrow*1.6,0,1),"period");
+
+    // signal axis line (meteor-ish) during signal phase
+    var axA=seg(p,0.16,0.34)*(1-seg(p,0.40,0.56));
+    paint(ctx,faces);
+    // draw points over facets
+    ctx.globalCompositeOperation="lighter";
+    for(var q=0;q<ptList.length;q++){var P=ptList[q]; dot(ctx,P.pr[0],P.pr[1],P.r,P.a*0.9,P.hot);}
+    ctx.globalCompositeOperation="source-over";
+    if(axA>0.02){
+      var h0=cam.project([axisHead,0,GEM.cz]), h1=cam.project([axisHead-2.0,0,GEM.cz]);
+      if(h0&&h1){
+        ctx.globalAlpha=axA; ctx.lineCap="round";
+        ctx.strokeStyle="rgba(232,242,255,0.85)"; ctx.lineWidth=2.4;
+        ctx.beginPath();ctx.moveTo(h1[0],h1[1]);ctx.lineTo(h0[0],h0[1]);ctx.stroke();
+        var rg=ctx.createRadialGradient(h0[0],h0[1],0,h0[0],h0[1],26);
+        rg.addColorStop(0,"rgba(255,255,255,"+axA.toFixed(3)+")");rg.addColorStop(1,"rgba(120,170,255,0)");
+        ctx.fillStyle=rg;ctx.beginPath();ctx.arc(h0[0],h0[1],26,0,6.2832);ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    }
+    ring(ctx,cam,[PX,0,0.31],W,H,ease(seg(p,0.86,1.0)),pGrow);
+  }
+
+  /* ================= SCENE C — DECODE ================= */
+  var GLY=(function(){
+    var rng=mul(0x1A2B), chs="017495823.%+".split(""), pts=[], total=150, ws=RHY.slice(), sum=0,i,c;
+    for(i=0;i<8;i++)sum+=ws[i];
+    for(c=0;c<8;c++){
+      var n=Math.max(6,Math.round(total*ws[c]/sum)), cx=colX(c), Hc=RHY[c]*HB;
+      for(var j=0;j<n;j++){
+        var u=(j+0.5)/n;
+        pts.push({c:c,cx:cx,stackZ:u*Hc,
+          sX:cx+(rng()-0.5)*7.6,sY:(rng()-0.5)*1.6,sZ:0.3+rng()*3.6,
+          ch:chs[(rng()*chs.length)|0],st:rng(),js:rng()*6.283,sp:0.6+rng()*0.9,
+          hot:rng()<0.06});
+      }
+    }
+    return pts;
+  })();
+  var GHOST=(function(){
+    var rng=mul(0x77C5), g=[],i;
+    for(i=0;i<11;i++){g.push({x:(rng()-0.5)*9,y:-6.5+rng()*5.0,h:1.2+rng()*2.6,hw:0.18+rng()*0.18,st:rng()});}
+    return g;
+  })();
+  function drawDecode(ctx,W,H,p,now){
+    field(ctx,W,H);
+    var fwd=ease(seg(p,0.46,0.64)), back=ease(seg(p,0.70,1.0));
+    var el=lerp(0.05,0.27,ease(seg(p,0.46,0.78)));
+    var az=-1.5708-0.4*back;
+    var rho=lerp(lerp(9.4,5.2,fwd),12.6,back);
+    var tgt=[lerp(0.1,1.4,back),0,lerp(0.85,1.18,back)];
+    var cam=makeCam(az,el,rho,tgt,W,H);
+    var sweepX=lerp(-5,5,ease(seg(p,0.16,0.40)));
+    var morph=ease(seg(p,0.30,0.50));
+    var extr=ease(seg(p,0.46,0.74));
+    var t=now*0.001;
+
+    // glyphs
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    for(var i=0;i<GLY.length;i++){
+      var d=GLY[i];
+      var sortA=ease(clamp((sweepX-d.sX)/1.4,0,1));
+      var x=lerp(d.sX,d.cx,sortA), y=lerp(d.sY,0,sortA), z=lerp(d.sZ,d.stackZ,sortA);
+      var amp=0.14*(1-sortA);
+      if(amp>0.001){x+=Math.sin(t*d.sp+d.js)*amp; z+=Math.cos(t*d.sp*1.1+d.js)*amp;}
+      var pr=cam.project([x,y,z]); if(!pr) continue;
+      var fpx=clamp(cam.focal/pr[2]*0.4,7,52);
+      var a=ease(seg(p,0,0.12))*(1-morph)*(0.5+0.5*sortA);
+      if(a<=0.02) continue;
+      ctx.globalAlpha=clamp(a,0,1);
+      ctx.font=fpx.toFixed(1)+"px "+"ui-monospace,Menlo,monospace";
+      ctx.fillStyle=d.hot?"rgba(190,220,255,1)":"rgba(150,180,225,0.92)";
+      ctx.fillText(d.ch,pr[0],pr[1]);
+    }
+    ctx.globalAlpha=1;
+
+    // read-head sweep line
+    var rhA=seg(p,0.14,0.40);
+    if(rhA>0.02&&rhA<1){
+      var s0=cam.project([sweepX,0,0]),s1=cam.project([sweepX,0,3.4]);
+      if(s0&&s1){ctx.globalAlpha=0.6;ctx.strokeStyle="rgba(210,228,255,0.85)";ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(s0[0],s0[1]);ctx.lineTo(s1[0],s1[1]);ctx.stroke();ctx.globalAlpha=1;}
+    }
+
+    var faces=[];
+    // ghost towers (fly-through)
+    var ghA=seg(p,0.46,0.6)*(1-seg(p,0.74,0.92));
+    if(ghA>0.02){
+      for(var k=0;k<GHOST.length;k++){var G=GHOST[k];
+        pushBox(faces,cam,G.x,G.y,0,G.h*ease(seg(p,0.46+G.st*0.1,0.62+G.st*0.1)),G.hw,G.hw,ghA*0.9,"ghost");}
+    }
+    // main bars
+    for(var c=0;c<8;c++){
+      var grow=ease(seg(p,0.30+c*0.012,0.52+c*0.012)), hgt=RHY[c]*HB*grow;
+      if(hgt<0.03) continue;
+      pushBox(faces,cam,colX(c),0,0,hgt,HALF,lerp(0.02,HALF,extr),clamp(grow*1.5,0,1),"bar");
+    }
+    // chart hairline
+    var blA=seg(p,0.30,0.46)*(1-seg(p,0.66,0.82));
+    var pGrow=ease(seg(p,0.80,0.93));
+    if(pGrow>0.02) pushBox(faces,cam,PX,0,0,0.62*pGrow,0.30,0.30,clamp(pGrow*1.6,0,1),"period");
+    paint(ctx,faces);
+    if(blA>0.02){var a0=cam.project([-4.1,0,0]),a1=cam.project([4.1,0,0]);
+      if(a0&&a1){ctx.globalAlpha=blA*0.5;ctx.strokeStyle="rgba(120,165,240,0.6)";ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(a0[0],a0[1]);ctx.lineTo(a1[0],a1[1]);ctx.stroke();ctx.globalAlpha=1;}}
+    ring(ctx,cam,[PX,0,0.31],W,H,ease(seg(p,0.82,1.0)),pGrow);
+  }
+
+  /* ================= DRIVER ================= */
+  var SCENES={rain:drawRain,crystal:drawCrystal,decode:drawDecode};
+  var BEATS={
+    rain:[[0,"DATA","遥测"],[0.18,"SORT","归位"],[0.34,"CHART","图表",1],[0.50,"DIMENSION","三维"],[0.82,"RESOLVE","句点"]],
+    crystal:[[0,"DATA","风暴"],[0.18,"SIGNAL","真轴"],[0.36,"FACET","结晶",1],[0.58,"CLEAVE","维度"],[0.86,"RESOLVE","句点"]],
+    decode:[[0,"DATA","遥测"],[0.16,"SORT","收束"],[0.30,"字⇄条","解码",1],[0.46,"DIMENSION","穿行"],[0.70,"REVEAL","定格"]]
+  };
+  var DUR=11000, HOLD=1600;
+
+  function stageIx(beats,p){var ix=0;for(var i=0;i<beats.length;i++){if(p>=beats[i][0])ix=i;}return ix;}
+
+  function setup(section){
+    var canvas=section.querySelector("canvas"), name=canvas.getAttribute("data-scene");
+    var draw=SCENES[name], beats=BEATS[name];
+    var ctx=canvas.getContext("2d",{alpha:false});
+    var label=section.querySelector("[data-label]"), tc=section.querySelector("[data-tc]");
+    var scrub=section.querySelector("[data-scrub]"), play=section.querySelector("[data-play]");
+    var beatsEl=section.querySelector("[data-beats]");
+    var st={p:0,playing:true,W:0,H:0,dpr:1,vis:true,scrubbing:false,holdT:0};
+
+    // beats UI
+    for(var i=0;i<beats.length;i++){(function(b){
+      var el=document.createElement("button"); el.className="beat";
+      el.innerHTML=b[1]+" <span style='color:#7f9bc4'>"+b[2]+"</span>"+(b[3]?" <span class='w'>◆</span>":"");
+      el.addEventListener("click",function(){st.p=b[0];st.playing=false;play.innerHTML="▶";scrub.value=Math.round(b[0]*1000);});
+      beatsEl.appendChild(el);
+    })(beats[i]);}
+    var beatEls=beatsEl.querySelectorAll(".beat");
+
+    function resize(){
+      var r=canvas.getBoundingClientRect(); st.dpr=Math.min(2,window.devicePixelRatio||1);
+      st.W=Math.max(2,r.width); st.H=Math.max(2,r.height);
+      canvas.width=Math.round(st.W*st.dpr); canvas.height=Math.round(st.H*st.dpr);
+    }
+    var ro=new ResizeObserver(resize); ro.observe(canvas); resize();
+
+    scrub.addEventListener("input",function(){st.p=scrub.value/1000;st.playing=false;play.innerHTML="▶";});
+    play.addEventListener("click",function(){
+      st.playing=!st.playing; play.innerHTML=st.playing?"❚❚":"▶";
+      if(st.playing&&st.p>=0.999){st.p=0;}
+    });
+    var io=new IntersectionObserver(function(es){st.vis=es[0].isIntersecting;},{threshold:0.05});
+    io.observe(canvas);
+
+    st.frame=function(dt,now){
+      if(st.playing){
+        if(st.p>=1){st.holdT+=dt; if(st.holdT>HOLD){st.p=0;st.holdT=0;}}
+        else{st.p=Math.min(1,st.p+dt/DUR);}
+        scrub.value=Math.round(st.p*1000);
+      }
+      ctx.save(); ctx.scale(st.dpr,st.dpr);
+      draw(ctx,st.W,st.H,st.p,now);
+      ctx.restore();
+      var bi=stageIx(beats,st.p), b=beats[bi];
+      label.innerHTML="["+("0"+(bi+1)).slice(-1)+"] "+b[1]+" · "+b[2]+(b[3]?"  <span class='wb'>◆ wow</span>":"");
+      tc.textContent=Math.round(st.p*100)+"%";
+      for(var i=0;i<beatEls.length;i++){beatEls[i].classList.toggle("on",i===bi);}
+    };
+    st.vises=function(){return st.vis;};
+    return st;
+  }
+
+  var sections=[], els=document.querySelectorAll(".draft");
+  for(var i=0;i<els.length;i++){if(els[i].querySelector("canvas"))sections.push(setup(els[i]));}
+  window.__SECT=sections;
+  var last=null;
+  function loop(now){
+    if(last==null)last=now; var dt=Math.min(50,now-last); last=now;
+    for(var i=0;i<sections.length;i++){var s=sections[i]; if(s.vises()){
+      try{s.frame(dt,now);}catch(e){if(console&&console.error)console.error("aipm draft",e);}
+    }}
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>

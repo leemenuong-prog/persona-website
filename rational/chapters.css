@@ -9,7 +9,7 @@
    to a priority spine across a tall sticky stage; the page copy
    arrives once the verdict lands. (See aipm-cut.jsx.)
    ════════════════════════════════════════════════════════════ */
-.ch2x .ch-wrap { height: 600vh; }
+.ch2x .ch-wrap { height: 225vh; }   /* 压缩：线更快穿点，HOLD 行为不变 */
 .c2x-stage { padding: 0; }
 .c2x-art { position: absolute; inset: 0; z-index: 0; }
 .c2x-art canvas { width: 100%; height: 100%; display: block; }
@@ -100,7 +100,7 @@
   background: var(--paper);
   color: var(--ink);
 }
-.apx .ch-wrap { height: 240vh; background: var(--paper); }   /* 3 步（定义 / Agent / 视频）— 缩短滚动，翻页更快 */
+.apx .ch-wrap { height: 190vh; background: var(--paper); }   /* 2 步（定义 / 视频）— 缩短滚动，翻页更快 */
 .apx-stage { padding: 84px 40px 34px; background: var(--paper); color: var(--ink); }
 .apx-kicker {
   position: relative; z-index: 4; display: flex; justify-content: space-between; gap: 18px;
@@ -428,8 +428,17 @@
    One pinned 16:9 frame; 9 Pears slides cross-dissolve through it.
    Chrome is site-language only (cobalt only on the self-square). The
    slide layer defaults to opacity 0 here — the rAF hook drives it. */
-.reel .ch-wrap { height: 790vh; }   /* 8 提案帧 + 1 路演视频帧（去掉封面后按比例缩短，每帧停顿不变） */
+.reel .ch-wrap { height: 150vh; }   /* 钉一屏点击翻页 deck — 滚动只管入场/离场，翻页交给点击 */
 .reel .ch-stage { background: var(--bg); }   /* matte = page paper */
+
+/* chrome vars — declarative now (the old rAF scrub wrote these): --chrome rides
+   the engine's data-ob .in reveal, --self is inlined off idx, --kill off data-end */
+.reel-stage { --chrome: 0; --self: 0; --kill: 0; }
+.reel-stage.in { --chrome: 1; }
+.reel-stage[data-end="1"] { --kill: 1; }
+.reel-spine, .reel-self, .reel-ix, .reel-cta, .reel-hint { transition: opacity .9s var(--ez); }
+.reel-out { transition: opacity .5s var(--ez); }
+.reel-stage:not(.in) .reel-cell { opacity: 0; }   /* nothing shows before scroll arrival */
 
 .reel-frame {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -442,8 +451,24 @@
 }
 .reel-cell {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  opacity: 0; will-change: opacity, transform;
+  opacity: 0; transition: opacity .5s var(--ez);
 }
+.reel-cell.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .reel-cell { transition-duration: 0s; } }
+/* the frame itself is the biggest "next" button */
+.reel-frame { cursor: pointer; }
+/* ‹ › — the flip affordance, same family as the portfolio flip-book (.gl-nav)
+   but always visible (not hover-gated): the deck must read as clickable at a glance */
+.reel-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+  width: clamp(38px, 3.4vw, 52px); height: clamp(52px, 10vh, 84px); padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; background: rgba(8, 10, 20, .30); color: var(--paper); cursor: pointer;
+  font-size: 32px; line-height: 0; opacity: .62; transition: opacity .25s, background .25s; }
+.reel-nav.prev { left: 0; } .reel-nav.next { right: 0; }
+.reel-nav span { transform: translateY(-2px); }
+.reel-nav:hover { background: rgba(0, 71, 171, .78); opacity: 1; }
+.reel-nav.on-video { opacity: .4; }
+.reel-nav.on-video:hover { opacity: 1; }
 .reel-img {
   object-fit: contain; background: var(--bg);
   user-select: none; -webkit-user-drag: none;
@@ -451,6 +476,7 @@
 /* the closing frame — the W·01 Pears roadshow video; auto-plays muted on arrival,
    native controls own play / seek (draggable progress bar) / fullscreen. */
 .reel-video { background: var(--bg); pointer-events: none; }
+.reel-video.on { pointer-events: auto; }
 .reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--bg); display: block; }
 /* loading poster — same site language as .apx-video-loading (the AIPM platform film),
    recoloured for this chapter's light "snow" ground instead of ink, so the two video
@@ -499,13 +525,16 @@
   position: absolute; left: -3px; width: 7px; height: 1px;
   top: calc((var(--n) / 9) * 100%);
   background: var(--line); transition: background .45s var(--ez);
+  cursor: pointer; pointer-events: auto;
 }
+.reel-tick::after { content: ""; position: absolute; inset: -7px -10px; }   /* finger-sized hit zone */
 .reel-tick.passed { background: var(--fg); }
-/* the period · self — the ONLY cobalt, riding the spine */
+/* the period · self — the ONLY cobalt, riding the spine (glides between ticks) */
 .reel-self {
   position: absolute; left: -3.5px; width: 8px; height: 8px;
   top: calc(var(--self, 0) * 100%); transform: translateY(-4px);
-  background: var(--acc); z-index: 5; opacity: var(--chrome, 0); will-change: top;
+  background: var(--acc); z-index: 5; opacity: var(--chrome, 0);
+  transition: top .5s var(--ez), opacity .9s var(--ez);
 }
 
 .reel-head { position: absolute; left: 40px; top: 72px; z-index: 5; max-width: 54vw; }
@@ -520,6 +549,12 @@
 .reel-ix .gloss { display: block; margin: 9px 0 0 auto; max-width: 26ch; font-size: 11px; letter-spacing: .02em; line-height: 1.5; color: var(--fg-dim); }
 @keyframes reelSwap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
+/* flip hint — bottom-centre, quiet mono; tells the viewer the deck is clickable */
+.reel-hint {
+  position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); z-index: 5;
+  font-size: 10px; letter-spacing: .22em; color: var(--fg-dim); opacity: var(--chrome, 0);
+}
+.reel-stage[data-end="1"] .reel-hint { opacity: 0; }   /* the outro caption takes over */
 .reel-out {
   position: absolute; right: 40px; bottom: 7vh; z-index: 5; text-align: right;
   font-size: 10.5px; letter-spacing: .24em; color: var(--fg-dim); opacity: var(--kill, 0);
@@ -530,7 +565,7 @@
 .reel-cta { position: absolute; left: 40px; bottom: 7vh; z-index: 5; margin-top: 0; opacity: var(--chrome, 0); }
 
 @media (max-width: 900px) {
-  .reel .ch-wrap { height: 720vh; }
+  .reel .ch-wrap { height: 150vh; }
   .reel-frame { width: 92vw; }
   .reel-spine, .reel-self { display: none; }
   .reel-head { max-width: 80vw; }
@@ -571,8 +606,8 @@
   .reel .ch-wrap { height: auto; }
   .reel .ch-stage { position: relative; top: auto; height: auto; min-height: 0;
     overflow: visible; padding: 72px 0 5vh; display: block; }
-  .reel-spine, .reel-self, .reel-ix, .reel-out { display: none; }
-  .reel-frame { position: relative; left: auto; top: auto; transform: none;
+  .reel-spine, .reel-self, .reel-ix, .reel-out, .reel-nav, .reel-hint { display: none; }
+  .reel-frame { position: relative; left: auto; top: auto; transform: none; cursor: default;
     width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; border: 0;
     overflow: visible; display: flex; flex-direction: column; gap: 0;
     background: var(--bg); }   /* matte == the snow tone == the slides' own base → seamless */

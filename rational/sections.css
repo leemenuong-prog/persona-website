@@ -148,7 +148,7 @@ body.ready .hl-brand .zh { opacity: .8; }
 
 /* ── CHAPTER skeleton ────────────────────────────────────── */
 .chapter { position: relative; }
-.ch-wrap { height: 260vh; }
+.ch-wrap { height: 175vh; }   /* 压缩滚动预算 — 章节编舞是 p 的纯函数，只提速不截断 */
 .ch-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; padding: 96px 40px 36px; }
 
 .ch-ghost {

@@ -139,7 +139,7 @@ function Nav({ jump, navRef }) {
           <React.Fragment key={id}>
             {i > 0 && <span className="sl">/</span>}
             <a data-nav={id} data-hov href={"#" + id}
-               onClick={(e) => { e.preventDefault(); jump(id === "work" ? "aipm" : id === "whoami" ? "whoami" : "contact"); }}>{lb}</a>
+               onClick={(e) => { e.preventDefault(); jump(id === "work" ? "works" : id); }}>{lb}</a>
           </React.Fragment>
         ))}
       </nav>
@@ -195,7 +195,8 @@ function App() {
     const from = window.scrollY;
     /* land mid-way through sticky chapters so the stage is composed */
     const wrap = el.querySelector(".ch-wrap");
-    const to = wrap ? el.offsetTop + Math.min(wrap.offsetHeight * 0.45, wrap.offsetHeight - innerHeight) : el.offsetTop;
+    /* cap the landing at 0.8×span so compressed chapters land composed, not resolved */
+    const to = wrap ? el.offsetTop + Math.min(wrap.offsetHeight * 0.45, (wrap.offsetHeight - innerHeight) * 0.8) : el.offsetTop;
     const t0 = performance.now(), DUR = Math.min(1500, 500 + Math.abs(to - from) * 0.12);
     const ezio = (t) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2);
     const stop = window.__addLoop((now) => {
@@ -365,6 +366,7 @@ function App() {
           maxScroll,
           wkTop: wkEl ? absTop(wkEl) : maxScroll,
           wkSpan: wkWrap ? Math.max(wkWrap.offsetHeight - vh, 1) : 1,
+          ctTop: (() => { const c = document.getElementById("contact"); return c ? absTop(c) : maxScroll; })(),
         };
       }
     };
@@ -467,8 +469,16 @@ function App() {
         y += (wcY - y) * einW;
         sc += (wsScale - sc) * einW;
 
-        /* phase F — works done: grow large and settle onto the footer band slot */
-        const fStart = brand.wkTop + brand.wkSpan;
+        /* phase W-out — deck closed: the mark flies back to the nav dock and
+           stays docked through the mid-page chapters (it IS the nav logo). */
+        const eoutW = sm(1.03, 1.17, pW);
+        x += (brand.dockL - x) * eoutW;
+        y += (brand.dockT - y) * eoutW;
+        sc += (brand.s - sc) * eoutW;
+
+        /* phase F — grow large and settle onto the footer band slot; keyed to
+           Contact's arrival, not Works' end (Works no longer sits beside it) */
+        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan);
         const q = aClamp((ss - fStart) / Math.max(brand.maxScroll - fStart, 1), 0, 1);
         const e3 = q * q * (3 - 2 * q);
         x += (brand.fslotL - x) * e3;
@@ -488,9 +498,8 @@ function App() {
 
       /* nav active group */
       if (navRef.current) {
-        const ids = window.__progress;
         const grp = (ss + vh * 0.5) < (progs[0] ? progs[0].top : 1e9) ? "whoami"
-          : (ids.works != null && ids.works > 1.02 || lastToneIsContact()) ? "contact" : "work";
+          : lastToneIsContact() ? "contact" : "work";
         navRef.current.querySelectorAll("a[data-nav]").forEach((el) =>
           el.classList.toggle("active", el.dataset.nav === grp));
       }
@@ -521,12 +530,12 @@ function App() {
       <main>
         <Hero />
         <Whoami jump={jump} />
+        <Works jump={jump} />
         <ChDev jump={jump} />
         <ChReel jump={jump} />
         <ChAipm jump={jump} />
         <ChAipmPlatform jump={jump} />
         <ChArch jump={jump} />
-        <Works jump={jump} />
         <Contact />
       </main>
 

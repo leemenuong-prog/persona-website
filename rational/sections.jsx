@@ -417,7 +417,7 @@ function WorkMedia({ wk }) {
       <button className="sc-media" type="button" data-hov aria-label={"播放 " + wkShort(wk)}
               onClick={() => setFramed(true)}>
         {wk.poster
-          ? <img className="sc-still" src={wk.poster} alt={wkShort(wk)} draggable="false" />
+          ? <img className="sc-still" src={wk.poster} alt={wkShort(wk)} loading="lazy" draggable="false" />
           : <span className="sc-still"></span>}
         <span className="sc-play" aria-hidden="true"><span className="tri"></span></span>
       </button>
@@ -426,7 +426,7 @@ function WorkMedia({ wk }) {
   if (wk.poster) {
     return (
       <a className="sc-media" href={wk.link} target="_blank" rel="noopener" data-hov>
-        <img className="sc-still" src={wk.poster} alt={wkShort(wk)} draggable="false" />
+        <img className="sc-still" src={wk.poster} alt={wkShort(wk)} loading="lazy" draggable="false" />
         <span className="sc-play" aria-hidden="true"><span className="tri"></span></span>
       </a>
     );
@@ -492,7 +492,7 @@ function Works({ jump }) {
          the end the deck collapses BACK into the mark (close). eS is the live
          "openness" — the brandmorph logo reads it (window.__wkOpen) to know when
          to hand off the closed mark and when to take it back. 条 ⇄ 卡 ⇄ 条. */
-      const openRaw = eOut(smooth(0.05, 0.40, p));     /* closed mark → open fan */
+      const openRaw = eOut(smooth(0.04, 0.24, p));     /* closed mark → open fan (收紧前奏，浏览窗更长) */
       const close = eOut(smooth(0.82, 0.96, p));       /* fan → reconverged mark */
       const eS = openRaw * (1 - close);
       window.__wkOpen = eS;
@@ -505,11 +505,11 @@ function Works({ jump }) {
          into identical, motionless rectangles. 条 → 卡, nothing to dissolve. */
       const FHAND = 0.12;
       const eGeo = clp((eS - FHAND) / (1 - FHAND), 0, 1);
-      const pB = clp((p - 0.40) / 0.42, 0, 1);         /* scrub across the deck (browse window) */
+      const pB = clp((p - 0.24) / 0.58, 0, 1);         /* scrub across the deck (browse window — 必须与 wc-spine 点击映射镜像) */
       /* emphasis is fully in by the time the FIRST card is active (p≈0.40) so
          W·01/W·02 decode their names; the ramp still starts AFTER the bar→card
          morph is done (eGeo≈1 by p≈0.30) so no card pops wide mid-handoff. */
-      const focus = smooth(0.26, 0.40, p) * (1 - close); /* emphasis eases in, fades on reconverge */
+      const focus = smooth(0.15, 0.24, p) * (1 - close); /* emphasis eases in, fades on reconverge */
       /* DWELL — instead of a linear scrub (where the next work surfaces while
          the last is still arriving), each work HOLDS in focus, then the scrub
          moves briskly to the next. The plateau at each integer is the dwell. */
@@ -529,7 +529,7 @@ function Works({ jump }) {
 
       /* intro caption blooms as the logo lands at centre, then lifts away as
          the mark unfolds */
-      const introOp = smooth(0, 0.028, p) * (1 - smooth(0.075, 0.17, p));
+      const introOp = smooth(0, 0.028, p) * (1 - smooth(0.05, 0.12, p));
       intro.style.opacity = introOp.toFixed(3);
       intro.style.transform = "translate(-50%," + (-40 * eS).toFixed(1) + "px)";
 
@@ -708,7 +708,7 @@ function Works({ jump }) {
           <div className="wk-ghost" data-parallax="0.12" aria-hidden="true">WORKS</div>
 
           <div className="wk-intro">
-            <div className="kick mono">05 · SELECTED WORK / 作品</div>
+            <div className="kick mono">02 · SELECTED WORK / 作品</div>
             <h2 className="wk-zh">每一份数据，支撑着一个作品<i className="psq" aria-hidden="true"></i></h2>
             <p className="wk-lead mono">SCROLL — THE MARK UNFOLDS INTO THE WORK · 滚动，标记展开为作品</p>
           </div>
@@ -737,7 +737,7 @@ function Works({ jump }) {
                           if (wrap) {
                             const top = wrap.getBoundingClientRect().top + window.scrollY;
                             const span = Math.max(wrap.offsetHeight - window.innerHeight, 1);
-                            const pp = 0.40 + (i / (WORKS.length - 1)) * 0.42;
+                            const pp = 0.24 + (i / (WORKS.length - 1)) * 0.58;   /* mirrors pB */
                             window.scrollTo(0, Math.round(top + pp * span));
                           }
                           hoverRef.current = i;
