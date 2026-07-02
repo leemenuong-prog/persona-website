@@ -200,13 +200,9 @@ body.ready .hero-chips { opacity: 1; transform: none; }
 .ring text { font-family: var(--mono); font-size: 7.2px; letter-spacing: .42em; fill: var(--fg-dim); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.ch-motto { position: absolute; z-index: 3; left: 40px; bottom: 12vh; max-width: 44vw;
-  /* glass mat — the canvas art can pass behind, the words stay on quiet ground
-     (用户: 文字直接写在图上). Tone-aware: paper-glass on paper, ink-glass on ink. */
-  padding: 18px 22px; margin: -18px -22px;
-  background: rgba(239, 236, 230, .82);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px); }
+.ch-motto { position: absolute; z-index: 3; left: 40px; bottom: 12vh; max-width: 44vw; }
+/* no mats/overlays here (用户: 不要遮挡元素，文字本身有前置性) — the canvas
+   composition itself keeps the text zones clear (Structure3D sits right-and-up). */
 /* motto 中文为主 — CJK display type wants a touch more leading, no negative tracking */
 .ch-motto .mt { font-size: clamp(26px, 3vw, 52px); font-weight: 800; letter-spacing: .01em; line-height: 1.2; }
 .ch-motto .st { margin-top: 14px; font-size: clamp(15px, 1.15vw, 19px); font-weight: 500; line-height: 1.8; color: var(--fg); opacity: .85; max-width: 30em; }
@@ -222,11 +218,8 @@ body.ready .hero-chips { opacity: 1; transform: none; }
   position: absolute; z-index: 2; right: 44px; top: 110px; width: 272px;
   font-family: var(--mono); font-size: 10.5px; line-height: 1.75; letter-spacing: .02em;
   color: var(--fg-dim); white-space: pre-wrap;
-  /* same glass mat as .ch-motto — the skyline's tallest bar passes behind it */
-  padding: 14px 16px; margin: -14px -16px;
-  background: rgba(239, 236, 230, .82);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+  /* decorative, not informational (用户: 代码不属于信息文本，弱化) */
+  opacity: .5;
 }
 .code-panel .k { color: var(--blue); font-weight: 700; }
 body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { color: var(--blue-up); }
@@ -523,9 +516,6 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .dex-it:active .ix { color: var(--fg); }
   .dex-head { flex-direction: column; gap: 6px; }
   .ch-head, .ch-motto { max-width: 86vw; }
-  /* the ≤900 reflow gives text its own bands — no canvas behind, no mat needed */
-  .ch-motto, .code-panel { padding: 0; margin: 0; background: none;
-    -webkit-backdrop-filter: none; backdrop-filter: none; }
   .ch-rule, .ch-sub { max-width: 60vw; }
   .ch-art { right: 50%; transform: translate(50%, -50%); width: 88vw; opacity: .5; }
   .ch-motto { left: 20px; bottom: 18vh; }
