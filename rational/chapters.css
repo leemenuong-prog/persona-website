@@ -4,23 +4,28 @@
    ════════════════════════════════════════════════════════════ */
 
 /* ════════════════════════════════════════════════════════════
-   02 · AN AIPM — THE CUT 一刀 (flat, scroll-driven)
-   The canvas IS the chapter. A field of weak signals is cut down
-   to a priority spine across a tall sticky stage; the page copy
-   arrives once the verdict lands. (See aipm-cut.jsx.)
+   02 · AN AIPM — THE THREAD 一线穿点 (flat · 到达即播)
+   NORMAL FLOW now, no pinned wrap: Part A is one viewport whose
+   canvas plays a ~2.8s timeline the moment you arrive (data-ob),
+   with the strung questions labelled along the line; Part B lays
+   out the judgment method in three plain rows. (See aipm-cut.jsx
+   + useCutStage in chapters.jsx.)
    ════════════════════════════════════════════════════════════ */
-.ch2x .ch-wrap { height: 225vh; }   /* 压缩：线更快穿点，HOLD 行为不变 */
-.c2x-stage { padding: 0; }
+.ch2x { position: relative; }
+.c2x-flow { position: relative; min-height: 100vh; overflow: hidden; }
 .c2x-art { position: absolute; inset: 0; z-index: 0; }
 .c2x-art canvas { width: 100%; height: 100%; display: block; }
 
-/* ── quiet HUD — fades out as the payoff (--pay) resolves ── */
-.c2x-hud { position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  color: var(--fg-dim); opacity: calc(1 - var(--pay, 0)); transition: opacity .25s linear; }
-.c2x-slug { position: absolute; left: 40px; top: 34px; display: flex; align-items: center; gap: 14px;
-  font-size: 10.5px; letter-spacing: .26em; color: var(--fg-dim); }
-.c2x-slug .ix { font-weight: 700; color: var(--fg); }
-.c2x-slug .ln { width: 30px; height: 1px; background: var(--line); }
+/* ── the point labels — the questions along the thread. Each lights (.on)
+   as the tip strings through its point; the LANDING one turns cobalt with
+   the ignite. Positions mirror THREAD_X (left = x%, line sits at 42%). ── */
+.c2x-labs { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.c2x-lab { position: absolute; top: calc(42% + 24px); transform: translateX(-50%);
+  font-size: 10px; letter-spacing: .16em; color: var(--fg-dim); white-space: nowrap;
+  opacity: 0; transition: opacity .5s var(--ez), color .4s var(--ez); }
+.c2x-lab.on { opacity: .38; }   /* considered, then put down — they stay quiet */
+.c2x-lab.land { font-weight: 700; color: var(--fg); top: calc(42% + 30px); }
+.c2x-lab.land.on { opacity: 1; color: var(--blue); }
 
 /* ── the payoff — text only after the mark lands (opacity = --pay) ── */
 .c2x-pay { position: absolute; inset: 0; z-index: 4; padding: 12vh 40px 7vh;
@@ -38,19 +43,20 @@
 .c2x-st { margin-top: 16px; max-width: 30em; font-size: clamp(15px, 1.15vw, 19px); font-weight: 500; line-height: 1.8; color: var(--fg); opacity: .85; }
 .c2x-st .en { opacity: .8; }
 
-.c2x-right { display: flex; flex-direction: column; align-items: flex-end; gap: 26px; max-width: 34vw; }
-.c2x-loop { width: min(30vw, 380px); }
-.c2x-loop .lh { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: .2em; color: var(--fg-dim);
-  padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-.c2x-loop .lr { display: flex; align-items: center; gap: 11px; padding: 9px 0; border-bottom: 1px solid var(--line);
-  font-size: 11px; letter-spacing: .04em; }
-.c2x-loop .lr .sq { width: 6px; height: 6px; flex: 0 0 auto; background: var(--paper); }
-.c2x-loop .lr b { font-weight: 700; color: var(--fg-dim); }
-.c2x-loop .lr .en { font-weight: 700; letter-spacing: .12em; }
-.c2x-loop .lr .zh { margin: 0 0 0 auto; font-family: var(--sans); font-size: 9.5px; letter-spacing: .04em; color: var(--fg-dim); text-align: right; }
-.c2x-stats { display: flex; gap: 3vw; text-align: right; }
-.c2x-stats .st .n { font-size: clamp(24px, 2.6vw, 42px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.c2x-stats .st .l { font-family: var(--mono); font-size: 9px; letter-spacing: .2em; color: var(--fg-dim); margin-top: 6px; }
+/* ── Part B · 判断的三步 — three plain rows, typography only (no board
+   chrome, 设计立场: 大气简洁). Reveals on arrival via [data-rv]. ── */
+.c2x-method { position: relative; z-index: 4; padding: 9vh 40px 13vh;
+  max-width: 980px; }
+.c2x-mk { display: flex; align-items: baseline; gap: 16px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 10px; letter-spacing: .26em; color: var(--fg-dim); }
+.c2x-mk b { font-weight: 700; color: var(--fg); letter-spacing: .18em; }
+.c2x-mrow { display: grid; grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: 26px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--line); }
+.c2x-mnum { font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--blue); }
+.c2x-mtx .zh { font-size: clamp(16px, 1.35vw, 21px); font-weight: 600; line-height: 1.75; color: var(--fg); }
+.c2x-mtx .en { margin-top: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
+  line-height: 1.7; color: var(--fg-dim); }
 
 /* ── identity → live-site CTA (shared: AIPM/Developer chapters + their showcase
    chapters) — a HEAVY, filled primary action. A solid cobalt block with a bold
@@ -75,17 +81,24 @@
   .c2x-st .en { display: none; }   /* 中文为主 — the EN annotation folds first */
 }
 @media (max-width: 900px) {
-  .c2x-slug { left: 20px; right: 20px; }
   .c2x-pay { flex-direction: column; align-items: flex-start; padding: 11vh 20px 5vh; gap: 22px; overflow: hidden; }
   .c2x-left { max-width: 92vw; }
   .c2x-title { font-size: clamp(40px, 12vw, 72px); }
-  .c2x-right { align-items: flex-start; text-align: left; max-width: 92vw; }
-  .c2x-loop { display: none; }
-  .c2x-stats { gap: 7vw; }
-  /* the spine/dots can't crowd the payoff copy on a narrow screen: as the words
-     resolve (engine drives --pay 0→1) the canvas recedes so the text reads clean.
-     Full strength while the cut is still playing (--pay 0). */
-  .c2x-art { opacity: calc(1 - var(--pay, 0)); }
+  /* the line/dots can't crowd the payoff copy on a narrow screen: as the words
+     resolve (--pay 0→1) the canvas AND its labels recede so the text reads clean.
+     Full strength while the thread is still playing (--pay 0). */
+  .c2x-art, .c2x-labs { opacity: calc(1 - var(--pay, 0)); }
+  .c2x-lab { font-size: 9px; letter-spacing: .1em; }
+  .c2x-method { padding: 7vh 20px 11vh; }
+  .c2x-mrow { grid-template-columns: 1fr; gap: 9px; padding: 20px 0; }
+}
+@media (max-width: 600px) {
+  /* 6 nowrap questions can't share 375px — keep only the landing question
+     (它就是这页的论点), the five put-down ones fold away. !important beats the
+     inline left:78% (its THREAD_X slot) so it can centre on the screen. */
+  .c2x-lab { display: none; }
+  .c2x-lab.land { display: block; left: 50% !important; top: calc(42% + 26px);
+    max-width: 86vw; white-space: normal; text-align: center; }
 }
 
 /* ── 02·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL ───────── */
@@ -99,42 +112,35 @@
   background: var(--paper);
   color: var(--ink);
 }
-.apx .ch-wrap { height: 190vh; background: var(--paper); }   /* 2 步（定义 / 视频）— 缩短滚动，翻页更快 */
-.apx-stage { padding: 88px 40px 34px; background: var(--paper); color: var(--ink); }   /* 88 = 章节页眉统一基线 */
+/* NORMAL FLOW on every size — no pinned wrap, no keynote steps. The one-column
+   pairing the phone layout proved (text → its board, one continuous read) is
+   now the layout for all widths: 标题 → 定义 → 系统图 → 影片引言 → 影片 →
+   数据条 → CTA. Blocks fade in on arrival via [data-rv]. */
+.apx-stage { position: relative; padding: 88px 40px 46px; background: var(--paper); color: var(--ink); }   /* 88 = 章节页眉统一基线 */
 .apx-kicker {
   position: relative; z-index: 4; display: flex; justify-content: space-between; gap: 18px;
   padding-bottom: 13px; border-bottom: 1px solid var(--line);
   font-size: 10px; letter-spacing: .26em; color: var(--fg-dim);
 }
-.apx-hero {
-  position: relative; z-index: 2; height: calc(100vh - 150px); margin-top: 28px;
-  display: grid; grid-template-columns: minmax(300px, .7fr) minmax(560px, 1.3fr); gap: 42px;
-  align-items: center; min-height: 0;
-}
-.apx-stage[data-step="1"] .apx-hero { grid-template-columns: minmax(250px, .52fr) minmax(680px, 1.48fr); gap: 32px; }
-.apx-copy { position: relative; min-width: 0; }
-.apx-cap { font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
-.apx-title {
-  margin-top: 24px; font-size: clamp(54px, 6.5vw, 112px); font-weight: 800;
+/* the hero is ONE flex column; the old copy/media boxes flatten away
+   (display:contents) and their leaves interleave via order —
+   cap 0 · title 1 · 定义 2 · 系统图 3 · 影片引言 4 · 影片 5. */
+.apx-hero { position: relative; z-index: 2; margin-top: 26px;
+  display: flex; flex-direction: column; }
+.apx-copy, .apx-intro, .apx-media, .apx-visuals { display: contents; }
+.apx-cap { order: 0; font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
+.apx-title { order: 1;
+  margin-top: 20px; font-size: clamp(54px, 6.5vw, 112px); font-weight: 800;
   letter-spacing: -.055em; line-height: .86;
 }
-.apx-stage[data-step="1"] .apx-title { font-size: clamp(44px, 5.1vw, 86px); }
 .apx-title .psq {
   display: inline-block; width: .105em; height: .105em; margin-left: .11em; margin-bottom: .1em;
   background: var(--acc);
 }
-.apx-intro {
-  position: relative; margin-top: 34px; width: min(35vw, 520px); min-height: 210px;
-  border-top: 1px solid var(--line);
-}
-.apx-stage[data-step="1"] .apx-intro { width: min(22vw, 292px); }
-.apx-page {
-  position: absolute; inset: 0 auto auto 0; width: 100%; padding-top: 18px;
-  opacity: 0; transform: translateY(16px);
-  transition: opacity .62s var(--ez), transform .72s var(--ez);
-  pointer-events: none;
-}
-.apx-page.on { opacity: 1; transform: none; }
+.apx-page { position: relative; width: 100%; padding: 26px 0 6px;
+  opacity: 1; transform: none; pointer-events: auto; }
+.apx-page-0 { order: 2; }
+.apx-page-video { order: 4; padding-top: 34px; }
 .apx-page-k { display: flex; gap: 13px; align-items: center; font-size: 10px; letter-spacing: .18em; color: var(--fg-dim); }
 .apx-page-k span { color: var(--fg); font-weight: 700; }
 .apx-page h3 {
@@ -146,25 +152,17 @@
   line-height: 1.72; font-weight: 500; color: var(--fg-dim);
 }
 
-.apx-media {
-  position: relative; min-width: 0; width: 100%; aspect-ratio: 16 / 9;
-  transition: transform .8s var(--ez);
-}
-.apx-stage[data-step="1"] .apx-media { transform: scale(1.04); transform-origin: center right; }
-.apx-visuals,
-.apx-video { position: absolute; inset: 0; min-width: 0; }
-.apx-visual {
-  position: absolute; inset: 0; overflow: hidden;
+/* the system-diagram board — a bounded strip in flow (the grid paper) */
+.apx-visual { order: 3;
+  position: relative; width: min(100%, 1080px); height: clamp(280px, 44vh, 430px);
+  margin-top: 14px; overflow: hidden;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  opacity: 0; transform: translateY(18px);
-  transition: opacity .72s var(--ez), transform .9s var(--ez);
   background:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 82px 82px;
   background-position: -1px -1px;
 }
-.apx-visual.on { opacity: 1; transform: none; }
 .apx-visual-cap {
   position: absolute; left: 18px; top: 16px; z-index: 2;
   font-size: 10px; letter-spacing: .18em; color: var(--fg-dim);
@@ -195,18 +193,16 @@
 .apx-system-core b { font-size: 13px; letter-spacing: .16em; line-height: 2; color: rgba(239, 236, 230, .68); font-family: var(--mono); }
 
 
-.apx-video {
+/* the film — a big 16:9 board in flow (the section's second act) */
+.apx-video { order: 5;
+  position: relative; width: min(100%, 1120px); aspect-ratio: 16 / 9; margin-top: 14px;
   background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
-  opacity: 0; transform: translateX(28px) scale(.992);
-  transition: opacity .8s var(--ez), transform 1s var(--ez);
   overflow: hidden;
 }
-.apx-stage[data-step="1"] .apx-video,
-.apx-video.on { opacity: 1; transform: none; }
-.apx-video iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
+.apx-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
 /* loading poster — covers the iframe while the embedded film compiles/mounts, so
    the frame is never a dead black rectangle (用户: 不给加载样式用户会直接翻走).
-   Hidden by default; toggled to flex imperatively by useApxStage / the tap handler,
+   Hidden by default; toggled to flex imperatively by useApxFilm / the tap handler,
    hidden again on the iframe load event. Site language: pulsing data-bars (条) in
    lifted cobalt on ink, with a mono caption. */
 .apx-video-loading {
@@ -230,71 +226,44 @@
    shows this obvious labelled play affordance and loads xtool/?fresh=1 on tap. */
 .apx-video-play { display: none; }
 
+/* the fact strip + closing CTA — flow after the film (the section's true end) */
 .apx-strip {
-  position: absolute; left: 40px; right: 40px; bottom: 28px; z-index: 3;
+  position: relative; z-index: 3; width: min(100%, 1120px); margin-top: 30px;
   display: flex; justify-content: space-between; gap: 18px;
   padding-top: 12px; border-top: 1px solid var(--line);
   font-size: 9.5px; letter-spacing: .2em; color: var(--fg-dim);
 }
 .apx-strip span { white-space: nowrap; }
-/* 02·B closing CTA — visit the live platform you just watched (lower-left, above the
-   strip). Deliberately COMPACT (smaller than the base .ch-cta) so it stays inside the
-   left copy column and never bleeds over the film on the right (用户: 按钮太大挡住视频). */
-.apx-cta { position: absolute; left: 40px; bottom: 64px; z-index: 4; margin-top: 0;
+/* 02·B closing CTA — COMPACT (smaller than the base .ch-cta), 平台段的唯一按钮 */
+.apx-cta { position: relative; z-index: 4; margin-top: 22px;
   padding: 11px 17px; gap: 9px; font-size: 10px; letter-spacing: .12em; }
 .apx-cta .sq { width: 7px; height: 7px; }
 .apx-cta .arr { font-size: 13px; }
 
 @media (max-height: 760px) {
-  .apx-cta { bottom: 56px; }
   .apx-stage { padding-top: 74px; }
-  .apx-hero { height: calc(100vh - 132px); grid-template-columns: minmax(250px, .62fr) minmax(560px, 1.38fr); gap: 28px; }
   .apx-title { font-size: clamp(44px, 5.4vw, 86px); }
-  .apx-intro { margin-top: 22px; min-height: 160px; }
   .apx-page h3 { font-size: clamp(23px, 2.45vw, 40px); }
   .apx-page p { font-size: 13px; line-height: 1.55; }
-  .apx-system-core { min-height: 200px; }
 }
 
 @media (max-width: 900px) {
-  .apx .ch-wrap { height: auto; }
-  .apx .ch-stage { position: relative; height: auto; min-height: 0; overflow: visible; padding: 72px 20px 38px; }
+  .apx-stage { padding: 72px 20px 38px; }
   .apx-kicker { flex-direction: column; letter-spacing: .18em; }
-
-  /* ── pair each explanation with the diagram/film it describes — ONE-TO-ONE ──
-     The desktop keynote is two columns (all text | all visuals) cross-faded by step.
-     On a phone that reads as "text, then a pile of posters" and the step-toggling
-     hid the off-step ones. Flatten both columns (display:contents) into the hero's
-     flex flow and re-order the leaves so every .apx-page is immediately followed by
-     its visual: 定义→系统图 · 视频→影片. ──────────────────── */
-  .apx-hero, .apx-stage[data-step="1"] .apx-hero {
-    height: auto; display: flex; flex-direction: column; margin-top: 26px; }
-  .apx-copy, .apx-intro, .apx-media, .apx-visuals,
-  .apx-stage[data-step="1"] .apx-media { display: contents; }
-
-  .apx-cap { order: 0; }
-  .apx-title, .apx-stage[data-step="1"] .apx-title { order: 1; font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
-
-  /* one continuous flow — no hairline separators between the text/diagram pairs,
-     tight vertical rhythm so they read as ONE board, not three (用户: 全部连在一起) */
-  .apx-page { position: relative; opacity: 1 !important; transform: none !important;
-    width: 100%; min-height: 0; margin: 0; padding: 12px 0 6px; border: 0; }
-  .apx-page-0 { order: 2; }
-  .apx-page-video { order: 4; }
-
+  .apx-title { font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
+  /* tighter vertical rhythm so text+board read as ONE continuous flow */
+  .apx-page { padding: 12px 0 6px; }
+  .apx-page-video { padding-top: 18px; }
   /* the diagram board hugs its content (was a 300px box with big empty grid bands
      top & bottom — 用户: 中间不要留空) */
-  .apx-visual { position: relative; inset: auto; width: 100%; min-height: 0; height: 240px;
-    opacity: 1 !important; transform: none !important; margin: 0 0 4px; }
-  .apx-visual-system { order: 3; }
-
+  .apx-visual { height: 240px; margin: 0 0 4px; }
   .apx-system-diagram { inset: 40px 14px 12px; grid-template-columns: 1fr 1.1fr; gap: 12px; align-items: stretch; }
   .apx-join { display: none; }
   .apx-toolstack { gap: 8px; align-content: space-between; }
   .apx-tool { padding: 7px 0; }
   .apx-system-core { min-height: 0; height: 100%; padding: 16px; justify-content: center; gap: 8px; }
-  .apx-video { position: relative; inset: auto; order: 7; width: 100%; margin: 4px 0 0;
-    aspect-ratio: 16 / 9; opacity: 1 !important; transform: none !important; }
+  .apx-video { margin: 4px 0 0; }
+  /* phone/tablet: the film loads on an explicit TAP (obvious labelled poster) */
   .apx-video-play { display: flex; position: absolute; inset: 0; z-index: 3;
     flex-direction: column; align-items: center; justify-content: center; gap: 14px;
     padding: 0; border: 0; background: var(--ink); cursor: pointer; overflow: hidden; }
@@ -305,9 +274,8 @@
     border-left: 18px solid var(--paper); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
   .apx-play-cap { position: relative; color: var(--paper); font-size: 11px; letter-spacing: .2em;
     background: rgba(11, 11, 14, .62); padding: 7px 14px; }
-  .apx-strip { position: relative; left: auto; right: auto; bottom: auto; margin-top: 24px; flex-wrap: wrap; }
-  /* flows after the strip — the section's true end on a phone */
-  .apx-cta { position: relative; left: auto; bottom: auto; margin-top: 22px; }
+  .apx-strip { margin-top: 24px; flex-wrap: wrap; }
+  .apx-cta { margin-top: 22px; }
 }
 
 /* ── 03 · A DEVELOPER — AXONOMETRIC STRUCTURE ────────────── */

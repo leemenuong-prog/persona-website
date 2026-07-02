@@ -262,27 +262,48 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wk-zh .psq { width: .1em; height: .1em; align-self: flex-end; margin-bottom: .14em; }
 .wk-lead { margin-top: 18px; font-size: 11px; letter-spacing: .3em; color: var(--fg-dim); }
 
-/* the deck — each work is a card that grows out of a logo bar (JS-placed).
-   closed = the logo skyline · open = a slim skyline index + one BIG card.
-   blue = AI products · ink = architecture — echoing the mark. */
+/* the skyline TOC — the eight .wk-card elements ARE the logo's bars, unfolded
+   into a PERMANENT index rail along the bottom (they never grow into cards
+   anymore). JS drives geometry + the cobalt reader sweep per frame; the works
+   themselves live in the fixed .wk-cardstage above. 条 = 目录. */
 .wk-fan { position: absolute; inset: 0; z-index: 3; }
 .wk-card {
   position: absolute; left: 0; top: 0; transform-origin: 50% 50%;
-  background: var(--blue); color: var(--paper);
-  border: 1px solid transparent;
-  box-shadow: 0 0 0 rgba(5, 8, 30, 0);
+  background: var(--ink); color: var(--paper);
   padding: 0; overflow: hidden; backface-visibility: hidden;
-  will-change: transform; transition: box-shadow .5s var(--ez), border-color .5s var(--ez);
+  will-change: transform;
 }
 .wk-card.ink { background: var(--ink); }
-/* a card only earns its border + drop-shadow once it has grown clear of the
-   skyline — while it's still a slim bar it must read flat, no chrome */
-.wk-card.solid { border-color: var(--card-line); box-shadow: var(--shadow-card); }
-.wk-card.on { box-shadow: var(--shadow-card-hi); }
 
-/* the slim spine = an invisible flip-to-me hit target covering the bar */
-.wc-spine { position: absolute; inset: 0; z-index: 3; margin: 0; padding: 0;
+/* the slim spine = an invisible flip-to-me hit target covering the bar
+   (pointer-only — the labelled .wt-item row carries keyboard access) */
+.wc-spine { position: absolute; inset: -8px -5px 0; z-index: 3; margin: 0; padding: 0;
   border: 0; background: none; cursor: pointer; font: inherit; color: inherit; }
+
+/* the TOC labels — serial + short name under each bar's slot (JS-parked).
+   Quiet ink by default; the ACTIVE one flips cobalt — 到哪个哪个就变蓝. */
+.wk-toc { position: absolute; inset: 0; z-index: 64; pointer-events: none; }
+.wt-item { position: absolute; left: 0; top: 0; margin: 0; padding: 4px 6px; border: 0;
+  background: none; cursor: pointer; opacity: 0; pointer-events: none;
+  display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .14em; color: var(--fg-dim);
+  transition: color .25s var(--ez); }
+.wt-item b { font-weight: 700; letter-spacing: .16em; font-variant-numeric: tabular-nums; color: inherit; }
+.wt-item:hover { color: var(--fg); }
+.wt-item.on, .wt-item.on:hover { color: var(--blue); }
+
+/* ── the ONE card frame — fixed geometry (JS-parked once per frame); the eight
+   works are stacked .wc-full panes that CROSSFADE inside it. The frame's own
+   ground is opaque ink, so a swap dissolves through the card, never through
+   to the page. 卡 = 舞台，作品 = 淡入淡出的面板. ── */
+.wk-cardstage { position: absolute; left: 0; top: 0; z-index: 60;
+  background: var(--ink); color: var(--paper);
+  border: 1px solid var(--card-line); box-shadow: var(--shadow-card);
+  overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none; }
+/* panes lift their own pointer-events via JS; ident/award periods sit on the
+   stage's ink ground, so they take the bright-blue flip (same rule the old
+   .wk-card.ink carried) */
+.wk-cardstage .wf-ident .psq, .wk-cardstage .wf-award .sq { background: var(--blue-up); }
 
 /* ===== the BIG card face — media pane + full dossier, side by side =====
    decoded in by JS opacity as a work rises into focus. paper text on the card's
@@ -298,6 +319,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-media .sc-media, .wf-media .sc-ph { max-height: 100%; }
 .wf-text { display: flex; flex-direction: column; gap: clamp(7px, .95vh, 13px);
   min-width: 0; max-height: 100%; overflow-y: auto; padding-right: 4px;
+  padding-bottom: 26px;   /* lane for the corner award line below the centered dossier */
   justify-content: safe center; }
 /* every row keeps its FULL intended size (up to its own line-clamp budget) —
    without flex-shrink:0, a tight flex column silently squashes a clamped
@@ -313,21 +335,19 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-ident .psq { width: .15em; height: .15em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .08em; }
 .wk-card.ink .wf-ident .psq { background: var(--blue-up); }
 .wf-role { font-size: 9.5px; letter-spacing: .16em; opacity: .78; }
-/* the award line is the credibility signal for HR readers — bolder, bigger,
-   and led by the site's accent-dot motif (跳色只落在点上, never the letters).
-   The dot must NOT share the -webkit-line-clamp box with the text: a
-   -webkit-box with -webkit-box-orient:vertical treats every CHILD as its own
-   stacked item, so an <i> sibling steals one of the clamp's "lines" and the
-   text truncates a line early, silently (no ellipsis, the tail just vanishes).
-   Two layers instead: .wf-award is a plain flex row (dot + text), and only
-   the inner .wf-award-t span carries the clamp box. */
-.wf-award { display: flex; align-items: flex-start; gap: 7px;
-  font-size: 11px; font-weight: 700; letter-spacing: .04em; opacity: .95; }
-.wf-award-t { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-  overflow: hidden; line-height: 1.6; }
+/* 获奖角标 — one quiet line pinned to the card's bottom-right corner:
+   only「奖名 · 中文等级」(descriptor tags / percentiles / EN levels are
+   dropped at the data level). Plain right-anchored text ending in the
+   square period — no badge chrome (设计立场: 禁遮挡类补丁元素). Its
+   containing block is .wc-full (the .wf-text column is static), so the
+   dossier's own overflow-y never clips or scrolls it; the dossier keeps
+   clear via .wf-text's padding-bottom lane. ≤900px puts it back in flow. */
+.wf-award { position: absolute; right: clamp(18px, 1.9vw, 34px); bottom: clamp(13px, 1.4vw, 24px);
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; letter-spacing: .1em; opacity: .82; line-height: 1; white-space: nowrap; }
 /* dot color follows the CARD's own ground (blue/ink), not the page tone (--acc) —
    same rule as .wf-ident .psq, otherwise the dot vanishes on the cobalt card */
-.wf-award .sq { width: 6px; height: 6px; margin-top: .5em; background: var(--blue-dn); flex: none; }
+.wf-award .sq { width: 5px; height: 5px; background: var(--blue-dn); flex: none; }
 .wk-card.ink .wf-award .sq { background: var(--blue-up); }
 /* 中文为主 — the Chinese narrative IS the dossier body now; English drops to a
    quiet annotation. Floor raised for legibility (was 11px). */
@@ -408,13 +428,13 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
 .gl-count { margin-left: 4px; font-size: 8.5px; letter-spacing: .14em;
   color: rgba(239,236,230,.78); font-weight: 400; font-variant-numeric: tabular-nums; }
 
-/* the active-work readout that floats just above the skyline index rail */
-.wk-railread { position: absolute; left: 0; right: 0; bottom: clamp(80px, 11.5vh, 122px);
+/* the active-work readout above the rail — PHONE ONLY now: ≤600px the TOC
+   labels shrink to bare serials, so the active work's name reads here instead.
+   Desktop/tablet get the full labelled TOC and hide this line. */
+.wk-railread { display: none; position: absolute; left: 0; right: 0; bottom: clamp(80px, 11.5vh, 122px);
   z-index: 130; text-align: center; opacity: 0; pointer-events: none;
   font-size: 11px; letter-spacing: .12em; color: var(--fg); }
 .wk-railread b { color: var(--blue); font-weight: 700; letter-spacing: .18em; }
-.wk-railread span { display: inline-block; margin-left: 14px; color: var(--fg-dim);
-  font-variant-numeric: tabular-nums; letter-spacing: .2em; }
 /* the self-square rides the skyline at the live scrub position (the period · 自我) */
 .wk-railself { position: absolute; left: 0; top: 0; z-index: 131; width: 9px; height: 9px;
   background: var(--blue); opacity: 0; pointer-events: none; will-change: transform; }
@@ -471,11 +491,13 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
      overflow the fixed-height card, and the flex column SLICES the body mid-line
      to fit. Dropping the English annotation frees enough height per card. */
   .wf-body { display: none; }
-  /* the award line got bolder/bigger for visibility (site-wide) — cap it back to
-     2 lines here so it can't push the shorter mobile card into inner-scroll
-     (unreachable on touch); the 3rd-line allowance is a desktop-only safety net
-     for the longest award strings on the wide dossier column. */
-  .wf-award-t { -webkit-line-clamp: 2; }
+  /* corner award — the single-column card is height-tight, so the line goes
+     back IN FLOW: floored to the column's slack (margin-top:auto against the
+     flex-start dossier) and right-aligned. Wrapping allowed; it's one short
+     name·level string. */
+  .wf-award { position: static; margin-top: auto; align-self: flex-end;
+    text-align: right; white-space: normal; line-height: 1.5; }
+  .wf-text { padding-bottom: 0; }
   /* Pears' 2-button case: an even 2-column row instead of a stacked column —
      flex-basis:0 (not "auto") forces a true 50/50 split regardless of label
      length, so the row wraps INSIDE each button rather than each button
@@ -607,6 +629,13 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .wk-intro { top: 19vh; width: 90vw; }
   .wk-zh { font-size: clamp(22px, 6.4vw, 34px); }
   .wf-ident { font-size: clamp(20px, 6vw, 28px); }
+  /* TOC — 335px gives each slot ~40px: names can't fit, so labels fold to bare
+     serials and the ACTIVE work's name reads in the centered rail line instead.
+     The rail line sits a band ABOVE the serial row (they share ~107px-from-
+     bottom otherwise and the centre serials get covered). */
+  .wt-item { gap: 0; padding: 4px 4px; }
+  .wt-item span { display: none; }
+  .wk-railread { display: block; bottom: clamp(128px, 17.5vh, 152px); }
 
   /* contact — stack each row label-over-value so long URLs wrap, not clip */
   .crow { flex-direction: column; align-items: flex-start; gap: 4px; padding: 13px 2px;

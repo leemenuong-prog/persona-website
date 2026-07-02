@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   aipm-cut.jsx — AN AIPM · THE THREAD / 一线穿点 (flat, 滚动驱动)
+   aipm-cut.jsx — AN AIPM · THE THREAD / 一线穿点 (flat · 到达即播)
 
    产品判断 = 一根线，穿起几个信号点，落在其中一个上——那一点点亮成
    钴蓝的句点，其余的留在线上，退到暗处。全程只有一条横线 + 一排点：
@@ -7,7 +7,9 @@
    之前 1800 点散射 + 对角扫略 + 竖脊柱太复杂，改成一根线穿点）。
 
    纯 2D。全程是 window.__progress.aipm (0–1) 的纯函数；冻结在任意 p
-   都成立。复用 art.jsx 的全局工具（aClamp/aLerp/aEase/aSeg/useCanvas）。
+   都成立。p 的来源如今是 useCutStage（chapters.jsx）里的一次性 ~2.8s
+   到达时间线（data-ob 触发），不再是滚动刷——本文件零改动地换了驱动。
+   复用 art.jsx 的全局工具（aClamp/aLerp/aEase/aSeg/useCanvas）。
    ══════════════════════════════════════════════════════════════ */
 
 const cutInk = (a) => `rgba(11,11,14,${a})`;

@@ -235,12 +235,54 @@ function CodePanel() {
 }
 
 /* ── WORKS data — eight real proofs, two acts ─────────────────
-   Act I  (cobalt)  AI products & agents · 2025–26
-   Act II (ink)     architecture — the root system · 2020–25   */
+   Act I   architecture — the root system · 2023–25
+   Act II  AI products & agents · 2025–26
+   (建筑在前、AI 在后 — 根系先立，再到当下。award 只留「奖名 · 中文
+   等级」，题材词/百分比/英文等级都不进卡片：它只是右下角一行小字。) */
 const WORKS = [
   {
-    ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "ADVENTURE-X 高校联盟黑客松 · 季军 3RD PLACE（前 3%）",
+    ix: "W·01", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", identity: "Architect",
+    award: "深港双年展 UABB · 板块代表作品",
+    doc: "uploads/portfolio.pdf#page=3", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/aftersilence-1.jpg", "works/portfolio/aftersilence-2.jpg"],
+    caption: "PORTFOLIO · 作品集 · 地外人居",
+    role: ["设计主创", "Design lead"],
+    body: "When the engines fall silent, life begins. Taking the first Mars base's pioneer cluster as prototype, the design turns technical modules into scenes of living — a closed Martian habitat loop where dwelling, energy and research sustain each other. Exhibited in mixed reality (N'Space, naked-eye 3D) at the UABB main hall as the section's representative work.",
+    zh: "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」以首座火星基地「首航组团」为原型，把功能模块转化为生活场景，提出居住、能源、科研相互依存的「火星人居闭环」。作为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
+  },
+  {
+    ix: "W·02", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", identity: "Architect",
+    award: "「活力杯」大湾区高校设计大赛 · 一等奖",
+    doc: "uploads/portfolio.pdf#page=5", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
+    caption: "PORTFOLIO · 作品集 · 桥上书屋",
+    role: ["项目组长", "Project lead"],
+    body: "Lychee Bay's water once gathered people; now it divides them. With no land left in the dense old quarter, the public space goes onto the water — a bridge-library stitching the two banks. Movable bookshelves let one span be a reading room by day, a waiting area at school run, an event hall on holidays. Needle-point urban renewal, now aligned with a real implementation project.",
+    zh: "荔枝湾水系曾聚人，如今却隔开两岸。高密度老城无地可用，便把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。绣花针式的城市更新，并与拟落地项目对接实施。",
+  },
+  {
+    ix: "W·03", t: "风贯·立方 Air Cube", display: "风贯·立方", tag: "ARCHITECTURE", year: "2025", identity: "Architect",
+    award: "2025 优秀毕业设计展 · 卓越奖",
+    doc: "uploads/portfolio.pdf#page=9", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/aircube-1.jpg", "works/portfolio/aircube-2.jpg", "works/portfolio/aircube-3.jpg"],
+    caption: "PORTFOLIO · 作品集 · 产城融合",
+    role: ["设计主创 · 毕业设计", "Design lead"],
+    body: "A \"factory-upstairs\" industry–city fusion for an IDC R&D centre in Guangzhou's Knowledge City. Production floors lift to level three and above; the entire second floor opens into a public void that doubles as a convective wind corridor, stack ventilation cooling the block without machines. Irregular perforated-aluminium façades and vertical greening modulate shade and heat, while a cold-lane ground level tunes the microclimate through planting and water evaporation. Prefab steel, rooftop PV and a rainwater loop close the energy gap.",
+    zh: "以「工业上楼」为核心的产城融合：生产空间抬升至三层及以上，二层整体架空为通透公共空间，兼作对流通风廊道，结合热压通风实现自然降温。东西向不规则穿孔铝板幕墙 + 垂直绿化动态遮阳隔热；架空层引入冷巷原理，以植被与水体蒸发优化微气候。装配式钢结构 + 屋顶光伏 + 雨水循环系统进一步降低能耗。科力新能源 IDC · 大湾区研发中心。",
+  },
+  {
+    ix: "W·04", t: "环·世界 The Ring-World", display: "环·世界", tag: "ARCHITECTURE", year: "2024", identity: "Architect",
+    award: "「NCDA」未来设计师全国数字设计大赛 · 一等奖",
+    doc: "uploads/portfolio.pdf#page=18", mediaLabel: "PORTFOLIO · 作品集",
+    pages: ["works/portfolio/ringworld-1.jpg", "works/portfolio/ringworld-2.jpg", "works/portfolio/ringworld-3.jpg"],
+    caption: "PORTFOLIO · 作品集 · 声景社区",
+    role: ["项目组长", "Project lead"],
+    body: "A rental community above a metro depot: 72 dB of traffic noise, public space squeezed to 35% of normal. The answer flips the public realm vertically — a double-deck roaming loop strings roof gardens and shared living rooms together, while a parametric acoustic façade opens and closes against the simulated noise map, trading view against silence in real time. 5,000 m² of shared ground reclaimed.",
+    zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音，释放出 5000 ㎡ 的共享场域。",
+  },
+  {
+    ix: "W·05", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
+    award: "ADVENTURE-X 高校联盟黑客松 · 季军",
     link: "https://and-pear.netlify.app/login",
     links: [
       { label: "访问应用 · PEARS APP ↗", url: "https://and-pear.netlify.app/login" },
@@ -249,85 +291,45 @@ const WORKS = [
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     mediaLabel: "PRODUCT FILM · 路演视频",
     caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "and-pear.netlify.app",
-    band: [0.5, 0.9, 0.65, 1, 0.7], role: ["独立构建 0 → 上线", "Solo build"],
+    role: ["独立构建 0 → 上线", "Solo build"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
     zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件看你把工作做一遍，把行为轨迹蒸馏成可编辑的 PRD，再由 AI 编码 Agent 生成你专属的 Workflow Agent。想法来自 XTOOL 的真实观察：一个开发团队永远填不满全公司的 Agent 需求，那就把门槛从「描述 AI」降到「做一遍」。现场获企业对接意向最多的项目之一。",
   },
   {
-    ix: "W·02", t: "XTOOL Agent Platform", tag: "AI PLATFORM", year: "2026", dark: false,
-    award: "0→1 独立搭建 · 7 个生产工具 — 覆盖 4 部门（65 人）· 完成率 80%+",
+    ix: "W·06", t: "XTOOL Agent Platform", display: "XTOOL", tag: "AI PLATFORM", year: "2026", identity: "AIPM",
     poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://peersagent.netlify.app/",
     mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
-    band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM · 平台负责人", "Intern · platform owner"],
+    role: ["AIPM · 平台负责人", "Intern · platform owner"],
     body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, three candidates to pick from — drove three product generations. Seven tools now run across four departments (65 people); a self-built ROI board — every $1 invested saves 0.39 working hours — keeps the platform honest.",
     zh: "单人主导部门 Agent 平台 0→1：7 个生产工具铺满内容生产链（脚本、调研、跨平台监测、AI 审核）。埋点发现 Hook 段流失 52%；判断是「高创意内容无法一次成型」；开出的方子——合并生成阶段、三候选并出——推动了三代产品迭代。现覆盖 4 个部门 65 人，任务完成率 80%+；自建 ROI 看板：每投入 $1 省 0.39 工时。首位受邀实习生在全公司公开课主讲。",
   },
   {
-    ix: "W·03", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "香港中文大学 · 企业 AGENT 黑客松 · 亚军 RUNNER-UP（前 5%）",
+    ix: "W·07", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
+    award: "香港中文大学 · 企业 Agent 黑客松 · 亚军",
     link: "https://yijian-demo4.netlify.app",
     poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app",
     mediaLabel: "LIVE DEMO · 在线体验", caption: "议见 YIJIAN · 决策共识 AGENT · 在线 DEMO",
-    band: [0.7, 0.9, 0.6, 1, 0.65], role: ["产品与开发", "Product & build"],
+    role: ["产品与开发", "Product & build"],
     body: "A decision-consensus agent for enterprise teams. Name the call to make — a product pick, a budget add, a regional launch — and Yijian convenes a panel of role perspectives, then resolves them across four layers: strategic goal, factual evidence, stakeholder interest, weighted accountability. What it returns is not one opinion but an auditable verdict — a consensus score, the conditions a decision must clear, and the disagreements still worth solving.",
     zh: "面向企业团队的「决策共识」Agent：输入一项待决策事项，议见组织多角色视角，并在四层共识——战略目标 / 事实证据 / 利益角色 / 权重权责——上收敛分歧。产出的不是单一意见，而是可追溯的结论：共识度评分、决策需满足的附加条件、以及仍需解决的分歧点。香港中文大学企业 Agent 黑客松亚军。",
   },
   {
-    ix: "W·04", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", dark: false,
-    award: "深港双年展 UABB 2025 · 板块唯一学生代表 — 多模态 AIGC",
+    ix: "W·08", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", identity: "Developer",
+    award: "深港双年展 UABB 2025 · 板块唯一学生代表",
     poster: "works/aftersilence-cover.jpg", video: "works/aftersilence.mp4", videoReady: true,
     mediaLabel: "AIGC FILM · 影像", caption: "UABB · AIGC PIPELINE · 影像",
-    band: [0.7, 0.5, 0.85, 0.6, 1], role: ["多模态 AIGC 负责人", "UABB 2025 curatorial team"],
+    role: ["多模态 AIGC 负责人", "UABB 2025 curatorial team"],
     body: "A ComfyUI pipeline wired to external APIs (Gemini / Tripo) that translates non-standard exhibits into standardized 3D assets. Processing time for 50+ exhibits fell from 30 days to 5; 120+ sketch-and-model iterations later, the result made me the section's only student representative.",
     zh: "ComfyUI 外接 API（Gemini / Tripo）的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。120+ 次草图与模型迭代之后，成果让我成为板块唯一的学生代表，在展会分享。",
-  },
-  {
-    ix: "W·05", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", dark: true,
-    award: "深港双年展 UABB · 地外人居板块 SECTION REPRESENTATIVE — 火箭利用 × 地外人居",
-    doc: "uploads/portfolio.pdf#page=3", mediaLabel: "PORTFOLIO · 作品集",
-    pages: ["works/portfolio/aftersilence-1.jpg", "works/portfolio/aftersilence-2.jpg"],
-    caption: "PORTFOLIO · 作品集 · 地外人居",
-    band: [0.95, 0.55, 0.78, 0.62, 1], role: ["设计主创", "Design lead"],
-    body: "When the engines fall silent, life begins. Taking the first Mars base's pioneer cluster as prototype, the design turns technical modules into scenes of living — a closed Martian habitat loop where dwelling, energy and research sustain each other. Exhibited in mixed reality (N'Space, naked-eye 3D) at the UABB main hall as the section's representative work.",
-    zh: "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」以首座火星基地「首航组团」为原型，把功能模块转化为生活场景，提出居住、能源、科研相互依存的「火星人居闭环」。作为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
-  },
-  {
-    ix: "W·06", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", dark: true,
-    award: "「活力杯」大湾区高校设计大赛 · 一等奖 1ST PRIZE（前 3%）",
-    doc: "uploads/portfolio.pdf#page=5", mediaLabel: "PORTFOLIO · 作品集",
-    pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
-    caption: "PORTFOLIO · 作品集 · 桥上书屋",
-    band: [1, 0.66, 0.5, 0.9, 0.72], role: ["项目组长", "Project lead"],
-    body: "Lychee Bay's water once gathered people; now it divides them. With no land left in the dense old quarter, the public space goes onto the water — a bridge-library stitching the two banks. Movable bookshelves let one span be a reading room by day, a waiting area at school run, an event hall on holidays. Needle-point urban renewal, now aligned with a real implementation project.",
-    zh: "荔枝湾水系曾聚人，如今却隔开两岸。高密度老城无地可用，便把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。绣花针式的城市更新，并与拟落地项目对接实施。",
-  },
-  {
-    ix: "W·07", t: "风贯·立方 Air Cube", display: "风贯·立方", tag: "ARCHITECTURE", year: "2025", dark: true,
-    award: "2025 优秀毕业设计展 · 卓越奖 — 产城融合 · 工业上楼",
-    doc: "uploads/portfolio.pdf#page=9", mediaLabel: "PORTFOLIO · 作品集",
-    pages: ["works/portfolio/aircube-1.jpg", "works/portfolio/aircube-2.jpg", "works/portfolio/aircube-3.jpg"],
-    caption: "PORTFOLIO · 作品集 · 产城融合",
-    band: [0.7, 1, 0.6, 0.85, 0.55], role: ["设计主创 · 毕业设计", "Design lead"],
-    body: "A \"factory-upstairs\" industry–city fusion for an IDC R&D centre in Guangzhou's Knowledge City. Production floors lift to level three and above; the entire second floor opens into a public void that doubles as a convective wind corridor, stack ventilation cooling the block without machines. Irregular perforated-aluminium façades and vertical greening modulate shade and heat, while a cold-lane ground level tunes the microclimate through planting and water evaporation. Prefab steel, rooftop PV and a rainwater loop close the energy gap.",
-    zh: "以「工业上楼」为核心的产城融合：生产空间抬升至三层及以上，二层整体架空为通透公共空间，兼作对流通风廊道，结合热压通风实现自然降温。东西向不规则穿孔铝板幕墙 + 垂直绿化动态遮阳隔热；架空层引入冷巷原理，以植被与水体蒸发优化微气候。装配式钢结构 + 屋顶光伏 + 雨水循环系统进一步降低能耗。科力新能源 IDC · 大湾区研发中心。",
-  },
-  {
-    ix: "W·08", t: "环·世界 The Ring-World", display: "环·世界", tag: "ARCHITECTURE", year: "2024", dark: true,
-    award: "「NCDA」未来设计师全国数字设计大赛 · 一等奖 1ST PRIZE — 车辆段上盖",
-    doc: "uploads/portfolio.pdf#page=18", mediaLabel: "PORTFOLIO · 作品集",
-    pages: ["works/portfolio/ringworld-1.jpg", "works/portfolio/ringworld-2.jpg", "works/portfolio/ringworld-3.jpg"],
-    caption: "PORTFOLIO · 作品集 · 声景社区",
-    band: [0.78, 0.6, 0.95, 0.55, 0.84], role: ["项目组长", "Project lead"],
-    body: "A rental community above a metro depot: 72 dB of traffic noise, public space squeezed to 35% of normal. The answer flips the public realm vertically — a double-deck roaming loop strings roof gardens and shared living rooms together, while a parametric acoustic façade opens and closes against the simulated noise map, trading view against silence in real time. 5,000 m² of shared ground reclaimed.",
-    zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音，释放出 5000 ㎡ 的共享场域。",
   },
 ];
 
 /* the logo's skyline rhythm — the same eight bars as the .IAM. mark.
    THIS is the thesis of the WORKS section: the mark is not decoration,
-   it is an index. Eight bars, eight works — bar[i] IS work[i]. The
-   section decodes the mark, one bar at a time, the blue square (the
-   self · the period) walking the skyline as the reader. 条 → 字. */
+   it is an index. Eight bars, eight works — bar[i] indexes work[i]
+   (heights are the mark's fixed rhythm, positional, not per-work data).
+   The blue square (the self · the period) walks the skyline as the
+   reader's cursor. 条 → 字. */
 const OVR_BARS = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
 
 /* ── WORKS — the mark UNFOLDS into the works (scroll-scrubbed) ─
@@ -344,9 +346,8 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (e0, e1, x) => { const t = clp((x - e0) / (e1 - e0 || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
 const eOut = (t) => 1 - Math.pow(1 - t, 3);
 const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
-/* each work answers to one of the three identities — the deck's spine echoing
-   the Dex index. Positional, matching W·NN: 1–3 AIPM · 4 Developer · 5–8 Architect. 字⇄身份. */
-const wkIdentity = (i) => (i <= 2 ? "AIPM" : i === 3 ? "Developer" : "Architect");
+/* each work answers to one of the three identities — carried on the work
+   itself (wk.identity) so reordering the deck never re-labels anyone. 字⇄身份. */
 
 /* ── the portfolio flip-book — for the architecture works whose body
    lives as作品集 spreads. The same .sc-media 16:9 frame, but the A3 page
@@ -462,6 +463,28 @@ function Works({ jump }) {
   const readRef = useSecRef(null);
   const headRef = useSecRef(null);
   const selfRef = useSecRef(null);
+  const deckRef = useSecRef(null);
+
+  /* click / Enter on a TOC bar or label — scroll to that work's browse
+     position so it works whether the deck is open or still closed. */
+  const jumpToWork = (i) => {
+    const sec = document.getElementById("works");
+    const wrap = sec && sec.querySelector(".wk-wrap");
+    if (wrap) {
+      const top = wrap.getBoundingClientRect().top + window.scrollY;
+      const span = Math.max(wrap.offsetHeight - window.innerHeight, 1);
+      const pp = 0.24 + (i / (WORKS.length - 1)) * 0.58;   /* mirrors pB */
+      window.scrollTo(0, Math.round(top + pp * span));
+    }
+    hoverRef.current = i;
+  };
+  /* hover preview — sweeping the pointer across the skyline TOC pulls focus
+     to the bar/label under it (a soft crossfade now, not a balloon). */
+  const onTocMove = (ev) => {
+    if ((window.__wkOpen || 0) <= 0.55) return;
+    const it = ev.target.closest("[data-i]");
+    if (it && it.dataset.i != null) hoverRef.current = +it.dataset.i;
+  };
 
   /* the whole stage is driven by scroll progress — one rAF, only
      style writes, mirroring useChProg in chapters.jsx. */
@@ -470,7 +493,9 @@ function Works({ jump }) {
     if (!stage) return;
     const cards = [...stage.querySelectorAll(".wk-card")];
     const spines = cards.map((c) => c.querySelector(".wc-spine"));
-    const fulls = cards.map((c) => c.querySelector(".wc-full"));
+    const deck = deckRef.current;
+    const fulls = deck ? [...deck.querySelectorAll(".wc-full")] : [];
+    const tocs = [...stage.querySelectorAll(".wt-item")];
     const intro = stage.querySelector(".wk-intro");
     const readEl = readRef.current;
     const headEl = headRef.current;
@@ -481,58 +506,45 @@ function Works({ jump }) {
     const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     let disp = 0, lastActive = -1;
 
-    /* TRUE MORPH — not a crossfade. The cards ARE the logo's bars, grown.
-       We read the live <.brandmorph .band i> rectangles every frame so each
-       card starts as a pixel-exact replica of its bar (same place, width and
-       ink colour); then it physically stretches + recolours into a poster.
-       The logo hands off by simply fading from ON TOP of identical cards —
-       so the bar columns never change, only the periods melt away. 条 → 卡. */
+    /* BARS ⇄ SKYLINE — the eight .wk-card elements ARE the logo's bars, and
+       now stay bars for good: they unfold from the logo into a permanent
+       skyline TOC along the bottom and fly home on reconverge. The works
+       themselves live in ONE fixed card frame above (.wk-cardstage) whose
+       eight content panes crossfade — so browsing no longer stretches
+       geometry between the rail and the card. 条 → 目录 · 卡 → 淡入淡出. */
     const bmBars = [...document.querySelectorAll(".brandmorph .band i")];
     const toRGB = (s) => { const m = (s || "").match(/-?\d+(\.\d+)?/g); return m ? m.slice(0, 3).map(Number) : [11, 11, 14]; };
     const srcRGB = bmBars[0] ? toRGB(getComputedStyle(bmBars[0]).backgroundColor) : [11, 11, 14];
     const tgtRGB = cards.map((c) => toRGB(getComputedStyle(c).backgroundColor));
+    const COBALT = [0, 71, 171];
     const mix = (a, b, t) => "rgb(" + a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",") + ")";
-    let barRects = null, colored = false;
+    let barRects = null;
 
     const tick = () => {
       const p = clp((window.__progress && window.__progress.works) || 0, 0, 1);
       const r = stage.getBoundingClientRect();
       const W = r.width, H = r.height;
 
-      /* the fan opens, then browsing flows straight out of the opening with
-         no dead beat: the open phase finishes around p=0.40 and the focus
-         emphasis RAMPS in across that same boundary so nothing pops.
-         条 → 卡 → 字. */
-      /* open → reconverge: the mark UNFOLDS into the deck (openRaw), then near
-         the end the deck collapses BACK into the mark (close). eS is the live
+      /* open → reconverge: the mark UNFOLDS into the skyline (openRaw), then near
+         the end the skyline collapses BACK into the mark (close). eS is the live
          "openness" — the brandmorph logo reads it (window.__wkOpen) to know when
-         to hand off the closed mark and when to take it back. 条 ⇄ 卡 ⇄ 条. */
-      const openRaw = eOut(smooth(0.04, 0.24, p));     /* closed mark → open fan (收紧前奏，浏览窗更长) */
-      const close = eOut(smooth(0.82, 0.96, p));       /* fan → reconverged mark */
+         to hand off the closed mark and when to take it back. 条 ⇄ 目录 ⇄ 条. */
+      const openRaw = eOut(smooth(0.04, 0.24, p));     /* closed mark → open skyline */
+      const close = eOut(smooth(0.82, 0.96, p));       /* skyline → reconverged mark */
       const eS = openRaw * (1 - close);
       window.__wkOpen = eS;
-      /* GEOMETRY GATE — the cards must sit PIXEL-EXACT on the logo bars while the
-         logo fades off the top of them (eS 0→~0.12). If the bar→card unfold were
-         driven by eS directly, the cards would already be growing + sliding while
-         the logo is still visible — the two bar sets diverge and you see a ghost.
-         So the unfold (eGeo) is held at 0 until the handoff window is past, THEN
-         ramps. Below FHAND the cards are frozen on the bars; the logo dissolves
-         into identical, motionless rectangles. 条 → 卡, nothing to dissolve. */
+      /* GEOMETRY GATE — the bars must sit PIXEL-EXACT on the logo bars while the
+         logo fades off the top of them (eS 0→~0.12). Below FHAND the bars are
+         frozen; the logo dissolves into identical, motionless rectangles. */
       const FHAND = 0.12;
       const eGeo = clp((eS - FHAND) / (1 - FHAND), 0, 1);
-      const pB = clp((p - 0.24) / 0.58, 0, 1);         /* scrub across the deck (browse window — 必须与 wc-spine 点击映射镜像) */
-      /* emphasis is fully in by the time the FIRST card is active (p≈0.40) so
-         W·01/W·02 decode their names; the ramp still starts AFTER the bar→card
-         morph is done (eGeo≈1 by p≈0.30) so no card pops wide mid-handoff. */
-      const focus = smooth(0.15, 0.24, p) * (1 - close); /* emphasis eases in, fades on reconverge */
+      const pB = clp((p - 0.24) / 0.58, 0, 1);         /* scrub across the deck (browse window — 必须与 jumpToWork 点击映射镜像) */
       /* DWELL — instead of a linear scrub (where the next work surfaces while
          the last is still arriving), each work HOLDS in focus, then the scrub
          moves briskly to the next. The plateau at each integer is the dwell. */
       const raw = pB * (N - 1);
       const k = Math.min(Math.floor(raw), N - 2);
       const seg = k + smooth(0.34, 0.66, raw - k);
-      /* HOVER SCRUB — once the deck is open, sweeping the mouse across the cards
-         pulls focus to whichever card is under the pointer, no scrolling needed. */
       const hv = hoverRef.current;
       const target = (hv != null && eS > 0.55) ? hv : seg;
       /* silky inertia — the focus glides toward target rather than snapping. */
@@ -548,35 +560,23 @@ function Works({ jump }) {
       intro.style.opacity = introOp.toFixed(3);
       intro.style.transform = "translate(-50%," + (-40 * eS).toFixed(1) + "px)";
 
-      /* read the live logo bars (relative to the stage) — the cards' closed
+      /* read the live logo bars (relative to the stage) — the bars' closed
          state. Re-measured through the morph zone; cached during browse where
-         the logo is parked dead-still at centre. This guarantees each card
-         BEGINS exactly on its bar, so the handoff has nothing to dissolve. */
+         the logo is parked dead-still at centre. This guarantees each bar
+         BEGINS exactly on its logo twin, so the handoff has nothing to dissolve. */
       if (bmBars.length === N && (eS < 0.55 || !barRects)) {
         barRects = bmBars.map((b) => {
           const br = b.getBoundingClientRect();
           return { x: br.left - r.left, y: br.top - r.top, w: br.width, h: br.height };
         });
       }
-
-      /* recolour ink-bar → poster colour, but only through the morph — once
-         open, hand styling back to CSS so focus/hover stay authoritative. */
       const colorT = smooth(0.0, 0.45, eGeo);
-      if (eGeo < 0.52) {
-        cards.forEach((c, i) => { c.style.backgroundColor = mix(srcRGB, tgtRGB[i], colorT); });
-        colored = true;
-      } else if (colored) {
-        cards.forEach((c) => { c.style.backgroundColor = ""; });
-        colored = false;
-      }
 
-      /* OPEN state — the deck becomes a SKYLINE INDEX along the bottom (one slim
-         bar per work) and the focused work RISES out of it into one BIG card that
-         carries everything: film + title + award + metrics + body. 条 → 天际线 + 大卡. */
+      /* the fixed card frame + the skyline TOC geometry. 大卡一次定位，条列底部. */
       const narrow = W < 900;
       const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
       const bigTop = H * (narrow ? 0.165 : 0.155);   /* phone: drop the card enough to fit the floating title BELOW the fixed nav */
-      const bigBot = H * (narrow ? 0.80 : 0.68);     /* phone: shrunk off 0.915 — the old value ran the card into the railread/skyline zone (0.87–0.965H) */
+      const bigBot = H * (narrow ? 0.80 : 0.68);
       const bigH = bigBot - bigTop;
       const bigCx = W * 0.5;
       /* the skyline index rail — slim bars along the bottom edge */
@@ -586,30 +586,33 @@ function Works({ jump }) {
       const railLeft = W * 0.5 - railTotW * 0.5;
       const railStep = railTotW / (N - 1);
       const spineW = clp(railTotW / (N * 2.4), 8, 22);
-      /* the active-work readout that floats above the rail */
+      const labY = railBaseY - railMaxH - (narrow ? 20 : 26);   /* TOC label row, above the tallest bar */
+
       const ai = Math.round(clp(disp, 0, N - 1));
-      window.__wkActive = ai;   /* the index hover-scrub must NOT re-pin to (it's the big card) */
+      window.__wkActive = ai;
       if (ai !== lastActive) {
         lastActive = ai; const wk = WORKS[ai];
-        if (readEl) readEl.innerHTML = '<b>' + wk.ix + '</b>&nbsp;&nbsp;' + wkShort(wk) +
-          '<span>' + String(ai + 1).padStart(2, "0") + ' / ' + String(N).padStart(2, "0") + '</span>';
+        /* phone readout — ≤600px hides the TOC names, so the active work's name
+           reads here instead (desktop hides this line via CSS) */
+        if (readEl) readEl.innerHTML = '<b>' + String(ai + 1).padStart(2, "0") + '</b>&nbsp;&nbsp;' + wkShort(wk);
         /* the floating headline — the work's title + serial, OUTSIDE the card */
         if (headEl) headEl.innerHTML =
           '<span class="wh-kick">' + wk.ix + ' · ' + wk.tag + ' · ' + wk.year + '</span>' +
           '<span class="wh-name">' + wkShort(wk) + '<i class="wh-sq"></i></span>';
+        tocs.forEach((t, j) => t.classList.toggle("on", j === ai));
       }
-      const railFade = (smooth(0.45, 0.95, eS) * (1 - close)).toFixed(3);
+      const railFadeN = smooth(0.45, 0.95, eS) * (1 - close);
+      const railFade = railFadeN.toFixed(3);
       if (readEl) readEl.style.opacity = railFade;
-      /* park the headline at the focused card's top-left corner, just above it */
+      /* park the headline at the card frame's top-left corner, just above it */
       if (headEl) {
         const hx = bigCx - bigW / 2;
-        /* phone: keep the floating title clear of the ~64px fixed nav */
         const hy = Math.max(bigTop - (narrow ? 70 : 96), narrow ? 70 : 10);
         headEl.style.transform = "translate(" + Math.round(hx) + "px," + Math.round(hy) + "px)";
         headEl.style.opacity = railFade;
       }
       /* the self-square (the period · 自我) rides the skyline at the live scrub
-         position, so the index reads as a continuous nav even between bars */
+         position — the reading cursor of the TOC */
       if (selfEl) {
         const di = clp(disp, 0, N - 1);
         const lo = Math.floor(di), hi = Math.min(lo + 1, N - 1);
@@ -621,6 +624,22 @@ function Works({ jump }) {
         selfEl.style.opacity = (smooth(0.5, 0.95, eS) * (1 - close)).toFixed(3);
       }
 
+      /* ── the ONE card frame — appears as the unfold completes, retires as the
+         skyline flies home. Its geometry never tracks the scrub: only the panes
+         inside crossfade, so a work swap is a dissolve, not a stretch. ── */
+      const stOp = smooth(0.86, 1, eGeo);
+      if (deck) {
+        const rise = (1 - stOp) * 22;
+        deck.style.width = Math.round(bigW) + "px";
+        deck.style.height = Math.round(bigH) + "px";
+        deck.style.transform = "translate(" + Math.round(bigCx - bigW / 2) + "px," + Math.round(bigTop + rise) + "px)";
+        deck.style.opacity = stOp.toFixed(3);
+        deck.style.visibility = stOp > 0.01 ? "visible" : "hidden";
+      }
+
+      /* ── the eight bars — a permanent skyline TOC. The reader sweep (disp)
+         pulls the active bar to cobalt; labels ride their slots below. ── */
+      const appear = smooth(0.0, 0.05, eS);
       cards.forEach((card, i) => {
         /* closed (bar) geometry — straight off the live logo. */
         const bc = barRects && barRects[i];
@@ -629,77 +648,62 @@ function Works({ jump }) {
         const barH = bc ? bc.h : (OVR_BARS[i] * H * 0.15);
         const barTop = bc ? bc.y : (H * 0.46 - barH);
 
-        /* emphasis — `big` is the gated focus that turns a slim spine into the
-           full card. The gate grows a card SOONER and lets it LINGER (0.16→0.90),
-           so through a swap a card is always present at centre — no blank beat. */
-        const dd = i - disp;
-        const bell = Math.exp(-(dd * dd) / 0.34);
-        const e = bell * focus;
-        const big = smooth(0.16, 0.90, e);
-
         /* this work's home in the skyline index (slim bar, height = logo rhythm) */
         const hSig = OVR_BARS[i % OVR_BARS.length];
         const spineH = railMaxH * (0.40 + 0.60 * hSig);
         const spineCx = railLeft + i * railStep;
         const spineTop = railBaseY - spineH;
 
-        /* OPEN target = blend between the slim spine and the big card. As `big`
-           grows the bar glides from its rail slot toward centre and stretches up. */
-        const oW = lerp(spineW, bigW, big);
-        const oH = lerp(spineH, bigH, big);
-        /* centre quickly as it grows, so the two cards mid-swap meet stacked at
-           centre (incoming opaque on top) rather than leaving the middle empty */
-        const cen = smooth(0.0, 0.5, big);
-        const oCx = lerp(spineCx, bigCx, cen);
-        const oTop = lerp(spineTop, bigTop, big);
-        const oX = oCx - oW / 2;
-
-        /* unfold the bar into its open target — same element, continuous geometry */
-        const x = lerp(barX, oX, eGeo);
-        const w = lerp(barW, oW, eGeo);
-        const h = lerp(barH, oH, eGeo);
-        const top = lerp(barTop, oTop, eGeo);
-
-        /* snap to whole pixels — the card is a will-change:transform layer, and a
-           sub-pixel translate makes its composited text render blurry */
+        /* unfold the logo bar into its rail slot — same element, continuous geometry */
+        const x = lerp(barX, spineCx - spineW / 2, eGeo);
+        const w = lerp(barW, spineW, eGeo);
+        const h = lerp(barH, spineH, eGeo);
+        const top = lerp(barTop, spineTop, eGeo);
         card.style.width = Math.round(w) + "px";
         card.style.height = Math.round(h) + "px";
         card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(top) + "px)";
-        /* drop GPU promotion once the card settles big — composited layers render
-           text softer (no sub-pixel AA), so the resting card should de-promote to
-           the main layer and stay razor-sharp; re-promote only while it moves */
-        card.style.willChange = big > 0.85 ? "auto" : "transform";
 
-        /* faces: the big card content (media + text) decodes in with `big`; the
-           slim spine is just a flip hit-target, live only while the bar is slim. */
-        const fullOp = big * eGeo;
-        if (fulls[i]) {
-          fulls[i].style.opacity = fullOp.toFixed(3);
-          const live = fullOp > 0.02;
-          fulls[i].style.pointerEvents = fullOp > 0.6 ? "auto" : "none";
-          /* drop the 7 inactive dossiers out of the a11y tree + tab order —
-             opacity:0 alone leaves their links/media keyboard-reachable behind
-             an invisible layer (inert neutralises the nested controls too) */
-          fulls[i].style.visibility = live ? "visible" : "hidden";
-          fulls[i].toggleAttribute("inert", !live);
+        /* reader sweep — how close the focus is to THIS bar. The active bar
+           turns cobalt (跳色在「当前」上) and lifts to full ink-strength. */
+        const prox = 1 - Math.min(Math.abs(i - disp), 1);
+        const barHot = smooth(0.55, 0.95, prox);
+        card.style.backgroundColor = eGeo < 0.52
+          ? mix(srcRGB, tgtRGB[i], colorT)
+          : mix(tgtRGB[i], COBALT, barHot);
+        card.style.opacity = (appear * lerp(0.5, 1, barHot)).toFixed(3);
+        if (spines[i]) spines[i].style.pointerEvents = eS > 0.5 ? "auto" : "none";
+
+        /* the TOC label under this slot */
+        const tc = tocs[i];
+        if (tc) {
+          tc.style.transform = "translate(" + Math.round(spineCx) + "px," + Math.round(labY) + "px) translateX(-50%)";
+          tc.style.opacity = railFade;
+          tc.style.pointerEvents = (eS > 0.5 && railFadeN > 0.4) ? "auto" : "none";
         }
-        if (spines[i]) spines[i].style.pointerEvents = (big < 0.2 && eS > 0.5) ? "auto" : "none";
-        /* pause a film once its card leaves focus — an opacity:0 video keeps playing.
-           on touch, hold until the card is essentially gone (fullOp<0.02) so a small
+      });
+
+      /* ── the eight content panes — a gentle crossfade around the damped focus.
+         The frame behind them is opaque ink, so mid-swap the two panes dissolve
+         through the card's own ground — never through to the page. ── */
+      fulls.forEach((f, i) => {
+        const dd = i - disp;
+        const prox = 1 - Math.min(Math.abs(dd), 1);
+        const op = smooth(0.18, 0.82, prox);
+        const eff = op * stOp;
+        f.style.opacity = op.toFixed(3);
+        f.style.transform = "translateY(" + (clp(dd, -1, 1) * 18).toFixed(1) + "px)";
+        f.style.zIndex = String(10 + Math.round(op * 20));
+        const live = eff > 0.02;
+        f.style.pointerEvents = eff > 0.6 ? "auto" : "none";
+        /* drop the 7 inactive dossiers out of the a11y tree + tab order —
+           opacity:0 alone leaves their links/media keyboard-reachable behind
+           an invisible layer (inert neutralises the nested controls too) */
+        f.style.visibility = live ? "visible" : "hidden";
+        f.toggleAttribute("inert", !live);
+        /* pause a film once its pane leaves focus — an opacity:0 video keeps
+           playing. on touch, hold until the pane is essentially gone so a small
            scrub doesn't stop playback; on desktop keep the tighter 0.4 cutoff. */
-        if (fullOp < 0.02 || (fullOp < 0.4 && !coarse)) { const v = card.querySelector("video"); if (v && !v.paused) v.pause(); }
-        /* border + drop-shadow only once the card has grown clear of the rail —
-           a slim bar must read flat, like the logo skyline it came from. */
-        card.classList.toggle("solid", big > 0.06);
-        card.classList.toggle("on", big > 0.5);
-        /* a card turns opaque as it grows so it cleanly COVERS the one it is
-           replacing; rail bars sit back as a quiet index */
-        const appear = smooth(0.0, 0.05, eS);
-        const dim = lerp(0.46, 1, smooth(0.0, 0.42, big));
-        card.style.opacity = (appear * dim).toFixed(3);
-        /* the card nearest the scrub target rides on top, so the incoming work
-           covers the outgoing through the swap — no ghost, no blank */
-        card.style.zIndex = String(40 + Math.round(big * 80) - Math.round(Math.abs(i - target) * 3));
+        if (eff < 0.02 || (eff < 0.4 && !coarse)) { const v = f.querySelector("video"); if (v && !v.paused) v.pause(); }
       });
     };
 
@@ -728,59 +732,58 @@ function Works({ jump }) {
             <p className="wk-lead mono">SCROLL — THE MARK UNFOLDS INTO THE WORK · 滚动，标记展开为作品</p>
           </div>
 
-          <div className="wk-fan" aria-hidden="false"
-               onPointerMove={(ev) => {
-                 /* hover-scrub: once the deck is open, sweeping the pointer across the
-                    skyline index pulls focus to the bar under it — no scrolling needed. */
-                 if ((window.__wkOpen || 0) <= 0.55) return;
-                 const card = ev.target.closest(".wk-card");
-                 /* ignore the ballooned card (it fills the upper stage) — only the
-                    slim rail bars pull focus, so the skyline sweep actually works */
-                 if (card && card.dataset.i != null && +card.dataset.i !== window.__wkActive) hoverRef.current = +card.dataset.i;
-               }}>
+          {/* ── the skyline TOC — eight permanent bars along the bottom (the logo's
+              own bars, unfolded). Pointer-only hit targets; the labelled TOC row
+              below carries keyboard access. 条 = 目录. */}
+          <div className="wk-fan" aria-hidden="true" onPointerMove={onTocMove}>
             {WORKS.map((wk, i) => (
               <div key={i} data-i={i} className="wk-card ink">
-                {/* the slim spine = a flip-to-me hit target (the card can't be a
-                    <button> because it now holds video / iframe / links inside) */}
-                <button className="wc-spine" type="button" data-hov
-                        aria-label={"View " + wk.ix + " · " + wk.t}
-                        onClick={() => {
-                          /* scroll to this work's browse position so click / Enter works
-                             whether the deck is open or still closed (keyboard entry too) */
-                          const sec = document.getElementById("works");
-                          const wrap = sec && sec.querySelector(".wk-wrap");
-                          if (wrap) {
-                            const top = wrap.getBoundingClientRect().top + window.scrollY;
-                            const span = Math.max(wrap.offsetHeight - window.innerHeight, 1);
-                            const pp = 0.24 + (i / (WORKS.length - 1)) * 0.58;   /* mirrors pB */
-                            window.scrollTo(0, Math.round(top + pp * span));
-                          }
-                          hoverRef.current = i;
-                        }}></button>
-                {/* the BIG card face — media on the left, the dossier on the right.
-                    The title + serial now float OUTSIDE the card (.wk-headline, top-left
-                    corner); the dossier column leads with the work's identity. */}
-                <div className="wc-full">
-                  <div className="wf-media"><WorkMedia wk={wk} /></div>
-                  <div className="wf-text">
-                    <div className="wf-ident">{wkIdentity(i)}<i className="psq" aria-hidden="true"></i></div>
-                    <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
-                    <div className="wf-award mono"><i className="sq" aria-hidden="true"></i><span className="wf-award-t">{wk.award}</span></div>
-                    {/* 中文叙事为主，英文缩为点缀；三格 metrics 计分板已删（纯叙事） */}
-                    <p className="wf-zh">{wk.zh}</p>
-                    <p className="wf-body">{wk.body}</p>
-                    {wk.links ? (
-                      <div className="wf-ctas">
-                        {wk.links.map((ln, j) => (
-                          <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
-                        ))}
-                      </div>
-                    ) : wk.link ? (
-                      <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>访问项目 · VISIT LIVE ↗</a>
-                    ) : wk.doc ? (
-                      <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>查看作品集 · PORTFOLIO ↗</a>
-                    ) : null}
-                  </div>
+                <button className="wc-spine" type="button" data-hov tabIndex={-1} aria-hidden="true"
+                        onClick={() => jumpToWork(i)}></button>
+              </div>
+            ))}
+          </div>
+          {/* the TOC labels — serial + short name under each bar's slot; the
+              active one flips cobalt. These are the keyboard path to the deck. */}
+          <div className="wk-toc" onPointerMove={onTocMove}>
+            {WORKS.map((wk, i) => (
+              <button key={i} data-i={i} type="button" data-hov
+                      className={"wt-item mono" + (i === 0 ? " on" : "")}
+                      aria-label={"View " + wk.ix + " · " + wk.t}
+                      onClick={() => jumpToWork(i)}>
+                <b>{String(i + 1).padStart(2, "0")}</b><span>{wkShort(wk)}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* ── the ONE card frame — fixed geometry; the eight works are stacked
+              content panes that crossfade inside it. 卡不再从条里长出来. */}
+          <div className="wk-cardstage" ref={deckRef}>
+            {WORKS.map((wk, i) => (
+              <div key={i} data-i={i} className="wc-full">
+                <div className="wf-media"><WorkMedia wk={wk} /></div>
+                <div className="wf-text">
+                  <div className="wf-ident">{wk.identity}<i className="psq" aria-hidden="true"></i></div>
+                  <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
+                  {/* 中文叙事为主，英文缩为点缀；三格 metrics 计分板已删（纯叙事） */}
+                  <p className="wf-zh">{wk.zh}</p>
+                  <p className="wf-body">{wk.body}</p>
+                  {wk.links ? (
+                    <div className="wf-ctas">
+                      {wk.links.map((ln, j) => (
+                        <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
+                      ))}
+                    </div>
+                  ) : wk.link ? (
+                    <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>访问项目 · VISIT LIVE ↗</a>
+                  ) : wk.doc ? (
+                    <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>查看作品集 · PORTFOLIO ↗</a>
+                  ) : null}
+                  {/* 获奖角标 — 卡片右下角一行小字：只有「奖名 · 中文等级」，行尾方块
+                      句点收束（同标题的 .psq 语义）。角落停靠、非徽章补丁；无奖不渲染。 */}
+                  {wk.award ? (
+                    <div className="wf-award mono">{wk.award}<i className="sq" aria-hidden="true"></i></div>
+                  ) : null}
                 </div>
               </div>
             ))}

@@ -42,31 +42,71 @@ function useChProg(id, ref) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   03 · AN AIPM — FLAT SHEET · 平面 (tone: paper)
+   03 · AN AIPM — FLAT SHEET · 平面 (tone: paper) · 到达即播
    ════════════════════════════════════════════════════════════ */
-/* the thread stage driver — writes --p and --pay onto the stage.
-   (Pure style writes; the payoff copy only resolves after the thread lands.) */
+/* the thread driver — a ONE-SHOT ~2.8s timeline, no scroll-scrub. Armed by
+   the engine's reveal system (the [data-ob] block gains `.in` as the section
+   crosses the 72%-viewport line); it then writes window.__progress.aipm 0→1
+   (the canvas in aipm-cut.jsx reads that global directly — zero changes
+   there), plus --p / --pay and the [data-th] point-label toggles. Ends
+   clamped at 1 and goes quiet: the chapter HOLDS its final frame (站内约定，
+   回滚不消失). prefers-reduced-motion / __calm snap straight to the held frame. */
 function useCutStage(id, ref) {
   useChE(() => {
     const el = ref.current; if (!el) return;
-    let last = -2;
-    const stop = window.__addLoop(() => {
-      const praw = (window.__progress && window.__progress[id]) || 0;
-      const p = aClamp(praw, 0, 1);
-      if (Math.abs(praw - last) < 0.0006) return;
-      last = praw;
+    const ths = [...el.querySelectorAll("[data-th]")].map((n) => [n, parseFloat(n.dataset.th)]);
+    const calm = (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) || window.__calm;
+    const DUR = 2800;
+    let t0 = 0, done = false;
+    const write = (p) => {
+      window.__progress = window.__progress || {};
+      window.__progress[id] = p;   /* the canvas's single source of truth */
       el.style.setProperty("--p", p.toFixed(4));
       /* payoff (title "An AIPM" + copy) rises IN SYNC with the thread's ignite
-         (canvas coils+releases ~0.58–0.88), so the words arrive as the mark
-         resolves — then HOLDS. It stays lit as the sticky stage slides away
-         (no dissolve at praw>1), matching the held canvas frame, so the
-         resolved mark carries intact into the next chapter. */
+         (canvas coils+releases ~0.58–0.88), then HOLDS. */
       const payIn = aEase(aSeg(p, 0.58, 0.86));
       el.style.setProperty("--pay", payIn.toFixed(3));
+      ths.forEach(([n, t]) => n.classList.toggle("on", p >= t));
+    };
+    write(0);
+    const stop = window.__addLoop(() => {
+      if (done) return;
+      if (!el.classList.contains("in")) return;   /* not arrived yet */
+      if (calm) { write(1); done = true; return; }
+      const now = performance.now();
+      if (!t0) t0 = now;
+      const t = aClamp((now - t0) / DUR, 0, 1);
+      /* ease-out: the thread draws briskly, the ignite + payoff linger */
+      write(1 - Math.pow(1 - t, 1.65));
+      if (t >= 1) done = true;
     });
     return () => stop();
   }, []);
 }
+
+/* the six signals the thread strings through — five questions considered and
+   put down, and THE question it lands on. x mirrors THREAD_X in aipm-cut.jsx;
+   data-th = the timeline p at which the tip reaches that point (the landing
+   label waits for the ignite instead). 动画在问，文案在答. */
+const CUT_LABELS = [
+  { x: 0.08, th: 0.20, t: "更快一点？" },
+  { x: 0.22, th: 0.29, t: "更省一点？" },
+  { x: 0.37, th: 0.35, t: "加个 AI？" },
+  { x: 0.52, th: 0.41, t: "流程再顺一点？" },
+  { x: 0.66, th: 0.46, t: "提效几个点？" },
+  { x: 0.78, th: 0.68, t: "这事还该不该人来做？", land: true },
+];
+
+/* Part B — 判断的三步：the working method behind the question, each step with
+   a real receipt from the XTOOL platform work (素材即正文，不造新口号). */
+const CUT_METHOD = [
+  { k: "01 · 看见 SEE", zh: "埋点里看到 Hook 段流失 52%——不是流程慢，是高创意内容没法一次成型。",
+    en: "Telemetry first: the 52% drop at the Hook stage wasn't a speed problem." },
+  { k: "02 · 开方 PRESCRIBE", zh: "开出的方子不是「再快一点」：合并生成阶段、三候选并出，推动了三代产品迭代。",
+    en: "The prescription wasn't \"faster\" — merge the stages, offer three candidates." },
+  { k: "03 · 对账 MEASURE", zh: "自建 ROI 看板对自己诚实：每投入 $1，省下 0.39 工时。",
+    en: "A self-built ROI board keeps it honest: $1 in, 0.39 hours back." },
+];
 
 function ChAipm({ jump }) {
   const { AipmCut } = window;
@@ -76,23 +116,48 @@ function ChAipm({ jump }) {
      showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
      page — having it on both read as a duplicate (用户: 动画页不要按钮). */
   return (
-    <section className="chapter ch2x" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="03 · An AIPM — THE THREAD">
-      <div className="ch-wrap c2x-wrap">
-        <div className="ch-stage c2x-stage" data-ob ref={ref}>
-          <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
+    <section className="chapter ch2x" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — THE THREAD">
+      {/* ── Part A · the thread — one viewport in NORMAL FLOW; scrolling to it
+          starts the timeline (data-ob → .in → useCutStage), nothing to scrub. */}
+      <div className="c2x-flow" data-ob ref={ref}>
+        <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
 
-          {/* the payoff — appears only after the thread resolves into the mark.
-              中文为主：他的中文一句话是正文，英文缩为点缀 */}
-          <div className="c2x-pay">
-            <div className="c2x-left">
-              <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
-              <div className="c2x-motto">让 AI 能力贴合真实场景<i className="psq" aria-hidden="true"></i></div>
-              <p className="c2x-st">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。
-                <span className="en">Making AI fit real situations — I rarely ask how to make the current process faster; I'd rather ask whether a person should be doing it at all.</span>
-              </p>
-            </div>
+        {/* the point labels — each question lights as the thread strings through
+            it; the landing one turns cobalt with the ignite. */}
+        <div className="c2x-labs" aria-hidden="true">
+          {CUT_LABELS.map((lb, i) => (
+            <span key={i} className={"c2x-lab mono" + (lb.land ? " land" : "")}
+                  data-th={lb.th} style={{ left: (lb.x * 100) + "%" }}>{lb.t}</span>
+          ))}
+        </div>
+
+        {/* the payoff — appears only after the thread resolves into the mark.
+            中文为主：他的中文一句话是正文，英文缩为点缀 */}
+        <div className="c2x-pay">
+          <div className="c2x-left">
+            <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
+            <div className="c2x-motto">让 AI 能力贴合真实场景<i className="psq" aria-hidden="true"></i></div>
+            <p className="c2x-st">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。
+              <span className="en">Making AI fit real situations — I rarely ask how to make the current process faster; I'd rather ask whether a person should be doing it at all.</span>
+            </p>
           </div>
         </div>
+      </div>
+
+      {/* ── Part B · 判断的三步 — the method, revealed on arrival (no scrub). */}
+      <div className="c2x-method" data-ob>
+        <div className="c2x-mk mono" data-rv style={{ "--rd": ".05s" }}>
+          <span>HOW I JUDGE</span><b>判断的三步 · 来自 XTOOL 平台的一次真实判断</b>
+        </div>
+        {CUT_METHOD.map((m, i) => (
+          <div key={i} className="c2x-mrow" data-rv style={{ "--rd": (0.16 + i * 0.13).toFixed(2) + "s" }}>
+            <span className="c2x-mnum mono">{m.k}</span>
+            <div className="c2x-mtx">
+              <p className="zh">{m.zh}</p>
+              <p className="en">{m.en}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -124,93 +189,49 @@ const APX_STRIP = [
   "每投入 $1 省 0.39 工时",
 ];
 
-function useApxStage(id, ref) {
+/* the film plumbing — all that survives of the old keynote hook. The page is
+   normal flow now (every block statically visible, fading in via [data-rv]);
+   this only manages the film iframe:
+   · loading poster — shown the instant the iframe is pointed at the film,
+     hidden when the embedded film posts 'pearmovie:ready' (its first painted
+     frame — the iframe's own 'load' event fires too early, 用户: 视频先黑屏),
+     with a 3.2s post-load safety net so it can never get stuck.
+   · DESKTOP: the film loads ONCE when the film block scrolls into view
+     (IntersectionObserver, same precedent as the Reel film) and is never
+     re-pointed — re-setting src would restart the movie + re-show the loader.
+     xtool/?fresh=1 → starts at 0:00 on arrival (播放偏好约定).
+   · PHONE/TABLET: the explicit tap poster loads it instead (button below). */
+function useApxFilm(ref, frameRef) {
   useChE(() => {
     const el = ref.current; if (!el) return;
-    const sec = el.closest("section");
-    const pages = [...el.querySelectorAll(".apx-page")];
-    const visuals = [...el.querySelectorAll(".apx-visual")];
-    const video = el.querySelector(".apx-video");
-    const frame = el.querySelector(".apx-video iframe");
-    /* loading poster — shown the instant we point the iframe at the film, hidden the
-       moment the embedded film signals it has painted its first frame ('pearmovie:ready').
-       The iframe's own 'load' event fires too early — before the in-iframe React/Babel app
-       compiles + renders — so hiding on it left a black gap (用户: 视频先黑屏). Driven
-       imperatively (not React state) so it never fights the className/opacity the loop
-       writes onto .apx-video. */
+    const frame = frameRef.current;
+    const vid = el.querySelector(".apx-video");
     const loading = el.querySelector(".apx-video-loading");
     const showLoad = () => { if (loading) loading.style.display = "flex"; };
     const hideLoad = () => { if (loading) loading.style.display = "none"; };
     const onFilmMsg = (e) => { if (e && e.data === "pearmovie:ready") hideLoad(); };
     addEventListener("message", onFilmMsg);
-    /* safety net — if that signal never arrives (e.g. a stale cached film), hide the
-       poster a few seconds after the iframe document loads so it can't get stuck. */
     let safetyT = 0;
     const onFrameLoad = () => { clearTimeout(safetyT); safetyT = setTimeout(hideLoad, 3200); };
     if (frame) frame.addEventListener("load", onFrameLoad);
-    let last = -2, lastStep = -1, filmLoaded = false, mobileReset = false;
-    const stop = window.__addLoop(() => {
-      /* PHONE/TABLET: the section is a vertical stack that pairs each explanation with
-         its diagram/film (CSS). The keynote step-toggling must NOT run here — it sets
-         opacity:0 inline on the non-active visuals, so the diagrams "disappear" as you
-         scroll (the bug). Clear anything it set, force everything visible, and bail.
-         Re-checked every frame so a resize back to desktop restores the keynote. */
-      if (window.matchMedia && window.matchMedia("(max-width: 900px)").matches) {
-        if (!mobileReset) {
-          mobileReset = true;
-          visuals.forEach((n) => { n.style.removeProperty("opacity"); n.style.removeProperty("transform"); n.classList.add("on"); });
-          if (video) { video.style.removeProperty("opacity"); video.style.removeProperty("transform"); }
-          pages.forEach((n) => n.classList.add("on"));
-        }
-        return;
-      }
-      mobileReset = false;
-      const top = sec ? sec.getBoundingClientRect().top + window.scrollY : el.getBoundingClientRect().top + window.scrollY;
-      const span = Math.max((sec ? sec.offsetHeight : el.offsetHeight) - innerHeight, 1);
-      const praw = (window.scrollY - top) / span;
-      const p = aClamp(praw, 0, 1);
-
-      /* video iframe — load the film ONCE, the moment the viewer scrolls onto the video
-         page (≈ last third of the pinned stage), then KEEP it loaded. It is NOT unloaded
-         on further scrolling, so scrubbing up/down around the video page never reloads it
-         (用户: 不管怎么动，滑到视频页就开始加载→播放，别重新加载). The film is silent, so leaving it
-         mounted while scrolled away is harmless. It ships src="about:blank" so it never
-         pre-rolls before arrival; xtool/?fresh=1 → starts at 0:00 and posts 'pearmovie:ready'
-         when it paints (→ hides the loading poster). */
-      /* DESKTOP only — on phone/tablet the stage is a vertical stack (height:auto) so this
-         praw window is unreliable; there the film loads on an explicit TAP instead (see the
-         .apx-video-play poster button), which also shows the loader. */
-      if (frame && !(window.matchMedia && window.matchMedia("(max-width: 900px)").matches)) {
-        if (!filmLoaded && praw >= 0.42) {
-          filmLoaded = true;
-          showLoad();
-          frame.src = "xtool/?fresh=1";
-        }
-      }
-
-      if (Math.abs(praw - last) < 0.0006) return;
-      last = praw;
-      el.style.setProperty("--p", p.toFixed(4));
-      /* two-phase keynote now (only one text/diagram page left after removing
-         "专属 Agent" — 用户: 只留不是单个工具是生产系统): 0 = text + diagram, 1 = video. */
-      const step = p < 0.5 ? 0 : 1;
-      if (step === lastStep) return;
-      lastStep = step;
-      el.dataset.step = String(step);
-      pages.forEach((n, i) => n.classList.toggle("on", i === Math.min(step, pages.length - 1)));
-      visuals.forEach((n, i) => {
-        const on = step === i;
-        n.classList.toggle("on", on);
-        n.style.setProperty("opacity", on ? "1" : "0", "important");
-        n.style.setProperty("transform", on ? "none" : "translateY(18px)", "important");
-      });
-      if (video) {
-        video.classList.toggle("on", step === 1);
-        video.style.setProperty("opacity", step === 1 ? "1" : "0", "important");
-        video.style.setProperty("transform", step === 1 ? "none" : "translateX(28px) scale(.992)", "important");
-      }
-    });
-    return () => { stop(); removeEventListener("message", onFilmMsg); clearTimeout(safetyT); if (frame) frame.removeEventListener("load", onFrameLoad); };
+    let filmLoaded = false, io = null;
+    const phone = window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
+    if (frame && vid && !phone && "IntersectionObserver" in window) {
+      io = new IntersectionObserver((es) => {
+        es.forEach((en) => {
+          if (!filmLoaded && en.isIntersecting && en.intersectionRatio >= 0.35) {
+            filmLoaded = true; showLoad(); frame.src = "xtool/?fresh=1";
+            if (io) io.disconnect();
+          }
+        });
+      }, { threshold: [0, 0.35, 0.6] });
+      io.observe(vid);
+    }
+    return () => {
+      removeEventListener("message", onFilmMsg); clearTimeout(safetyT);
+      if (frame) frame.removeEventListener("load", onFrameLoad);
+      if (io) io.disconnect();
+    };
   }, []);
 }
 
@@ -218,98 +239,100 @@ function ChAipmPlatform({ jump }) {
   const ref = useChR(null);
   const frameRef = useChR(null);
   const [filmOn, setFilmOn] = React.useState(false);
-  useApxStage("aipmPlatform", ref);
+  useApxFilm(ref, frameRef);
   /* closing CTA — after the platform film, the same live-site link as the AIPM
      identity chapter (XTOOL Agent Platform). Resolved from WORKS. */
   const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
+  /* NORMAL FLOW on every size (无 keynote、无钉住)：标题 → 定义 → 系统图 →
+     影片引言 → 影片 → 数据条 → CTA，顺着页面往下走，到达即显（data-rv）。
+     The one-column pairing the phone layout already proved is now the layout,
+     period — desktop just gives the boards more width. */
   return (
-    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-prog="aipmPlatform" data-screen-label="03·B · XTOOL Agent Platform">
-      <div className="ch-wrap">
-        <div className="ch-stage apx-stage" data-ob ref={ref} data-step="0">
-          <div className="apx-kicker mono">
-            <span>03·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-screen-label="03·B · XTOOL Agent Platform">
+      <div className="apx-stage" data-ob ref={ref}>
+        <div className="apx-kicker mono">
+          <span>03·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+        </div>
+
+        <div className="apx-hero">
+          <div className="apx-copy">
+            <div className="apx-cap mono" data-rv style={{ "--rd": ".04s" }}>XTOOL / 内容生产 Agent OS</div>
+            <h2 className="apx-title" data-rv style={{ "--rd": ".1s" }}>XTOOL<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
+
+            <div className="apx-intro">
+              {APX_INTRO_PAGES.map((page, i) => (
+                <article key={page.ix} className={"apx-page apx-page-" + i + " on"} data-rv style={{ "--rd": ".2s" }}>
+                  <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
+                  <h3>{page.title}</h3>
+                  <p>{page.body}</p>
+                </article>
+              ))}
+              <article className="apx-page apx-page-video on">
+                <div className="apx-page-k mono"><span>02</span><b>视频演示</b></div>
+                <h3>现在看它如何工作。</h3>
+                <p>上面说清了平台逻辑；这里只保留产品本身，让视频成为主角。</p>
+              </article>
+            </div>
           </div>
 
-          <div className="apx-hero">
-            <div className="apx-copy">
-              <div className="apx-cap mono">XTOOL / 内容生产 Agent OS</div>
-              <h2 className="apx-title">XTOOL<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
-
-              <div className="apx-intro">
-                {APX_INTRO_PAGES.map((page, i) => (
-                  <article key={page.ix} className={"apx-page apx-page-" + i + (i === 0 ? " on" : "")}>
-                    <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
-                    <h3>{page.title}</h3>
-                    <p>{page.body}</p>
-                  </article>
-                ))}
-                <article className="apx-page apx-page-video">
-                  <div className="apx-page-k mono"><span>03</span><b>视频演示</b></div>
-                  <h3>现在看它如何工作。</h3>
-                  <p>前两面说明平台逻辑；这一面只保留产品本身，让视频成为主角。</p>
-                </article>
-              </div>
-            </div>
-
-            <div className="apx-media">
-              <div className="apx-visuals" aria-hidden="true">
-                <div className="apx-visual apx-visual-system on">
-                  <div className="apx-visual-cap mono">{APX_VISUALS[0].label}</div>
-                  <div className="apx-system-diagram">
-                    <div className="apx-toolstack">
-                      {["调研", "脚本", "审核", "复测"].map((item) => (
-                        <div className="apx-tool" key={item}><i></i><span>{item}</span></div>
-                      ))}
-                    </div>
-                    <div className="apx-join" aria-hidden="true"></div>
-                    <div className="apx-system-core">
-                      <span>内容生产系统</span>
-                      <b>统一记忆<br />统一规则<br />统一数据</b>
-                    </div>
+          <div className="apx-media">
+            <div className="apx-visuals" aria-hidden="true">
+              <div className="apx-visual apx-visual-system on" data-rv style={{ "--rd": ".3s" }}>
+                <div className="apx-visual-cap mono">{APX_VISUALS[0].label}</div>
+                <div className="apx-system-diagram">
+                  <div className="apx-toolstack">
+                    {["调研", "脚本", "审核", "复测"].map((item) => (
+                      <div className="apx-tool" key={item}><i></i><span>{item}</span></div>
+                    ))}
+                  </div>
+                  <div className="apx-join" aria-hidden="true"></div>
+                  <div className="apx-system-core">
+                    <span>内容生产系统</span>
+                    <b>统一记忆<br />统一规则<br />统一数据</b>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="apx-video" aria-label="XTOOL Agent Platform video">
-                {/* DESKTOP: src stays blank until the viewer reaches the video page, then
-                    useApxStage points it at xtool/?fresh=1 ONCE and leaves it (never reverts
-                    — the film is silent, so it just keeps playing; scrolling around never
-                    reloads it). PHONE/TABLET: the poster button below loads it on a tap. */}
-                <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
-                {/* loading poster — animated data-bars (条) + label; sits above the iframe
-                    while the embedded film compiles/mounts. Shown when the film starts
-                    loading; hidden when the film posts 'pearmovie:ready' (its first painted
-                    frame), with a timeout safety net. */}
-                <div className="apx-video-loading mono" aria-hidden="true">
-                  <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
-                  <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
-                </div>
-                {!filmOn && (
-                  <button className="apx-video-play" type="button" data-hov aria-label="播放 XTOOL 平台影片"
-                          onClick={() => {
-                            setFilmOn(true);
-                            const f = frameRef.current; if (!f) return;
-                            const lo = f.parentElement && f.parentElement.querySelector(".apx-video-loading");
-                            if (lo) lo.style.display = "flex";
-                            f.src = "xtool/?fresh=1";
-                          }}>
-                    <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" loading="lazy" draggable="false" />
-                    <span className="apx-play-ico" aria-hidden="true"></span>
-                    <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
-                  </button>
-                )}
+            <div className="apx-video on" aria-label="XTOOL Agent Platform video">
+              {/* DESKTOP: src stays blank until the film block scrolls into view, then
+                  useApxFilm points it at xtool/?fresh=1 ONCE and leaves it (never reverts
+                  — the film is silent, so it just keeps playing; scrolling around never
+                  reloads it). PHONE/TABLET: the poster button below loads it on a tap. */}
+              <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
+              {/* loading poster — animated data-bars (条) + label; sits above the iframe
+                  while the embedded film compiles/mounts. Shown when the film starts
+                  loading; hidden when the film posts 'pearmovie:ready' (its first painted
+                  frame), with a timeout safety net. */}
+              <div className="apx-video-loading mono" aria-hidden="true">
+                <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
+                <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
               </div>
+              {!filmOn && (
+                <button className="apx-video-play" type="button" data-hov aria-label="播放 XTOOL 平台影片"
+                        onClick={() => {
+                          setFilmOn(true);
+                          const f = frameRef.current; if (!f) return;
+                          const lo = f.parentElement && f.parentElement.querySelector(".apx-video-loading");
+                          if (lo) lo.style.display = "flex";
+                          f.src = "xtool/?fresh=1";
+                        }}>
+                  <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" loading="lazy" draggable="false" />
+                  <span className="apx-play-ico" aria-hidden="true"></span>
+                  <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
+                </button>
+              )}
             </div>
           </div>
-
-          <div className="apx-strip mono" aria-hidden="true">
-            {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
-          </div>
-          <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
-            <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
-          </a>
         </div>
+
+        <div className="apx-strip mono" aria-hidden="true">
+          {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
+        </div>
+        <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
+          <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
+        </a>
       </div>
     </section>
   );
@@ -587,8 +610,9 @@ function ChReel({ jump }) {
   }, []);
 
   /* closing CTA — the reel is the Developer's evidence (Pears); link straight to
-     the live product, same as the Developer identity chapter (WORKS[0]). */
-  const devWk = (window.WORKS || [])[0];
+     the live product. Looked up by name, NOT by index — the deck's order is
+     curatorial (建筑在前) and must be free to change without re-aiming this link. */
+  const devWk = (window.WORKS || []).find((w) => w.t && w.t.indexOf("Pears") === 0);
   const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
   const s = REEL[idx];
   return (

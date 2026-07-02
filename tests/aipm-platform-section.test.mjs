@@ -11,7 +11,12 @@ const css = read("rational/chapters.css");
 const app = read("rational/app.jsx");
 
 assert.match(chapters, /function ChAipmPlatform\s*\(/, "ChAipmPlatform component should exist");
-assert.match(chapters, /data-prog="aipmPlatform"/, "platform chapter should publish scroll progress");
+/* 2026-07-02: the platform page is NORMAL FLOW — no scroll-scrub, no keynote.
+   It must NOT publish progress (the engine would fight the layout) and the
+   film must load on arrival via IntersectionObserver / tap, not a praw window. */
+assert.doesNotMatch(chapters, /data-prog="aipmPlatform"/, "platform chapter must not be scroll-scrubbed anymore");
+assert.doesNotMatch(chapters, /function useApxStage/, "the keynote scrub driver should be gone");
+assert.match(chapters, /function useApxFilm/, "the film-loading hook should exist");
 assert.match(chapters, /APX_INTRO_PAGES\s*=\s*\[/, "platform section should have an intro page before the video reveal");
 assert.match(chapters, /不是单个工具，是生产系统/, "intro page should use clear Chinese copy");
 assert.match(chapters, /XTOOL\s*<br\s*\/?>\s*Agent Platform/, "platform section should lead with the XTOOL / Agent Platform title");
@@ -36,11 +41,18 @@ assert.match(app, /const \{[^}]*ChAipmPlatform/s, "App should read ChAipmPlatfor
 assert.match(chapters, /reel-nav next/, "reel should render a next affordance");
 assert.doesNotMatch(chapters, /function useReelStage/, "the scroll-scrub reel driver should be gone");
 
-assert.match(css, /\.apx\s+\.ch-wrap/, "platform chapter layout CSS should exist");
+assert.doesNotMatch(css, /\.apx\s+\.ch-wrap/, "the pinned wrap CSS should be gone (normal flow)");
+assert.doesNotMatch(css, /data-step/, "keynote step CSS should be gone");
+assert.match(css, /\.apx-stage\s*\{[^}]*position:\s*relative/s, "platform stage should sit in normal flow");
 assert.match(css, /\.apx-intro/, "intro page CSS should exist");
 assert.match(css, /\.apx-visual/, "intro visual CSS should exist");
 assert.match(css, /\.apx-video/, "video reveal CSS should exist");
-assert.match(css, /\.apx-stage\[data-step="1"\]\s+\.apx-media/, "video step should expand the media area");
 assert.match(css, /\.reel-cell\.on\s*\{\s*opacity:\s*1/, "reel cells should toggle by class");
+
+/* the AIPM identity page is normal flow too: one-shot timeline, labelled points */
+assert.doesNotMatch(chapters, /data-prog="aipm"/, "AIPM identity chapter must not be scroll-scrubbed anymore");
+assert.match(chapters, /CUT_LABELS\s*=\s*\[/, "the thread's point labels should exist");
+assert.match(chapters, /CUT_METHOD\s*=\s*\[/, "the judgment-method rows should exist");
+assert.doesNotMatch(css, /\.ch2x\s+\.ch-wrap/, "the AIPM pinned wrap CSS should be gone");
 
 console.log("aipm platform section static checks passed");
