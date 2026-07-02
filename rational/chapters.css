@@ -612,7 +612,7 @@
     background: var(--bg); }   /* matte == the snow tone == the slides' own base → seamless */
   .reel-cell { position: relative !important; inset: auto !important;
     width: 100%; height: auto; opacity: 1 !important; transform: none !important;
-    will-change: auto; }
+    will-change: auto; transition: none; }   /* 静态堆叠不需要过渡 — 也避免节流环境卡在过渡起点 */
   .reel-img { position: relative; width: 100%; height: auto; display: block; object-fit: contain; }
   .reel-video { aspect-ratio: 16 / 9; pointer-events: auto !important; background: var(--ink); }
   .reel-video video { position: relative; width: 100%; height: 100%; }
