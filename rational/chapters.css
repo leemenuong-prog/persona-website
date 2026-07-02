@@ -32,11 +32,11 @@
 .c2x-title { margin-top: 14px; font-size: clamp(50px, 7vw, 124px); font-weight: 800; letter-spacing: -.04em; line-height: .9;
   display: flex; align-items: flex-end; }
 .c2x-title .psq { width: .1em; height: .1em; background: var(--acc); margin-left: .12em; margin-bottom: .12em; }
-.c2x-motto { margin-top: 26px; font-size: clamp(24px, 2.6vw, 44px); font-weight: 800; letter-spacing: -.02em; line-height: 1.06;
+.c2x-motto { margin-top: 26px; font-size: clamp(22px, 2.4vw, 40px); font-weight: 800; letter-spacing: .01em; line-height: 1.2;
   display: flex; align-items: flex-end; flex-wrap: wrap; }
 .c2x-motto .psq { width: .12em; height: .12em; background: var(--acc); margin-left: .1em; margin-bottom: .14em; }
-.c2x-st { margin-top: 16px; max-width: 32em; font-size: clamp(13px, 1vw, 16px); font-weight: 500; line-height: 1.62; color: var(--fg-dim); }
-.c2x-st .zh { color: var(--fg-dim); }
+.c2x-st { margin-top: 16px; max-width: 30em; font-size: clamp(15px, 1.15vw, 19px); font-weight: 500; line-height: 1.8; color: var(--fg); opacity: .85; }
+.c2x-st .en { opacity: .8; }
 
 .c2x-right { display: flex; flex-direction: column; align-items: flex-end; gap: 26px; max-width: 34vw; }
 .c2x-loop { width: min(30vw, 380px); }
@@ -72,8 +72,7 @@
 @media (max-height: 760px) {
   .ch-cta { margin-top: 18px; padding: 15px 26px; }
   .c2x-pay { padding-top: 10vh; }
-  .c2x-st .zh { display: none; }
-  .c2x-loop .lr .zh { display: none; }
+  .c2x-st .en { display: none; }   /* 中文为主 — the EN annotation folds first */
 }
 @media (max-width: 900px) {
   .c2x-slug { left: 20px; right: 20px; }
@@ -370,7 +369,7 @@
   .c2-motto .st .zh { display: none; }
 }
 @media (max-height: 680px) {
-  .ch3 .ch-motto .st .zh, .ch4 .ch-motto .st .zh { display: none; }
+  .ch3 .ch-motto .st .en, .ch4 .ch-motto .st .en { display: none; }
   .ch3 .ch-motto, .ch4 .ch-motto { max-width: 38vw; }
   .ch3 .ch-motto .st, .ch4 .ch-motto .st { max-width: 30em; }
 }
@@ -589,10 +588,10 @@
   /* Developer + Architect — phone type scale for the three-zone flex column (set up
      at ≤900px above). Clamp the statement so the motto block stays bounded and the
      canvas keeps a usable middle band even on a short phone. */
-  .ch3 .ch-motto .mt, .ch4 .ch-motto .mt { font-size: clamp(24px, 7.6vw, 34px); }
-  .ch3 .ch-motto .st, .ch4 .ch-motto .st { font-size: 12.5px; line-height: 1.5;
+  .ch3 .ch-motto .mt, .ch4 .ch-motto .mt { font-size: clamp(22px, 6.8vw, 32px); }
+  .ch3 .ch-motto .st, .ch4 .ch-motto .st { font-size: 13.5px; line-height: 1.7;
     display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-  .ch3 .ch-motto .st .zh, .ch4 .ch-motto .st .zh { display: none; }   /* English only — keep the band short */
+  .ch3 .ch-motto .st .en, .ch4 .ch-motto .st .en { display: none; }   /* 中文为主 — keep the band short */
   .ch3 .ch-stats .st .n { font-size: clamp(22px, 7vw, 32px); }
   .c4-title .c4-big { margin-left: 4vw; font-size: clamp(34px, 11vw, 54px); }
   .c4-ann b { font-size: clamp(14px, 4.6vw, 18px); }

@@ -7,14 +7,20 @@
 const { useState: useSecState, useEffect: useSecEffect, useRef: useSecRef } = React;
 
 /* ── HERO ─────────────────────────────────────────────────── */
-function Hero() {
+function Hero({ jump }) {
   return (
     <section className="hero sec" id="hero" data-tone="blue" data-screen-label="HERO" style={{ position: "relative", padding: 0 }}>
       <div className="band-slot" aria-hidden="true"></div>
       <div className="hrule"></div>
       <div className="hbar mono">
         <span>ALNT MED'S SPACE</span>
-        <span>WHOAMI &nbsp;/&nbsp; WORK &nbsp;/&nbsp; CONTACT</span>
+        <span className="hbar-nav">
+          <a href="#whoami" data-hov onClick={(e) => { e.preventDefault(); jump("whoami"); }}>WHOAMI</a>
+          &nbsp;/&nbsp;
+          <a href="#works" data-hov onClick={(e) => { e.preventDefault(); jump("works"); }}>WORK</a>
+          &nbsp;/&nbsp;
+          <a href="#contact" data-hov onClick={(e) => { e.preventDefault(); jump("contact"); }}>CONTACT</a>
+        </span>
         <span>SHENZHEN · 22.54°N 114.05°E</span>
       </div>
       <div className="hlow">
@@ -36,7 +42,16 @@ function Hero() {
           <div className="hl-brand">
             <div className="of">Alnt Med — The Art of</div>
             <div className="big">RATIONALITY</div>
-            <span className="zh">理性的艺术 · FROM SPACE TO AGENTS</span>
+            <span className="zh">理性的艺术 · AI 产品 × 开发 × 建筑</span>
+            {/* HR 快速通道 — 两枚安静的 chip，直达证据与联系方式 */}
+            <div className="hero-chips">
+              <a href="#works" data-hov onClick={(e) => { e.preventDefault(); jump("works"); }}>
+                <i className="sq" aria-hidden="true"></i>看作品 · WORK<span className="arr" aria-hidden="true">↓</span>
+              </a>
+              <a href="#contact" data-hov onClick={(e) => { e.preventDefault(); jump("contact"); }}>
+                <i className="sq" aria-hidden="true"></i>联系我 · CONTACT<span className="arr" aria-hidden="true">→</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -59,6 +74,8 @@ const WHO_CHRONO = [
   { y: "2025", h: 0.5,  tag: "THE PIVOT",        t: "SZU M.Arch · 转向 AI 产品",                    zh: "建筑学（复合 AI 方向）硕士 · 垂直 Agent AIPM" },
   { y: "2026", h: 0.92, tag: "AI PRODUCT",       t: "议见 Yijian — 企业 Agent 黑客松亚军",          zh: "香港中文大学 · 决策共识 Agent · 四层共识 · 七角色审议" },
   { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松季军",          zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
+  /* TODO(用户确认): 菩苇科技一行的时间与角色措辞 —— 先按已知事实占位 */
+  { y: "2026", h: 0.72, tag: "AI PRODUCT",       t: "菩苇科技 — AI 产品实习",                       zh: "清华系初创 · 垂直领域 RAG Agent" },
   { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
@@ -89,6 +106,11 @@ function Whoami({ jump }) {
       <h2 className="who-q">
         <BarWord text="WHOAMI" />
       </h2>
+      {/* 他唯一允许的自述格言 — 中文为主，英文平实直译作点缀 */}
+      <p className="who-lede" data-rv style={{ "--rd": "1.15s" }}>
+        我不追更快的马，想知道这趟路是不是该换种走法。
+        <span className="en">I'm not chasing a faster horse — I'm asking whether this road needs a different way of walking.</span>
+      </p>
       <div className="rule who-rule" style={{ "--rd": "1.3s" }}></div>
 
       <div className="who-index">
@@ -104,8 +126,9 @@ function Whoami({ jump }) {
                 <BarWord className="tx" text={it.tx} delay={it.d} />
                 <div className="side" data-rv style={{ "--rd": (1.9 + i * 0.35) + "s" }}>
                   <BarBand h={it.band} />
-                  <div className="mt">{it.mt}</div>
-                  <div className="zh">{it.zh}</div>
+                  {/* 中文为主：他的中文一句话是正文，英文 motto 缩为点缀 */}
+                  <div className="mt">{it.zh}</div>
+                  <div className="zh">{it.mt}</div>
                 </div>
                 <span className="arr" aria-hidden="true">→</span>
               </div>
@@ -115,8 +138,8 @@ function Whoami({ jump }) {
         </div>
         <div className="who-index-photo" data-rv style={{ "--rd": "1.5s" }}>
           <figure className="who-photo-card">
-            <img src="uploads/whoami-portrait.jpg" alt="Lee Wenyuan · Alnt Med" loading="lazy" />
-            <figcaption className="mono">LEE WENYUAN · 李文苑</figcaption>
+            <img src="uploads/whoami-portrait.jpg" alt="李文苑 · Lee Wenyuan" loading="lazy" />
+            <figcaption className="mono">李文苑 · LEE WENYUAN — 深圳</figcaption>
           </figure>
         </div>
       </div>
@@ -217,50 +240,46 @@ function CodePanel() {
 const WORKS = [
   {
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "ADVENTURE-X HACKATHON · 2ND PRIZE — OBSERVE → GENERATE → REINFORCE",
+    award: "ADVENTURE-X 黑客松 · 季军 3RD PLACE — 观察 → 生成 → 强化",
     link: "https://and-pear.netlify.app/login",
     links: [
-      { label: "PEARS APP · 访问应用 ↗", url: "https://and-pear.netlify.app/login" },
-      { label: "OFFICIAL SITE · 官网 ↗", url: "https://pear-web-leemenuong.netlify.app/" },
+      { label: "访问应用 · PEARS APP ↗", url: "https://and-pear.netlify.app/login" },
+      { label: "产品官网 · OFFICIAL SITE ↗", url: "https://pear-web-leemenuong.netlify.app/" },
     ],
     poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,
     mediaLabel: "PRODUCT FILM · 路演视频",
     caption: "PEERSWORK · 路演视频 · PRODUCT FILM", siteLabel: "and-pear.netlify.app",
-    band: [0.5, 0.9, 0.65, 1, 0.7], role: ["Independent builder", "0 → launch"],
+    band: [0.5, 0.9, 0.65, 1, 0.7], role: ["独立构建 0 → 上线", "Solo build"],
     body: "A browser extension watches you do the job once — inside a session you explicitly start — then distills the trace into an editable PRD, which an AI coding agent turns into your own workflow agent. The thesis came from a real observation at XTOOL: one dev team can never fill a whole company's agent demand, so lower the bar from \"describe AI\" to \"do it once\".",
-    zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件捕捉行为轨迹 → 蒸馏为可编辑 PRD → AI 编码 Agent 生成专属 Workflow Agent。可编辑 PRD 是观察层与执行层之间的契约。现场获企业对接意向最多的项目之一。",
-    metrics: [["2nd", "HACKATHON PRIZE"], ["3", "ENDS SHIPPED SOLO"], ["PRD", "AS THE CONTRACT"]],
+    zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件看你把工作做一遍，把行为轨迹蒸馏成可编辑的 PRD，再由 AI 编码 Agent 生成你专属的 Workflow Agent。想法来自 XTOOL 的真实观察：一个开发团队永远填不满全公司的 Agent 需求，那就把门槛从「描述 AI」降到「做一遍」。现场获企业对接意向最多的项目之一。",
   },
   {
     ix: "W·02", t: "XTOOL Agent Platform", tag: "AI PLATFORM", year: "2026", dark: false,
-    award: "0→1 SOLO · 9 TOOLS — ADOPTED BY 25+ OF A 48-PERSON DEPT",
+    award: "0→1 独立搭建 · 7 个生产工具 — 覆盖 4 部门（65 人）· 完成率 80%+",
     poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://peersagent.netlify.app/",
     mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
-    band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM / platform owner", "intern, dept. of 48"],
-    body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, 3 candidates to pick from — drove three product generations. A self-built ROI board (0.39 h/$) keeps the platform honest.",
-    zh: "单人主导部门 Agent 平台 0→1：9 个生产工具、22 万行 TypeScript、291 commits，48 人部门超半数纳入日常工作流。埋点 → 判断 → ship → 复测的闭环；自建 ROI 看板让中台的存在合理性可量化。首位受邀实习生在全公司公开课主讲。",
-    metrics: [["9", "PRODUCTION TOOLS"], ["220K", "LINES TYPESCRIPT"], ["0.39", "ROI · H/$"]],
+    band: [0.85, 0.6, 1, 0.55, 0.8], role: ["AIPM · 平台负责人", "Intern · platform owner"],
+    body: "An internal agent tool matrix covering the whole content-production chain — scripting, research, cross-platform monitoring, AI review. Telemetry found a 52% drop at the Hook stage; judgment said high-creativity content can't be one-shot by an LLM; the prescription — merge generation stages, three candidates to pick from — drove three product generations. Seven tools now run across four departments (65 people); a self-built ROI board — every $1 invested saves 0.39 working hours — keeps the platform honest.",
+    zh: "单人主导部门 Agent 平台 0→1：7 个生产工具铺满内容生产链（脚本、调研、跨平台监测、AI 审核）。埋点发现 Hook 段流失 52%；判断是「高创意内容无法一次成型」；开出的方子——合并生成阶段、三候选并出——推动了三代产品迭代。现覆盖 4 个部门 65 人，任务完成率 80%+；自建 ROI 看板：每投入 $1 省 0.39 工时。首位受邀实习生在全公司公开课主讲。",
   },
   {
     ix: "W·03", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "企业 AGENT 黑客松 · 2ND PRIZE 二等奖 — DECISION CONSENSUS FOR TEAMS",
+    award: "香港中文大学 · 企业 AGENT 黑客松 亚军 RUNNER-UP — 团队决策共识",
     link: "https://yijian-demo4.netlify.app",
     poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app",
     mediaLabel: "LIVE DEMO · 在线体验", caption: "议见 YIJIAN · 决策共识 AGENT · 在线 DEMO",
-    band: [0.7, 0.9, 0.6, 1, 0.65], role: ["Product & build", "Enterprise hackathon · 2nd"],
+    band: [0.7, 0.9, 0.6, 1, 0.65], role: ["产品与开发", "Product & build"],
     body: "A decision-consensus agent for enterprise teams. Name the call to make — a product pick, a budget add, a regional launch — and Yijian convenes a panel of role perspectives, then resolves them across four layers: strategic goal, factual evidence, stakeholder interest, weighted accountability. What it returns is not one opinion but an auditable verdict — a consensus score, the conditions a decision must clear, and the disagreements still worth solving.",
-    zh: "面向企业团队的「决策共识」Agent：输入一项待决策事项，议见组织多角色视角，并在四层共识——战略目标 / 事实证据 / 利益角色 / 权重权责——上收敛分歧。产出的不是单一意见，而是可追溯的结论：共识度评分、决策需满足的附加条件、以及仍需解决的分歧点。企业 Agent 黑客松二等奖。",
-    metrics: [["2nd", "ENTERPRISE HACKATHON"], ["4-LAYER", "CONSENSUS MODEL"], ["7-ROLE", "DELIBERATION"]],
+    zh: "面向企业团队的「决策共识」Agent：输入一项待决策事项，议见组织多角色视角，并在四层共识——战略目标 / 事实证据 / 利益角色 / 权重权责——上收敛分歧。产出的不是单一意见，而是可追溯的结论：共识度评分、决策需满足的附加条件、以及仍需解决的分歧点。香港中文大学企业 Agent 黑客松亚军。",
   },
   {
     ix: "W·04", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", dark: false,
-    award: "深港双年展 UABB 2025 · 50+ EXHIBITS — 30 DAYS → 5 DAYS",
+    award: "深港双年展 UABB 2025 · 板块唯一学生代表 — 多模态 AIGC",
     poster: "works/aftersilence-cover.jpg", video: "works/aftersilence.mp4", videoReady: true,
     mediaLabel: "AIGC FILM · 影像", caption: "UABB · AIGC PIPELINE · 影像",
-    band: [0.7, 0.5, 0.85, 0.6, 1], role: ["AIGC pipeline assistant", "2025 UABB curatorial team"],
-    body: "A ComfyUI pipeline wired to external APIs (Gemini / Tripo) that translates non-standard exhibits into standardized 3D assets. Processing time for 50+ exhibits fell from 30 days to 5; 120+ sketch-and-model iterations later, the result was selected as its section's sole representative (top 3%).",
-    zh: "ComfyUI 外接 API 的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品处理周期 30 天 → 5 天，成果作为板块唯一代表入选展会分享。",
-    metrics: [["50+", "EXHIBITS PIPED"], ["6×", "FASTER CYCLE"], ["TOP 3%", "OF SECTION"]],
+    band: [0.7, 0.5, 0.85, 0.6, 1], role: ["多模态 AIGC 负责人", "UABB 2025 curatorial team"],
+    body: "A ComfyUI pipeline wired to external APIs (Gemini / Tripo) that translates non-standard exhibits into standardized 3D assets. Processing time for 50+ exhibits fell from 30 days to 5; 120+ sketch-and-model iterations later, the result made me the section's only student representative.",
+    zh: "ComfyUI 外接 API（Gemini / Tripo）的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。120+ 次草图与模型迭代之后，成果让我成为板块唯一的学生代表，在展会分享。",
   },
   {
     ix: "W·05", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", dark: true,
@@ -268,10 +287,9 @@ const WORKS = [
     doc: "uploads/portfolio.pdf#page=3", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/aftersilence-1.jpg", "works/portfolio/aftersilence-2.jpg"],
     caption: "PORTFOLIO · 作品集 · 地外人居",
-    band: [0.95, 0.55, 0.78, 0.62, 1], role: ["Design lead", "UABB off-world section"],
+    band: [0.95, 0.55, 0.78, 0.62, 1], role: ["设计主创", "Design lead"],
     body: "When the engines fall silent, life begins. Taking the first Mars base's pioneer cluster as prototype, the design turns technical modules into scenes of living — a closed Martian habitat loop where dwelling, energy and research sustain each other. Exhibited in mixed reality (N'Space, naked-eye 3D) at the UABB main hall as the section's representative work.",
     zh: "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」以首座火星基地「首航组团」为原型，把功能模块转化为生活场景，提出居住、能源、科研相互依存的「火星人居闭环」。作为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
-    metrics: [["TOP 3%", "SECTION REPRESENTATIVE"], ["MR", "N'SPACE · NAKED-EYE 3D"], ["1", "CLOSED HABITAT LOOP"]],
   },
   {
     ix: "W·06", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", dark: true,
@@ -279,10 +297,9 @@ const WORKS = [
     doc: "uploads/portfolio.pdf#page=5", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
     caption: "PORTFOLIO · 作品集 · 桥上书屋",
-    band: [1, 0.66, 0.5, 0.9, 0.72], role: ["Project lead", "活力杯 2023"],
+    band: [1, 0.66, 0.5, 0.9, 0.72], role: ["项目组长", "Project lead"],
     body: "Lychee Bay's water once gathered people; now it divides them. With no land left in the dense old quarter, the public space goes onto the water — a bridge-library stitching the two banks. Movable bookshelves let one span be a reading room by day, a waiting area at school run, an event hall on holidays. Needle-point urban renewal, now aligned with a real implementation project.",
     zh: "荔枝湾水系曾聚人，如今却隔开两岸。高密度老城无地可用，便把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。绣花针式的城市更新，并与拟落地项目对接实施。",
-    metrics: [["TOP 3%", "FIRST PRIZE 一等奖"], ["3", "MODES, ONE SPAN"], ["2", "BANKS RECONNECTED"]],
   },
   {
     ix: "W·07", t: "风贯·立方 Air Cube", display: "风贯·立方", tag: "ARCHITECTURE", year: "2025", dark: true,
@@ -290,21 +307,19 @@ const WORKS = [
     doc: "uploads/portfolio.pdf#page=9", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/aircube-1.jpg", "works/portfolio/aircube-2.jpg", "works/portfolio/aircube-3.jpg"],
     caption: "PORTFOLIO · 作品集 · 产城融合",
-    band: [0.7, 1, 0.6, 0.85, 0.55], role: ["Design lead", "毕业设计 2025"],
+    band: [0.7, 1, 0.6, 0.85, 0.55], role: ["设计主创 · 毕业设计", "Design lead"],
     body: "A \"factory-upstairs\" industry–city fusion for an IDC R&D centre in Guangzhou's Knowledge City. Production floors lift to level three and above; the entire second floor opens into a public void that doubles as a convective wind corridor, stack ventilation cooling the block without machines. Irregular perforated-aluminium façades and vertical greening modulate shade and heat, while a cold-lane ground level tunes the microclimate through planting and water evaporation. Prefab steel, rooftop PV and a rainwater loop close the energy gap.",
-    zh: "以「工业上楼」为核心的产城融合：生产空间抬升至三层及以上，二层整体架空为通透公共空间，兼作对流通风廊道，结合热压通风实现自然降温。东西向不规则穿孔铝板幕墙 + 垂直绿化动态遮阳隔热；架空层引入冷巷原理，以植被与水体蒸发优化微气候。装配式钢结构 + 屋顶光伏 + 雨水循环系统进一步降低能耗。科力新能源 IDC · 大湾区研发中心，2025 优秀毕业设计展卓越奖。",
-    metrics: [["卓越奖", "GRAD SHOW · 2025"], ["L2", "PUBLIC WIND VOID"], ["PV", "+ RAINWATER LOOP"]],
+    zh: "以「工业上楼」为核心的产城融合：生产空间抬升至三层及以上，二层整体架空为通透公共空间，兼作对流通风廊道，结合热压通风实现自然降温。东西向不规则穿孔铝板幕墙 + 垂直绿化动态遮阳隔热；架空层引入冷巷原理，以植被与水体蒸发优化微气候。装配式钢结构 + 屋顶光伏 + 雨水循环系统进一步降低能耗。科力新能源 IDC · 大湾区研发中心。",
   },
   {
     ix: "W·08", t: "环·世界 The Ring-World", display: "环·世界", tag: "ARCHITECTURE", year: "2024", dark: true,
-    award: "「华灿奖」两岸新锐设计竞赛 · 1ST PRIZE 一等奖 — TOP 5%",
+    award: "「NCDA」未来设计师全国数字设计大赛 · 一等奖 1ST PRIZE — 车辆段上盖",
     doc: "uploads/portfolio.pdf#page=18", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/ringworld-1.jpg", "works/portfolio/ringworld-2.jpg", "works/portfolio/ringworld-3.jpg"],
     caption: "PORTFOLIO · 作品集 · 声景社区",
-    band: [0.78, 0.6, 0.95, 0.55, 0.84], role: ["Project lead", "华灿奖 2024"],
+    band: [0.78, 0.6, 0.95, 0.55, 0.84], role: ["项目组长", "Project lead"],
     body: "A rental community above a metro depot: 72 dB of traffic noise, public space squeezed to 35% of normal. The answer flips the public realm vertically — a double-deck roaming loop strings roof gardens and shared living rooms together, while a parametric acoustic façade opens and closes against the simulated noise map, trading view against silence in real time. 5,000 m² of shared ground reclaimed.",
-    zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音。释放 5000 ㎡ 共享场域，课题 96 分。",
-    metrics: [["72dB", "SITE NOISE, ANSWERED"], ["5000㎡", "SHARED FIELD FREED"], ["96/100", "STUDIO SCORE"]],
+    zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音，释放出 5000 ㎡ 的共享场域。",
   },
 ];
 
@@ -751,19 +766,17 @@ function Works({ jump }) {
                     <div className="wf-ident">{wkIdentity(i)}<i className="psq" aria-hidden="true"></i></div>
                     <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
                     <div className="wf-award mono">{wk.award}</div>
-                    <div className="wf-metrics">
-                      {wk.metrics.map(([b, l], j) => (<div className="m" key={j}><b>{b}</b><span>{l}</span></div>))}
-                    </div>
+                    {/* 中文叙事为主，英文缩为点缀；三格 metrics 计分板已删（纯叙事） */}
+                    <p className="wf-zh">{wk.zh}</p>
                     <p className="wf-body">{wk.body}</p>
-                    <p className="wf-zh zh">{wk.zh}</p>
                     {wk.links ? (
                       wk.links.map((ln, j) => (
                         <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
                       ))
                     ) : wk.link ? (
-                      <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>VISIT LIVE · 访问项目 ↗</a>
+                      <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>访问项目 · VISIT LIVE ↗</a>
                     ) : wk.doc ? (
-                      <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>PORTFOLIO · 查看作品集 ↗</a>
+                      <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>查看作品集 · PORTFOLIO ↗</a>
                     ) : null}
                   </div>
                 </div>
@@ -800,11 +813,19 @@ function IamFinale() {
 }
 
 /* ── CONTACT ──────────────────────────────────────────────── */
-function Contact() {
+function Contact({ jump }) {
+  /* WeChat is the #1 channel for a domestic HR — one tap copies the ID */
+  const [copied, setCopied] = useSecState(false);
+  const copyWeChat = () => {
+    const id = "ID_0912";
+    const done = () => { setCopied(true); setTimeout(() => setCopied(false), 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(id).then(done, done);
+    else done();
+  };
   return (
     <section className="contact sec" id="contact" data-tone="paper" data-ob data-screen-label="CONTACT" style={{ paddingLeft: 0, paddingRight: 0 }}>
       <div style={{ padding: "0 clamp(20px, 5vw, 40px)" }}>
-        <div className="kick lm"><span>06 · CONTACT / 联系 — OPEN TO AI PRODUCT ROLES · 深圳</span></div>
+        <div className="kick lm"><span>06 · 联系 / CONTACT — 求职方向：AI 产品 · 深圳</span></div>
         <div style={{ marginTop: "3vh" }}>
           <IamFinale />
         </div>
@@ -812,18 +833,29 @@ function Contact() {
           <div className="c-left" data-rv style={{ "--rd": ".3s" }}>
             <div className="cm">CONTACT ME<span className="psq" aria-hidden="true"></span></div>
             <div className="rule crule in"></div>
-            <div className="c-note mono">OPEN TO AI PRODUCT ROLES<br />深圳 · SHENZHEN · 远程亦可</div>
+            <div className="c-note">求职方向：AI 产品经理 · Agent 方向<br />深圳 · 远程亦可
+              <span className="en mono">OPEN TO AI PRODUCT ROLES · SHENZHEN / REMOTE</span>
+            </div>
           </div>
           <div className="c-list" data-rv style={{ "--rd": ".42s" }}>
             <a className="crow" href="tel:18948953396" data-hov>
-              <span className="cl">Phone</span><span className="cv">+86 189-4895-3396</span>
+              <span className="cl">电话 · Phone</span><span className="cv">+86 189-4895-3396</span>
             </a>
             <a className="crow" href="mailto:1308577030@qq.com" data-hov>
-              <span className="cl">E-mail</span><span className="cv">1308577030@qq.com</span>
+              <span className="cl">邮箱 · E-mail</span><span className="cv">1308577030@qq.com</span>
             </a>
-            <div className="crow">
-              <span className="cl">WeChat</span><span className="cv">ID_0912</span>
-            </div>
+            <a className="crow crow-copy" href="#contact" data-hov role="button"
+               onClick={(e) => { e.preventDefault(); copyWeChat(); }}
+               aria-label="复制微信号 ID_0912">
+              <span className="cl">微信 · WeChat</span>
+              <span className="cv">{copied ? "已复制 ✓" : "ID_0912 · 点击复制"}</span>
+            </a>
+            {/* AI 作品集入口 — 先指向站内作品卡组；静态 AI 作品集页做好后换 href
+                TODO: 换成独立静态 AI 作品集页（用户后续单独任务） */}
+            <a className="crow" href="#works" data-hov
+               onClick={(e) => { e.preventDefault(); jump && jump("works"); }}>
+              <span className="cl">AI 作品集 · Portfolio</span><span className="cv">站内浏览 8 个作品&nbsp;→</span>
+            </a>
             <a className="crow" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" data-hov>
               <span className="cl">GitHub</span><span className="cv">@leemenuong-prog&nbsp;↗</span>
             </a>

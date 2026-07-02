@@ -528,7 +528,7 @@ function App() {
       <Nav jump={jump} navRef={navRef} />
       <BrandBand jump={jump} />
       <main>
-        <Hero />
+        <Hero jump={jump} />
         <Whoami jump={jump} />
         <Works jump={jump} />
         <ChDev jump={jump} />
@@ -536,7 +536,7 @@ function App() {
         <ChAipm jump={jump} />
         <ChAipmPlatform jump={jump} />
         <ChArch jump={jump} />
-        <Contact />
+        <Contact jump={jump} />
       </main>
 
       <TweaksPanel title="Tweaks">

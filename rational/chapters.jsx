@@ -44,17 +44,6 @@ function useChProg(id, ref) {
 /* ════════════════════════════════════════════════════════════
    04 · AN AIPM — FLAT SHEET · 平面 (tone: paper)
    ════════════════════════════════════════════════════════════ */
-const C2_STEPS = [
-  { ix: "01", en: "TELEMETRY", zh: "埋点 — 数据找到漏点", th: 0.18,
-    note: "HOOK STAGE −52% — 埋点把漏点钉在坐标上" },
-  { ix: "02", en: "JUDGMENT", zh: "判断 — 高创意内容无法一次成型", th: 0.40,
-    note: "MERGE STAGES · 3 CANDIDATES — 合并生成阶段，三候选并出" },
-  { ix: "03", en: "SHIP", zh: "交付 — 三代产品迭代", th: 0.62,
-    note: "291 COMMITS · 80% SOLO — 9 个工具铺满生产链" },
-  { ix: "04", en: "RE-TEST", zh: "复测 — 看板让秩序可量化", th: 0.82,
-    note: "ROI BOARD 0.39 H/$ — 中台合理性可被验证" },
-];
-
 /* the thread stage driver — writes --p and --pay onto the stage.
    (Pure style writes; the payoff copy only resolves after the thread lands.) */
 function useCutStage(id, ref) {
@@ -92,13 +81,14 @@ function ChAipm({ jump }) {
         <div className="ch-stage c2x-stage" data-ob ref={ref}>
           <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
 
-          {/* the payoff — appears only after the thread resolves into the mark */}
+          {/* the payoff — appears only after the thread resolves into the mark.
+              中文为主：他的中文一句话是正文，英文缩为点缀 */}
           <div className="c2x-pay">
             <div className="c2x-left">
               <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
-              <div className="c2x-motto">Making AI fit real situations<i className="psq" aria-hidden="true"></i></div>
-              <p className="c2x-st">I rarely ask how to make the current process faster. I'd rather ask whether a person should be doing it at all.
-                <span className="zh">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。</span>
+              <div className="c2x-motto">让 AI 能力贴合真实场景<i className="psq" aria-hidden="true"></i></div>
+              <p className="c2x-st">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。
+                <span className="en">Making AI fit real situations — I rarely ask how to make the current process faster; I'd rather ask whether a person should be doing it at all.</span>
               </p>
             </div>
           </div>
@@ -126,11 +116,12 @@ const APX_VISUALS = [
   { key: "system", label: "生产链汇入一个系统" },
 ];
 
+/* 已确认事实（与 WHOAMI 时间线一致）— 不再堆代码行数 */
 const APX_STRIP = [
-  "1 个专属 Agent",
-  "9 个生产工具",
-  "220K 行代码交付",
-  "ROI 0.39 H/$",
+  "7 个生产工具",
+  "覆盖 4 部门 · 65 人",
+  "任务完成率 80%+",
+  "每投入 $1 省 0.39 工时",
 ];
 
 function useApxStage(id, ref) {
@@ -459,10 +450,10 @@ function ChDev({ jump }) {
           </div>
           <CodePanel />
           <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>From idea to shipped<i className="psq" aria-hidden="true"></i></span></div>
+            <div className="mt lm" style={{ "--rd": ".3s" }}><span>保持从想法到落地的能力<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
-              I write code myself, and I also direct agents that write it. When I want to test an idea, the fastest path is usually just to build it.
-              <span className="zh">我自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做出来。</span>
+              我自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做出来。
+              <span className="en">From idea to shipped — I write code myself, and I also direct agents that write it. The fastest way to test an idea is usually just to build it.</span>
             </div>
           </div>
         </div>
@@ -479,12 +470,6 @@ function ChDev({ jump }) {
    four force-vectors push inward and quiet down. One language,
    no circle, no contour ring — the rectangle + the blue self.
    ════════════════════════════════════════════════════════════ */
-
-const C4_ANNS = [
-  { b: "T1", l: "《建筑学报》 2ND AUTHOR — AIGC 三维空间优化", st: { right: "5%", top: "11%" }, th: 0.48 },
-  { b: "TOP 1%", l: "挑战杯 GRAND PRIZE 特等奖 — 蒋巷文脉 · 科链智谷 2.0", st: { right: "5%", bottom: "22%" }, th: 0.6 },
-  { b: "30D→5D", l: "UABB AIGC PIPELINE — 50+ EXHIBITS · TOP 3%", st: { right: "5%", bottom: "6%" }, th: 0.72 },
-];
 
 function ChArch({ jump }) {
   const { BarWord, SiteForm3D } = window;
@@ -504,10 +489,10 @@ function ChArch({ jump }) {
             <div className="rule ch-rule c4-rule" style={{ "--rd": ".4s" }}></div>
           </div>
           <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>Scattered needs into a system<i className="psq" aria-hidden="true"></i></span></div>
+            <div className="mt lm" style={{ "--rd": ".3s" }}><span>把零散的需求搭成稳定的体系<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
-              Architecture is taking a pile of constraints that push against each other — light, circulation, scale — and turning them into something people want to stay in.
-              <span className="zh">建筑，就是把一堆互相影响的限制——光线、动线、尺度——变成一个让人想待下去的东西。</span>
+              建筑，就是把一堆互相影响的限制——光线、动线、尺度——变成一个让人想待下去的东西。
+              <span className="en">Scattered needs into a system — architecture takes constraints that push against each other (light, circulation, scale) and turns them into something people want to stay in.</span>
             </div>
           </div>
         </div>

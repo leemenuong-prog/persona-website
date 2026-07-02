@@ -72,6 +72,17 @@ img, canvas, svg { display: block; }
   margin-top: 10px;
   font-family: var(--sans);
 }
+/* 中文为主后的英文点缀 — mirrors .zh: the roles swapped (2026-07-02).
+   Body copy now leads in Chinese; English drops to this quiet annotation. */
+.en {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  color: var(--fg-dim);
+  margin-top: 10px;
+  font-family: var(--sans);
+}
 
 /* ── custom cursor ───────────────────────────────────────── */
 .cur {

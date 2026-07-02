@@ -68,6 +68,23 @@ body.ready .roles span.dim { opacity: .18; }
 body.ready .hl-brand .of, body.ready .hl-brand .big { opacity: 1; transform: none; }
 body.ready .hl-brand .zh { opacity: .8; }
 
+/* HR 快速通道 — two quiet chips under the brand block, straight to the
+   evidence and the contact ledger. Paper-outline on the cobalt ground. */
+.hero-chips { display: flex; gap: 12px; margin-top: 26px;
+  opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ez) 1.8s, transform 1s var(--ez) 1.8s; }
+body.ready .hero-chips { opacity: 1; transform: none; }
+.hero-chips a { display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px; border: 1px solid var(--line); color: var(--fg);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em; white-space: nowrap;
+  transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez); }
+.hero-chips a .sq { width: 7px; height: 7px; background: var(--fg); flex: 0 0 auto;
+  transition: background-color .25s var(--ez); }
+.hero-chips a .arr { font-size: 13px; letter-spacing: 0; }
+.hero-chips a:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.hero-chips a:hover .sq { background: var(--blue); }
+.hbar-nav a { padding: 4px 2px; transition: opacity .2s; }
+.hbar-nav a:hover { opacity: .7; }
+
 .hero-cue {
   position: absolute; right: 52px; bottom: 44px; z-index: 2;
   display: flex; align-items: center; gap: 12px;
@@ -88,6 +105,10 @@ body.ready .hl-brand .zh { opacity: .8; }
 /* the question — bold and tight (no edge-to-edge stretch — it read as
    over-spaced; a composed headline is calmer) */
 .who-q { margin-top: 26px; font-size: clamp(52px, 9.2vw, 168px); font-weight: 800; letter-spacing: -.03em; line-height: .98; }
+/* 他自己的那句话 — the one aphorism allowed on the site, ZH-primary */
+.who-lede { margin-top: 24px; max-width: 36em;
+  font-size: clamp(15px, 1.35vw, 21px); font-weight: 500; line-height: 1.8; color: var(--fg); }
+.who-lede .en { max-width: 44em; }
 .who-rule { margin-top: 30px; }
 
 .who-chrono { margin-top: 8vh; }
@@ -171,8 +192,9 @@ body.ready .hl-brand .zh { opacity: .8; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .ch-motto { position: absolute; z-index: 3; left: 40px; bottom: 12vh; max-width: 44vw; }
-.ch-motto .mt { font-size: clamp(30px, 3.4vw, 58px); font-weight: 800; letter-spacing: -.02em; line-height: 1.08; }
-.ch-motto .st { margin-top: 14px; font-size: clamp(14px, 1.05vw, 18px); font-weight: 500; line-height: 1.6; color: var(--fg-dim); max-width: 34em; }
+/* motto 中文为主 — CJK display type wants a touch more leading, no negative tracking */
+.ch-motto .mt { font-size: clamp(26px, 3vw, 52px); font-weight: 800; letter-spacing: .01em; line-height: 1.2; }
+.ch-motto .st { margin-top: 14px; font-size: clamp(15px, 1.15vw, 19px); font-weight: 500; line-height: 1.8; color: var(--fg); opacity: .85; max-width: 30em; }
 
 .ch-stats { position: absolute; z-index: 3; right: 40px; bottom: 6.5vh; display: flex; gap: 3.4vw; text-align: right; }
 .ch-stats .st .n { font-size: clamp(22px, 2.4vw, 40px); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
@@ -280,10 +302,12 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-metrics .m b { font-size: clamp(17px, 1.6vw, 26px); font-weight: 800; letter-spacing: -.02em;
   font-variant-numeric: tabular-nums; line-height: 1; }
 .wf-metrics .m span { font-family: var(--mono); font-size: 7.5px; letter-spacing: .1em; opacity: .72; line-height: 1.3; }
-.wf-body { font-size: clamp(11.5px, .82vw, 13px); line-height: 1.6; opacity: .92;
+/* 中文为主 — the Chinese narrative IS the dossier body now; English drops to a
+   quiet annotation. Floor raised for legibility (was 11px). */
+.wf-zh { font-size: clamp(14px, 1.05vw, 16.5px); line-height: 1.85; letter-spacing: .02em; opacity: .95;
   display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
-.wf-zh { font-size: 11px; line-height: 1.85; letter-spacing: .04em; opacity: .7;
-  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.wf-body { font-size: 11px; line-height: 1.6; opacity: .58;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .wf-cta { align-self: flex-start; margin-top: 4px; padding: 9px 18px;
   border: 1px solid rgba(239, 236, 230, .4); color: var(--paper);
   font-size: 9.5px; letter-spacing: .18em; transition: background .25s, color .25s, border-color .25s; }
@@ -379,8 +403,8 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
 @media (max-height: 720px) {
   .wk-intro { top: 9vh; }
   .wk-zh { font-size: clamp(22px, 4vw, 44px); }
-  .wf-body { -webkit-line-clamp: 5; }
-  .wf-zh { -webkit-line-clamp: 2; }
+  .wf-zh { -webkit-line-clamp: 5; }
+  .wf-body { -webkit-line-clamp: 2; }
   .wk-railread { bottom: clamp(64px, 10vh, 96px); }
 }
 
@@ -401,13 +425,12 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
   .wf-ident { font-size: clamp(19px, 5.4vw, 28px); }
   .wk-headline .wh-name { font-size: clamp(30px, 8vw, 46px); }
   .wk-headline .wh-kick { font-size: 9.5px; letter-spacing: .2em; }
-  .wf-body { -webkit-line-clamp: 4; }
-  /* fold to English-only on the single-column card (site convention — cf. the
-     chapters drop their .zh glosses on mobile). The dense AI cards (2 CTAs + long
-     award) otherwise overflow the fixed-height card, and the flex column SLICES
-     the award/body mid-line to fit. Dropping the redundant Chinese gloss frees
-     enough height that every card fits cleanly at the looser gaps. */
-  .wf-zh { display: none; }
+  .wf-zh { -webkit-line-clamp: 5; }
+  /* fold to CHINESE-only on the single-column card (中文为主 — the annotation
+     language folds first). The dense AI cards (2 CTAs + long award) otherwise
+     overflow the fixed-height card, and the flex column SLICES the body mid-line
+     to fit. Dropping the English annotation frees enough height per card. */
+  .wf-body { display: none; }
 }
 
 /* (dossier overlay removed — the body now lives inside the big card .wc-full) */
@@ -436,7 +459,9 @@ body[data-tone="ink"] .iamf .who, body[data-tone="blue"] .iamf .who { color: var
 .c-left { flex: 0 0 auto; }
 .c-left .cm { display: flex; align-items: flex-end; font-size: 19px; font-weight: 800; letter-spacing: .04em; line-height: 1; }
 .c-left .crule { width: 220px; margin-top: 14px; }
-.c-note { margin-top: 22px; font-size: 11px; font-weight: 500; letter-spacing: .16em; line-height: 2; color: var(--fg-dim); text-transform: uppercase; }
+/* 中文为主 — the positioning line reads in Chinese first, EN mono as annotation */
+.c-note { margin-top: 22px; font-size: 13.5px; font-weight: 600; letter-spacing: .06em; line-height: 1.9; color: var(--fg); }
+.c-note .en { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
 
 /* aligned ledger — label + value share one baseline per row */
 .c-list { flex: 1 1 480px; max-width: 580px; }
