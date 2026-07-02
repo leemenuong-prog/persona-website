@@ -240,7 +240,7 @@ function CodePanel() {
 const WORKS = [
   {
     ix: "W·01", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "ADVENTURE-X 黑客松 · 季军 3RD PLACE — 观察 → 生成 → 强化",
+    award: "ADVENTURE-X 高校联盟黑客松 · 季军 3RD PLACE（前 3%）",
     link: "https://and-pear.netlify.app/login",
     links: [
       { label: "访问应用 · PEARS APP ↗", url: "https://and-pear.netlify.app/login" },
@@ -264,7 +264,7 @@ const WORKS = [
   },
   {
     ix: "W·03", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", dark: false,
-    award: "香港中文大学 · 企业 AGENT 黑客松 亚军 RUNNER-UP — 团队决策共识",
+    award: "香港中文大学 · 企业 AGENT 黑客松 · 亚军 RUNNER-UP（前 5%）",
     link: "https://yijian-demo4.netlify.app",
     poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app",
     mediaLabel: "LIVE DEMO · 在线体验", caption: "议见 YIJIAN · 决策共识 AGENT · 在线 DEMO",
@@ -293,7 +293,7 @@ const WORKS = [
   },
   {
     ix: "W·06", t: "上桥 Upper-Via", display: "上桥", tag: "ARCHITECTURE", year: "2023", dark: true,
-    award: "「活力杯」大湾区高校设计大赛 · 1ST PRIZE 一等奖 — TOP 3%",
+    award: "「活力杯」大湾区高校设计大赛 · 一等奖 1ST PRIZE（前 3%）",
     doc: "uploads/portfolio.pdf#page=5", mediaLabel: "PORTFOLIO · 作品集",
     pages: ["works/portfolio/shangqiao-1.jpg", "works/portfolio/shangqiao-2.jpg", "works/portfolio/shangqiao-3.jpg", "works/portfolio/shangqiao-4.jpg"],
     caption: "PORTFOLIO · 作品集 · 桥上书屋",
@@ -576,7 +576,7 @@ function Works({ jump }) {
       const narrow = W < 900;
       const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
       const bigTop = H * (narrow ? 0.165 : 0.155);   /* phone: drop the card enough to fit the floating title BELOW the fixed nav */
-      const bigBot = H * (narrow ? 0.915 : 0.68);    /* phone: taller card so media + dossier fit without inner-scroll (unreachable on touch) */
+      const bigBot = H * (narrow ? 0.80 : 0.68);     /* phone: shrunk off 0.915 — the old value ran the card into the railread/skyline zone (0.87–0.965H) */
       const bigH = bigBot - bigTop;
       const bigCx = W * 0.5;
       /* the skyline index rail — slim bars along the bottom edge */
@@ -765,14 +765,16 @@ function Works({ jump }) {
                   <div className="wf-text">
                     <div className="wf-ident">{wkIdentity(i)}<i className="psq" aria-hidden="true"></i></div>
                     <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
-                    <div className="wf-award mono">{wk.award}</div>
+                    <div className="wf-award mono"><i className="sq" aria-hidden="true"></i><span className="wf-award-t">{wk.award}</span></div>
                     {/* 中文叙事为主，英文缩为点缀；三格 metrics 计分板已删（纯叙事） */}
                     <p className="wf-zh">{wk.zh}</p>
                     <p className="wf-body">{wk.body}</p>
                     {wk.links ? (
-                      wk.links.map((ln, j) => (
-                        <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
-                      ))
+                      <div className="wf-ctas">
+                        {wk.links.map((ln, j) => (
+                          <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
+                        ))}
+                      </div>
                     ) : wk.link ? (
                       <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>访问项目 · VISIT LIVE ↗</a>
                     ) : wk.doc ? (

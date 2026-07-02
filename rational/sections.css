@@ -299,6 +299,13 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-text { display: flex; flex-direction: column; gap: clamp(7px, .95vh, 13px);
   min-width: 0; max-height: 100%; overflow-y: auto; padding-right: 4px;
   justify-content: safe center; }
+/* every row keeps its FULL intended size (up to its own line-clamp budget) —
+   without flex-shrink:0, a tight flex column silently squashes a clamped
+   block shorter than its clamp allows, cutting text mid-line with no
+   ellipsis (the clamp's own truncation math never gets to run). If content
+   still doesn't fit, .wf-text's own overflow-y:auto is the release valve,
+   not an invisible per-row squeeze. */
+.wf-text > * { flex-shrink: 0; }
 /* the identity badge — leads the dossier column (the title now floats outside
    the card). AIPM / Developer / Architect, the three-identity spine; only the period 跳色. */
 .wf-ident { font-size: clamp(20px, 1.9vw, 31px); font-weight: 800; letter-spacing: .01em;
@@ -306,17 +313,37 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-ident .psq { width: .15em; height: .15em; background: var(--blue-dn); align-self: flex-end; margin-bottom: .08em; }
 .wk-card.ink .wf-ident .psq { background: var(--blue-up); }
 .wf-role { font-size: 9.5px; letter-spacing: .16em; opacity: .78; }
-.wf-award { font-size: 9.5px; letter-spacing: .1em; line-height: 1.55; opacity: .78;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* the award line is the credibility signal for HR readers — bolder, bigger,
+   and led by the site's accent-dot motif (跳色只落在点上, never the letters).
+   The dot must NOT share the -webkit-line-clamp box with the text: a
+   -webkit-box with -webkit-box-orient:vertical treats every CHILD as its own
+   stacked item, so an <i> sibling steals one of the clamp's "lines" and the
+   text truncates a line early, silently (no ellipsis, the tail just vanishes).
+   Two layers instead: .wf-award is a plain flex row (dot + text), and only
+   the inner .wf-award-t span carries the clamp box. */
+.wf-award { display: flex; align-items: flex-start; gap: 7px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em; opacity: .95; }
+.wf-award-t { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden; line-height: 1.6; }
+/* dot color follows the CARD's own ground (blue/ink), not the page tone (--acc) —
+   same rule as .wf-ident .psq, otherwise the dot vanishes on the cobalt card */
+.wf-award .sq { width: 6px; height: 6px; margin-top: .5em; background: var(--blue-dn); flex: none; }
+.wk-card.ink .wf-award .sq { background: var(--blue-up); }
 /* 中文为主 — the Chinese narrative IS the dossier body now; English drops to a
    quiet annotation. Floor raised for legibility (was 11px). */
 .wf-zh { font-size: clamp(14px, 1.05vw, 16.5px); line-height: 1.85; letter-spacing: .02em; opacity: .95;
   display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
 .wf-body { font-size: 11px; line-height: 1.6; opacity: .58;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.wf-cta { align-self: flex-start; margin-top: 4px; padding: 9px 18px;
+/* wraps multi-link works (currently only Pears); a real flex box (not
+   display:contents) so mobile can switch it to a row and halve its vertical
+   footprint — a stacked flex column ate ~70px more than the shrunk card had
+   room for (2 buttons stacked vs the usual 1). */
+.wf-ctas { display: flex; flex-direction: column; gap: 8px; }
+.wf-cta { align-self: flex-start; flex-shrink: 0; margin-top: 4px; padding: 9px 18px;
   border: 1px solid rgba(239, 236, 230, .4); color: var(--paper);
   font-size: 9.5px; letter-spacing: .18em; transition: background .25s, color .25s, border-color .25s; }
+.wf-ctas .wf-cta { margin-top: 0; }
 .wf-cta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 
 /* ===== the work media — the 16:9 film / portfolio gallery that lives INSIDE the
@@ -421,21 +448,50 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
   .wc-full { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr);
     gap: clamp(16px, 2.6vh, 24px); padding: clamp(18px, 5vw, 26px); align-items: stretch; }
   .wf-media { height: auto; }
+  /* cap the media pane so it can't balloon on the wider phones/tablets in this
+     bucket (a 715px-wide 16:9 frame alone runs ~400px tall) and starve the
+     dossier column below it — this used to be ≤600-only, which left 600–900px
+     (tablets) uncapped and overflowing. 36vh is the phone-range value (never
+     binds below 600px — natural width-driven height is already smaller there);
+     the 601–900px tier below tightens further since a wider column pushes the
+     natural 16:9 height up much faster than the card itself grows. */
+  .wf-media .sc-media { max-height: 36vh; }
   /* loosen the dossier so it breathes — the items were packed tight (用户: 太挤了)
      with a ~8px gap. A wider per-item gap spreads them out and shrinks the slack
      that used to pool at the bottom. (The CTA stays in flow — it must NOT be pushed
      to the card's bottom edge, where it would collide with the floating .wk-railread
      "W·NN" readout that rides just inside the tall mobile card.) */
-  .wf-text { justify-content: flex-start; gap: clamp(11px, 1.8vh, 18px); }
+  .wf-text { justify-content: flex-start; gap: clamp(9px, 1.5vh, 15px); }
   .wf-ident { font-size: clamp(19px, 5.4vw, 28px); }
   .wk-headline .wh-name { font-size: clamp(30px, 8vw, 46px); }
   .wk-headline .wh-kick { font-size: 9.5px; letter-spacing: .2em; }
-  .wf-zh { -webkit-line-clamp: 5; }
+  .wf-zh { -webkit-line-clamp: 4; }
   /* fold to CHINESE-only on the single-column card (中文为主 — the annotation
      language folds first). The dense AI cards (2 CTAs + long award) otherwise
      overflow the fixed-height card, and the flex column SLICES the body mid-line
      to fit. Dropping the English annotation frees enough height per card. */
   .wf-body { display: none; }
+  /* the award line got bolder/bigger for visibility (site-wide) — cap it back to
+     2 lines here so it can't push the shorter mobile card into inner-scroll
+     (unreachable on touch); the 3rd-line allowance is a desktop-only safety net
+     for the longest award strings on the wide dossier column. */
+  .wf-award-t { -webkit-line-clamp: 2; }
+  /* Pears' 2-button case: an even 2-column row instead of a stacked column —
+     flex-basis:0 (not "auto") forces a true 50/50 split regardless of label
+     length, so the row wraps INSIDE each button rather than each button
+     claiming a full row (which cost as much height as stacking). */
+  .wf-ctas { flex-direction: row; flex-wrap: nowrap; gap: 8px; }
+  .wf-ctas .wf-cta { flex: 1 1 0; min-width: 0; padding: 9px 8px;
+    font-size: 8.5px; letter-spacing: .08em; white-space: normal; text-align: center; }
+}
+
+/* 601–900px specifically (tablet portrait, e.g. 768×1024) — a wider column
+   pushes the natural 16:9 media height up (~400px) much faster than the card
+   itself grows, so the general 36vh cap above still starves the dossier here;
+   tighten further. Never binds ≤600px (that range's narrower column already
+   keeps the natural media height well under even this smaller cap). */
+@media (min-width: 601px) and (max-width: 900px) {
+  .wf-media .sc-media { max-height: 26vh; }
 }
 
 /* (dossier overlay removed — the body now lives inside the big card .wc-full) */
@@ -550,7 +606,6 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   .wk-headline .wh-name { white-space: normal; line-height: .98; font-size: clamp(26px, 7vw, 40px); }
   .wk-intro { top: 19vh; width: 90vw; }
   .wk-zh { font-size: clamp(22px, 6.4vw, 34px); }
-  .wf-media .sc-media { max-height: 38vh; }
   .wf-ident { font-size: clamp(20px, 6vw, 28px); }
 
   /* contact — stack each row label-over-value so long URLs wrap, not clip */
