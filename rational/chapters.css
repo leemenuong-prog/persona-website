@@ -100,7 +100,7 @@
   color: var(--ink);
 }
 .apx .ch-wrap { height: 190vh; background: var(--paper); }   /* 2 步（定义 / 视频）— 缩短滚动，翻页更快 */
-.apx-stage { padding: 84px 40px 34px; background: var(--paper); color: var(--ink); }
+.apx-stage { padding: 88px 40px 34px; background: var(--paper); color: var(--ink); }   /* 88 = 章节页眉统一基线 */
 .apx-kicker {
   position: relative; z-index: 4; display: flex; justify-content: space-between; gap: 18px;
   padding-bottom: 13px; border-bottom: 1px solid var(--line);
@@ -258,7 +258,7 @@
 
 @media (max-width: 900px) {
   .apx .ch-wrap { height: auto; }
-  .apx .ch-stage { position: relative; height: auto; min-height: 0; overflow: visible; padding: 80px 20px 38px; }
+  .apx .ch-stage { position: relative; height: auto; min-height: 0; overflow: visible; padding: 72px 20px 38px; }
   .apx-kicker { flex-direction: column; letter-spacing: .18em; }
 
   /* ── pair each explanation with the diagram/film it describes — ONE-TO-ONE ──
@@ -388,7 +388,7 @@
      three zones stack and the canvas (flex:1) absorbs the slack — no overlap at any
      height, the artwork shrinks gracefully on short screens. ───────────────────── */
   .ch3 .ch-stage, .ch4 .ch-stage {
-    display: flex; flex-direction: column; gap: 1.8vh; padding: 70px 20px 22px; }
+    display: flex; flex-direction: column; gap: 1.8vh; padding: 72px 20px 22px; }
 
   /* TOP — the identity title */
   .ch3 .ch-head, .ch4 .ch-head { order: 1; position: relative; max-width: 100%; flex: 0 0 auto; z-index: 4; }
