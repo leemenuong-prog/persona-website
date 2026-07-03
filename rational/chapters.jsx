@@ -46,21 +46,34 @@ function useChProg(id, ref) {
 
 /* ════════════════════════════════════════════════════════════
    03 · AN AIPM — CO-WORK AGENT PLATFORM · 平台即章节
-   Two quiet Chinese pages explain the platform thesis; only then does the
-   product film appear beside the title.
+   Two quiet Chinese pages explain the platform thesis — 01 能力（人效 →
+   Agent 工作流）→ 02 定义（不仅是工具，是一套闭环系统）— each followed by
+   its own diagram board; only then does the product film appear.
    ════════════════════════════════════════════════════════════ */
 const APX_INTRO_PAGES = [
   {
     ix: "01",
-    tag: "平台定义",
-    title: "不是单个工具，是生产系统。",
+    tag: "平台能力",
+    title: "将人效工作转换为 Agent 工作流。",
     body: "把大家的需求收集起来，就变了 Agent。",
+  },
+  {
+    ix: "02",
+    tag: "平台定义",
+    title: "不仅是工具，更是一套系统。",
+    body: "同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。",
   },
 ];
 
-const APX_VISUALS = [
-  { key: "system", label: "生产链汇入一个系统" },
+/* 图1 · 人效→工作流：四个真实生产环节（沿用旧系统图原词）。左列的墨条 =
+   同一件事靠人一遍遍做（数量、缩进刻意参差），不标注编造的次数数字。 */
+const APX_MANUAL = [
+  { w: "调研", n: 5, ind: 0 },
+  { w: "脚本", n: 3, ind: 14 },
+  { w: "审核", n: 6, ind: 6 },
+  { w: "复测", n: 4, ind: 20 },
 ];
+const APX_RAIL = ["调研", "脚本", "审核", "复测"];
 
 /* 已确认事实（与 WHOAMI 时间线一致）— 不再堆代码行数 */
 const APX_STRIP = [
@@ -125,8 +138,9 @@ function ChAipmPlatform({ jump }) {
      identity chapter (XTOOL Agent Platform). Resolved from WORKS. */
   const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
-  /* NORMAL FLOW on every size (无 keynote、无钉住)：标题 → 定义 → 系统图 →
-     影片引言 → 影片 → 数据条 → CTA，顺着页面往下走，到达即显（data-rv）。
+  /* NORMAL FLOW on every size (无 keynote、无钉住)：标题 → 01 能力 → 转换图 →
+     02 定义 → 闭环图 → 影片引言 → 影片 → 数据条 → CTA，顺着页面往下走，
+     到达即显（data-rv）。文与图经 display:contents + order 交错（见 chapters.css）。
      这一页现在就是 An AIPM 章节本身 (id="aipm" — WHO_INDEX 的 02 直达此处)。 */
   return (
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
@@ -149,7 +163,7 @@ function ChAipmPlatform({ jump }) {
                 </article>
               ))}
               <article className="apx-page apx-page-video on">
-                <div className="apx-page-k mono"><span>02</span><b>平台影片</b></div>
+                <div className="apx-page-k mono"><span>03</span><b>平台影片</b></div>
                 <h3>看它怎么跑。</h3>
               </article>
             </div>
@@ -157,19 +171,53 @@ function ChAipmPlatform({ jump }) {
 
           <div className="apx-media">
             <div className="apx-visuals" aria-hidden="true">
-              <div className="apx-visual apx-visual-system on" data-rv style={{ "--rd": ".3s" }}>
-                <div className="apx-visual-cap mono">{APX_VISUALS[0].label}</div>
-                <div className="apx-system-diagram">
-                  <div className="apx-toolstack">
-                    {["调研", "脚本", "审核", "复测"].map((item) => (
-                      <div className="apx-tool" key={item}><i></i><span>{item}</span></div>
+              {/* 图1 · 人效工作 → Agent 工作流（配 01 平台能力）——左：同样四个
+                  环节靠人反复做；中：交给 Agent；右：同样四个环节排成一条自动
+                  轨道，钴蓝方块=交付（句点收尾），一枚蓝色信号沿轨道反复跑。 */}
+              <div className="apx-visual apx-visual-flow on" data-rv style={{ "--rd": ".3s" }}>
+                <div className="apx-visual-cap mono">人效工作 → AGENT 工作流</div>
+                <div className="apx-flow">
+                  <div className="apx-flow-manual">
+                    <div className="apx-flow-h mono">人效 · 手动重复</div>
+                    {APX_MANUAL.map((r) => (
+                      <div className="apx-mrow" key={r.w} style={{ paddingLeft: r.ind }}>
+                        <span className="apx-mlabel">{r.w}</span>
+                        <span className="apx-mbars">{Array.from({ length: r.n }).map((_, k) => <i key={k}></i>)}</span>
+                      </div>
                     ))}
+                    <div className="apx-flow-note mono">同样的事，每天重复地做</div>
                   </div>
-                  <div className="apx-join" aria-hidden="true"></div>
-                  <div className="apx-system-core">
-                    <span>内容生产系统</span>
-                    <b>统一记忆<br />统一规则<br />统一数据</b>
+                  <div className="apx-flow-join"><span className="mono">交给 Agent</span></div>
+                  <div className="apx-flow-auto">
+                    <div className="apx-flow-h mono">AGENT 工作流 · 自动执行</div>
+                    <div className="apx-rail">
+                      <i className="apx-rail-pulse"></i>
+                      {APX_RAIL.map((w) => (
+                        <span className="apx-stop" key={w}><i></i><b>{w}</b></span>
+                      ))}
+                      <span className="apx-stop apx-stop-end"><i></i><b>交付</b></span>
+                    </div>
                   </div>
+                </div>
+              </div>
+
+              {/* 图2 · 系统闭环（配 02 平台定义）——用户发起 → Agent（上方两个
+                  来源：外部数据 + RAG 知识库落入）生成内容 → 飞书；U 形回路把
+                  结果送回用户。一枚钴蓝信号沿整条回路巡回（reduce 时静止）。 */}
+              <div className="apx-visual apx-visual-loop on" data-rv style={{ "--rd": ".3s" }}>
+                <div className="apx-visual-cap mono">一套系统 · 内容生产闭环</div>
+                <div className="apx-loop">
+                  <div className="apx-loop-src">
+                    <div className="apx-src"><span className="apx-src-t"><i></i><b>外部数据</b></span><span className="mono">EXTERNAL DATA</span></div>
+                    <div className="apx-src"><span className="apx-src-t"><i></i><b>RAG 知识库</b></span><span className="mono">KNOWLEDGE BASE</span></div>
+                  </div>
+                  <div className="apx-node apx-node-user"><b>用户</b><span className="mono">USER</span></div>
+                  <div className="apx-wire apx-wire-a"><span className="mono">发起需求</span></div>
+                  <div className="apx-core"><b>Agent</b><span className="mono">统一记忆 · 统一规则 · 统一数据</span></div>
+                  <div className="apx-wire apx-wire-b"><span className="mono">生成内容</span></div>
+                  <div className="apx-node apx-node-lark"><b>飞书</b><span className="mono">FEISHU</span></div>
+                  <div className="apx-return"><span className="apx-return-label mono">发送给用户 · 完成闭环</span></div>
+                  <div className="apx-loop-track"><i className="apx-loop-dot"></i></div>
                 </div>
               </div>
             </div>
