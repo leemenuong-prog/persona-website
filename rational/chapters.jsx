@@ -41,130 +41,11 @@ function useChProg(id, ref) {
   }, []);
 }
 
-/* ════════════════════════════════════════════════════════════
-   03 · AN AIPM — FLAT SHEET · 平面 (tone: paper) · 到达即播
-   ════════════════════════════════════════════════════════════ */
-/* the thread driver — a ONE-SHOT ~2.8s timeline, no scroll-scrub. Armed by
-   the engine's reveal system (the [data-ob] block gains `.in` as the section
-   crosses the 72%-viewport line); it then writes window.__progress.aipm 0→1
-   (the canvas in aipm-cut.jsx reads that global directly — zero changes
-   there), plus --p / --pay and the [data-th] point-label toggles. Ends
-   clamped at 1 and goes quiet: the chapter HOLDS its final frame (站内约定，
-   回滚不消失). prefers-reduced-motion / __calm snap straight to the held frame. */
-function useCutStage(id, ref) {
-  useChE(() => {
-    const el = ref.current; if (!el) return;
-    const ths = [...el.querySelectorAll("[data-th]")].map((n) => [n, parseFloat(n.dataset.th)]);
-    const calm = (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) || window.__calm;
-    const DUR = 2800;
-    let t0 = 0, done = false;
-    const write = (p) => {
-      window.__progress = window.__progress || {};
-      window.__progress[id] = p;   /* the canvas's single source of truth */
-      el.style.setProperty("--p", p.toFixed(4));
-      /* payoff (title "An AIPM" + copy) rises IN SYNC with the thread's ignite
-         (canvas coils+releases ~0.58–0.88), then HOLDS. */
-      const payIn = aEase(aSeg(p, 0.58, 0.86));
-      el.style.setProperty("--pay", payIn.toFixed(3));
-      ths.forEach(([n, t]) => n.classList.toggle("on", p >= t));
-    };
-    write(0);
-    const stop = window.__addLoop(() => {
-      if (done) return;
-      if (!el.classList.contains("in")) return;   /* not arrived yet */
-      if (calm) { write(1); done = true; return; }
-      const now = performance.now();
-      if (!t0) t0 = now;
-      const t = aClamp((now - t0) / DUR, 0, 1);
-      /* ease-out: the thread draws briskly, the ignite + payoff linger */
-      write(1 - Math.pow(1 - t, 1.65));
-      if (t >= 1) done = true;
-    });
-    return () => stop();
-  }, []);
-}
-
-/* the six signals the thread strings through — five questions considered and
-   put down, and THE question it lands on. x mirrors THREAD_X in aipm-cut.jsx;
-   data-th = the timeline p at which the tip reaches that point (the landing
-   label waits for the ignite instead). 动画在问，文案在答. */
-const CUT_LABELS = [
-  { x: 0.08, th: 0.20, t: "更快一点？" },
-  { x: 0.22, th: 0.29, t: "更省一点？" },
-  { x: 0.37, th: 0.35, t: "加个 AI？" },
-  { x: 0.52, th: 0.41, t: "流程再顺一点？" },
-  { x: 0.66, th: 0.46, t: "提效几个点？" },
-  { x: 0.78, th: 0.68, t: "这事还该不该人来做？", land: true },
-];
-
-/* Part B — 判断的三步：the working method behind the question, each step with
-   a real receipt from the XTOOL platform work (素材即正文，不造新口号). */
-const CUT_METHOD = [
-  { k: "01 · 看见 SEE", zh: "埋点里看到 Hook 段流失 52%——不是流程慢，是高创意内容没法一次成型。",
-    en: "Telemetry first: the 52% drop at the Hook stage wasn't a speed problem." },
-  { k: "02 · 开方 PRESCRIBE", zh: "开出的方子不是「再快一点」：合并生成阶段、三候选并出，推动了三代产品迭代。",
-    en: "The prescription wasn't \"faster\" — merge the stages, offer three candidates." },
-  { k: "03 · 对账 MEASURE", zh: "自建 ROI 看板对自己诚实：每投入 $1，省下 0.39 工时。",
-    en: "A self-built ROI board keeps it honest: $1 in, 0.39 hours back." },
-];
-
-function ChAipm({ jump }) {
-  const { AipmCut } = window;
-  const ref = useChR(null);
-  useCutStage("aipm", ref);
-  /* NOTE: the "VISIT XTOOL PLATFORM" CTA deliberately lives only on the platform
-     showcase chapter (ChAipmPlatform · 介绍页), NOT here on the identity/animation
-     page — having it on both read as a duplicate (用户: 动画页不要按钮). */
-  return (
-    <section className="chapter ch2x" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — THE THREAD">
-      {/* ── Part A · the thread — one viewport in NORMAL FLOW; scrolling to it
-          starts the timeline (data-ob → .in → useCutStage), nothing to scrub. */}
-      <div className="c2x-flow" data-ob ref={ref}>
-        <div className="c2x-art" aria-hidden="true"><AipmCut /></div>
-
-        {/* the point labels — each question lights as the thread strings through
-            it; the landing one turns cobalt with the ignite. */}
-        <div className="c2x-labs" aria-hidden="true">
-          {CUT_LABELS.map((lb, i) => (
-            <span key={i} className={"c2x-lab mono" + (lb.land ? " land" : "")}
-                  data-th={lb.th} style={{ left: (lb.x * 100) + "%" }}>{lb.t}</span>
-          ))}
-        </div>
-
-        {/* the payoff — appears only after the thread resolves into the mark.
-            中文为主：他的中文一句话是正文，英文缩为点缀 */}
-        <div className="c2x-pay">
-          <div className="c2x-left">
-            <h2 className="c2x-title">An AIPM<i className="psq" aria-hidden="true"></i></h2>
-            <div className="c2x-motto">让 AI 能力贴合真实场景<i className="psq" aria-hidden="true"></i></div>
-            <p className="c2x-st">我很少问「怎么把现在的流程做得更快」，更爱问「这事还该不该人来做」。
-              <span className="en">Making AI fit real situations — I rarely ask how to make the current process faster; I'd rather ask whether a person should be doing it at all.</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Part B · 判断的三步 — the method, revealed on arrival (no scrub). */}
-      <div className="c2x-method" data-ob>
-        <div className="c2x-mk mono" data-rv style={{ "--rd": ".05s" }}>
-          <span>HOW I JUDGE</span><b>判断的三步 · 来自 XTOOL 平台的一次真实判断</b>
-        </div>
-        {CUT_METHOD.map((m, i) => (
-          <div key={i} className="c2x-mrow" data-rv style={{ "--rd": (0.16 + i * 0.13).toFixed(2) + "s" }}>
-            <span className="c2x-mnum mono">{m.k}</span>
-            <div className="c2x-mtx">
-              <p className="zh">{m.zh}</p>
-              <p className="en">{m.en}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+/* (03 的「一线穿点」过场动画页已删 — 用户 2026-07-03: 02 An AIPM 直达平台页，
+   中间不留白。aipm-cut.jsx 留在磁盘但不再被 index.html 加载。) */
 
 /* ════════════════════════════════════════════════════════════
-   03·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL · 平台介绍
+   03 · AN AIPM — CO-WORK AGENT PLATFORM · 平台即章节
    Two quiet Chinese pages explain the platform thesis; only then does the
    product film appear beside the title.
    ════════════════════════════════════════════════════════════ */
@@ -246,19 +127,18 @@ function ChAipmPlatform({ jump }) {
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   /* NORMAL FLOW on every size (无 keynote、无钉住)：标题 → 定义 → 系统图 →
      影片引言 → 影片 → 数据条 → CTA，顺着页面往下走，到达即显（data-rv）。
-     The one-column pairing the phone layout already proved is now the layout,
-     period — desktop just gives the boards more width. */
+     这一页现在就是 An AIPM 章节本身 (id="aipm" — WHO_INDEX 的 02 直达此处)。 */
   return (
-    <section className="chapter apx" id="aipm-platform" data-tone="paper" data-screen-label="03·B · XTOOL Agent Platform">
+    <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
       <div className="apx-stage" data-ob ref={ref}>
         <div className="apx-kicker mono">
-          <span>03·B / AFTER THE CUT</span><span>PLATFORM REVEAL · 平台登场</span>
+          <span>03 / AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
         </div>
 
         <div className="apx-hero">
           <div className="apx-copy">
-            <div className="apx-cap mono" data-rv style={{ "--rd": ".04s" }}>XTOOL / 内容生产 Agent OS</div>
-            <h2 className="apx-title" data-rv style={{ "--rd": ".1s" }}>XTOOL<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
+            <div className="apx-cap mono" data-rv style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
+            <h2 className="apx-title" data-rv style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
 
             <div className="apx-intro">
               {APX_INTRO_PAGES.map((page, i) => (
@@ -269,9 +149,8 @@ function ChAipmPlatform({ jump }) {
                 </article>
               ))}
               <article className="apx-page apx-page-video on">
-                <div className="apx-page-k mono"><span>02</span><b>视频演示</b></div>
-                <h3>现在看它如何工作。</h3>
-                <p>上面说清了平台逻辑；这里只保留产品本身，让视频成为主角。</p>
+                <div className="apx-page-k mono"><span>02</span><b>平台影片</b></div>
+                <h3>看它怎么跑。</h3>
               </article>
             </div>
           </div>
@@ -295,12 +174,12 @@ function ChAipmPlatform({ jump }) {
               </div>
             </div>
 
-            <div className="apx-video on" aria-label="XTOOL Agent Platform video">
+            <div className="apx-video on" aria-label="Co-work Agent Platform video">
               {/* DESKTOP: src stays blank until the film block scrolls into view, then
                   useApxFilm points it at xtool/?fresh=1 ONCE and leaves it (never reverts
                   — the film is silent, so it just keeps playing; scrolling around never
                   reloads it). PHONE/TABLET: the poster button below loads it on a tap. */}
-              <iframe ref={frameRef} src="about:blank" title="XTOOL Agent Platform film" allow="autoplay; fullscreen"></iframe>
+              <iframe ref={frameRef} src="about:blank" title="Co-work Agent Platform film" allow="autoplay; fullscreen"></iframe>
               {/* loading poster — animated data-bars (条) + label; sits above the iframe
                   while the embedded film compiles/mounts. Shown when the film starts
                   loading; hidden when the film posts 'pearmovie:ready' (its first painted
@@ -310,7 +189,7 @@ function ChAipmPlatform({ jump }) {
                 <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
               </div>
               {!filmOn && (
-                <button className="apx-video-play" type="button" data-hov aria-label="播放 XTOOL 平台影片"
+                <button className="apx-video-play" type="button" data-hov aria-label="播放 Co-work 平台影片"
                         onClick={() => {
                           setFilmOn(true);
                           const f = frameRef.current; if (!f) return;
@@ -318,9 +197,9 @@ function ChAipmPlatform({ jump }) {
                           if (lo) lo.style.display = "flex";
                           f.src = "xtool/?fresh=1";
                         }}>
-                  <img src="xtool/screenshots/demo_review.png" alt="XTOOL Agent Platform" loading="lazy" draggable="false" />
+                  <img src="xtool/screenshots/demo_review.png" alt="Co-work Agent Platform" loading="lazy" draggable="false" />
                   <span className="apx-play-ico" aria-hidden="true"></span>
-                  <span className="apx-play-cap mono">点击播放 · XTOOL 平台影片 ▶</span>
+                  <span className="apx-play-cap mono">点击播放 · CO-WORK 平台影片 ▶</span>
                 </button>
               )}
             </div>
@@ -331,7 +210,7 @@ function ChAipmPlatform({ jump }) {
           {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
         </div>
         <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
-          <span className="sq" aria-hidden="true"></span>VISIT XTOOL PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
+          <span className="sq" aria-hidden="true"></span>VISIT CO-WORK PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
@@ -529,7 +408,7 @@ function ChArch({ jump }) {
 /* ════════════════════════════════════════════════════════════
    02·B · THE EVIDENCE — PEARS · 两段式 (tone: paper)
    The payoff of the Developer thesis, in NORMAL FLOW — no pinning,
-   no scrub (用户: deck 自动翻页 + 可手动，滚动照常走):
+   no scrub (用户: deck 自动轮播 + 可手动，滚动照常走；页面上不写这类机制说明):
    · Part 1 — the proposal deck: 8 paper-tinted SVG slides in one
      16:9 frame that AUTO-TURNS every few seconds; click / ‹ › /
      square pips take over (a manual action holds the auto-turn).
@@ -627,9 +506,7 @@ function ChReel({ jump }) {
           <h2 className="reel-title lm" data-rv style={{ "--rd": ".1s" }}>
             <span>Pears — AI Agent<i className="psq" aria-hidden="true"></i></span>
           </h2>
-          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 黑客松 · 季军 3RD PLACE
-            <span className="en">The deck below turns by itself — click it to browse at your own pace.</span>
-          </p>
+          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 黑客松 · 季军 3RD PLACE</p>
         </header>
         <div className="reel-deck" data-rv style={{ "--rd": ".4s" }} ref={deckRef}
              onClick={(e) => { if (e.target.closest("a, button")) return; go(1); }}
@@ -659,20 +536,18 @@ function ChReel({ jump }) {
                    onClick={(e) => { e.stopPropagation(); jumpTo(n); }}></i>
               ))}
             </span>
-            <span className="reel-autohint">自动翻页 · 点击可控</span>
           </div>
         </div>
       </div>
 
-      {/* ── PART 2 · 路演影片 — 大标题与 XTOOL keynote 同拍 ── */}
+      {/* ── PART 2 · 路演影片 — 大标题与平台影片同拍。字幕只报内容，
+          不解说播放机制（用户 2026-07-03: 个人网站别写系统行为类文案）。 */}
       <div className="reel-part reel-filmpart sec" data-ob>
         <header className="reel-head2">
           <h2 className="reel-title2 lm" data-rv style={{ "--rd": ".1s" }}>
             <span>现在看它如何工作<i className="psq" aria-hidden="true"></i></span>
           </h2>
-          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>PRODUCT FILM · 路演视频 — 到达自动播放，默认静音
-            <span className="en">Now, watch it work — the film starts muted as it scrolls into view.</span>
-          </p>
+          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>PRODUCT FILM · 路演视频</p>
         </header>
         <div className="reel-filmcol" data-rv style={{ "--rd": ".4s" }}>
           <div className="reel-video">
@@ -713,4 +588,4 @@ function ChReel({ jump }) {
   );
 }
 
-Object.assign(window, { ChAipm, ChAipmPlatform, ChDev, ChArch, ChReel, Structure3D });
+Object.assign(window, { ChAipmPlatform, ChDev, ChArch, ChReel, Structure3D });

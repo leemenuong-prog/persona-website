@@ -3,60 +3,8 @@
    02 FLAT 平面 (2D) · 03 AXON 体 (3D) · 04 FIELD 场 (abstract)
    ════════════════════════════════════════════════════════════ */
 
-/* ════════════════════════════════════════════════════════════
-   02 · AN AIPM — THE THREAD 一线穿点 (flat · 到达即播)
-   NORMAL FLOW now, no pinned wrap: Part A is one viewport whose
-   canvas plays a ~2.8s timeline the moment you arrive (data-ob),
-   with the strung questions labelled along the line; Part B lays
-   out the judgment method in three plain rows. (See aipm-cut.jsx
-   + useCutStage in chapters.jsx.)
-   ════════════════════════════════════════════════════════════ */
-.ch2x { position: relative; }
-.c2x-flow { position: relative; min-height: 100vh; overflow: hidden; }
-.c2x-art { position: absolute; inset: 0; z-index: 0; }
-.c2x-art canvas { width: 100%; height: 100%; display: block; }
-
-/* ── the point labels — the questions along the thread. Each lights (.on)
-   as the tip strings through its point; the LANDING one turns cobalt with
-   the ignite. Positions mirror THREAD_X (left = x%, line sits at 42%). ── */
-.c2x-labs { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.c2x-lab { position: absolute; top: calc(42% + 24px); transform: translateX(-50%);
-  font-size: 10px; letter-spacing: .16em; color: var(--fg-dim); white-space: nowrap;
-  opacity: 0; transition: opacity .5s var(--ez), color .4s var(--ez); }
-.c2x-lab.on { opacity: .38; }   /* considered, then put down — they stay quiet */
-.c2x-lab.land { font-weight: 700; color: var(--fg); top: calc(42% + 30px); }
-.c2x-lab.land.on { opacity: 1; color: var(--blue); }
-
-/* ── the payoff — text only after the mark lands (opacity = --pay) ── */
-.c2x-pay { position: absolute; inset: 0; z-index: 4; padding: 12vh 40px 7vh;
-  display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;
-  opacity: var(--pay, 0); transform: translateY(calc((1 - var(--pay, 0)) * 22px));
-  pointer-events: none; color: var(--fg); }
-.c2x-left { max-width: 42vw; }
-.c2x-kick { font-size: 11px; letter-spacing: .3em; color: var(--fg-dim); }
-.c2x-title { margin-top: 14px; font-size: clamp(50px, 7vw, 124px); font-weight: 800; letter-spacing: -.04em; line-height: .9;
-  display: flex; align-items: flex-end; }
-.c2x-title .psq { width: .1em; height: .1em; background: var(--acc); margin-left: .12em; margin-bottom: .12em; }
-.c2x-motto { margin-top: 26px; font-size: clamp(22px, 2.4vw, 40px); font-weight: 800; letter-spacing: .01em; line-height: 1.2;
-  display: flex; align-items: flex-end; flex-wrap: wrap; }
-.c2x-motto .psq { width: .12em; height: .12em; background: var(--acc); margin-left: .1em; margin-bottom: .14em; }
-.c2x-st { margin-top: 16px; max-width: 30em; font-size: clamp(15px, 1.15vw, 19px); font-weight: 500; line-height: 1.8; color: var(--fg); opacity: .85; }
-.c2x-st .en { opacity: .8; }
-
-/* ── Part B · 判断的三步 — three plain rows, typography only (no board
-   chrome, 设计立场: 大气简洁). Reveals on arrival via [data-rv]. ── */
-.c2x-method { position: relative; z-index: 4; padding: 9vh 40px 13vh;
-  max-width: 980px; }
-.c2x-mk { display: flex; align-items: baseline; gap: 16px; padding-bottom: 14px;
-  border-bottom: 1px solid var(--line);
-  font-size: 10px; letter-spacing: .26em; color: var(--fg-dim); }
-.c2x-mk b { font-weight: 700; color: var(--fg); letter-spacing: .18em; }
-.c2x-mrow { display: grid; grid-template-columns: minmax(150px, 220px) 1fr;
-  gap: 26px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--line); }
-.c2x-mnum { font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--blue); }
-.c2x-mtx .zh { font-size: clamp(16px, 1.35vw, 21px); font-weight: 600; line-height: 1.75; color: var(--fg); }
-.c2x-mtx .en { margin-top: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
-  line-height: 1.7; color: var(--fg-dim); }
+/* (「一线穿点」ch2x/c2x-* 规则已随过场动画页一起删除 — 2026-07-03，
+   An AIPM = 平台章 .apx 本身。) */
 
 /* ── identity → live-site CTA (shared: AIPM/Developer chapters + their showcase
    chapters) — a HEAVY, filled primary action. A solid cobalt block with a bold
@@ -64,7 +12,7 @@
    shadow; on hover it deepens (--blue-dn) and lifts. The FILL — not an outline —
    is what makes it read as a real CTA. Cobalt is the brand's action colour. */
 .ch-cta { display: inline-flex; align-items: center; gap: 13px; width: max-content; max-width: 100%;
-  margin-top: 28px; padding: 18px 32px; pointer-events: auto;  /* clickable even inside .c2x-pay (pointer-events:none) */
+  margin-top: 28px; padding: 18px 32px; pointer-events: auto;
   background: var(--blue); color: var(--paper); border: 0;
   font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .16em; white-space: nowrap;
   box-shadow: 0 12px 30px -16px rgba(11, 11, 14, .45);
@@ -77,31 +25,9 @@
 
 @media (max-height: 760px) {
   .ch-cta { margin-top: 18px; padding: 15px 26px; }
-  .c2x-pay { padding-top: 10vh; }
-  .c2x-st .en { display: none; }   /* 中文为主 — the EN annotation folds first */
-}
-@media (max-width: 900px) {
-  .c2x-pay { flex-direction: column; align-items: flex-start; padding: 11vh 20px 5vh; gap: 22px; overflow: hidden; }
-  .c2x-left { max-width: 92vw; }
-  .c2x-title { font-size: clamp(40px, 12vw, 72px); }
-  /* the line/dots can't crowd the payoff copy on a narrow screen: as the words
-     resolve (--pay 0→1) the canvas AND its labels recede so the text reads clean.
-     Full strength while the thread is still playing (--pay 0). */
-  .c2x-art, .c2x-labs { opacity: calc(1 - var(--pay, 0)); }
-  .c2x-lab { font-size: 9px; letter-spacing: .1em; }
-  .c2x-method { padding: 7vh 20px 11vh; }
-  .c2x-mrow { grid-template-columns: 1fr; gap: 9px; padding: 20px 0; }
-}
-@media (max-width: 600px) {
-  /* 6 nowrap questions can't share 375px — keep only the landing question
-     (它就是这页的论点), the five put-down ones fold away. !important beats the
-     inline left:78% (its THREAD_X slot) so it can centre on the screen. */
-  .c2x-lab { display: none; }
-  .c2x-lab.land { display: block; left: 50% !important; top: calc(42% + 26px);
-    max-width: 86vw; white-space: normal; text-align: center; }
 }
 
-/* ── 02·B · XTOOL AGENT PLATFORM — KEYNOTE REVEAL ───────── */
+/* ── 03 · AN AIPM — CO-WORK AGENT PLATFORM ───────── */
 .apx {
   --bg: var(--paper);
   --fg: var(--ink);
@@ -484,11 +410,6 @@
    PHONE (≤600px) — chapter stages reflow for a 375px portrait
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  /* AIPM "The Cut" payoff — tighter title + stat row for 335px */
-  .c2x-pay { padding: 10vh 20px 6vh; gap: 18px; }
-  .c2x-title { font-size: clamp(38px, 13vw, 60px); }
-  .c2x-stats { gap: 6vw; flex-wrap: wrap; }
-  .c2x-stats .st .n { font-size: clamp(22px, 8vw, 34px); }
   /* let the longer label wrap rather than overflow a 335px row; keep a solid tap target */
   .ch-cta { font-size: 11px; letter-spacing: .12em; gap: 11px; padding: 15px 24px;
     white-space: normal; min-height: 48px; box-sizing: border-box; }

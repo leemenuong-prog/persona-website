@@ -76,7 +76,7 @@ const WHO_CHRONO = [
   { y: "2026", h: 0.88, tag: "AI PRODUCT",       t: "Pears — Agent Factory · 黑客松季军",          zh: "「观察 → 生成 → 强化」 · 现场企业对接意向最多项目之一" },
   /* TODO(用户确认): 菩苇科技一行的时间与角色措辞 —— 先按已知事实占位 */
   { y: "2026", h: 0.72, tag: "AI PRODUCT",       t: "菩苇科技 — AI 产品实习",                       zh: "清华系初创 · 垂直领域 RAG Agent" },
-  { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "XTOOL Agent Platform — 0→1",                  zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
+  { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "Co-work Agent Platform — 0→1",                zh: "覆盖至 4 部门 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
 /* the index — three identities, as a jump table. Left: number · BarWord
@@ -296,7 +296,7 @@ const WORKS = [
     zh: "「观察 → 生成 → 强化」的 Agent 工厂：插件看你把工作做一遍，把行为轨迹蒸馏成可编辑的 PRD，再由 AI 编码 Agent 生成你专属的 Workflow Agent。想法来自 XTOOL 的真实观察：一个开发团队永远填不满全公司的 Agent 需求，那就把门槛从「描述 AI」降到「做一遍」。现场获企业对接意向最多的项目之一。",
   },
   {
-    ix: "W·06", t: "XTOOL Agent Platform", display: "XTOOL", tag: "AI PLATFORM", year: "2026", identity: "AIPM",
+    ix: "W·06", t: "Co-work Agent Platform", display: "Co-work", tag: "AI PLATFORM", year: "2026", identity: "AIPM",
     poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://peersagent.netlify.app/",
     mediaLabel: "MOTION FILM · 互动影片", caption: "PEAR AGENT · 平台动态影片 · MOTION FILM",
     role: ["AIPM · 平台负责人", "Intern · platform owner"],
@@ -729,7 +729,6 @@ function Works({ jump }) {
           <div className="wk-intro">
             <div className="kick mono">05 · SELECTED WORK / 作品</div>
             <h2 className="wk-zh">每一份数据，支撑着一个作品<i className="psq" aria-hidden="true"></i></h2>
-            <p className="wk-lead mono">SCROLL — THE MARK UNFOLDS INTO THE WORK · 滚动，标记展开为作品</p>
           </div>
 
           {/* ── the skyline TOC — eight permanent bars along the bottom (the logo's

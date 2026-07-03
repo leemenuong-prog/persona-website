@@ -19,22 +19,27 @@ assert.doesNotMatch(chapters, /function useApxStage/, "the keynote scrub driver 
 assert.match(chapters, /function useApxFilm/, "the film-loading hook should exist");
 assert.match(chapters, /APX_INTRO_PAGES\s*=\s*\[/, "platform section should have an intro page before the video reveal");
 assert.match(chapters, /不是单个工具，是生产系统/, "intro page should use clear Chinese copy");
-assert.match(chapters, /XTOOL\s*<br\s*\/?>\s*Agent Platform/, "platform section should lead with the XTOOL / Agent Platform title");
+/* 2026-07-03: the platform is publicly named Co-work (was XTOOL) and IS the
+   An AIPM chapter itself — the thread transition page is gone. */
+assert.match(chapters, /Co-work\s*<br\s*\/?>\s*Agent Platform/, "platform section should lead with the Co-work Agent Platform title");
+assert.doesNotMatch(chapters, /XTOOL\s*<br/, "the XTOOL brand should be renamed in the platform title");
+assert.match(chapters, /<section className="chapter apx" id="aipm"/, "the platform section carries the aipm id (WHO_INDEX 02 lands here)");
 assert.match(chapters, /apx-visual-system/, "platform definition should have a clear system visual");
 assert.match(chapters, /内容生产系统/, "system visual should name what the diagram means");
 assert.match(chapters, /xtool\/\?fresh=1/, "platform film should embed the existing xtool interactive movie");
 assert.match(chapters, /Object\.assign\(window,\s*\{[^}]*ChAipmPlatform/s, "component should be exported on window");
 
-/* Render order (2026-07-02 rev. 2, user decision): chapters first, works closes
-   the page before contact — Whoami → Dev → Reel → AIPM → Platform → Arch → Works. */
+/* Render order (2026-07-03, user decision): the AIPM thread transition page is
+   DELETED — Reel goes straight into the platform chapter, no whitespace page.
+   Whoami → Dev → Reel → Platform(=An AIPM) → Arch → Works → Contact. */
 const at = (tag) => app.indexOf(tag);
 assert.ok(at("<Whoami jump={jump} />") < at("<ChDev jump={jump} />"), "chapters follow Whoami");
 assert.ok(at("<ChDev jump={jump} />") < at("<ChReel jump={jump} />"), "Reel follows Developer");
-assert.ok(at("<ChReel jump={jump} />") < at("<ChAipm jump={jump} />"), "AIPM follows the reel");
-assert.ok(at("<ChAipm jump={jump} />") < at("<ChAipmPlatform jump={jump} />"), "platform showcase follows AIPM");
+assert.ok(at("<ChReel jump={jump} />") < at("<ChAipmPlatform jump={jump} />"), "platform (An AIPM) follows the reel directly");
 assert.ok(at("<ChAipmPlatform jump={jump} />") < at("<ChArch jump={jump} />"), "Architect closes the chapters");
 assert.ok(at("<ChArch jump={jump} />") < at("<Works jump={jump} />"), "Works closes the page");
 assert.ok(at("<Works jump={jump} />") < at("<Contact jump={jump} />"), "Contact is last");
+assert.equal(at("<ChAipm jump={jump} />"), -1, "the deleted ChAipm must not render");
 assert.match(app, /const \{[^}]*ChAipmPlatform/s, "App should read ChAipmPlatform from window");
 
 /* the Pears reel is a click-through deck now, not a scroll scrub */
@@ -49,10 +54,16 @@ assert.match(css, /\.apx-visual/, "intro visual CSS should exist");
 assert.match(css, /\.apx-video/, "video reveal CSS should exist");
 assert.match(css, /\.reel-cell\.on\s*\{\s*opacity:\s*1/, "reel cells should toggle by class");
 
-/* the AIPM identity page is normal flow too: one-shot timeline, labelled points */
-assert.doesNotMatch(chapters, /data-prog="aipm"/, "AIPM identity chapter must not be scroll-scrubbed anymore");
-assert.match(chapters, /CUT_LABELS\s*=\s*\[/, "the thread's point labels should exist");
-assert.match(chapters, /CUT_METHOD\s*=\s*\[/, "the judgment-method rows should exist");
-assert.doesNotMatch(css, /\.ch2x\s+\.ch-wrap/, "the AIPM pinned wrap CSS should be gone");
+/* 2026-07-03: the AIPM identity/transition page is DELETED entirely */
+assert.doesNotMatch(chapters, /function ChAipm\s*\(/, "the ChAipm transition page must be gone");
+assert.doesNotMatch(chapters, /data-prog="aipm"/, "nothing publishes aipm scroll progress anymore");
+assert.doesNotMatch(chapters, /CUT_LABELS|CUT_METHOD|useCutStage/, "the thread labels / judgment rows must be gone");
+assert.doesNotMatch(css, /\.c2x-|\.ch2x/, "the ch2x/c2x CSS must be gone");
+
+/* 个人网站，不要系统说明文案 (user 2026-07-03): never narrate playback/scroll
+   mechanics in visible copy — affordance labels (点击播放 etc.) are fine. */
+const sections = read("rational/sections.jsx");
+assert.doesNotMatch(chapters, /到达自动播放|默认静音|turns by itself|自动翻页|scrolls into view."/, "no playback-mechanics narration in chapters copy");
+assert.doesNotMatch(sections, /SCROLL — THE MARK|滚动，标记展开/, "no scroll-mechanics narration in the works intro");
 
 console.log("aipm platform section static checks passed");
