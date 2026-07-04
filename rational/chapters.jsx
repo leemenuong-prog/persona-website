@@ -54,8 +54,8 @@ const APX_INTRO_PAGES = [
   {
     ix: "01",
     tag: "平台能力",
-    title: "将人效工作转换为 Agent 工作流。",
-    body: "把大家的需求收集起来，就变了 Agent。",
+    title: "把人效工作变成 Agent 工作流。",
+    body: "把大家的需求收集起来，就成了 Agent。",
   },
   {
     ix: "02",
@@ -146,7 +146,7 @@ function ChAipmPlatform({ jump }) {
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
       <div className="apx-stage" data-ob ref={ref}>
         <div className="apx-kicker mono">
-          <span>03 / AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
+          <span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
         </div>
 
         <div className="apx-hero">
@@ -258,7 +258,7 @@ function ChAipmPlatform({ jump }) {
           {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
         </div>
         <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
-          <span className="sq" aria-hidden="true"></span>VISIT CO-WORK PLATFORM · 访问平台<span className="arr" aria-hidden="true">↗</span>
+          <span className="sq" aria-hidden="true"></span>访问平台 · CO-WORK PLATFORM<span className="arr" aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
@@ -548,13 +548,13 @@ function ChReel({ jump }) {
       {/* ── PART 1 · 路演提案 deck — 大标题 = 作品信息 ── */}
       <div className="reel-part sec" data-ob>
         <div className="apx-kicker mono">
-          <span>02·B / THE EVIDENCE</span><span>PEARS DECK · 路演提案</span>
+          <span>02·B · THE EVIDENCE</span><span>PEARS DECK · 路演提案</span>
         </div>
         <header className="reel-head2">
           <h2 className="reel-title lm" data-rv style={{ "--rd": ".1s" }}>
             <span>Pears — AI Agent<i className="psq" aria-hidden="true"></i></span>
           </h2>
-          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 黑客松 · 季军 3RD PLACE</p>
+          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 高校联盟黑客松 · 季军</p>
         </header>
         <div className="reel-deck" data-rv style={{ "--rd": ".4s" }} ref={deckRef}
              onClick={(e) => { if (e.target.closest("a, button")) return; go(1); }}
@@ -628,7 +628,7 @@ function ChReel({ jump }) {
             </button>}
           </div>
           <a className="reel-cta ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
-            <span className="sq" aria-hidden="true"></span>VISIT PEARS · 访问应用<span className="arr" aria-hidden="true">↗</span>
+            <span className="sq" aria-hidden="true"></span>访问应用 · PEARS<span className="arr" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>

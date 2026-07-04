@@ -15,18 +15,20 @@
 
 ## 作品接线 / Works wiring（`rational/sections.jsx` 的 `WORKS` 数组）
 
-`WorkMedia` 按字段优先级渲染：`video`+`videoReady` → 内嵌 `<video>`；`embed` → 封面点击后框内 `<iframe>`；`poster`(+`link`) → 封面图跳转；`doc` → 打开作品集 PDF；否则 TBD。每个作品可用 `mediaLabel` 覆盖取景框注释。
+`WorkMedia` 按字段优先级渲染：`pages` → 作品集翻书画廊；`video`+`videoReady` → 内嵌 `<video>`；`embed` → 封面点击后框内 `<iframe>`；`poster`(+`link`) → 封面图跳转；`doc` → 打开作品集 PDF；否则 TBD。
 
 | 卡片 | 作品 | 媒体方式 |
 |---|---|---|
-| W·01 | **Pears** · 路演视频 | 内嵌 `<video>`（`works/pears-roadshow.mp4`，459MB→**69MB**）+「访问项目↗」|
-| W·02 | **XTOOL · Pear Agent** 动态影片 | 封面点击 → 框内载入 `/xtool/` 互动影片 |
-| W·03 | **Peear** · Career Agent | 封面点击 → 框内载入在线 App `pear-agent.vercel.app`（封面 `works/peear-cover.svg`）|
-| W·04 | **UABB · AIGC Pipeline** | 内嵌 `<video>`（`works/aftersilence.mp4`，H.264 720p，16MB）|
-| W·05 | **After_Silence**（同一 UABB 项目的设计图纸面）| 作品集 PDF · **第 3 页** |
-| W·06 / W·07 / W·08 | 上桥 / 风贯·立方 / 环·世界 | 作品集 PDF · 第 **5 / 9 / 18** 页 |
+| W·01 | **After_Silence** 地外人居 | 作品集翻书（2 页图）· `doc` 指向 PDF 第 3 页 |
+| W·02 | **上桥** Upper-Via | 作品集翻书（4 页图）· PDF 第 5 页 |
+| W·03 | **风贯·立方** Air Cube | 作品集翻书（3 页图）· PDF 第 9 页 |
+| W·04 | **环·世界** The Ring-World | 作品集翻书（3 页图）· PDF 第 18 页 |
+| W·05 | **Pears** — Agent Factory | 内嵌 `<video>`（`works/pears-roadshow.mp4`，459MB→**69MB**）+ 双 CTA（应用 / 官网）|
+| W·06 | **Co-work** Agent Platform | 封面点击 → 框内载入 `/xtool/` 互动影片 + CTA 访问平台 |
+| W·07 | **议见 Yijian** — Consensus Engine | 封面点击 → 框内载入 `yijian-demo4.netlify.app` + CTA 在线体验 |
+| W·08 | **UABB · AIGC Pipeline** | 内嵌 `<video>`（`works/aftersilence.mp4`，H.264 720p，16MB）|
 
-UABB 是同一作品两面：**W·04 = AIGC 影像内容**，**W·05 = 设计图纸（作品集）**。
+UABB 是同一作品两面：**W·08 = AIGC 影像内容**，**W·01 = 设计图纸（作品集）**。文案口径见 `CLAUDE.md` 的「语言规范」。
 
 ## 关于文件大小 —— 一律用「小文件」
 
