@@ -83,6 +83,9 @@
   opacity: 0; transition: opacity .9s var(--ez) .12s, transform .9s var(--ez) .12s; }
 .apx-spread.in .apx-chipart { opacity: 1; transform: none !important; }
 .apx-chipart svg { display: block; width: 100%; height: auto; }
+/* 示意图双版本 — 桌面横版 .apx-dk / 手机竖版 .apx-ph（960 宽横版缩到手机
+   只剩 ~6px 字，用户: 展示图在手机上太小；≤600 换成按小屏重排的竖版） */
+.apx-art .apx-ph { display: none; }
 
 /* P1 · 左文右图，右出血 */
 .apx-p1 .apx-ghost { left: -56px; top: -4%; }
@@ -124,9 +127,8 @@
   transition: opacity .5s var(--ez) .5s, transform .5s var(--ez) .5s; }
 .apx-spread.in .apx-ctarow { opacity: 1; transform: none; }
 
-/* P2 旅程重播 — 操作可供性标签（不解说机制） */
-.apx-replay { margin-top: 8px; text-align: right; font-size: 9px; letter-spacing: .18em; color: var(--fg-dim); font-family: var(--mono); }
-.apx-p2 .apx-chipart { cursor: pointer; }
+/* （P2 的「点选重看」标签与图版点击重播已删 — 2026-07-05 用户：系统提示类
+   文字不要；蓝点自己带停顿地循环巡回，无需重播。） */
 
 /* ── reel 章（Pears）复用同一套对页模板的接线 ── */
 .reel { overflow-x: clip; }
@@ -377,15 +379,17 @@
 .reel-cell.on { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .reel-cell { transition-duration: 0s; } }
 .reel-img { object-fit: contain; background: var(--bg); user-select: none; -webkit-user-drag: none; }
-/* ‹ › — always-visible flip affordance (same family as the flip-book .gl-nav) */
+/* ‹ › — flip affordance. NO backdrop: the old gray blocks sat on the slide edges
+   and hid the artwork (用户 2026-07-05: 左右翻页的灰色挡住视野). Now just the
+   glyph — quiet ink at rest, cobalt on hover; the hit zone keeps its full size. */
 .reel-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
   width: clamp(38px, 3.4vw, 52px); height: clamp(52px, 10vh, 84px); padding: 0;
   display: flex; align-items: center; justify-content: center;
-  border: 0; background: rgba(8, 10, 20, .30); color: var(--paper); cursor: pointer;
-  font-size: 32px; line-height: 0; opacity: .62; transition: opacity var(--t-micro), background var(--t-micro); }
+  border: 0; background: transparent; color: var(--fg); cursor: pointer;
+  font-size: 30px; line-height: 0; opacity: .35; transition: opacity var(--t-micro), color var(--t-micro); }
 .reel-nav.prev { left: 0; } .reel-nav.next { right: 0; }
 .reel-nav span { transform: translateY(-2px); }
-.reel-nav:hover { background: rgba(0, 71, 171, .78); opacity: 1; }
+.reel-nav:hover { color: var(--blue); opacity: 1; }
 
 /* deck bar — mono index + caption left, square pips + auto hint right */
 .reel-deckbar { display: flex; align-items: center; gap: 16px; margin-top: 13px;
@@ -467,6 +471,9 @@
   .apx-cap { font-size: 10.5px; letter-spacing: .2em; }
   .apx-kick2 { font-size: 10.5px; }
   .apx-stat span { font-size: 10px; letter-spacing: .14em; }
+  /* 示意图切到手机竖版（横版 960 宽缩到 ~355px 后文字不可读） */
+  .apx-art .apx-dk { display: none; }
+  .apx-art .apx-ph { display: block; max-width: 440px; margin: 0 auto; }
 
   /* ── 02·B PEARS 两段式 — phone tweaks: content-sized parts (no forced 100vh),
      the deck keeps the same auto-turn + tap carousel as desktop. ── */
@@ -480,7 +487,7 @@
   .reel-pips { margin-left: 0; gap: 12px; }
   .reel-pips i { width: 10px; height: 10px; }
   .reel-autohint { display: none; }
-  .reel-nav { opacity: .8; width: 44px; height: 60px; background: rgba(8, 10, 20, .45); }
+  .reel-nav { opacity: .5; width: 42px; height: 60px; }   /* 无底色，仅字形（同桌面） */
   .reel-cta { display: flex; width: max-content; max-width: 100%; margin: 20px auto 0; }
 }
 

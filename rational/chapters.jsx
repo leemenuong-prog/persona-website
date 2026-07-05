@@ -46,18 +46,22 @@ function useChProg(id, ref) {
 
 /* ════════════════════════════════════════════════════════════
    03 · AN AIPM — CO-WORK AGENT PLATFORM · 平台即章节
-   Two quiet Chinese pages explain the platform thesis — 01 能力（人效 →
-   Agent 工作流）→ 02 定义（不仅是工具，是一套闭环系统）— each followed by
-   its own diagram board; only then does the product film appear.
+   Two quiet Chinese pages explain the platform thesis — 01 背景（团队人效
+   被重复工作拖住 → 我深入调研拆解，升级为 Agent 工作流）→ 02 定义（不仅是
+   工具，是一套闭环系统）— each followed by its own diagram board; only
+   then does the product film appear.
    ════════════════════════════════════════════════════════════ */
 /* 三个对页的文案（杂志编辑式 · 变体 B，2026-07 用户选定）——正文比旧版
-   略厚一拍：每页把示意图的语义在文里接住，读文即懂图。 */
+   略厚一拍：每页把示意图的语义在文里接住，读文即懂图。
+   01 于 2026-07-05 按用户要求改为背景叙事：先讲问题（很多团队的生产力被
+   重复性、靠人跑的工作流拖累），再讲我做的事（深入团队调研 · 需求拆解 ·
+   升级为 Agent 工作流）。 */
 const APX_INTRO_PAGES = [
   {
     ix: "01",
-    tag: "平台能力",
-    title: "把人效工作变成 Agent 工作流。",
-    body: "把大家的需求收集起来，就成了 Agent。调研、脚本、审核、复测——这些每天被重复做的事，现在排成一条自动跑完的工作流。",
+    tag: "平台背景",
+    title: "人效，正被重复工作拖住。",
+    body: "公司部门里，很多团队的生产力都被大量重复性工作、靠人跑的流程拖累。我要做的，就是深入每个团队调研、把需求拆解清楚，再把这些人效工作升级成 Agent 工作流。",
   },
   {
     ix: "02",
@@ -142,28 +146,11 @@ function ChAipmPlatform({ jump }) {
   /* 杂志对页（变体 B）：三个 spread 顺滚——P1 左文右图（右出血）、P2 镜像
      拉页、P3 压轴影片 + 刊末条 + CTA。每个 spread 一个 data-ob="self" 锚点，
      内部节拍全走 CSS（.apx-spread.in 级联，见 chapters.css）。示意图为圆头
-     线 SVG 信息图：线逐笔画出、节点后弹、蓝点到站减速。影片管线
-     （useApxFilm 的 .apx-video/.apx-video-loading 选择器 + tap-to-play）原封保留。 */
-  /* P2 旅程 — 到场自动播一次（IO ≥0.5），点选图版重播；reduce 不启动 */
-  useChE(() => {
-    if (APX_REDUCE) return;
-    const ride = document.getElementById("apxRide");
-    const board = document.querySelector(".apx-p2 .apx-chipart");
-    if (!ride || !board || !("IntersectionObserver" in window)) return;
-    let played = false;
-    const io = new IntersectionObserver((es) => {
-      es.forEach((en) => {
-        if (en.isIntersecting && en.intersectionRatio >= 0.5 && !played) {
-          played = true; try { ride.beginElement(); } catch (e) {}
-          io.disconnect();
-        }
-      });
-    }, { threshold: [0, 0.5] });
-    io.observe(board);
-    const replay = () => { try { ride.beginElement(); } catch (e) {} };
-    board.addEventListener("click", replay);
-    return () => { io.disconnect(); board.removeEventListener("click", replay); };
-  }, []);
+     线 SVG 信息图：线逐笔画出、节点后弹、蓝点到站减速；每板两个版本——
+     桌面横版 .apx-dk / 手机竖版 .apx-ph（≤600 切换，字号按小屏可读重排）。
+     影片管线（useApxFilm 的 .apx-video/.apx-video-loading 选择器 +
+     tap-to-play）原封保留。
+     （2026-07-05 用户：P2 只留小蓝点巡回——旅行的消息卡 + 点选重播提示已删。） */
   const [p1, p2, p3] = APX_INTRO_PAGES;
   return (
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
@@ -183,55 +170,120 @@ function ChAipmPlatform({ jump }) {
             <p>{p1.body}</p>
           </div>
           <div className="apx-chipart apx-art" aria-hidden="true">
-            <svg viewBox="0 0 960 430">
+            {/* 桌面横版 — 三段读法：左「现状 · 四件事每天靠人重复」（人形 + 任务名 +
+                对齐的重复刻度）→ 中「深入团队 · 需求拆解」（弧线 + 注释 pill）→
+                右「AGENT 工作流轨道」（同样四步串成一条线，蓝点到站减速）。
+                2026-07-05 重画：删掉刻意参差的碎线与横穿引线，全部对齐成网格。 */}
+            <svg className="apx-dk" viewBox="0 0 960 440">
               <defs>
                 <marker id="apxChev" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
                   <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
                 </marker>
               </defs>
-              {/* 左：人效四行 — 圆头短线，刻意参差 */}
-              <g fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="17" fill="#0b0b0e">
-                <text className="pop" x="40" y="88" style={{ "--d": ".5s" }}>调研</text>
-                <text className="pop" x="68" y="152" style={{ "--d": ".55s" }}>脚本</text>
-                <text className="pop" x="52" y="216" style={{ "--d": ".6s" }}>审核</text>
-                <text className="pop" x="80" y="280" style={{ "--d": ".65s" }}>复测</text>
-              </g>
-              <g stroke="#0b0b0e" strokeWidth="7" strokeLinecap="round" opacity=".72">
-                <g style={{ "--d": ".55s" }}>{[[106,136,82],[146,174,84],[184,216,81],[226,252,83],[262,290,82]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
-                <g style={{ "--d": ".62s" }}>{[[134,166,146],[176,204,148],[214,244,145]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
-                <g style={{ "--d": ".69s" }}>{[[118,146,210],[156,188,212],[198,224,209],[234,262,211],[272,300,210],[310,336,212]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
-                <g style={{ "--d": ".76s" }}>{[[146,178,274],[188,214,276],[224,254,273],[264,290,275]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
-              </g>
-              {/* callout 注释 — 引线 + 小圆点收尾 */}
-              <path className="draw" pathLength="1" d="M300,352 Q330,332 336,232" fill="none" stroke="rgba(11,11,14,.35)" strokeWidth="1.5" strokeLinecap="round" style={{ "--d": ".9s" }} />
-              <circle className="pop" cx="336" cy="228" r="2" fill="rgba(11,11,14,.35)" style={{ "--d": ".95s" }} />
-              <text className="pop" x="176" y="372" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="1.8" fill="rgba(11,11,14,.55)" style={{ "--d": ".92s" }}>同样的事，每天重复地做</text>
-              {/* 中：S 曲线手递 + pill */}
-              <path className="draw" pathLength="1" d="M340,220 C420,220 430,150 500,142" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev)" style={{ "--d": ".8s" }} />
-              <g className="pop" style={{ "--d": ".9s" }}>
-                <rect x="382" y="168" rx="12" width="112" height="26" fill="rgba(11,11,14,.05)" />
-                <text x="438" y="185" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="2" fill="#0b0b0e">交给 AGENT</text>
+              {/* 板块小注 — 左右各一句，先告诉读者两块各是什么 */}
+              <text className="pop" x="40" y="56" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.8" fill="rgba(11,11,14,.55)" style={{ "--d": ".4s" }}>现状 · 人效被拖住</text>
+              <text className="pop" x="703" y="96" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.8" fill="rgba(11,11,14,.55)" style={{ "--d": "1.05s" }}>升级 · AGENT 工作流</text>
+              {/* 左：四件每天靠人重复的事 — 人形 + 任务名 + 重复刻度（对齐网格 + 省略号） */}
+              {[["调研", 104], ["脚本", 158], ["审核", 212], ["复测", 266]].map(([w, y], i) => (
+                <g key={w}>
+                  <g className="pop" style={{ "--d": (0.5 + i * 0.07) + "s" }}>
+                    <g fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" opacity=".8">
+                      <circle cx="48" cy={y - 16} r="5" />
+                      <path d={"M37," + (y + 3) + " Q48," + (y - 8) + " 59," + (y + 3)} />
+                    </g>
+                    <text x="74" y={y + 2} fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="18" fill="#0b0b0e">{w}</text>
+                  </g>
+                  <g stroke="#0b0b0e" strokeWidth="7" strokeLinecap="round" opacity=".4" style={{ "--d": (0.56 + i * 0.07) + "s" }}>
+                    {[136, 172, 208, 244, 280].map((x) => <line key={x} className="draw" pathLength="1" x1={x} y1={y - 5} x2={x + 20} y2={y - 5} />)}
+                  </g>
+                  <g fill="rgba(11,11,14,.35)" style={{ "--d": (0.64 + i * 0.07) + "s" }}>
+                    {[316, 326, 336].map((x) => <circle key={x} className="pop" cx={x} cy={y - 5} r="2" />)}
+                  </g>
+                </g>
+              ))}
+              <text className="pop" x="188" y="318" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.8" fill="rgba(11,11,14,.55)" style={{ "--d": ".88s" }}>同样的事，每天重复地做</text>
+              {/* 中：一道弧线把现状送上轨道；pill = 我做的事，引线钉在弧线上 */}
+              <path className="draw" pathLength="1" d="M348,185 C416,185 430,146 492,142" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev)" style={{ "--d": ".95s" }} />
+              <path className="draw" pathLength="1" d="M441,206 V172" fill="none" stroke="rgba(11,11,14,.35)" strokeWidth="1.5" strokeLinecap="round" style={{ "--d": "1.1s" }} />
+              <circle className="pop" cx="441" cy="168" r="2" fill="rgba(11,11,14,.35)" style={{ "--d": "1.14s" }} />
+              <g className="pop" style={{ "--d": "1.05s" }}>
+                <rect x="356" y="210" rx="14" width="170" height="28" fill="rgba(11,11,14,.05)" />
+                <text x="441" y="228.5" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="2" fill="#0b0b0e">深入团队 · 需求拆解</text>
               </g>
               {/* 右：轨道 + 圆环站点 + 直角钴蓝终点（全图唯一直角 = 蓝色句点） */}
-              <path id="apxRail" className="draw" pathLength="1" d="M500,142 H906" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" style={{ "--d": "1s" }} />
+              <path id="apxRail" className="draw" pathLength="1" d="M500,142 H906" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" style={{ "--d": "1.05s" }} />
               <g fill="#efece6" stroke="#0b0b0e" strokeWidth="2.25">
-                {[556, 646, 736, 826].map((cx, k) => <circle key={k} className="pop" cx={cx} cy="142" r="6" style={{ "--d": (1.1 + k * 0.06) + "s" }} />)}
+                {[556, 646, 736, 826].map((cx, k) => <circle key={k} className="pop" cx={cx} cy="142" r="6" style={{ "--d": (1.15 + k * 0.06) + "s" }} />)}
               </g>
-              <g className="pop" style={{ "--d": "1.34s" }}><rect x="894" y="130" width="12" height="12" fill="#0047AB" /></g>
+              <g className="pop" style={{ "--d": "1.4s" }}><rect x="894" y="130" width="12" height="12" fill="#0047AB" /></g>
               <g fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="13" fill="#0b0b0e">
-                {[["调研",556],["脚本",646],["审核",736],["复测",826],["交付",900]].map(([w,x],k) => <text key={w} className="pop" x={x} y="172" textAnchor="middle" style={{ "--d": (1.12 + k * 0.06) + "s" }}>{w}</text>)}
+                {[["调研",556],["脚本",646],["审核",736],["复测",826],["交付",900]].map(([w,x],k) => <text key={w} className="pop" x={x} y="172" textAnchor="middle" style={{ "--d": (1.17 + k * 0.06) + "s" }}>{w}</text>)}
               </g>
               {!APX_REDUCE && (
                 <g>
-                  <circle className="pop" r="7" fill="rgba(0,71,171,.22)" style={{ "--d": "1.5s" }}>
+                  <circle className="pop" r="7" fill="rgba(0,71,171,.22)" style={{ "--d": "1.55s" }}>
                     <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRail" /></animateMotion>
                   </circle>
-                  <circle className="pop" r="4" fill="#0047AB" style={{ "--d": "1.5s" }}>
+                  <circle className="pop" r="4" fill="#0047AB" style={{ "--d": "1.55s" }}>
                     <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRail" /></animateMotion>
                   </circle>
                 </g>
               )}
               {APX_REDUCE && <circle className="pop" cx="864" cy="142" r="4" fill="#0047AB" style={{ "--d": "1.5s" }} />}
+            </svg>
+            {/* 手机竖版 — 同一说明重排成上（现状）中（拆解）下（轨道）三段，
+                字号按 375px 宽可读设定（≤600 由 CSS 切换，用户: 手机上图太小） */}
+            <svg className="apx-ph" viewBox="0 0 420 470">
+              <defs>
+                <marker id="apxChevP1" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                </marker>
+              </defs>
+              <text className="pop" x="22" y="34" fontFamily="JetBrains Mono, monospace" fontSize="11.5" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": ".4s" }}>现状 · 人效被拖住</text>
+              {[["调研", 76], ["脚本", 120], ["审核", 164], ["复测", 208]].map(([w, y], i) => (
+                <g key={w}>
+                  <g className="pop" style={{ "--d": (0.48 + i * 0.06) + "s" }}>
+                    <g fill="none" stroke="#0b0b0e" strokeWidth="2" strokeLinecap="round" opacity=".8">
+                      <circle cx="32" cy={y - 13} r="4.2" />
+                      <path d={"M23," + (y + 2) + " Q32," + (y - 7) + " 41," + (y + 2)} />
+                    </g>
+                    <text x="54" y={y + 1} fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="16" fill="#0b0b0e">{w}</text>
+                  </g>
+                  <g stroke="#0b0b0e" strokeWidth="6" strokeLinecap="round" opacity=".4" style={{ "--d": (0.54 + i * 0.06) + "s" }}>
+                    {[96, 126, 156, 186].map((x) => <line key={x} className="draw" pathLength="1" x1={x} y1={y - 4} x2={x + 18} y2={y - 4} />)}
+                  </g>
+                  <g fill="rgba(11,11,14,.35)" style={{ "--d": (0.6 + i * 0.06) + "s" }}>
+                    {[216, 224, 232].map((x) => <circle key={x} className="pop" cx={x} cy={y - 4} r="1.8" />)}
+                  </g>
+                </g>
+              ))}
+              <text className="pop" x="130" y="244" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10.5" letterSpacing="1.4" fill="rgba(11,11,14,.55)" style={{ "--d": ".8s" }}>同样的事，每天重复地做</text>
+              <path className="draw" pathLength="1" d="M210,262 V282" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChevP1)" style={{ "--d": ".88s" }} />
+              <g className="pop" style={{ "--d": ".96s" }}>
+                <rect x="118" y="292" rx="15" width="184" height="30" fill="rgba(11,11,14,.05)" />
+                <text x="210" y="311.5" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11.5" letterSpacing="1.8" fill="#0b0b0e">深入团队 · 需求拆解</text>
+              </g>
+              <path className="draw" pathLength="1" d="M210,330 V350" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChevP1)" style={{ "--d": "1.04s" }} />
+              <text className="pop" x="210" y="380" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11.5" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.1s" }}>升级 · AGENT 工作流</text>
+              <path id="apxRailPh" className="draw" pathLength="1" d="M28,410 H392" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" style={{ "--d": "1.16s" }} />
+              <g fill="#efece6" stroke="#0b0b0e" strokeWidth="2.25">
+                {[88, 158, 228, 298].map((cx, k) => <circle key={k} className="pop" cx={cx} cy="410" r="5.5" style={{ "--d": (1.24 + k * 0.05) + "s" }} />)}
+              </g>
+              <g className="pop" style={{ "--d": "1.46s" }}><rect x="380" y="399" width="11" height="11" fill="#0047AB" /></g>
+              <g fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="13.5" fill="#0b0b0e">
+                {[["调研",88],["脚本",158],["审核",228],["复测",298],["交付",386]].map(([w,x],k) => <text key={w} className="pop" x={x} y="440" textAnchor="middle" style={{ "--d": (1.26 + k * 0.05) + "s" }}>{w}</text>)}
+              </g>
+              {!APX_REDUCE && (
+                <g>
+                  <circle className="pop" r="6.5" fill="rgba(0,71,171,.22)" style={{ "--d": "1.55s" }}>
+                    <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRailPh" /></animateMotion>
+                  </circle>
+                  <circle className="pop" r="4" fill="#0047AB" style={{ "--d": "1.55s" }}>
+                    <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRailPh" /></animateMotion>
+                  </circle>
+                </g>
+              )}
+              {APX_REDUCE && <circle className="pop" cx="360" cy="410" r="4" fill="#0047AB" style={{ "--d": "1.5s" }} />}
             </svg>
           </div>
         </div>
@@ -245,7 +297,10 @@ function ChAipmPlatform({ jump }) {
             <p>{p2.body}</p>
           </div>
           <div className="apx-chipart apx-art" aria-hidden="true">
-            <svg viewBox="0 0 960 480">
+            {/* 桌面横版 — 飞书闭环：用户 → Agent（外部数据 / RAG）→ 飞书 → 沿 U 形
+                回路回到用户。巡回的只有小蓝点（带停顿：到 Agent、到飞书各歇一拍，
+                再沿底边回家）——2026-07-05 用户：旅行的消息卡已删，只留蓝点。 */}
+            <svg className="apx-dk" viewBox="0 0 960 480">
               <defs>
                 <marker id="apxChev2" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
                   <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
@@ -268,7 +323,7 @@ function ChAipmPlatform({ jump }) {
               <g className="pop" style={{ "--d": ".4s" }}>
                 <rect x="404" y="176" rx="22" width="154" height="122" fill="#0b0b0e" />
                 <text x="481" y="230" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="22" fill="#efece6">Agent</text>
-                <text x="481" y="256" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8.4" letterSpacing="1" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
+                <text x="481" y="256" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="9.2" letterSpacing=".5" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
               </g>
               <g className="pop" style={{ "--d": ".5s" }}>
                 <rect x="748" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
@@ -282,44 +337,78 @@ function ChAipmPlatform({ jump }) {
                 <text x="661" y="85" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">RAG 知识库</text>
               </g>
               {/* 线上 pill 标签 */}
-              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="9.6" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.1s" }}>
-                <rect x="264" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="307" y="227" textAnchor="middle">发起需求</text>
-                <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="655" y="227" textAnchor="middle">生成内容</text>
-                <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6" /><text x="480" y="420" textAnchor="middle">发送给用户 · 完成闭环</text>
+              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.1s" }}>
+                <rect x="264" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="307" y="227.5" textAnchor="middle">发起需求</text>
+                <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="655" y="227.5" textAnchor="middle">生成内容</text>
+                <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6" /><text x="480" y="420.5" textAnchor="middle">发送给用户 · 完成闭环</text>
               </g>
-              {/* 旅程路径（不可见）— 旅行的消息卡与余脉蓝点共用 */}
+              {/* 巡回路径（不可见）— 小蓝点沿闭环走：到 Agent、到飞书各停一拍，
+                  再沿底边回到用户（keyPoints 停顿 = 原 C 式旅程的节拍） */}
               <path id="apxLoopPath" d="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215" fill="none" stroke="none" />
-              {/* C 式旅程：一张「旅行的消息卡」到场自动走一遍（停 Agent、停飞书、
-                  沿底边回到用户，fill=freeze 定格 = 结果回到人手里），点选图版重播 */}
               {!APX_REDUCE && (
-                <g className="apx-parcel">
-                  <rect x="-28" y="-17" rx="8" width="56" height="34" fill="#efece6" stroke="#0b0b0e" strokeWidth="1.4" />
-                  <line x1="-16" y1="-6" x2="14" y2="-6" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <line x1="-16" y1="1" x2="8" y2="1" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <line x1="-16" y1="8" x2="11" y2="8" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <rect x="18" y="-15" width="7" height="7" fill="#0047AB" />
-                  <animateMotion id="apxRide" dur="7s" begin="indefinite" fill="freeze" calcMode="linear"
-                    keyPoints="0;0.176;0.176;0.35;0.35;0.66;0.66;1" keyTimes="0;0.2;0.28;0.45;0.53;0.75;0.8;1">
-                    <mpath href="#apxLoopPath" />
-                  </animateMotion>
+                <g>
+                  <circle className="pop" r="8" fill="rgba(0,71,171,.22)" style={{ "--d": "1.4s" }}>
+                    <animateMotion dur="9s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.176;0.176;0.35;0.35;1" keyTimes="0;0.16;0.24;0.4;0.48;1"><mpath href="#apxLoopPath" /></animateMotion>
+                  </circle>
+                  <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }}>
+                    <animateMotion dur="9s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.176;0.176;0.35;0.35;1" keyTimes="0;0.16;0.24;0.4;0.48;1"><mpath href="#apxLoopPath" /></animateMotion>
+                  </circle>
                 </g>
               )}
-              {APX_REDUCE && (
-                <g transform="translate(215,236)">
-                  <rect x="-28" y="-17" rx="8" width="56" height="34" fill="#efece6" stroke="#0b0b0e" strokeWidth="1.4" />
-                  <line x1="-16" y1="-6" x2="14" y2="-6" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <line x1="-16" y1="1" x2="8" y2="1" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <line x1="-16" y1="8" x2="11" y2="8" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
-                  <rect x="18" y="-15" width="7" height="7" fill="#0047AB" />
-                </g>
-              )}
-              {!APX_REDUCE && (
-                <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }}>
-                  <animateMotion dur="9s" repeatCount="indefinite"><mpath href="#apxLoopPath" /></animateMotion>
-                </circle>
-              )}
+              {APX_REDUCE && <circle cx="215" cy="236" r="4.5" fill="#0047AB" />}
             </svg>
-            <div className="apx-replay mono" aria-hidden="true">点选重看 · REPLAY</div>
+            {/* 手机竖版 — 用户 → Agent → 飞书 直排，回路沿左侧回到用户；
+                蓝点画在节点卡之下，穿卡即「进站」（≤600 由 CSS 切换） */}
+            <svg className="apx-ph" viewBox="0 0 420 484">
+              <defs>
+                <marker id="apxChevP2" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                </marker>
+              </defs>
+              <path id="apxLoopPathPh" d="M190,112 V424 A22,22 0 0 1 168,446 H74 A22,22 0 0 1 52,424 V96 A22,22 0 0 1 74,74 H124" fill="none" stroke="none" />
+              {!APX_REDUCE && (
+                <g>
+                  <circle className="pop" r="7" fill="rgba(0,71,171,.22)" style={{ "--d": "1.2s" }}>
+                    <animateMotion dur="8.5s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.114;0.114;0.269;0.269;1" keyTimes="0;0.12;0.22;0.36;0.46;1"><mpath href="#apxLoopPathPh" /></animateMotion>
+                  </circle>
+                  <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.2s" }}>
+                    <animateMotion dur="8.5s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.114;0.114;0.269;0.269;1" keyTimes="0;0.12;0.22;0.36;0.46;1"><mpath href="#apxLoopPathPh" /></animateMotion>
+                  </circle>
+                </g>
+              )}
+              <path className="draw" pathLength="1" d="M190,114 V150" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChevP2)" style={{ "--d": ".7s" }} />
+              <path className="draw" pathLength="1" d="M190,272 V308" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChevP2)" style={{ "--d": ".8s" }} />
+              <path className="draw" pathLength="1" d="M190,392 V424 A22,22 0 0 1 168,446 H74 A22,22 0 0 1 52,424 V96 A22,22 0 0 1 74,74 H120" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChevP2)" style={{ "--d": ".95s" }} />
+              <g className="pop" style={{ "--d": ".25s" }}>
+                <rect x="130" y="36" rx="16" width="120" height="72" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
+                <circle cx="190" cy="60" r="9" fill="rgba(11,11,14,.1)" />
+                <text x="190" y="94" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="15" fill="#0b0b0e">用户</text>
+              </g>
+              <g className="pop" style={{ "--d": ".35s" }}>
+                <rect x="115" y="160" rx="20" width="150" height="104" fill="#0b0b0e" />
+                <text x="190" y="208" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="21" fill="#efece6">Agent</text>
+                <text x="190" y="232" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing=".4" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
+              </g>
+              <g className="pop" style={{ "--d": ".45s" }}>
+                <rect x="130" y="318" rx="16" width="120" height="72" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
+                <rect x="180" y="336" rx="5" width="20" height="20" fill="rgba(11,11,14,.1)" />
+                <text x="190" y="376" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="15" fill="#0b0b0e">飞书</text>
+              </g>
+              <g className="pop" style={{ "--d": ".55s" }}>
+                <rect x="288" y="168" rx="10" width="104" height="28" fill="rgba(11,11,14,.05)" />
+                <text x="340" y="186.5" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">外部数据</text>
+                <rect x="284" y="212" rx="10" width="112" height="28" fill="rgba(11,11,14,.05)" />
+                <text x="340" y="230.5" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">RAG 知识库</text>
+              </g>
+              <path className="draw" pathLength="1" d="M286,182 Q272,190 267,200" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 8" style={{ "--d": ".62s" }} />
+              <path className="draw" pathLength="1" d="M282,226 Q272,226 267,232" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 8" style={{ "--d": ".68s" }} />
+              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.4" fill="rgba(11,11,14,.55)" style={{ "--d": "1.05s" }}>
+                <rect x="208" y="120" rx="10" width="88" height="22" fill="#efece6" /><text x="252" y="135" textAnchor="middle">发起需求</text>
+                <rect x="208" y="278" rx="10" width="88" height="22" fill="#efece6" /><text x="252" y="293" textAnchor="middle">生成内容</text>
+                <rect x="96" y="434" rx="10" width="188" height="24" fill="#efece6" /><text x="190" y="450" textAnchor="middle">发送给用户 · 完成闭环</text>
+              </g>
+              {APX_REDUCE && <circle cx="190" cy="132" r="4.5" fill="#0047AB" />}
+            </svg>
           </div>
         </div>
 
