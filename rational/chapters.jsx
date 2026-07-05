@@ -144,6 +144,26 @@ function ChAipmPlatform({ jump }) {
      内部节拍全走 CSS（.apx-spread.in 级联，见 chapters.css）。示意图为圆头
      线 SVG 信息图：线逐笔画出、节点后弹、蓝点到站减速。影片管线
      （useApxFilm 的 .apx-video/.apx-video-loading 选择器 + tap-to-play）原封保留。 */
+  /* P2 旅程 — 到场自动播一次（IO ≥0.5），点选图版重播；reduce 不启动 */
+  useChE(() => {
+    if (APX_REDUCE) return;
+    const ride = document.getElementById("apxRide");
+    const board = document.querySelector(".apx-p2 .apx-chipart");
+    if (!ride || !board || !("IntersectionObserver" in window)) return;
+    let played = false;
+    const io = new IntersectionObserver((es) => {
+      es.forEach((en) => {
+        if (en.isIntersecting && en.intersectionRatio >= 0.5 && !played) {
+          played = true; try { ride.beginElement(); } catch (e) {}
+          io.disconnect();
+        }
+      });
+    }, { threshold: [0, 0.5] });
+    io.observe(board);
+    const replay = () => { try { ride.beginElement(); } catch (e) {} };
+    board.addEventListener("click", replay);
+    return () => { io.disconnect(); board.removeEventListener("click", replay); };
+  }, []);
   const [p1, p2, p3] = APX_INTRO_PAGES;
   return (
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
@@ -267,13 +287,39 @@ function ChAipmPlatform({ jump }) {
                 <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="655" y="227" textAnchor="middle">生成内容</text>
                 <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6" /><text x="480" y="420" textAnchor="middle">发送给用户 · 完成闭环</text>
               </g>
+              {/* 旅程路径（不可见）— 旅行的消息卡与余脉蓝点共用 */}
+              <path id="apxLoopPath" d="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215" fill="none" stroke="none" />
+              {/* C 式旅程：一张「旅行的消息卡」到场自动走一遍（停 Agent、停飞书、
+                  沿底边回到用户，fill=freeze 定格 = 结果回到人手里），点选图版重播 */}
+              {!APX_REDUCE && (
+                <g className="apx-parcel">
+                  <rect x="-28" y="-17" rx="8" width="56" height="34" fill="#efece6" stroke="#0b0b0e" strokeWidth="1.4" />
+                  <line x1="-16" y1="-6" x2="14" y2="-6" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="-16" y1="1" x2="8" y2="1" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="-16" y1="8" x2="11" y2="8" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <rect x="18" y="-15" width="7" height="7" fill="#0047AB" />
+                  <animateMotion id="apxRide" dur="7s" begin="indefinite" fill="freeze" calcMode="linear"
+                    keyPoints="0;0.176;0.176;0.35;0.35;0.66;0.66;1" keyTimes="0;0.2;0.28;0.45;0.53;0.75;0.8;1">
+                    <mpath href="#apxLoopPath" />
+                  </animateMotion>
+                </g>
+              )}
+              {APX_REDUCE && (
+                <g transform="translate(215,236)">
+                  <rect x="-28" y="-17" rx="8" width="56" height="34" fill="#efece6" stroke="#0b0b0e" strokeWidth="1.4" />
+                  <line x1="-16" y1="-6" x2="14" y2="-6" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="-16" y1="1" x2="8" y2="1" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="-16" y1="8" x2="11" y2="8" stroke="rgba(11,11,14,.5)" strokeWidth="3" strokeLinecap="round" />
+                  <rect x="18" y="-15" width="7" height="7" fill="#0047AB" />
+                </g>
+              )}
               {!APX_REDUCE && (
                 <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }}>
-                  <animateMotion dur="9s" repeatCount="indefinite" path="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215" />
+                  <animateMotion dur="9s" repeatCount="indefinite"><mpath href="#apxLoopPath" /></animateMotion>
                 </circle>
               )}
-              {APX_REDUCE && <circle className="pop" cx="480" cy="414" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }} />}
             </svg>
+            <div className="apx-replay mono" aria-hidden="true">点选重看 · REPLAY</div>
           </div>
         </div>
 
@@ -610,64 +656,68 @@ function ChReel({ jump }) {
   const devWk = (window.WORKS || []).find((w) => w.t && w.t.indexOf("Pears") === 0);
   const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
   const s = REEL[idx];
+  /* 杂志对页模板（与 AIPM 章同一套 .apx-spread 体系）· 两页：
+     P1 对页 = 轮播 deck（auto-turn/手动/pips/触摸全保留），
+     P2 压轴 = 路演视频（到场静音自动播/BGM chip/CTA 全保留）。 */
   return (
     <section className="chapter reel" id="reel" data-tone="paper"
              data-screen-label="02·B · The Evidence — PEARS">
-      {/* ── PART 1 · 路演提案 deck — 大标题 = 作品信息 ── */}
-      <div className="reel-part sec" data-ob>
-        <div className="apx-kicker mono" data-rv>
-          <span>02·B · THE EVIDENCE</span><span>PEARS DECK · 路演提案</span>
+      <div className="reel-stage">
+        <div className="apx-kicker mono" data-rv data-ob="self">
+          <span>02·B · THE EVIDENCE</span><span>PEARS · 路演现场</span>
         </div>
-        <header className="reel-head2">
-          <h2 className="reel-title lm" data-rv style={{ "--rd": ".1s" }}>
-            <span>Pears — AI Agent<i className="psq" aria-hidden="true"></i></span>
-          </h2>
-          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>ADVENTURE-X 高校联盟黑客松 · 季军</p>
-        </header>
-        <div className="reel-deck" data-rv style={{ "--rd": ".4s" }} ref={deckRef}
-             onClick={(e) => { if (e.target.closest("a, button")) return; go(1); }}
-             onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
-             onTouchEnd={(e) => {
-               const dx = e.changedTouches[0].clientX - touchX.current;
-               if (Math.abs(dx) > 42) go(dx < 0 ? 1 : -1);
-             }}>
-          <div className="reel-frame">
-            {REEL.map((slide, n) => (
-              <img key={n} className={"reel-cell reel-img" + (n === idx ? " on" : "")}
-                   src={"works/pears-deck/" + slide.ix + "." + (slide.ext || "jpg")}
-                   alt={"Pears " + slide.ix + " " + slide.zh} decoding="async"
-                   loading="eager" draggable="false" />
-            ))}
-            <button className="reel-nav prev" type="button" data-hov aria-label="上一页"
-                    onClick={() => go(-1)}><span>‹</span></button>
-            <button className="reel-nav next" type="button" data-hov aria-label="下一页"
-                    onClick={() => go(1)}><span>›</span></button>
-          </div>
-          {/* deck bar — mono index + per-slide caption + square pips (period motif) */}
-          <div className="reel-deckbar mono">
-            <span className="reel-ix2" aria-live="polite"><b>{String(idx + 1).padStart(2, "0")}</b> / {String(REEL_N).padStart(2, "0")} · {s.zh} — {s.g}</span>
-            <span className="reel-pips" aria-hidden="true">
-              {REEL.map((_, n) => (
-                <i key={n} className={n === idx ? "on" : ""}
-                   onClick={(e) => { e.stopPropagation(); jumpTo(n); }}></i>
-              ))}
-            </span>
-          </div>
-        </div>
-      </div>
 
-      {/* ── PART 2 · 路演影片 — 大标题与平台影片同拍。字幕只报内容，
-          不解说播放机制（用户 2026-07-03: 个人网站别写系统行为类文案）。 */}
-      {/* data-ob="self" — 第二屏量自身顶：到场才显影（旧的 section 顶锚点让
-          它与 Part 1 同刻触发，入场动画在用户还停在 deck 时就烧完了） */}
-      <div className="reel-part reel-filmpart sec" data-ob="self">
-        <header className="reel-head2">
-          <h2 className="reel-title2 lm" data-rv style={{ "--rd": ".1s" }}>
-            <span>现在看它如何工作<i className="psq" aria-hidden="true"></i></span>
-          </h2>
-          <p className="reel-award" data-rv style={{ "--rd": ".26s" }}>PRODUCT FILM · 路演视频</p>
-        </header>
-        <div className="reel-filmcol" data-rv style={{ "--rd": ".4s" }}>
+        {/* ── P1 · 路演提案 — 左文右 deck，图版右出血 ── */}
+        <div className="apx-spread apx-p1" data-ob="self">
+          <div className="apx-ghost" aria-hidden="true">01</div>
+          <div className="apx-copy2">
+            <div className="apx-kick2">01 · 路演提案</div>
+            <h3>Pears — AI Agent<i className="psq" aria-hidden="true"></i></h3>
+            <p className="reel-award2 mono">ADVENTURE-X 高校联盟黑客松 · 季军</p>
+            <p>八页提案讲清一件事：软件越来越容易生成，难的是把工作说清楚。Pears 不从你说的开始，从你做的开始。</p>
+          </div>
+          <div className="apx-chipart apx-chipart-live">
+            <div className="reel-deck" ref={deckRef}
+                 onClick={(e) => { if (e.target.closest("a, button")) return; go(1); }}
+                 onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+                 onTouchEnd={(e) => {
+                   const dx = e.changedTouches[0].clientX - touchX.current;
+                   if (Math.abs(dx) > 42) go(dx < 0 ? 1 : -1);
+                 }}>
+              <div className="reel-frame">
+                {REEL.map((slide, n) => (
+                  <img key={n} className={"reel-cell reel-img" + (n === idx ? " on" : "")}
+                       src={"works/pears-deck/" + slide.ix + "." + (slide.ext || "jpg")}
+                       alt={"Pears " + slide.ix + " " + slide.zh} decoding="async"
+                       loading="eager" draggable="false" />
+                ))}
+                <button className="reel-nav prev" type="button" data-hov aria-label="上一页"
+                        onClick={() => go(-1)}><span>‹</span></button>
+                <button className="reel-nav next" type="button" data-hov aria-label="下一页"
+                        onClick={() => go(1)}><span>›</span></button>
+              </div>
+              {/* deck bar — mono index + per-slide caption + square pips (period motif) */}
+              <div className="reel-deckbar mono">
+                <span className="reel-ix2" aria-live="polite"><b>{String(idx + 1).padStart(2, "0")}</b> / {String(REEL_N).padStart(2, "0")} · {s.zh} — {s.g}</span>
+                <span className="reel-pips" aria-hidden="true">
+                  {REEL.map((_, n) => (
+                    <i key={n} className={n === idx ? "on" : ""}
+                       onClick={(e) => { e.stopPropagation(); jumpTo(n); }}></i>
+                  ))}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── P2 · 路演视频 — 压轴（字幕只报内容，不解说播放机制） ── */}
+        <div className="apx-spread apx-p3 reel-p2" data-ob="self">
+          <div className="apx-ghost" aria-hidden="true">02</div>
+          <div className="apx-copy2">
+            <div className="apx-kick2">02 · 路演视频</div>
+            <h3>现在看它如何工作<i className="psq" aria-hidden="true"></i></h3>
+            <p>路演现场的完整实机——从看你做一遍，到替你做下去。</p>
+          </div>
           <div className="reel-video">
             <video ref={vidRef} src={REEL_VIDEO.src} poster={REEL_VIDEO.poster}
                    preload="none" playsInline muted controls
@@ -685,8 +735,8 @@ function ChReel({ jump }) {
               <span className="reel-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
               <span className="reel-load-cap">影片加载中 · LOADING FILM</span>
             </div>
-            {/* default muted; a SMALL top-right chip turns the sound on (用户: 右上角提示
-                一下就行). Once unmuted it hides — the native controls take over. */}
+            {/* default muted; a SMALL top-right chip turns the sound on. Once
+                unmuted it hides — the native controls take over. */}
             {muted && <button className="reel-sound mono" type="button" aria-label="开启声音 · BGM"
               onClick={() => { const v = vidRef.current; if (!v) return; v.muted = false; if (v.paused) v.play(); }}>
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -697,9 +747,11 @@ function ChReel({ jump }) {
               <span>声音</span>
             </button>}
           </div>
-          <a className="reel-cta ch-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
-            <span className="sq" aria-hidden="true"></span>访问应用 · PEARS<span className="arr" aria-hidden="true">↗</span>
-          </a>
+          <div className="apx-ctarow">
+            <a className="reel-cta ch-cta apx-cta" href={devUrl} target="_blank" rel="noopener" data-hov>
+              <span className="sq" aria-hidden="true"></span>访问应用 · PEARS<span className="arr" aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

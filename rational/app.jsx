@@ -518,19 +518,12 @@ function App() {
         y += (wcY - y) * einW;
         sc += (wsScale - sc) * einW;
 
-        /* phase W-out — deck closed: the mark flies back to the nav dock and
-           stays docked through the mid-page chapters (it IS the nav logo). */
-        const eoutW = sm(1.03, 1.17, pW);
-        x += (brand.dockL - x) * eoutW;
-        y += (brand.dockT - y) * eoutW;
-        sc += (brand.s - sc) * eoutW;
-
-        /* phase F — grow large and settle onto the footer band slot; keyed to
-           Contact's arrival, not Works' end (Works no longer sits beside it).
-           Starts only AFTER phase W-out completes (pW 1.17) — the two phases
-           used to fight over the mark and bend its flight into a hesitant
-           dog-leg; now it's dock, then one clean arc to the footer. */
-        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan * 1.17);
+        /* phase F — the deck reconverges into the mark at stage centre, then
+           the mark rides ONE arc straight DOWN to the footer band slot —
+           用户 2026-07-05: 看完作品不用回左上角，变回 logo 直接往下到底。
+           (The old W-out dock-return phase is gone; scrolling back UP past
+           works still re-opens the deck via einW/phase W as before.) */
+        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan);
         const q = aClamp((ss - fStart) / Math.max(brand.maxScroll - fStart, 1), 0, 1);
         const e3 = q * q * (3 - 2 * q);
         x += (brand.fslotL - x) * e3;
