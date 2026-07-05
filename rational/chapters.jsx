@@ -50,38 +50,39 @@ function useChProg(id, ref) {
    Agent 工作流）→ 02 定义（不仅是工具，是一套闭环系统）— each followed by
    its own diagram board; only then does the product film appear.
    ════════════════════════════════════════════════════════════ */
+/* 三个对页的文案（杂志编辑式 · 变体 B，2026-07 用户选定）——正文比旧版
+   略厚一拍：每页把示意图的语义在文里接住，读文即懂图。 */
 const APX_INTRO_PAGES = [
   {
     ix: "01",
     tag: "平台能力",
     title: "把人效工作变成 Agent 工作流。",
-    body: "把大家的需求收集起来，就成了 Agent。",
+    body: "把大家的需求收集起来，就成了 Agent。调研、脚本、审核、复测——这些每天被重复做的事，现在排成一条自动跑完的工作流。",
   },
   {
     ix: "02",
     tag: "平台定义",
     title: "不仅是工具，更是一套系统。",
-    body: "同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。",
+    body: "同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。七个工具共用同一套记忆、规则和数据。",
+  },
+  {
+    ix: "03",
+    tag: "平台影片",
+    title: "看它怎么跑。",
+    body: "上面那套系统，下面实机走一遍。",
   },
 ];
 
-/* 图1 · 人效→工作流：四个真实生产环节（沿用旧系统图原词）。左列的墨条 =
-   同一件事靠人一遍遍做（数量、缩进刻意参差），不标注编造的次数数字。 */
-const APX_MANUAL = [
-  { w: "调研", n: 5, ind: 0 },
-  { w: "脚本", n: 3, ind: 14 },
-  { w: "审核", n: 6, ind: 6 },
-  { w: "复测", n: 4, ind: 20 },
+/* 刊末条 — 已确认事实（与 WHOAMI 时间线一致）；数字墨色（跳色只落点上） */
+const APX_STATS = [
+  { n: "7", unit: " 个", label: "生产工具" },
+  { n: "4", unit: " 部门 · 65 人", label: "覆盖范围" },
+  { n: "80%+", unit: "", label: "任务完成率" },
+  { n: "0.39", unit: " 工时", label: "每投入 $1 节省" },
 ];
-const APX_RAIL = ["调研", "脚本", "审核", "复测"];
 
-/* 已确认事实（与 WHOAMI 时间线一致）— 不再堆代码行数 */
-const APX_STRIP = [
-  "7 个生产工具",
-  "覆盖 4 部门 · 65 人",
-  "任务完成率 80%+",
-  "每投入 $1 省 0.39 工时",
-];
+/* reduce 偏好在模块级判一次 — SMIL 巡回点按此决定渲染动画还是静置 */
+const APX_REDUCE = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* the film plumbing — all that survives of the old keynote hook. The page is
    normal flow now (every block statically visible, fading in via [data-rv]);
@@ -138,130 +139,190 @@ function ChAipmPlatform({ jump }) {
      identity chapter (XTOOL Agent Platform). Resolved from WORKS. */
   const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
-  /* NORMAL FLOW on every size (无 keynote、无钉住)：标题 → 01 能力 → 转换图 →
-     02 定义 → 闭环图 → 影片引言 → 影片 → 数据条 → CTA，顺着页面往下走，
-     到达即显（data-rv）。文与图经 display:contents + order 交错（见 chapters.css）。
-     这一页现在就是 An AIPM 章节本身 (id="aipm" — WHO_INDEX 的 02 直达此处)。 */
+  /* 杂志对页（变体 B）：三个 spread 顺滚——P1 左文右图（右出血）、P2 镜像
+     拉页、P3 压轴影片 + 刊末条 + CTA。每个 spread 一个 data-ob="self" 锚点，
+     内部节拍全走 CSS（.apx-spread.in 级联，见 chapters.css）。示意图为圆头
+     线 SVG 信息图：线逐笔画出、节点后弹、蓝点到站减速。影片管线
+     （useApxFilm 的 .apx-video/.apx-video-loading 选择器 + tap-to-play）原封保留。 */
+  const [p1, p2, p3] = APX_INTRO_PAGES;
   return (
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
-      {/* 舞台不再整体 data-ob——这一章有 3–4 屏高，单锚点会把全部显影在
-          章顶一次烧完；改为每个块 data-ob="self"，到达哪块显影哪块 */}
       <div className="apx-stage" ref={ref}>
         <div className="apx-kicker mono" data-rv data-ob="self">
           <span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
         </div>
+        <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
+        <h2 className="apx-title" data-rv data-ob="self" style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
 
-        <div className="apx-hero">
-          <div className="apx-copy">
-            <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
-            <h2 className="apx-title" data-rv data-ob="self" style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
-
-            <div className="apx-intro">
-              {APX_INTRO_PAGES.map((page, i) => (
-                <article key={page.ix} className={"apx-page apx-page-" + i + " on"} data-rv data-ob="self" style={{ "--rd": ".1s" }}>
-                  <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
-                  <h3>{page.title}</h3>
-                  <p>{page.body}</p>
-                </article>
-              ))}
-              <article className="apx-page apx-page-video on" data-rv data-ob="self" style={{ "--rd": ".05s" }}>
-                <div className="apx-page-k mono"><span>03</span><b>平台影片</b></div>
-                <h3>看它怎么跑。</h3>
-              </article>
-            </div>
+        {/* ── P1 · 平台能力 — 左文右图，图版右出血 ── */}
+        <div className="apx-spread apx-p1" data-ob="self">
+          <div className="apx-ghost" aria-hidden="true">01</div>
+          <div className="apx-copy2">
+            <div className="apx-kick2">{p1.ix} · {p1.tag}</div>
+            <h3>{p1.title.slice(0, -1)}<i className="psq" aria-hidden="true"></i></h3>
+            <p>{p1.body}</p>
           </div>
-
-          <div className="apx-media">
-            <div className="apx-visuals" aria-hidden="true">
-              {/* 图1 · 人效工作 → Agent 工作流（配 01 平台能力）——左：同样四个
-                  环节靠人反复做；中：交给 Agent；右：同样四个环节排成一条自动
-                  轨道，钴蓝方块=交付（句点收尾），一枚蓝色信号沿轨道反复跑。 */}
-              <div className="apx-visual apx-visual-flow on" data-rv data-ob="self" style={{ "--rd": ".1s" }}>
-                <div className="apx-visual-cap mono">人效工作 → AGENT 工作流</div>
-                <div className="apx-flow">
-                  <div className="apx-flow-manual">
-                    <div className="apx-flow-h mono">人效 · 手动重复</div>
-                    {APX_MANUAL.map((r) => (
-                      <div className="apx-mrow" key={r.w} style={{ paddingLeft: r.ind }}>
-                        <span className="apx-mlabel">{r.w}</span>
-                        <span className="apx-mbars">{Array.from({ length: r.n }).map((_, k) => <i key={k}></i>)}</span>
-                      </div>
-                    ))}
-                    <div className="apx-flow-note mono">同样的事，每天重复地做</div>
-                  </div>
-                  <div className="apx-flow-join"><span className="mono">交给 Agent</span></div>
-                  <div className="apx-flow-auto">
-                    <div className="apx-flow-h mono">AGENT 工作流 · 自动执行</div>
-                    <div className="apx-rail">
-                      <i className="apx-rail-pulse"></i>
-                      {APX_RAIL.map((w) => (
-                        <span className="apx-stop" key={w}><i></i><b>{w}</b></span>
-                      ))}
-                      <span className="apx-stop apx-stop-end"><i></i><b>交付</b></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 图2 · 系统闭环（配 02 平台定义）——用户发起 → Agent（上方两个
-                  来源：外部数据 + RAG 知识库落入）生成内容 → 飞书；U 形回路把
-                  结果送回用户。一枚钴蓝信号沿整条回路巡回（reduce 时静止）。 */}
-              <div className="apx-visual apx-visual-loop on" data-rv data-ob="self" style={{ "--rd": ".1s" }}>
-                <div className="apx-visual-cap mono">一套系统 · 内容生产闭环</div>
-                <div className="apx-loop">
-                  <div className="apx-loop-src">
-                    <div className="apx-src"><span className="apx-src-t"><i></i><b>外部数据</b></span><span className="mono">EXTERNAL DATA</span></div>
-                    <div className="apx-src"><span className="apx-src-t"><i></i><b>RAG 知识库</b></span><span className="mono">KNOWLEDGE BASE</span></div>
-                  </div>
-                  <div className="apx-node apx-node-user"><b>用户</b><span className="mono">USER</span></div>
-                  <div className="apx-wire apx-wire-a"><span className="mono">发起需求</span></div>
-                  <div className="apx-core"><b>Agent</b><span className="mono">统一记忆 · 统一规则 · 统一数据</span></div>
-                  <div className="apx-wire apx-wire-b"><span className="mono">生成内容</span></div>
-                  <div className="apx-node apx-node-lark"><b>飞书</b><span className="mono">FEISHU</span></div>
-                  <div className="apx-return"><span className="apx-return-label mono">发送给用户 · 完成闭环</span></div>
-                  <div className="apx-loop-track"><i className="apx-loop-dot"></i></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="apx-video on" aria-label="Co-work Agent Platform video">
-              {/* DESKTOP: src stays blank until the film block scrolls into view, then
-                  useApxFilm points it at xtool/?fresh=1 ONCE and leaves it (never reverts
-                  — the film is silent, so it just keeps playing; scrolling around never
-                  reloads it). PHONE/TABLET: the poster button below loads it on a tap. */}
-              <iframe ref={frameRef} src="about:blank" title="Co-work Agent Platform film" allow="autoplay; fullscreen"></iframe>
-              {/* loading poster — animated data-bars (条) + label; sits above the iframe
-                  while the embedded film compiles/mounts. Shown when the film starts
-                  loading; hidden when the film posts 'pearmovie:ready' (its first painted
-                  frame), with a timeout safety net. */}
-              <div className="apx-video-loading mono" aria-hidden="true">
-                <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
-                <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
-              </div>
-              {!filmOn && (
-                <button className="apx-video-play" type="button" data-hov aria-label="播放 Co-work 平台影片"
-                        onClick={() => {
-                          setFilmOn(true);
-                          const f = frameRef.current; if (!f) return;
-                          const lo = f.parentElement && f.parentElement.querySelector(".apx-video-loading");
-                          if (lo) lo.style.display = "flex";
-                          f.src = "xtool/?fresh=1";
-                        }}>
-                  <img src="xtool/screenshots/demo_review.png" alt="Co-work Agent Platform" loading="lazy" draggable="false" />
-                  <span className="apx-play-ico" aria-hidden="true"></span>
-                  <span className="apx-play-cap mono">点击播放 · CO-WORK 平台影片 ▶</span>
-                </button>
+          <div className="apx-chipart apx-art" aria-hidden="true">
+            <svg viewBox="0 0 960 430">
+              <defs>
+                <marker id="apxChev" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                </marker>
+              </defs>
+              {/* 左：人效四行 — 圆头短线，刻意参差 */}
+              <g fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="17" fill="#0b0b0e">
+                <text className="pop" x="40" y="88" style={{ "--d": ".5s" }}>调研</text>
+                <text className="pop" x="68" y="152" style={{ "--d": ".55s" }}>脚本</text>
+                <text className="pop" x="52" y="216" style={{ "--d": ".6s" }}>审核</text>
+                <text className="pop" x="80" y="280" style={{ "--d": ".65s" }}>复测</text>
+              </g>
+              <g stroke="#0b0b0e" strokeWidth="7" strokeLinecap="round" opacity=".72">
+                <g style={{ "--d": ".55s" }}>{[[106,136,82],[146,174,84],[184,216,81],[226,252,83],[262,290,82]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
+                <g style={{ "--d": ".62s" }}>{[[134,166,146],[176,204,148],[214,244,145]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
+                <g style={{ "--d": ".69s" }}>{[[118,146,210],[156,188,212],[198,224,209],[234,262,211],[272,300,210],[310,336,212]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
+                <g style={{ "--d": ".76s" }}>{[[146,178,274],[188,214,276],[224,254,273],[264,290,275]].map(([a,b,y],k) => <line key={k} className="draw" pathLength="1" x1={a} y1={y} x2={b} y2={y} />)}</g>
+              </g>
+              {/* callout 注释 — 引线 + 小圆点收尾 */}
+              <path className="draw" pathLength="1" d="M300,352 Q330,332 336,232" fill="none" stroke="rgba(11,11,14,.35)" strokeWidth="1.5" strokeLinecap="round" style={{ "--d": ".9s" }} />
+              <circle className="pop" cx="336" cy="228" r="2" fill="rgba(11,11,14,.35)" style={{ "--d": ".95s" }} />
+              <text className="pop" x="176" y="372" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="1.8" fill="rgba(11,11,14,.55)" style={{ "--d": ".92s" }}>同样的事，每天重复地做</text>
+              {/* 中：S 曲线手递 + pill */}
+              <path className="draw" pathLength="1" d="M340,220 C420,220 430,150 500,142" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev)" style={{ "--d": ".8s" }} />
+              <g className="pop" style={{ "--d": ".9s" }}>
+                <rect x="382" y="168" rx="12" width="112" height="26" fill="rgba(11,11,14,.05)" />
+                <text x="438" y="185" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="2" fill="#0b0b0e">交给 AGENT</text>
+              </g>
+              {/* 右：轨道 + 圆环站点 + 直角钴蓝终点（全图唯一直角 = 蓝色句点） */}
+              <path id="apxRail" className="draw" pathLength="1" d="M500,142 H906" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" style={{ "--d": "1s" }} />
+              <g fill="#efece6" stroke="#0b0b0e" strokeWidth="2.25">
+                {[556, 646, 736, 826].map((cx, k) => <circle key={k} className="pop" cx={cx} cy="142" r="6" style={{ "--d": (1.1 + k * 0.06) + "s" }} />)}
+              </g>
+              <g className="pop" style={{ "--d": "1.34s" }}><rect x="894" y="130" width="12" height="12" fill="#0047AB" /></g>
+              <g fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="13" fill="#0b0b0e">
+                {[["调研",556],["脚本",646],["审核",736],["复测",826],["交付",900]].map(([w,x],k) => <text key={w} className="pop" x={x} y="172" textAnchor="middle" style={{ "--d": (1.12 + k * 0.06) + "s" }}>{w}</text>)}
+              </g>
+              {!APX_REDUCE && (
+                <g>
+                  <circle className="pop" r="7" fill="rgba(0,71,171,.22)" style={{ "--d": "1.5s" }}>
+                    <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRail" /></animateMotion>
+                  </circle>
+                  <circle className="pop" r="4" fill="#0047AB" style={{ "--d": "1.5s" }}>
+                    <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1" keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#apxRail" /></animateMotion>
+                  </circle>
+                </g>
               )}
-            </div>
+              {APX_REDUCE && <circle className="pop" cx="864" cy="142" r="4" fill="#0047AB" style={{ "--d": "1.5s" }} />}
+            </svg>
           </div>
         </div>
 
-        <div className="apx-strip mono" aria-hidden="true">
-          {APX_STRIP.map((item) => <span key={item}>{item}</span>)}
+        {/* ── P2 · 平台定义 — 镜像拉页，图版左出血 ── */}
+        <div className="apx-spread apx-p2" data-ob="self">
+          <div className="apx-ghost" aria-hidden="true">02</div>
+          <div className="apx-copy2">
+            <div className="apx-kick2">{p2.ix} · {p2.tag}</div>
+            <h3>{p2.title.slice(0, -1)}<i className="psq" aria-hidden="true"></i></h3>
+            <p>{p2.body}</p>
+          </div>
+          <div className="apx-chipart apx-art" aria-hidden="true">
+            <svg viewBox="0 0 960 480">
+              <defs>
+                <marker id="apxChev2" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                </marker>
+              </defs>
+              {/* 来源 — 圆点虚线下落 */}
+              <path className="draw" pathLength="1" d="M355,96 Q392,130 438,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".7s" }} />
+              <path className="draw" pathLength="1" d="M615,96 Q578,130 532,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".78s" }} />
+              {/* 主轴微垂弧 */}
+              <path className="draw" pathLength="1" d="M215,236 Q320,242 400,238" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": ".86s" }} />
+              <path className="draw" pathLength="1" d="M562,238 Q650,242 748,236" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": ".94s" }} />
+              {/* U 形回路 — 大圆角转角 */}
+              <path className="draw" pathLength="1" d="M 812 282 V 388 A 28 28 0 0 1 784 416 H 176 A 28 28 0 0 1 148 388 V 282" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": "1.05s" }} />
+              {/* 节点卡 */}
+              <g className="pop" style={{ "--d": ".3s" }}>
+                <rect x="90" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
+                <circle cx="151" cy="222" r="10" fill="rgba(11,11,14,.1)" />
+                <text x="151" y="256" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="15" fill="#0b0b0e">用户</text>
+              </g>
+              <g className="pop" style={{ "--d": ".4s" }}>
+                <rect x="404" y="176" rx="22" width="154" height="122" fill="#0b0b0e" />
+                <text x="481" y="230" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="22" fill="#efece6">Agent</text>
+                <text x="481" y="256" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8.4" letterSpacing="1" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
+              </g>
+              <g className="pop" style={{ "--d": ".5s" }}>
+                <rect x="748" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
+                <rect x="797" y="212" rx="5" width="20" height="20" fill="rgba(11,11,14,.1)" />
+                <text x="809" y="256" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="800" fontSize="15" fill="#0b0b0e">飞书</text>
+              </g>
+              <g className="pop" style={{ "--d": ".58s" }}>
+                <rect x="272" y="66" rx="10" width="96" height="30" fill="rgba(11,11,14,.05)" />
+                <text x="320" y="85" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">外部数据</text>
+                <rect x="606" y="66" rx="10" width="110" height="30" fill="rgba(11,11,14,.05)" />
+                <text x="661" y="85" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">RAG 知识库</text>
+              </g>
+              {/* 线上 pill 标签 */}
+              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="9.6" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.1s" }}>
+                <rect x="264" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="307" y="227" textAnchor="middle">发起需求</text>
+                <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="655" y="227" textAnchor="middle">生成内容</text>
+                <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6" /><text x="480" y="420" textAnchor="middle">发送给用户 · 完成闭环</text>
+              </g>
+              {!APX_REDUCE && (
+                <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }}>
+                  <animateMotion dur="9s" repeatCount="indefinite" path="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215" />
+                </circle>
+              )}
+              {APX_REDUCE && <circle className="pop" cx="480" cy="414" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }} />}
+            </svg>
+          </div>
         </div>
-        <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
-          <span className="sq" aria-hidden="true"></span>访问平台 · CO-WORK PLATFORM<span className="arr" aria-hidden="true">↗</span>
-        </a>
+
+        {/* ── P3 · 平台影片 — 压轴：影片 + 刊末条 + CTA ── */}
+        <div className="apx-spread apx-p3" data-ob="self">
+          <div className="apx-ghost" aria-hidden="true">03</div>
+          <div className="apx-copy2">
+            <div className="apx-kick2">{p3.ix} · {p3.tag}</div>
+            <h3>{p3.title.slice(0, -1)}<i className="psq" aria-hidden="true"></i></h3>
+            <p>{p3.body}</p>
+          </div>
+          <div className="apx-video" aria-label="Co-work Agent Platform video">
+            {/* DESKTOP: src stays blank until the film block scrolls into view, then
+                useApxFilm points it at xtool/?fresh=1 ONCE and leaves it. PHONE/TABLET:
+                the poster button loads it on a tap.（结构与类名为 useApxFilm 的
+                querySelector 依赖，勿动） */}
+            <iframe ref={frameRef} src="about:blank" title="Co-work Agent Platform film" allow="autoplay; fullscreen"></iframe>
+            <div className="apx-video-loading mono" aria-hidden="true">
+              <span className="apx-load-bars"><i></i><i></i><i></i><i></i><i></i></span>
+              <span className="apx-load-cap">影片加载中 · LOADING FILM</span>
+            </div>
+            {!filmOn && (
+              <button className="apx-video-play" type="button" data-hov aria-label="播放 Co-work 平台影片"
+                      onClick={() => {
+                        setFilmOn(true);
+                        const f = frameRef.current; if (!f) return;
+                        const lo = f.parentElement && f.parentElement.querySelector(".apx-video-loading");
+                        if (lo) lo.style.display = "flex";
+                        f.src = "xtool/?fresh=1";
+                      }}>
+                <img src="xtool/screenshots/demo_review.png" alt="Co-work Agent Platform" loading="lazy" draggable="false" />
+                <span className="apx-play-ico" aria-hidden="true"></span>
+                <span className="apx-play-cap mono">点击播放 · CO-WORK 平台影片 ▶</span>
+              </button>
+            )}
+          </div>
+          <div className="apx-strip2" aria-hidden="true">
+            {APX_STATS.map((s, i) => (
+              <div className="apx-stat" key={s.label} style={{ transitionDelay: (0.3 + i * 0.08) + "s" }}>
+                <b>{s.n}{s.unit}</b><span>{s.label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="apx-ctarow">
+            <a className="apx-cta ch-cta" href={aipmUrl} target="_blank" rel="noopener" data-hov>
+              <span className="sq" aria-hidden="true"></span>访问平台 · CO-WORK PLATFORM<span className="arr" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

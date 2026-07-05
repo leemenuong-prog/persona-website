@@ -502,7 +502,10 @@ function App() {
         /* phase W — WORKS arrives: the nav mark flies to the stage centre and
            grows into the enlarged closed logo. It vanishes (opacity) while the
            deck is open and re-forms at the end. */
-        const pW = aClamp((ss - brand.wkTop) / brand.wkSpan, 0, 1.2);
+        /* floor -0.2 (was 0): einW's lift-off reads pW<0 during the glide-in —
+           a 0-floor pinned pW at 0 everywhere above Works, which evaluated
+           einW≈0.82 and parked the mark mid-screen on every chapter. */
+        const pW = aClamp((ss - brand.wkTop) / brand.wkSpan, -0.2, 1.2);
         const wsScale = Math.min(0.46, (W * 0.42) / Math.max(W - 80, 1));
         const bandW = (W - 80) * wsScale;
         const bandH = (H * 0.34) * wsScale;

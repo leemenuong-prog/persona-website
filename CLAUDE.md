@@ -23,6 +23,17 @@
 - 大标题 weight 800、紧 letter-spacing，词从条中「解码」升起（BarWord）。
 - 价格/编号/注释用 JetBrains Mono；中文为辅注（.zh）。
 
+## 介绍层软语法（作品介绍「三大页」· 杂志对页模板，2026-07 用户选定）
+作品介绍章（现 AIPM/Co-work，后续多作品复用）走**杂志对页**子语言，Logo/导航/方点仍硬朗直角：
+- 三个 spread：P1 左文右图（图版右出血）· P2 镜像拉页（左出血）· P3 压轴影片 + 刊末条 + CTA
+- 超大衬底页码（`--ghost` 6% 墨 · clamp(300px,34vw,520px)）出血咬合标题；`overflow-x: clip` 收边
+- 「软纸片」图版：`--ghost` 底 + 24px 大圆角 + 出血侧圆角归零 + 无描边无投影（印刷色版，非浮卡）
+- 示意图 = 圆头线 SVG 信息图：`stroke-linecap:round`、粗细对比（7/2.25）、圆环站点、圆头 chevron、
+  线逐笔画出（`.draw` + pathLength=1 + `--d` 延迟）、节点后弹（`.pop`）、蓝点 spline 到站减速
+- 跳色仍只落「点」：句点方块、「交付」直角蓝块（全图唯一直角=蓝色句点）、巡回蓝点、CTA；数字墨色
+- 影片管线不可动：`.apx-video`/`.apx-video-loading` 类名与层级（useApxFilm 依赖）、≤900 tap-to-play
+- 复用：换 APX_INTRO_PAGES 文案 + 两张 SVG 内容 + APX_STATS 即可套到新作品
+
 ## 语言规范（全站文案口径）
 - **分层制**：操作类标签（CTA / 按钮 / 播放 / 复制 / 翻页提示）一律 `中文 · ENGLISH`；
   结构注释类（章节 kick、取景框标签、图注）一律 `ENGLISH · 中文` 或 `NN · ENGLISH / 中文`。两层内部各自严格统一。

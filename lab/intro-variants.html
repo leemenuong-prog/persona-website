@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>作品介绍 · 三变体实验室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ 令牌（与主站同源三色；软化令牌为实验室新增） ═══ */
+:root {
+  --blue: #0047AB; --blue-up: #2b5fde; --blue-dn: #002a66;
+  --ink: #0b0b0e; --paper: #efece6;
+  --fg: var(--ink); --fg-dim: rgba(11,11,14,.55);
+  --line: rgba(11,11,14,.15); --line-strong: rgba(11,11,14,.28);
+  --ghost6: rgba(11,11,14,.06);
+  --sans: "Helvetica Neue", Helvetica, "Segoe UI", Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ez: cubic-bezier(.16,1,.3,1);
+  /* A · 产品卡 */
+  --r-lg: 24px; --r-md: 16px; --r-sm: 10px;
+  --card-bd: rgba(11,11,14,.08); --panel-bd: rgba(11,11,14,.06);
+  --wash: rgba(11,11,14,.035);
+  --shadow-soft: 0 1px 0 rgba(11,11,14,.03), 0 10px 30px -12px rgba(5,8,30,.10), 0 30px 70px -30px rgba(5,8,30,.12);
+  --shadow-soft-hi: 0 2px 0 rgba(11,11,14,.03), 0 18px 44px -14px rgba(5,8,30,.16), 0 44px 96px -34px rgba(5,8,30,.18);
+  --shadow-media: 0 18px 50px -12px rgba(5,8,30,.28);
+  --shadow-card: 0 26px 60px rgba(5,8,30,.32);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x:hidden; }
+a { color:inherit; text-decoration:none; }
+img { display:block; max-width:100%; }
+.mono { font-family: var(--mono); }
+
+/* ═══ 顶部切换条 ═══ */
+.labbar { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; gap:6px;
+  padding:12px 20px; font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  background:rgba(239,236,230,.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+.labbar b { font-weight:700; margin-right:12px; color:var(--fg-dim); }
+.labbar a { padding:8px 12px; border-radius:8px; color:var(--fg-dim); transition:color .25s var(--ez), background .25s var(--ez); }
+.labbar a:hover, .labbar a.on { color:var(--ink); background:rgba(11,11,14,.06); }
+.labbar .sq { width:7px; height:7px; background:var(--blue); margin-right:8px; }
+
+/* ═══ 变体区共用骨架 ═══ */
+.variant { padding: 120px 0 140px; position:relative; }
+.variant + .variant { border-top: 1px solid var(--line-strong); }
+.vhead { max-width:1120px; margin:0 auto 64px; padding:0 clamp(20px,5vw,48px); }
+.vhead .tag { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+  color:var(--fg-dim); padding:7px 14px; border:1px solid var(--line-strong); border-radius:999px; }
+.vhead .tag i { width:6px; height:6px; background:var(--blue); }
+.vhead h1 { margin-top:18px; font-size:clamp(28px,3.4vw,44px); font-weight:800; letter-spacing:-.02em; }
+.vhead p { margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:38em; line-height:1.8; }
+.kicker { display:flex; justify-content:space-between; gap:16px; font-family:var(--mono); font-size:10px; letter-spacing:.26em;
+  color:var(--fg-dim); padding-bottom:13px; border-bottom:1px solid var(--line-strong); }
+
+/* 显影 */
+.rv { opacity:0; transform:translateY(28px) scale(.985); transition:opacity .9s var(--ez), transform .9s var(--ez); transition-delay:var(--rd,0s); }
+.rv.in { opacity:1; transform:none; }
+.rv14 { opacity:0; transform:translateY(14px); transition:opacity .5s var(--ez), transform .5s var(--ez); transition-delay:var(--rd,0s); }
+.rv14.in { opacity:1; transform:none; }
+
+/* ════════════════════════════════════════════════
+   变体 A · Manus 产品卡
+   ════════════════════════════════════════════════ */
+.va .wrap { max-width:1120px; margin:0 auto; padding:0 clamp(20px,5vw,48px); }
+.va-card { background:var(--paper); border:1px solid var(--card-bd); border-radius:var(--r-lg);
+  box-shadow:var(--shadow-soft); padding:clamp(28px,4vw,52px) clamp(22px,4.5vw,56px) clamp(26px,4vw,46px);
+  background-image:linear-gradient(180deg, transparent 55%, rgba(11,11,14,.025));
+  transition:box-shadow .5s var(--ez), transform .5s var(--ez); margin-top:56px; }
+@media (hover:hover) and (pointer:fine) { .va-card:hover { box-shadow:var(--shadow-soft-hi); transform:translateY(-4px); } }
+.va-chip { display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+  color:var(--fg-dim); padding:6px 13px; border:1px solid var(--panel-bd); border-radius:999px; background:rgba(11,11,14,.03); }
+.va-chip b { color:var(--ink); font-weight:700; }
+.va h3 { margin-top:20px; font-size:clamp(24px,2.6vw,38px); font-weight:800; letter-spacing:-.01em; line-height:1.25; }
+.va h3 .psq { display:inline-block; width:.12em; height:.12em; background:var(--blue); margin-left:.12em; }
+.va .body { margin-top:12px; font-size:15px; line-height:1.9; color:rgba(11,11,14,.78); max-width:34em; }
+.va-panel { margin-top:32px; background:var(--wash); border:1px solid var(--panel-bd); border-radius:var(--r-md); padding:clamp(18px,2.6vw,30px); position:relative; }
+/* 图1 — 两张 UI 小卡 + 胶囊 join */
+.va-flow { display:grid; grid-template-columns:1fr 1fr; gap:28px; position:relative; }
+.va-mini { background:var(--paper); border:1px solid var(--card-bd); border-radius:var(--r-md);
+  box-shadow:0 6px 18px -8px rgba(5,8,30,.10); overflow:hidden; }
+.va-winbar { display:flex; align-items:center; justify-content:space-between; padding:9px 14px; border-bottom:1px solid var(--panel-bd); }
+.va-winbar span { font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--fg-dim); }
+.va-winbar i { display:inline-block; width:6px; height:6px; border-radius:50%; background:rgba(11,11,14,.16); margin-left:5px; }
+.va-mini .inner { padding:16px 18px 18px; }
+.va-task { display:flex; align-items:center; gap:12px; border-radius:var(--r-sm); background:rgba(11,11,14,.04); padding:10px 14px; margin-top:8px; }
+.va-task:first-child { margin-top:0; }
+.va-task b { font-size:13.5px; font-weight:800; letter-spacing:.06em; }
+.va-task .bars { display:flex; gap:4px; margin-left:auto; }
+.va-task .bars i { width:5px; height:12px; border-radius:3px; background:rgba(11,11,14,.5); }
+.va-note { margin-top:14px; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--fg-dim); }
+.va-join { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
+  background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+  padding:9px 16px; border-radius:999px; white-space:nowrap; box-shadow:0 8px 22px -8px rgba(5,8,30,.35); }
+.va-railwrap { position:relative; margin-top:6px; padding:22px 6px 8px; }
+.va-rail { position:relative; display:flex; justify-content:space-between; align-items:center; }
+.va-rail::before { content:""; position:absolute; left:2%; right:2%; top:50%; height:3px; border-radius:2px; background:rgba(11,11,14,.10); }
+.va-stop { position:relative; z-index:1; display:inline-flex; align-items:center; gap:7px; background:var(--paper);
+  border:1px solid var(--panel-bd); border-radius:999px; padding:6px 12px; font-size:12px; font-weight:700; }
+.va-stop i { width:6px; height:6px; background:var(--ink); }
+.va-stop.end { background:var(--blue); color:var(--paper); border-color:var(--blue); }
+.va-stop.end i { background:var(--paper); }
+.va-dot { position:absolute; z-index:0; top:50%; left:4%; width:6px; height:6px; margin-top:-3px; border-radius:50%;
+  background:var(--blue); box-shadow:0 0 0 5px rgba(0,71,171,.14); animation:vaRail 6.5s ease-in-out infinite; }
+@keyframes vaRail {
+  0%,6% { left:4%; } 18%,26% { left:27%; } 38%,46% { left:50%; } 58%,66% { left:73%; }
+  80%,92% { left:95%; box-shadow:0 0 0 8px rgba(0,71,171,.2);} 100% { left:95%; box-shadow:0 0 0 5px rgba(0,71,171,0);} }
+/* 图2 — HTML 节点 + SVG 弧线 */
+.va-loop { position:relative; height:380px; }
+.va-loop svg.wires { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.va-node { position:absolute; z-index:2; background:var(--paper); border:1px solid var(--card-bd); border-radius:12px;
+  box-shadow:0 6px 18px -8px rgba(5,8,30,.10); padding:14px 16px; text-align:center; }
+.va-node .ava { width:18px; height:18px; border-radius:50%; background:rgba(11,11,14,.10); margin:0 auto 8px; }
+.va-node .app { width:18px; height:18px; border-radius:5px; background:rgba(11,11,14,.10); margin:0 auto 8px; }
+.va-node b { display:block; font-size:14px; font-weight:800; }
+.va-node span { display:block; margin-top:4px; font-family:var(--mono); font-size:8.5px; letter-spacing:.18em; color:var(--fg-dim); }
+.va-core { position:absolute; z-index:2; left:50%; top:44%; transform:translate(-50%,-50%);
+  background:var(--ink); color:var(--paper); border-radius:var(--r-md); padding:22px 30px; text-align:center;
+  background-image:linear-gradient(180deg, rgba(239,236,230,.05), transparent 38%); box-shadow:var(--shadow-media); }
+.va-core b { font-size:24px; font-weight:800; letter-spacing:-.02em; }
+.va-core span { display:block; margin-top:7px; font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; color:rgba(239,236,230,.66); }
+.va-src { position:absolute; z-index:2; display:inline-flex; align-items:center; gap:8px; background:var(--paper);
+  border:1px solid var(--panel-bd); border-radius:999px; padding:7px 14px; font-size:12px; font-weight:700; }
+.va-src i { width:6px; height:6px; background:var(--ink); }
+.va-wirelab { position:absolute; z-index:2; background:var(--paper); border:1px solid var(--panel-bd); border-radius:999px;
+  padding:4px 11px; font-family:var(--mono); font-size:9px; letter-spacing:.14em; color:var(--fg-dim); white-space:nowrap; }
+/* P3 */
+.va-filmhead { margin-top:72px; }
+.va-film { margin-top:24px; position:relative; border-radius:20px; overflow:hidden; background:var(--ink);
+  background-image:linear-gradient(180deg, rgba(239,236,230,.05), transparent 38%);
+  border:1px solid rgba(11,11,14,.35); box-shadow:var(--shadow-media); aspect-ratio:16/9; }
+.va-film img { width:100%; height:100%; object-fit:cover; opacity:.5; }
+.va-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:12px; }
+.va-play .ico { width:66px; height:66px; border-radius:50%; border:2px solid var(--paper); background:rgba(11,11,14,.5);
+  display:grid; place-items:center; transition:transform .25s var(--ez), background .25s var(--ez); }
+.va-film:hover .ico { transform:scale(1.06); background:rgba(11,11,14,.72); }
+.va-play .ico::before { content:""; width:0; height:0; margin-left:5px; border-left:16px solid var(--paper); border-top:10px solid transparent; border-bottom:10px solid transparent; }
+.va-play .cap { color:var(--paper); font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; background:rgba(11,11,14,.62); padding:7px 14px; border-radius:999px; }
+.va-stats { margin-top:28px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.va-stat { background:var(--paper); border:1px solid var(--card-bd); border-radius:var(--r-md); padding:20px 22px; min-height:108px;
+  box-shadow:0 6px 18px -8px rgba(5,8,30,.10); transition:box-shadow .25s var(--ez), transform .25s var(--ez); }
+@media (hover:hover) and (pointer:fine) { .va-stat:hover { transform:translateY(-2px); box-shadow:0 12px 28px -10px rgba(5,8,30,.16); } }
+.va-stat b { font-size:clamp(26px,2.6vw,34px); font-weight:800; letter-spacing:-.02em; }
+.va-stat b i { font-style:normal; color:var(--blue); }
+.va-stat span { display:block; margin-top:8px; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--fg-dim); }
+.va-cta { display:inline-flex; align-items:center; gap:11px; margin-top:26px; background:var(--blue); color:var(--paper);
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.16em; padding:15px 24px; border-radius:12px;
+  box-shadow:0 12px 30px -16px rgba(11,11,14,.45); transition:background .26s var(--ez), box-shadow .3s var(--ez), transform .3s var(--ez); }
+.va-cta .sq { width:9px; height:9px; background:var(--paper); }
+@media (hover:hover) and (pointer:fine) { .va-cta:hover { background:var(--blue-dn); transform:translateY(-3px); box-shadow:0 18px 42px -16px rgba(11,11,14,.58); } }
+.va-cta:active { transform:translateY(-1px); }
+
+/* ════════════════════════════════════════════════
+   变体 B · 杂志对页
+   ════════════════════════════════════════════════ */
+.vb { --mgz: clamp(28px,6vw,96px); }
+.vb-spread { display:grid; grid-template-columns:repeat(12,1fr); column-gap:clamp(14px,2vw,28px);
+  padding:0 var(--mgz); min-height:82vh; align-content:center; position:relative; margin-top:64px; }
+.vb-ghost { position:absolute; z-index:0; font-weight:800; font-size:clamp(220px,30vw,460px); line-height:.72;
+  letter-spacing:-.06em; color:var(--ghost6); pointer-events:none; user-select:none;
+  opacity:0; transform:scale(1.04); transition:opacity .9s var(--ez), transform .9s var(--ez); }
+.in .vb-ghost, .vb-ghost.in { opacity:1; transform:scale(1); }
+.vb-kick { grid-row:1; font-family:var(--mono); font-size:10px; letter-spacing:.24em; color:var(--fg-dim);
+  opacity:0; transform:translateX(-24px); transition:all .5s var(--ez) .1s; }
+.in .vb-kick { opacity:1; transform:none; }
+.vb-title { font-size:clamp(30px,3.4vw,52px); font-weight:800; letter-spacing:-.02em; line-height:1.18; margin-top:14px;
+  opacity:0; transform:translateY(22px); transition:all .9s var(--ez) .18s; }
+.in .vb-title { opacity:1; transform:none; }
+.vb-title .psq { display:inline-block; width:.12em; height:.12em; background:var(--blue); margin-left:.12em; }
+.vb-body { margin-top:16px; font-size:15px; line-height:1.95; color:rgba(11,11,14,.78); max-width:24em;
+  opacity:0; transform:translateY(16px); transition:all .5s var(--ez) .3s; }
+.in .vb-body { opacity:1; transform:none; }
+.vb-chipart { position:relative; z-index:1; background:rgba(11,11,14,.04); padding:clamp(20px,3vw,40px);
+  opacity:0; transition:opacity .9s var(--ez) .12s, transform .9s var(--ez) .12s; }
+.in .vb-chipart { opacity:1; transform:none !important; }
+.vb-chipart svg { display:block; width:100%; height:auto; }
+/* B 的图形线：逐笔画出 */
+.vb .draw { stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .9s var(--ez); }
+.in .vb .draw, .vb .in .draw, .in .draw { stroke-dashoffset:0; }
+.vb .pop { opacity:0; transform:scale(.92); transform-origin:center; transform-box:fill-box; transition:opacity .5s var(--ez), transform .5s var(--ez); }
+.in .pop { opacity:1; transform:scale(1); }
+.vb-p1 .vb-ghost { left:calc(-1 * var(--mgz) * .3); top:2%; }
+.vb-p1 .vb-copy { grid-column:2 / 8; grid-row:1; position:relative; z-index:2; padding-top:clamp(60px,9vw,140px); }
+.vb-p1 .vb-chipart { grid-column:5 / 13; grid-row:2; margin-top:-48px; margin-right:calc(-1 * var(--mgz));
+  border-radius:24px 0 0 24px; transform:translateX(28px) scaleX(.97); transform-origin:right center; }
+.vb-p2 .vb-ghost { right:calc(-1 * var(--mgz) * .3); top:2%; text-align:right; }
+.vb-p2 .vb-copy { grid-column:7 / 12; grid-row:1; position:relative; z-index:2; padding-top:clamp(60px,9vw,140px); }
+.vb-p2 .vb-chipart { grid-column:1 / 9; grid-row:2; margin-top:-36px; margin-left:calc(-1 * var(--mgz));
+  border-radius:0 24px 24px 0; transform:translateX(-28px) scaleX(.97); transform-origin:left center; }
+.vb-p3 .vb-copy { grid-column:2 / 8; grid-row:1; position:relative; z-index:2; }
+.vb-p3 .vb-ghost { left:calc(-1 * var(--mgz) * .2); bottom:-4%; top:auto; }
+.vb-film { grid-column:2 / 12; grid-row:2; position:relative; z-index:1; margin-top:34px;
+  border-radius:20px; overflow:hidden; background:var(--ink); aspect-ratio:16/9; box-shadow:var(--shadow-card);
+  transition:box-shadow .5s var(--ez); opacity:0; transform:translateY(24px); }
+.in .vb-film { opacity:1; transform:none; transition:opacity .9s var(--ez) .2s, transform .9s var(--ez) .2s, box-shadow .5s var(--ez); }
+@media (hover:hover) and (pointer:fine) { .vb-film:hover { box-shadow:0 56px 130px rgba(5,8,30,.5); } }
+.vb-film img { width:100%; height:100%; object-fit:cover; opacity:.5; }
+.vb-stats { grid-column:2 / 12; grid-row:3; display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(14px,2vw,28px); margin-top:44px; }
+.vb-stat { opacity:0; transform:translateY(14px); transition:all .5s var(--ez); }
+.in .vb-stat { opacity:1; transform:none; }
+.vb-stat::before { content:""; display:block; width:44px; height:3px; border-radius:2px; background:var(--ink); margin-bottom:14px;
+  transform:scaleX(0); transform-origin:left; transition:transform .9s var(--ez); transition-delay:inherit; }
+.in .vb-stat::before { transform:scaleX(1); }
+.vb-stat b { font-size:clamp(24px,2.4vw,36px); font-weight:800; letter-spacing:-.02em; }
+.vb-stat b i { font-style:normal; color:var(--blue); }
+.vb-stat span { display:block; margin-top:7px; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--fg-dim); }
+.vb-ctarow { grid-column:8 / 12; grid-row:4; justify-self:end; margin-top:48px; opacity:0; transform:translateY(14px); transition:all .5s var(--ez) .5s; }
+.in .vb-ctarow { opacity:1; transform:none; }
+.vb-cta { display:inline-flex; align-items:center; gap:11px; background:var(--blue); color:var(--paper);
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.16em; padding:15px 24px;
+  box-shadow:var(--shadow-media); transition:background .26s var(--ez), transform .3s var(--ez), box-shadow .3s var(--ez); }
+.vb-cta .sq { width:9px; height:9px; background:var(--paper); }
+@media (hover:hover) and (pointer:fine) { .vb-cta:hover { background:var(--blue-dn); transform:translateY(-3px); } }
+
+/* ════════════════════════════════════════════════
+   变体 C · 叙事「一条需求的一天」
+   ════════════════════════════════════════════════ */
+.vc .wrap { max-width:1080px; margin:0 auto; padding:0 clamp(20px,5vw,48px); }
+.vc-pagehead { margin-top:64px; max-width:34em; }
+.vc h3 { margin-top:14px; font-size:clamp(24px,2.6vw,38px); font-weight:800; letter-spacing:-.01em; line-height:1.25; }
+.vc h3 .psq { display:inline-block; width:.12em; height:.12em; background:var(--blue); margin-left:.12em; }
+.vc .body { margin-top:12px; font-size:15px; line-height:1.9; color:rgba(11,11,14,.78); }
+.vc-k { display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:var(--fg-dim); }
+.vc-k b { color:var(--ink); }
+.vc-scene { margin-top:28px; position:relative; border:1px solid var(--line); border-radius:20px; padding:clamp(22px,3.4vw,40px);
+  background-image:linear-gradient(var(--ghost6) 1px, transparent 1px), linear-gradient(90deg, var(--ghost6) 1px, transparent 1px);
+  background-size:164px 164px; background-position:-1px -1px; }
+.vc-cap { position:absolute; left:18px; top:-9px; background:var(--paper); padding:2px 10px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; color:var(--fg-dim); }
+/* P1 进箱 */
+.vc-flow { display:grid; grid-template-columns:minmax(280px,.95fr) 64px minmax(280px,1.05fr); gap:0 24px; align-items:start; }
+.vc-colh { font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--fg-dim); padding-bottom:14px; }
+.vc-msg { display:flex; align-items:flex-start; gap:10px; margin-top:12px; }
+.vc-msg:first-of-type { margin-top:0; }
+.vc-ava { flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:var(--ghost6);
+  display:grid; place-items:center; font-family:var(--mono); font-size:11px; color:var(--fg-dim); }
+.vc-bub { position:relative; background:var(--paper); border:1px solid var(--line-strong);
+  border-radius:16px; border-top-left-radius:4px; padding:12px 16px; box-shadow:var(--shadow-media); }
+.vc-bub b { font-size:14px; font-weight:800; letter-spacing:.04em; }
+.vc-bub::before, .vc-bub::after { content:""; position:absolute; inset:0; border-radius:inherit; z-index:-1; }
+.vc-bub::before { border:1px solid var(--line-strong); opacity:.5; transform:translate(5px,-5px); }
+.vc-bub::after { border:1px solid var(--line); opacity:.5; transform:translate(10px,-10px); }
+.vc-ts { margin-left:8px; font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--fg-dim); align-self:center; }
+.vc-note { margin-top:16px; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--fg-dim); }
+.vc-join { position:relative; align-self:center; margin-top:90px; height:1px; background:var(--ink); opacity:.8; }
+.vc-join::after { content:""; position:absolute; right:-1px; top:50%; transform:translateY(-50%);
+  border-left:6px solid var(--ink); border-top:4px solid transparent; border-bottom:4px solid transparent; }
+.vc-join span { position:absolute; left:50%; bottom:9px; transform:translateX(-50%);
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--fg-dim); white-space:nowrap; }
+.vc-agentcard { background:var(--ink); color:var(--paper); border-radius:16px; padding:14px 18px;
+  background-image:linear-gradient(180deg, rgba(239,236,230,.05), transparent 38%);
+  display:flex; align-items:baseline; gap:12px; box-shadow:var(--shadow-media); }
+.vc-agentcard b { font-size:17px; font-weight:800; }
+.vc-agentcard span { font-family:var(--mono); font-size:9px; letter-spacing:.12em; color:rgba(239,236,230,.66); }
+.vc-rail { position:relative; display:flex; justify-content:space-between; align-items:center; margin-top:26px; padding:0 2px; }
+.vc-rail::before { content:""; position:absolute; left:4px; right:5px; top:50%; height:1px; background:var(--ink); opacity:.5; }
+.vc-tick { position:relative; z-index:1; background:var(--paper); border:1px solid var(--line-strong); border-radius:10px;
+  padding:6px 12px; font-size:12px; font-weight:700; }
+.vc-end { position:relative; z-index:1; width:10px; height:10px; background:var(--blue); }
+.vc-pulse { position:absolute; z-index:0; left:1%; top:50%; width:5px; height:5px; margin-top:-2.5px; border-radius:50%;
+  background:var(--blue); animation:vcRail 3.6s cubic-bezier(.55,.08,.35,.92) infinite; }
+@keyframes vcRail { 0% { left:1%; opacity:0; } 8% { opacity:1; } 92% { opacity:1; } 100% { left:98%; opacity:0; } }
+/* P2 旅程 SVG */
+.vc-journey { display:block; width:100%; height:auto; cursor:pointer; }
+.vc-replay { margin-top:10px; text-align:right; font-family:var(--mono); font-size:9px; letter-spacing:.18em; color:var(--fg-dim); }
+/* P3 回执 */
+.vc-film { margin-top:28px; position:relative; border-radius:18px; overflow:hidden; background:var(--ink);
+  background-image:linear-gradient(180deg, rgba(239,236,230,.05), transparent 38%); border:1px solid rgba(11,11,14,.35);
+  box-shadow:var(--shadow-media); aspect-ratio:16/9; }
+.vc-film img { width:100%; height:100%; object-fit:cover; opacity:.5; }
+.vc-receipt-title { margin-top:30px; font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--fg-dim); }
+.vc-receipts { margin-top:14px; display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.vc-receipt { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+  box-shadow:var(--shadow-media); transition:transform .25s var(--ez), box-shadow .25s var(--ez); }
+@media (hover:hover) and (pointer:fine) { .vc-receipt:hover { transform:translateY(-2px); box-shadow:var(--shadow-card); } }
+.vc-receipt b { font-size:clamp(24px,2.4vw,32px); font-weight:800; letter-spacing:-.02em; }
+.vc-receipt b i { font-style:normal; color:var(--blue); }
+.vc-receipt span { display:block; margin-top:6px; font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; color:var(--fg-dim); }
+.vc-cta { display:inline-flex; align-items:center; gap:11px; margin-top:26px; background:var(--blue); color:var(--paper);
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.16em; padding:15px 24px;
+  box-shadow:0 12px 30px -16px rgba(11,11,14,.45); transition:background .26s var(--ez), transform .3s var(--ez); }
+.vc-cta .sq { width:9px; height:9px; background:var(--paper); }
+@media (hover:hover) and (pointer:fine) { .vc-cta:hover { background:var(--blue-dn); transform:translateY(-3px); } }
+
+/* ═══ 响应式 ═══ */
+@media (max-width: 860px) {
+  .va-flow { grid-template-columns:1fr; gap:14px; }
+  .va-join { position:static; transform:none; align-self:center; margin:0 auto; display:table; }
+  .va-loop { height:auto; min-height:520px; }
+  .va-stats, .vc-receipts { grid-template-columns:1fr 1fr; }
+  .vb-spread { display:block; padding:0 20px; min-height:0; margin-top:96px; }
+  .vb-ghost { font-size:clamp(150px,40vw,220px); }
+  .vb-p1 .vb-chipart, .vb-p2 .vb-chipart { margin:26px -8px 0; border-radius:18px; transform:none; }
+  .vb-p1 .vb-copy, .vb-p2 .vb-copy, .vb-p3 .vb-copy { padding-top:110px; }
+  .vb-film { margin-top:26px; }
+  .vb-stats { grid-template-columns:1fr 1fr; margin-top:30px; gap:18px; }
+  .vb-ctarow { margin-top:30px; justify-self:start; }
+  .vc-flow { grid-template-columns:1fr; gap:16px; }
+  .vc-join { margin:8px auto; width:1px; height:44px; }
+  .vc-join::after { right:auto; top:auto; left:50%; bottom:-1px; transform:translateX(-50%);
+    border-left:4px solid transparent; border-right:4px solid transparent; border-top:6px solid var(--ink); border-bottom:0; }
+  .vc-join span { left:14px; bottom:auto; top:50%; transform:translateY(-50%); }
+  .vc-rail { flex-wrap:wrap; gap:8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv14, .vb-ghost, .vb-kick, .vb-title, .vb-body, .vb-chipart, .vb-film, .vb-stat, .vb-ctarow, .vb .pop { opacity:1 !important; transform:none !important; transition:none !important; }
+  .vb .draw { stroke-dashoffset:0 !important; transition:none !important; }
+  .va-dot, .vc-pulse { animation:none !important; }
+}
+</style>
+</head>
+<body>
+
+<nav class="labbar">
+  <span class="sq"></span><b>作品介绍 · 三变体实验室</b>
+  <a href="#va">A · 产品卡</a>
+  <a href="#vb">B · 杂志对页</a>
+  <a href="#vc">C · 叙事旅程</a>
+</nav>
+
+<!-- ════════════ 变体 A ════════════ -->
+<section class="variant va" id="va">
+  <div class="vhead">
+    <span class="tag"><i></i>VARIANT A · MANUS 产品卡</span>
+    <h1>放在纸面上的产品卡</h1>
+    <p>三页各是一张大圆角浮卡；示意图变成卡内的 UI 面板——窗口条、任务行、步骤胶囊。工程图纸感换成产品界面感，蓝点逐站办事而非匀速巡逻。</p>
+  </div>
+  <div class="wrap">
+    <div class="kicker rv"><span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span></div>
+
+    <!-- P1 -->
+    <article class="va-card rv" style="--rd:.08s">
+      <span class="va-chip"><b>01</b>平台能力</span>
+      <h3>把人效工作变成 Agent 工作流<span class="psq"></span></h3>
+      <p class="body">把大家的需求收集起来，就成了 Agent。</p>
+      <div class="va-panel">
+        <div class="va-flow">
+          <div class="va-mini rv14" style="--rd:.3s">
+            <div class="va-winbar"><span>人效 · 手动重复</span><span><i></i><i></i><i></i></span></div>
+            <div class="inner">
+              <div class="va-task"><b>调研</b><span class="bars"><i></i><i></i><i></i><i></i><i></i></span></div>
+              <div class="va-task" style="margin-left:14px"><b>脚本</b><span class="bars"><i></i><i></i><i></i></span></div>
+              <div class="va-task" style="margin-left:6px"><b>审核</b><span class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+              <div class="va-task" style="margin-left:20px"><b>复测</b><span class="bars"><i></i><i></i><i></i><i></i></span></div>
+              <div class="va-note">同样的事，每天重复地做</div>
+            </div>
+          </div>
+          <span class="va-join rv14" style="--rd:.42s">交给 Agent →</span>
+          <div class="va-mini rv14" style="--rd:.5s">
+            <div class="va-winbar"><span>AGENT 工作流 · 自动执行</span><span><i></i><i></i><i></i></span></div>
+            <div class="inner">
+              <div class="va-railwrap">
+                <div class="va-rail">
+                  <i class="va-dot"></i>
+                  <span class="va-stop rv14" style="--rd:.56s"><i></i>调研</span>
+                  <span class="va-stop rv14" style="--rd:.62s"><i></i>脚本</span>
+                  <span class="va-stop rv14" style="--rd:.68s"><i></i>审核</span>
+                  <span class="va-stop rv14" style="--rd:.74s"><i></i>复测</span>
+                  <span class="va-stop end rv14" style="--rd:.8s"><i></i>交付</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- P2 -->
+    <article class="va-card rv" style="--rd:.05s">
+      <span class="va-chip"><b>02</b>平台定义</span>
+      <h3>不仅是工具，更是一套系统<span class="psq"></span></h3>
+      <p class="body">同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。</p>
+      <div class="va-panel">
+        <div class="va-loop">
+          <svg class="wires" viewBox="0 0 960 380" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="vaArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M1,1 L9,5 L1,9" fill="none" stroke="rgba(11,11,14,.35)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <path d="M 355 66 Q 400 110 448 138" fill="none" stroke="rgba(11,11,14,.18)" stroke-width="2" stroke-linecap="round" marker-end="url(#vaArr)"/>
+            <path d="M 605 66 Q 560 110 512 138" fill="none" stroke="rgba(11,11,14,.18)" stroke-width="2" stroke-linecap="round" marker-end="url(#vaArr)"/>
+            <path id="vaLoopPath" d="M 190 200 H 745 A 24 24 0 0 1 769 224 V 306 A 24 24 0 0 1 745 330 H 215 A 24 24 0 0 1 191 306 V 224 A 24 24 0 0 1 215 200 H 190"
+              fill="none" stroke="rgba(11,11,14,.18)" stroke-width="2" stroke-linecap="round"/>
+            <circle r="9" fill="rgba(0,71,171,.12)"><animateMotion dur="10s" repeatCount="indefinite"><mpath href="#vaLoopPath"/></animateMotion></circle>
+            <circle r="4" fill="#0047AB"><animateMotion dur="10s" repeatCount="indefinite"><mpath href="#vaLoopPath"/></animateMotion></circle>
+          </svg>
+          <span class="va-src rv14" style="--rd:.28s; left:24%; top:6%"><i></i>外部数据</span>
+          <span class="va-src rv14" style="--rd:.34s; left:55%; top:6%"><i></i>RAG 知识库</span>
+          <div class="va-node rv14" style="--rd:.4s; left:4%; top:38%; width:150px">
+            <span class="ava"></span><b>用户</b><span>USER</span>
+          </div>
+          <div class="va-core rv14" style="--rd:.46s">
+            <b>Agent</b><span>统一记忆 · 统一规则 · 统一数据</span>
+          </div>
+          <div class="va-node rv14" style="--rd:.52s; right:4%; top:38%; width:150px">
+            <span class="app"></span><b>飞书</b><span>FEISHU</span>
+          </div>
+          <span class="va-wirelab rv14" style="--rd:.6s; left:24%; top:48.5%">发起需求</span>
+          <span class="va-wirelab rv14" style="--rd:.66s; right:24%; top:48.5%">生成内容</span>
+          <span class="va-wirelab rv14" style="--rd:.72s; left:50%; transform:translateX(-50%); top:83%">发送给用户 · 完成闭环</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- P3 -->
+    <div class="va-filmhead rv">
+      <span class="va-chip"><b>03</b>平台影片</span>
+      <h3>看它怎么跑<span class="psq"></span></h3>
+    </div>
+    <div class="va-film rv" style="--rd:.16s">
+      <img src="../xtool/screenshots/demo_review.png" alt="Co-work Agent Platform">
+      <div class="va-play"><span class="ico"></span><span class="cap">点击播放 · CO-WORK 平台影片</span></div>
+    </div>
+    <div class="va-stats">
+      <div class="va-stat rv14" style="--rd:.24s"><b><i>7</i> 个</b><span>生产工具</span></div>
+      <div class="va-stat rv14" style="--rd:.32s"><b><i>4</i> 部门 · 65 人</b><span>覆盖范围</span></div>
+      <div class="va-stat rv14" style="--rd:.4s"><b><i>80%+</i></b><span>任务完成率</span></div>
+      <div class="va-stat rv14" style="--rd:.48s"><b>$1 → <i>0.39</i></b><span>每投入 $1 省 0.39 工时</span></div>
+    </div>
+    <a class="va-cta rv14" style="--rd:.56s" href="https://peersagent.netlify.app/" target="_blank" rel="noopener"><span class="sq"></span>访问平台 · CO-WORK PLATFORM ↗</a>
+  </div>
+</section>
+
+<!-- ════════════ 变体 B ════════════ -->
+<section class="variant vb" id="vb">
+  <div class="vhead">
+    <span class="tag"><i></i>VARIANT B · 杂志对页</span>
+    <h1>三个杂志对页</h1>
+    <p>超大衬底页码 + 非对称错位版式 + 出血的软纸片色版；示意图变成圆头线条的信息图插画，线是逐笔画出来的。</p>
+  </div>
+
+  <!-- P1 -->
+  <div class="vb-spread vb-p1 obs">
+    <div class="vb-ghost">01</div>
+    <div class="vb-copy">
+      <div class="vb-kick">01 · 平台能力</div>
+      <h3 class="vb-title">把人效工作变成<br>Agent 工作流<span class="psq"></span></h3>
+      <p class="vb-body">把大家的需求收集起来，就成了 Agent。</p>
+    </div>
+    <div class="vb-chipart">
+      <svg viewBox="0 0 960 430" aria-hidden="true">
+        <defs>
+          <marker id="vbChev" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <!-- 左：人效四行（圆头短线，参差） -->
+        <g font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="17" fill="#0b0b0e">
+          <text x="40" y="88" class="pop" style="transition-delay:.5s">调研</text>
+          <text x="68" y="152" class="pop" style="transition-delay:.55s">脚本</text>
+          <text x="52" y="216" class="pop" style="transition-delay:.6s">审核</text>
+          <text x="80" y="280" class="pop" style="transition-delay:.65s">复测</text>
+        </g>
+        <g stroke="#0b0b0e" stroke-width="7" stroke-linecap="round" opacity=".72">
+          <g class="draw" pathLength="1" style="transition-delay:.55s"><line x1="106" y1="82" x2="136" y2="82"/><line x1="146" y1="84" x2="174" y2="84"/><line x1="184" y1="81" x2="216" y2="81"/><line x1="226" y1="83" x2="252" y2="83"/><line x1="262" y1="82" x2="290" y2="82"/></g>
+          <g class="draw" pathLength="1" style="transition-delay:.62s"><line x1="134" y1="146" x2="166" y2="146"/><line x1="176" y1="148" x2="204" y2="148"/><line x1="214" y1="145" x2="244" y2="145"/></g>
+          <g class="draw" pathLength="1" style="transition-delay:.69s"><line x1="118" y1="210" x2="146" y2="210"/><line x1="156" y1="212" x2="188" y2="212"/><line x1="198" y1="209" x2="224" y2="209"/><line x1="234" y1="211" x2="262" y2="211"/><line x1="272" y1="210" x2="300" y2="210"/><line x1="310" y1="212" x2="336" y2="212"/></g>
+          <g class="draw" pathLength="1" style="transition-delay:.76s"><line x1="146" y1="274" x2="178" y2="274"/><line x1="188" y1="276" x2="214" y2="276"/><line x1="224" y1="273" x2="254" y2="273"/><line x1="264" y1="275" x2="290" y2="275"/></g>
+        </g>
+        <!-- callout 注释 -->
+        <path class="draw" pathLength="1" d="M300,352 Q330,332 336,232" fill="none" stroke="rgba(11,11,14,.35)" stroke-width="1.5" stroke-linecap="round" style="transition-delay:.9s"/>
+        <circle class="pop" cx="336" cy="228" r="2" fill="rgba(11,11,14,.35)" style="transition-delay:.95s"/>
+        <text class="pop" x="176" y="372" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.8" fill="rgba(11,11,14,.55)" style="transition-delay:.92s">同样的事，每天重复地做</text>
+        <!-- 中：S 曲线手递 -->
+        <path class="draw" pathLength="1" d="M340,220 C420,220 430,150 500,142" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" marker-end="url(#vbChev)" style="transition-delay:.8s"/>
+        <g class="pop" style="transition-delay:.9s">
+          <rect x="382" y="168" rx="12" width="112" height="26" fill="rgba(11,11,14,.05)"/>
+          <text x="438" y="185" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2" fill="#0b0b0e">交给 AGENT</text>
+        </g>
+        <!-- 右：轨道 + 圆环站点 + 直角蓝终点 -->
+        <path id="vbRail" class="draw" pathLength="1" d="M500,142 H906" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" style="transition-delay:1s"/>
+        <g fill="#efece6" stroke="#0b0b0e" stroke-width="2.25">
+          <circle class="pop" cx="556" cy="142" r="6" style="transition-delay:1.1s"/>
+          <circle class="pop" cx="646" cy="142" r="6" style="transition-delay:1.16s"/>
+          <circle class="pop" cx="736" cy="142" r="6" style="transition-delay:1.22s"/>
+          <circle class="pop" cx="826" cy="142" r="6" style="transition-delay:1.28s"/>
+        </g>
+        <g class="pop" style="transition-delay:1.34s"><rect x="894" y="130" width="12" height="12" fill="#0047AB"/></g>
+        <g font-family="Helvetica Neue, sans-serif" font-weight="700" font-size="13" fill="#0b0b0e">
+          <text class="pop" x="556" y="172" text-anchor="middle" style="transition-delay:1.12s">调研</text>
+          <text class="pop" x="646" y="172" text-anchor="middle" style="transition-delay:1.18s">脚本</text>
+          <text class="pop" x="736" y="172" text-anchor="middle" style="transition-delay:1.24s">审核</text>
+          <text class="pop" x="826" y="172" text-anchor="middle" style="transition-delay:1.3s">复测</text>
+          <text class="pop" x="900" y="172" text-anchor="middle" style="transition-delay:1.36s">交付</text>
+        </g>
+        <circle class="pop" r="7" fill="rgba(0,71,171,.22)" style="transition-delay:1.5s">
+          <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1"
+            keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#vbRail"/></animateMotion>
+        </circle>
+        <circle class="pop" r="4" fill="#0047AB" style="transition-delay:1.5s">
+          <animateMotion dur="4.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;.3;.34;.64;.68;1" keyTimes="0;.26;.36;.6;.7;1"
+            keySplines=".45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1;.45 0 .2 1"><mpath href="#vbRail"/></animateMotion>
+        </circle>
+      </svg>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="vb-spread vb-p2 obs">
+    <div class="vb-ghost">02</div>
+    <div class="vb-copy">
+      <div class="vb-kick">02 · 平台定义</div>
+      <h3 class="vb-title">不仅是工具，<br>更是一套系统<span class="psq"></span></h3>
+      <p class="vb-body">同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。</p>
+    </div>
+    <div class="vb-chipart">
+      <svg viewBox="0 0 960 480" aria-hidden="true">
+        <defs>
+          <marker id="vbChev2" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <!-- 来源：圆点虚线下落 -->
+        <path class="draw" pathLength="1" d="M355,96 Q392,130 438,158" fill="none" stroke="rgba(11,11,14,.45)" stroke-width="2.25" stroke-linecap="round" stroke-dasharray="0 10" style="transition-delay:.7s"/>
+        <path class="draw" pathLength="1" d="M615,96 Q578,130 532,158" fill="none" stroke="rgba(11,11,14,.45)" stroke-width="2.25" stroke-linecap="round" stroke-dasharray="0 10" style="transition-delay:.78s"/>
+        <!-- 主轴微垂弧 -->
+        <path class="draw" pathLength="1" d="M215,236 Q320,242 400,238" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" marker-end="url(#vbChev2)" style="transition-delay:.86s"/>
+        <path class="draw" pathLength="1" d="M562,238 Q650,242 748,236" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" marker-end="url(#vbChev2)" style="transition-delay:.94s"/>
+        <!-- U 形回路 -->
+        <path id="vbLoop" class="draw" pathLength="1" d="M 812 282 V 388 A 28 28 0 0 1 784 416 H 176 A 28 28 0 0 1 148 388 V 282" fill="none" stroke="#0b0b0e" stroke-width="2.25" stroke-linecap="round" marker-end="url(#vbChev2)" style="transition-delay:1.05s"/>
+        <!-- 节点（HTML 感的 SVG 卡） -->
+        <g class="pop" style="transition-delay:.3s">
+          <rect x="90" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" stroke-width="1.5"/>
+          <circle cx="151" cy="222" r="10" fill="rgba(11,11,14,.1)"/>
+          <text x="151" y="256" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="15" fill="#0b0b0e">用户</text>
+        </g>
+        <g class="pop" style="transition-delay:.4s">
+          <rect x="404" y="176" rx="22" width="154" height="122" fill="#0b0b0e"/>
+          <text x="481" y="230" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="22" fill="#efece6">Agent</text>
+          <text x="481" y="256" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.4" letter-spacing="1" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
+        </g>
+        <g class="pop" style="transition-delay:.5s">
+          <rect x="748" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" stroke-width="1.5"/>
+          <rect x="797" y="212" rx="5" width="20" height="20" fill="rgba(11,11,14,.1)"/>
+          <text x="809" y="256" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="15" fill="#0b0b0e">飞书</text>
+        </g>
+        <g class="pop" style="transition-delay:.58s">
+          <rect x="272" y="66" rx="10" width="96" height="30" fill="rgba(11,11,14,.05)"/>
+          <text x="320" y="85" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#0b0b0e">外部数据</text>
+          <rect x="606" y="66" rx="10" width="110" height="30" fill="rgba(11,11,14,.05)"/>
+          <text x="661" y="85" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#0b0b0e">RAG 知识库</text>
+        </g>
+        <!-- 线上 pill 标签 -->
+        <g class="pop" font-family="JetBrains Mono, monospace" font-size="9.6" letter-spacing="1.6" fill="rgba(11,11,14,.55)" style="transition-delay:1.1s">
+          <rect x="264" y="212" rx="10" width="86" height="22" fill="#efece6"/><text x="307" y="227" text-anchor="middle">发起需求</text>
+          <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6"/><text x="655" y="227" text-anchor="middle">生成内容</text>
+          <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6"/><text x="480" y="420" text-anchor="middle">发送给用户 · 完成闭环</text>
+        </g>
+        <!-- 巡回蓝点 -->
+        <circle class="pop" r="4.5" fill="#0047AB" style="transition-delay:1.4s">
+          <animateMotion dur="9s" repeatCount="indefinite" path="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="vb-spread vb-p3 obs">
+    <div class="vb-ghost">03</div>
+    <div class="vb-copy">
+      <div class="vb-kick">03 · 平台影片</div>
+      <h3 class="vb-title">看它怎么跑<span class="psq"></span></h3>
+    </div>
+    <div class="vb-film">
+      <img src="../xtool/screenshots/demo_review.png" alt="Co-work Agent Platform">
+    </div>
+    <div class="vb-stats">
+      <div class="vb-stat" style="transition-delay:.3s"><b><i>7</i> 个</b><span>生产工具</span></div>
+      <div class="vb-stat" style="transition-delay:.38s"><b><i>4</i> 部门 · 65 人</b><span>覆盖范围</span></div>
+      <div class="vb-stat" style="transition-delay:.46s"><b><i>80%+</i></b><span>任务完成率</span></div>
+      <div class="vb-stat" style="transition-delay:.54s"><b>$1 → <i>0.39</i></b><span>每投入 $1 省 0.39 工时</span></div>
+    </div>
+    <div class="vb-ctarow">
+      <a class="vb-cta" href="https://peersagent.netlify.app/" target="_blank" rel="noopener"><span class="sq"></span>访问平台 · CO-WORK PLATFORM ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 变体 C ════════════ -->
+<section class="variant vc" id="vc">
+  <div class="vhead">
+    <span class="tag"><i></i>VARIANT C · 叙事旅程</span>
+    <h1>一条需求的一天</h1>
+    <p>三页讲同一个故事：需求不断涌进来 → 一条需求被 Agent 接住、走完一整圈回到人手里 → 亲眼看它跑一遍。抽象节点换成消息气泡、头像与回执。</p>
+  </div>
+  <div class="wrap">
+    <div class="kicker rv14"><span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span></div>
+
+    <!-- P1 -->
+    <div class="vc-pagehead rv14" style="--rd:.06s">
+      <span class="vc-k"><b>01</b> · 平台能力</span>
+      <h3>把人效工作变成 Agent 工作流<span class="psq"></span></h3>
+      <p class="body">把大家的需求收集起来，就成了 Agent。</p>
+    </div>
+    <div class="vc-scene rv14" style="--rd:.14s">
+      <span class="vc-cap">同事的一天 → AGENT 接住</span>
+      <div class="vc-flow">
+        <div>
+          <div class="vc-colh">人效 · 手动重复</div>
+          <div class="vc-msg rv14" style="--rd:.28s"><span class="vc-ava">R</span><span class="vc-bub"><b>调研</b></span><span class="vc-ts">MON 09:12</span></div>
+          <div class="vc-msg rv14" style="--rd:.36s"><span class="vc-ava">S</span><span class="vc-bub"><b>脚本</b></span><span class="vc-ts">MON 11:47</span></div>
+          <div class="vc-msg rv14" style="--rd:.44s"><span class="vc-ava">A</span><span class="vc-bub"><b>审核</b></span><span class="vc-ts">TUE 14:05</span></div>
+          <div class="vc-msg rv14" style="--rd:.52s"><span class="vc-ava">T</span><span class="vc-bub"><b>复测</b></span><span class="vc-ts">WED 17:30</span></div>
+          <div class="vc-note">同样的事，每天重复地做</div>
+        </div>
+        <div class="vc-join"><span>交给 Agent</span></div>
+        <div>
+          <div class="vc-colh">AGENT 工作流 · 自动执行</div>
+          <div class="vc-agentcard rv14" style="--rd:.6s"><b>Agent</b><span>统一记忆 · 统一规则 · 统一数据</span></div>
+          <div class="vc-rail">
+            <i class="vc-pulse"></i>
+            <span class="vc-tick rv14" style="--rd:.68s">调研</span>
+            <span class="vc-tick rv14" style="--rd:.74s">脚本</span>
+            <span class="vc-tick rv14" style="--rd:.8s">审核</span>
+            <span class="vc-tick rv14" style="--rd:.86s">复测</span>
+            <span class="vc-end rv14" style="--rd:.92s"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="vc-pagehead rv14">
+      <span class="vc-k"><b>02</b> · 平台定义</span>
+      <h3>不仅是工具，更是一套系统<span class="psq"></span></h3>
+      <p class="body">同事在飞书发起需求，Agent 调用外部数据和 RAG 知识库生成内容，飞书再把结果送回他手里，完成闭环。</p>
+    </div>
+    <div class="vc-scene rv14" style="--rd:.1s">
+      <span class="vc-cap">一条需求的旅程 · 一套系统</span>
+      <svg class="vc-journey" id="vcJourney" viewBox="0 0 1080 420" aria-label="一条需求的旅程，点选重看">
+        <path id="vcPath" d="M 215 210 H 795 A 24 24 0 0 1 819 234 V 336 A 24 24 0 0 1 795 360 H 159 A 24 24 0 0 1 135 336 V 234 A 24 24 0 0 1 159 210 H 215"
+          fill="none" stroke="rgba(11,11,14,.28)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- 来源 -->
+        <g>
+          <rect x="360" y="30" rx="10" width="110" height="34" fill="#efece6" stroke="rgba(11,11,14,.15)"/>
+          <text x="415" y="52" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="700" font-size="13" fill="#0b0b0e">外部数据</text>
+          <rect x="610" y="30" rx="10" width="126" height="34" fill="#efece6" stroke="rgba(11,11,14,.15)"/>
+          <text x="673" y="52" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="700" font-size="13" fill="#0b0b0e">RAG 知识库</text>
+          <path d="M 430 64 Q 460 96 496 128" fill="none" stroke="rgba(11,11,14,.15)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M 656 64 Q 626 96 590 128" fill="none" stroke="rgba(11,11,14,.15)" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <!-- 站点 -->
+        <g>
+          <circle cx="120" cy="150" r="16" fill="rgba(11,11,14,.08)"/>
+          <text x="120" y="155" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="rgba(11,11,14,.55)">U</text>
+          <rect x="66" y="176" rx="16" width="110" height="60" fill="#efece6" stroke="rgba(11,11,14,.28)" stroke-width="1.2"/>
+          <text x="121" y="203" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="15" fill="#0b0b0e">用户</text>
+          <text x="121" y="222" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="2" fill="rgba(11,11,14,.55)">发起需求</text>
+        </g>
+        <g>
+          <rect x="466" y="150" rx="16" width="150" height="118" fill="#0b0b0e"/>
+          <text x="541" y="204" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="21" fill="#efece6">Agent</text>
+          <text x="541" y="230" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.2" letter-spacing="1" fill="rgba(239,236,230,.66)">统一记忆·统一规则·统一数据</text>
+        </g>
+        <g>
+          <rect x="874" y="176" rx="16" width="110" height="60" fill="#efece6" stroke="rgba(11,11,14,.28)" stroke-width="1.2"/>
+          <rect x="916" y="150" rx="6" width="26" height="26" fill="rgba(11,11,14,.08)"/>
+          <text x="929" y="203" text-anchor="middle" font-family="Helvetica Neue, sans-serif" font-weight="800" font-size="15" fill="#0b0b0e">飞书</text>
+          <text x="929" y="222" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="2" fill="rgba(11,11,14,.55)">生成内容</text>
+        </g>
+        <rect x="446" y="348" rx="10" width="188" height="24" fill="#efece6"/>
+        <text x="540" y="364" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.6" letter-spacing="1.6" fill="rgba(11,11,14,.55)">发送给用户 · 完成闭环</text>
+        <!-- 旅行的消息卡 -->
+        <g id="vcParcel">
+          <rect x="-28" y="-17" rx="8" width="56" height="34" fill="#efece6" stroke="#0b0b0e" stroke-width="1.4"/>
+          <line x1="-16" y1="-6" x2="14" y2="-6" stroke="rgba(11,11,14,.5)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="-16" y1="1" x2="8" y2="1" stroke="rgba(11,11,14,.5)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="-16" y1="8" x2="11" y2="8" stroke="rgba(11,11,14,.5)" stroke-width="3" stroke-linecap="round"/>
+          <rect x="18" y="-15" width="7" height="7" fill="#0047AB"/>
+          <animateMotion id="vcRide" dur="7s" begin="indefinite" fill="freeze"
+            keyPoints="0;0.166;0.166;0.363;0.363;0.68;0.68;1" keyTimes="0;0.2;0.28;0.45;0.53;0.75;0.8;1" calcMode="linear">
+            <mpath href="#vcPath"/>
+          </animateMotion>
+        </g>
+      </svg>
+      <div class="vc-replay">点选重看 · REPLAY</div>
+    </div>
+
+    <!-- P3 -->
+    <div class="vc-pagehead rv14">
+      <span class="vc-k"><b>03</b> · 平台影片</span>
+      <h3>看它怎么跑<span class="psq"></span></h3>
+      <p class="body">上面那条旅程，下面实机走一遍。</p>
+    </div>
+    <div class="vc-film rv14" style="--rd:.12s">
+      <img src="../xtool/screenshots/demo_review.png" alt="Co-work Agent Platform">
+      <div class="va-play"><span class="ico"></span><span class="cap">点击播放 · CO-WORK 平台影片</span></div>
+    </div>
+    <div class="vc-receipt-title rv14" style="--rd:.2s">运行回执 · RECEIPTS</div>
+    <div class="vc-receipts">
+      <div class="vc-receipt rv14" style="--rd:.26s"><b><i>7</i></b><span>个生产工具</span></div>
+      <div class="vc-receipt rv14" style="--rd:.33s"><b><i>65</i> 人</b><span>覆盖 4 部门</span></div>
+      <div class="vc-receipt rv14" style="--rd:.4s"><b><i>80%+</i></b><span>任务完成率</span></div>
+      <div class="vc-receipt rv14" style="--rd:.47s"><b><i>0.39</i> 工时</b><span>每投入 $1 节省</span></div>
+    </div>
+    <a class="vc-cta rv14" style="--rd:.54s" href="https://peersagent.netlify.app/" target="_blank" rel="noopener"><span class="sq"></span>访问平台 · CO-WORK PLATFORM ↗</a>
+  </div>
+</section>
+
+<script>
+/* 显影：rv/rv14 元素与 obs 区块（B 的 spread 整块触发内部节拍） */
+const io = new IntersectionObserver((es) => {
+  es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+}, { threshold: 0.22 });
+document.querySelectorAll(".rv, .rv14, .obs").forEach((el) => io.observe(el));
+
+/* C 的旅程：到场自动播一次；点选重看 */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ride = document.getElementById("vcRide");
+const journey = document.getElementById("vcJourney");
+if (ride && journey && !reduce) {
+  const jio = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting && e.intersectionRatio >= 0.5) { ride.beginElement(); jio.disconnect(); } });
+  }, { threshold: [0, 0.5] });
+  jio.observe(journey);
+  journey.closest(".vc-scene").addEventListener("click", () => ride.beginElement());
+}
+if (reduce && ride) { /* 静置：卡停在路径起点旁，路径全程可见 */ }
+
+/* 切换条高亮 */
+const secs = ["va", "vb", "vc"].map((id) => document.getElementById(id));
+const links = [...document.querySelectorAll(".labbar a")];
+const nio = new IntersectionObserver((es) => {
+  es.forEach((e) => { if (e.isIntersecting) links.forEach((l) => l.classList.toggle("on", l.getAttribute("href") === "#" + e.target.id)); });
+}, { threshold: 0.25 });
+secs.forEach((s) => nio.observe(s));
+</script>
+</body>
+</html>
