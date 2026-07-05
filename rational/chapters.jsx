@@ -297,23 +297,38 @@ function ChAipmPlatform({ jump }) {
             <p>{p2.body}</p>
           </div>
           <div className="apx-chipart apx-art" aria-hidden="true">
-            {/* 桌面横版 — 飞书闭环：用户 → Agent（外部数据 / RAG）→ 飞书 → 沿 U 形
-                回路回到用户。巡回的只有小蓝点（带停顿：到 Agent、到飞书各歇一拍，
-                再沿底边回家）——2026-07-05 用户：旅行的消息卡已删，只留蓝点。 */}
+            {/* 桌面横版 — 飞书闭环。2026-07-05(2) 用户：动画乱 → 病根 = 蓝点走的
+                隐形矩形与画出的线错位（顶边垂弧 / 右侧偏 43px），点在线旁空白处飘、
+                还碾过黑卡。重做：回路 = 一笔画完的可见电路（从用户出发，穿 Agent、
+                飞书中心，沿底边回家），蓝点直接骑这条线（mpath 引同一条 path），
+                且画在节点卡之下——进卡即「进站」歇一拍，出来继续走，严丝合缝。 */}
             <svg className="apx-dk" viewBox="0 0 960 480">
-              <defs>
-                <marker id="apxChev2" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto">
-                  <path d="M2,1.5 L8,6 L2,10.5" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
-                </marker>
-              </defs>
-              {/* 来源 — 圆点虚线下落 */}
-              <path className="draw" pathLength="1" d="M355,96 Q392,130 438,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".7s" }} />
-              <path className="draw" pathLength="1" d="M615,96 Q578,130 532,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".78s" }} />
-              {/* 主轴微垂弧 */}
-              <path className="draw" pathLength="1" d="M215,236 Q320,242 400,238" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": ".86s" }} />
-              <path className="draw" pathLength="1" d="M562,238 Q650,242 748,236" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": ".94s" }} />
-              {/* U 形回路 — 大圆角转角 */}
-              <path className="draw" pathLength="1" d="M 812 282 V 388 A 28 28 0 0 1 784 416 H 176 A 28 28 0 0 1 148 388 V 282" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" markerEnd="url(#apxChev2)" style={{ "--d": "1.05s" }} />
+              {/* 闭环电路 — 唯一的一条线，一笔画出 */}
+              <path id="apxLoopPath" className="draw" pathLength="1" d="M151,237 H809 V388 A28,28 0 0 1 781,416 H179 A28,28 0 0 1 151,388 V237" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" style={{ "--d": ".8s", transitionDuration: "1.5s" }} />
+              {/* 方向 chevron — 顶边向右，底边向左，左侧向上（回路读向） */}
+              <g className="pop" fill="none" stroke="#0b0b0e" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" style={{ "--d": "1.3s" }}>
+                <path d="M372,231.5 L384,237 L372,242.5" />
+                <path d="M718,231.5 L730,237 L718,242.5" />
+                <path d="M306,421.5 L294,416 L306,410.5" />
+                <path d="M145.5,326 L151,314 L156.5,326" />
+              </g>
+              {/* 巡回蓝点 — 骑在可见回路上、画在节点卡之下：进 Agent 歇一拍、
+                  进飞书歇一拍，再沿底边回到用户，循环 */}
+              {!APX_REDUCE && (
+                <g>
+                  <circle className="pop" r="8" fill="rgba(0,71,171,.22)" style={{ "--d": "1.7s" }}>
+                    <animateMotion dur="10s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.2;0.2;0.399;0.399;1" keyTimes="0;0.17;0.25;0.42;0.5;1"><mpath href="#apxLoopPath" /></animateMotion>
+                  </circle>
+                  <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.7s" }}>
+                    <animateMotion dur="10s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.2;0.2;0.399;0.399;1" keyTimes="0;0.17;0.25;0.42;0.5;1"><mpath href="#apxLoopPath" /></animateMotion>
+                  </circle>
+                </g>
+              )}
+              {APX_REDUCE && <circle cx="380" cy="237" r="4.5" fill="#0047AB" />}
+              {/* 来源 — 圆点虚线落进 Agent（.pop 保住 dasharray；.draw 的 CSS
+                  dasharray:1 会覆盖属性，圆点虚线会变实线） */}
+              <path className="pop" d="M355,96 Q392,130 438,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".68s" }} />
+              <path className="pop" d="M615,96 Q578,130 532,158" fill="none" stroke="rgba(11,11,14,.45)" strokeWidth="2.25" strokeLinecap="round" strokeDasharray="0 10" style={{ "--d": ".74s" }} />
               {/* 节点卡 */}
               <g className="pop" style={{ "--d": ".3s" }}>
                 <rect x="90" y="192" rx="18" width="122" height="90" fill="#efece6" stroke="rgba(11,11,14,.28)" strokeWidth="1.5" />
@@ -336,26 +351,12 @@ function ChAipmPlatform({ jump }) {
                 <rect x="606" y="66" rx="10" width="110" height="30" fill="rgba(11,11,14,.05)" />
                 <text x="661" y="85" textAnchor="middle" fontFamily="Helvetica Neue, sans-serif" fontWeight="700" fontSize="12.5" fill="#0b0b0e">RAG 知识库</text>
               </g>
-              {/* 线上 pill 标签 */}
-              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.1s" }}>
-                <rect x="264" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="307" y="227.5" textAnchor="middle">发起需求</text>
-                <rect x="612" y="212" rx="10" width="86" height="22" fill="#efece6" /><text x="655" y="227.5" textAnchor="middle">生成内容</text>
-                <rect x="386" y="404" rx="10" width="188" height="24" fill="#efece6" /><text x="480" y="420.5" textAnchor="middle">发送给用户 · 完成闭环</text>
+              {/* 线上 pill 标签 — 骑在电路上，纸底断线（画在蓝点之上，点从底下穿过） */}
+              <g className="pop" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="1.6" fill="rgba(11,11,14,.55)" style={{ "--d": "1.15s" }}>
+                <rect x="264" y="226" rx="11" width="86" height="22" fill="#efece6" /><text x="307" y="241" textAnchor="middle">发起需求</text>
+                <rect x="612" y="226" rx="11" width="86" height="22" fill="#efece6" /><text x="655" y="241" textAnchor="middle">生成内容</text>
+                <rect x="386" y="405" rx="11" width="188" height="22" fill="#efece6" /><text x="480" y="420" textAnchor="middle">发送给用户 · 完成闭环</text>
               </g>
-              {/* 巡回路径（不可见）— 小蓝点沿闭环走：到 Agent、到飞书各停一拍，
-                  再沿底边回到用户（keyPoints 停顿 = 原 C 式旅程的节拍） */}
-              <path id="apxLoopPath" d="M 215 236 H 745 A 24 24 0 0 1 769 260 V 388 A 26 26 0 0 1 743 414 H 177 A 26 26 0 0 1 151 388 V 260 A 24 24 0 0 1 175 236 H 215" fill="none" stroke="none" />
-              {!APX_REDUCE && (
-                <g>
-                  <circle className="pop" r="8" fill="rgba(0,71,171,.22)" style={{ "--d": "1.4s" }}>
-                    <animateMotion dur="9s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.176;0.176;0.35;0.35;1" keyTimes="0;0.16;0.24;0.4;0.48;1"><mpath href="#apxLoopPath" /></animateMotion>
-                  </circle>
-                  <circle className="pop" r="4.5" fill="#0047AB" style={{ "--d": "1.4s" }}>
-                    <animateMotion dur="9s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0.176;0.176;0.35;0.35;1" keyTimes="0;0.16;0.24;0.4;0.48;1"><mpath href="#apxLoopPath" /></animateMotion>
-                  </circle>
-                </g>
-              )}
-              {APX_REDUCE && <circle cx="215" cy="236" r="4.5" fill="#0047AB" />}
             </svg>
             {/* 手机竖版 — 用户 → Agent → 飞书 直排，回路沿左侧回到用户；
                 蓝点画在节点卡之下，穿卡即「进站」（≤600 由 CSS 切换） */}
