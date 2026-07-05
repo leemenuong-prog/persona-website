@@ -9,7 +9,7 @@ const { useState: useSecState, useEffect: useSecEffect, useRef: useSecRef } = Re
 /* ── HERO ─────────────────────────────────────────────────── */
 function Hero({ jump }) {
   return (
-    <section className="hero sec" id="hero" data-tone="blue" data-screen-label="HERO" style={{ position: "relative", padding: 0 }}>
+    <section className="hero sec" id="hero" data-tone="ink" data-screen-label="HERO" style={{ position: "relative", padding: 0 }}>
       <div className="band-slot" aria-hidden="true"></div>
       <div className="hrule"></div>
       <div className="hbar mono">
@@ -97,7 +97,7 @@ const WHO_INDEX = [
 function Whoami({ jump }) {
   const { BarWord, BarBand, BarChrono } = window;
   return (
-    <section className="whoami sec" id="whoami" data-tone="blue" data-ob data-screen-label="WHOAMI">
+    <section className="whoami sec" id="whoami" data-tone="ink" data-ob data-screen-label="WHOAMI">
       <div className="who-top">
         <div className="kick lm"><span>01 · WHOAMI / 我是谁</span></div>
         <div className="who-tag mono" data-rv style={{ "--rd": ".1s" }}>AIPM · DEVELOPER · ARCHITECT</div>

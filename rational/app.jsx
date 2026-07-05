@@ -10,8 +10,7 @@ const { useState: useAppState, useEffect: useAppEffect, useRef: useAppRef } = Re
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accent": "#0047AB",
-  "motion": "full",
-  "cursor": true
+  "motion": "full"
 }/*EDITMODE-END*/;
 
 window.__progress = {};
@@ -68,8 +67,10 @@ function morphToLogo(rootEl, onLift, onSettled) {
       put(d, { x: t.left, y: t.top, w: t.width, h: t.height });
       d.style.backgroundColor = bg;
     };
-    clones.forEach((d, i) => fly(d, tBars[i] || tBars[tBars.length - 1], i * 0.035, "var(--ink)"));
-    fly(sq, tSq, 0.05, "var(--paper)");
+    /* 落色 = 各元素在 hero（ink 调）下的静息色：条走 --hard（ink 调翻纸色）、
+       句点走 --blue-up（ink 调的跳色） */
+    clones.forEach((d, i) => fly(d, tBars[i] || tBars[tBars.length - 1], i * 0.035, "var(--hard)"));
+    fly(sq, tSq, 0.05, "var(--blue-up)");
   }, 400);
   /* swap — clones land exactly on the real band; reveal it, drop them */
   setTimeout(() => {
@@ -175,7 +176,6 @@ function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [loading, setLoading] = useAppState(true);
   const navRef = useAppRef(null);
-  const curRef = useAppRef(null);
 
   /* accent */
   useAppEffect(() => {
@@ -207,29 +207,7 @@ function App() {
     });
   };
 
-  /* cursor */
-  useAppEffect(() => {
-    const cur = curRef.current; if (!cur) return;
-    /* the custom cursor is hidden on coarse pointers (base.css); also skip the
-       rAF loop + pointer listeners entirely so phones don't burn a frame
-       writing transforms to a display:none node. */
-    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-    if (!tweaks.cursor || coarse) { cur.style.display = "none"; return; }
-    cur.style.display = "";
-    let x = -100, y = -100, tx = -100, ty = -100;
-    const mv = (e) => { tx = e.clientX; ty = e.clientY; };
-    const over = (e) => { if (e.target.closest("[data-hov], a, button")) cur.classList.add("big"); else cur.classList.remove("big"); };
-    window.addEventListener("pointermove", mv, { passive: true });
-    window.addEventListener("pointerover", over, { passive: true });
-    let lastT = performance.now();
-    const stop = window.__addLoop((now) => {
-      const dt = Math.min((now - lastT) / 1000, 0.05); lastT = now;
-      const a = 1 - Math.exp(-dt * 26);
-      x += (tx - x) * a; y += (ty - y) * a;
-      cur.style.transform = `translate(${(x - 6).toFixed(1)}px, ${(y - 6).toFixed(1)}px)`;
-    });
-    return () => { stop(); window.removeEventListener("pointermove", mv); window.removeEventListener("pointerover", over); };
-  }, [tweaks.cursor, loading]);
+  /* (自定义方块光标已移除 — 2026-07-05 用户决定；hover 反馈由元素自身样式承担) */
 
   /* ── the engine ── */
   useAppEffect(() => {
@@ -288,7 +266,7 @@ function App() {
        cache dirty instead (window.__toneDirty, set in the accent effect). */
     let snapCache = {};
     const snap = (tone) => snapCache[tone] || (snapCache[tone] = toneSnapshot(tone));
-    let cur = snap(document.body.dataset.tone || "blue");
+    let cur = snap(document.body.dataset.tone || "ink");
     let lastToneKey = "";
     emit(cur);   /* seed frame 0 — inline literals consistent from the start (no FOUC mismatch) */
 
@@ -568,7 +546,6 @@ function App() {
 
   return (
     <>
-      <div className="cur" ref={curRef} aria-hidden="true"></div>
       {loading && <Loader onDone={() => setLoading(false)} />}
       <Nav jump={jump} navRef={navRef} />
       <BrandBand jump={jump} />
@@ -592,7 +569,6 @@ function App() {
         <TweakRadio label="Intensity" value={tweaks.motion}
           options={[{ value: "full", label: "电影感 Full" }, { value: "calm", label: "克制 Calm" }]}
           onChange={(v) => setTweak("motion", v)} />
-        <TweakToggle label="Custom cursor" value={tweaks.cursor} onChange={(v) => setTweak("cursor", v)} />
       </TweaksPanel>
     </>
   );

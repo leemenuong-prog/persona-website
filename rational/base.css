@@ -37,7 +37,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: auto; }
-html, body { background: var(--blue); }
+html, body { background: var(--ink); }   /* 开场即黑（2026-07-05 用户：蓝底改黑底，直接转换） */
 
 body {
   font-family: var(--sans);
@@ -104,19 +104,8 @@ img, canvas, svg { display: block; }
   font-family: var(--sans);
 }
 
-/* ── custom cursor ───────────────────────────────────────── */
-.cur {
-  position: fixed; left: 0; top: 0; z-index: 9000;
-  width: 12px; height: 12px;
-  background: var(--blue-up);
-  pointer-events: none;
-  transform: translate(-100px, -100px);
-  transition: width .25s var(--ez), height .25s var(--ez), background .25s;
-  will-change: transform;
-}
-body[data-tone="blue"] .cur { background: var(--paper); }
-.cur.big { width: 40px; height: 40px; mix-blend-mode: difference; background: #fff; }
-@media (pointer: coarse) { .cur { display: none; } }
+/* (自定义方块光标已移除 — 2026-07-05 用户：去掉鼠标的蓝色方块跟随；
+   交互反馈由各元素自身的 hover lift/变色承担) */
 
 /* ── loader — "I am" unfolds into "I alnt med" ──────────── */
 .loader {

@@ -476,9 +476,11 @@ function SiteForm3D() {
     ctx.globalAlpha = aEase(aClamp((p + 0.4) / 0.32, 0, 1));   /* prelude envelope, 1 by the pin */
     const calm = window.__calm ? 0.35 : 1;
 
-    const paper = (a) => `rgba(239,236,230,${a.toFixed(3)})`;
-    const blu = (a) => `rgba(43,95,222,${a.toFixed(3)})`;
-    const bluep = (a) => `rgba(120,158,255,${a.toFixed(3)})`;
+    /* Architect 章 2026-07-05 起坐纸底（用户：不再做黑背景，统一）——
+       线稿从纸色翻墨色、点缀翻钴蓝；helper 名保留（调用处 60+） */
+    const paper = (a) => `rgba(11,11,14,${a.toFixed(3)})`;
+    const blu = (a) => `rgba(0,71,171,${a.toFixed(3)})`;
+    const bluep = (a) => `rgba(0,71,171,${(a * 0.55).toFixed(3)})`;
 
     /* ── morph phases ──────────────────────────────────────────
        (logo) : the mark's eight bars align in height + rise into columns
@@ -514,7 +516,9 @@ function SiteForm3D() {
     const C = TPL.CENTER, cR = v3dot(C, R), cU = v3dot(C, U);
     const SC = Math.min(W * 0.039, H * 0.066);
     const shift = aEase(aSeg(p, 0.32, 0.80));
-    const cx = W * (0.50 + 0.030 * shift);
+    /* 构图右移让开左下格言区（同 Dev 章先例）——纸底后神庙是实心墨体量，
+       墨字压墨体会不可读 */
+    const cx = W * (0.56 + 0.030 * shift);
     const cy = H * (0.50 + 0.045 * shift);
     const project = (x, y, z) => {
       const pr = x * R[0] + y * R[1] + z * R[2];

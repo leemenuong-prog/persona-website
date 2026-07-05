@@ -542,7 +542,7 @@ function ChArch({ jump }) {
   const ref = useChR(null);
   useChProg("architect", ref);
   return (
-    <section className="chapter ch4" id="architect" data-tone="ink" data-prog="architect" data-screen-label="04 · An Architect — FIELD">
+    <section className="chapter ch4" id="architect" data-tone="paper" data-prog="architect" data-screen-label="04 · An Architect — FIELD">
       <div className="ch-wrap">
         <div className="ch-stage sec c4" data-ob ref={ref}>
           <div className="c4-art" aria-hidden="true"><SiteForm3D /></div>
