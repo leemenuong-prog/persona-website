@@ -39,7 +39,7 @@
    hue dot, not black) · lifted blue on ink */
 .bmw .bmp { flex: 0 0 auto; width: .13em; height: .13em; background: var(--acc);
   margin-bottom: .19em; margin-left: .1em;
-  transform: scale(0); transform-origin: bottom left; transition: background-color .9s var(--ez-io); }
+  transform: scale(0); transform-origin: bottom left; }   /* --acc 由引擎每帧插值，勿加 transition */
 
 /* choreography — rise → skyline hold → encode full → dye to the
    letter's color → sink + dissolve, while the letter rises out of
@@ -87,8 +87,7 @@ body[data-tone="blue"] .bband .sq { background: var(--paper); }
 body[data-tone="ink"] .bband .sq { background: var(--blue-up); }
 
 /* ── .psq — the inline 跳色 full stop, replaces "." in copy ── */
-.psq { display: inline-block; width: .12em; height: .12em; background: var(--acc); margin-left: .12em;
-  transition: background-color .9s var(--ez-io); }
+.psq { display: inline-block; width: .12em; height: .12em; background: var(--acc); margin-left: .12em; }
 
 /* ── BarChrono — the time skyline ──────────────────────────
    bars = periods · height = magnitude · the square (the self)

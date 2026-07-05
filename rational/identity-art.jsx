@@ -466,10 +466,14 @@ function SiteForm3D() {
   const ref = useCanvas((ctx, W, H, now) => {
     const S = simR.current;
     let p = (window.__progress && window.__progress.architect) || 0;
-    if (p <= 0) { ctx.clearRect(0, 0, W, H); S.last = now; return; }
+    /* PRELUDE — the glide-in used to be an empty ink stage; negative p now
+       fades in phase-0's initial state (the mark's bars standing at centre),
+       so the chapter arrives already holding its protagonist. */
+    if (p <= -0.4) { ctx.clearRect(0, 0, W, H); S.last = now; return; }
     if (p > 1) p = 1;
     const dt = Math.min(Math.max((now - S.last) / 1000, 0), 0.05); S.last = now;
     ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = aEase(aClamp((p + 0.4) / 0.32, 0, 1));   /* prelude envelope, 1 by the pin */
     const calm = window.__calm ? 0.35 : 1;
 
     const paper = (a) => `rgba(239,236,230,${a.toFixed(3)})`;

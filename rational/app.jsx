@@ -185,6 +185,7 @@ function App() {
     root.style.setProperty("--blue-up", up);
     const dn = { "#0047AB": "#002a66", "#2b5fde": "#163a96", "#0b0b0e": "#000000" }[tweaks.accent] || tweaks.accent;
     root.style.setProperty("--blue-dn", dn);
+    window.__toneDirty = true;   /* invalidate the engine's per-tone snapshots */
   }, [tweaks.accent]);
   useAppEffect(() => { window.__calm = tweaks.motion === "calm"; }, [tweaks.motion]);
 
@@ -250,13 +251,13 @@ function App() {
        base.css (seed / fallback) AND this TONE_VARS table (runtime). Change
        a tone → edit both. */
     const TONE_VARS = {
-      blue:  { bg: [0, 71, 171, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.62], line: [239, 236, 230, 0.32], ghost: [8, 10, 26, 0.20],     hard: [11, 11, 14, 1],    accKey: "--blue-dn" },
-      paper: { bg: [239, 236, 230, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.28],    ghost: [11, 11, 14, 0.06],    hard: [11, 11, 14, 1],    accKey: "--blue" },
+      blue:  { bg: [0, 71, 171, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.62], line: [239, 236, 230, 0.18], ghost: [8, 10, 26, 0.20],     hard: [11, 11, 14, 1],    accKey: "--blue-dn" },
+      paper: { bg: [239, 236, 230, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.15],    ghost: [11, 11, 14, 0.06],    hard: [11, 11, 14, 1],    accKey: "--blue" },
       /* snow — a cool near-white that MATCHES the Pears deck slides (rgb 245,245,247);
          the Reel uses it so the engine crossfades paper→snow as you arrive at the
          deck and snow→ink as you leave, instead of the slides clashing on warm paper. */
-      snow:  { bg: [245, 245, 247, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.22],    ghost: [11, 11, 14, 0.05],    hard: [11, 11, 14, 1],    accKey: "--blue" },
-      ink:   { bg: [11, 11, 14, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.55], line: [239, 236, 230, 0.22], ghost: [239, 236, 230, 0.05], hard: [239, 236, 230, 1], accKey: "--blue-up" },
+      snow:  { bg: [245, 245, 247, 1], fg: [11, 11, 14, 1],    fgDim: [11, 11, 14, 0.55],    line: [11, 11, 14, 0.12],    ghost: [11, 11, 14, 0.05],    hard: [11, 11, 14, 1],    accKey: "--blue" },
+      ink:   { bg: [11, 11, 14, 1],    fg: [239, 236, 230, 1], fgDim: [239, 236, 230, 0.55], line: [239, 236, 230, 0.13], ghost: [239, 236, 230, 0.05], hard: [239, 236, 230, 1], accKey: "--blue-up" },
     };
     const VK = ["bg", "fg", "fgDim", "line", "ghost", "hard", "acc"];
     const CSSVAR = { bg: "--bg", fg: "--fg", fgDim: "--fg-dim", line: "--line", ghost: "--ghost", hard: "--hard", acc: "--acc" };
@@ -282,17 +283,14 @@ function App() {
                  : `rgba(${v[0] | 0},${v[1] | 0},${v[2] | 0},${a.toFixed(3)})`);
       }
     };
-    const BG_DUR = reduce ? 0 : 700;
-    let cur = toneSnapshot(document.body.dataset.tone || "blue");
-    let from = cur, to = cur, bgStart = 0, bgFade = false;
+    /* snapshots cached per tone — resolving --acc via getComputedStyle every
+       frame would be a style read in the hot loop; the accent tweak flags the
+       cache dirty instead (window.__toneDirty, set in the accent effect). */
+    let snapCache = {};
+    const snap = (tone) => snapCache[tone] || (snapCache[tone] = toneSnapshot(tone));
+    let cur = snap(document.body.dataset.tone || "blue");
+    let lastToneKey = "";
     emit(cur);   /* seed frame 0 — inline literals consistent from the start (no FOUC mismatch) */
-    const setTone = (tone) => {
-      document.body.dataset.tone = tone;
-      if (!TONE_VARS[tone]) return;
-      from = cur;                  /* start from the current (maybe mid-fade) value → no jump on reverse */
-      to = toneSnapshot(tone);     /* --acc resolved live (accent tweak aware) */
-      bgStart = performance.now(); bgFade = true;
-    };
 
     /* counters — run when a stage reveals */
     const runCounters = (root) => {
@@ -326,7 +324,11 @@ function App() {
         });
       obs = [...document.querySelectorAll("[data-ob]")]
         .map((el) => {
-          const sec = el.closest("section");
+          /* data-ob="self" anchors the reveal to the ELEMENT's own top — deep
+             blocks in long sections (reel part 2, the aipm boards) reveal on
+             arrival instead of burning their entrance when the section top
+             scrolls past. Default keeps the section anchor. */
+          const sec = el.dataset.ob === "self" ? null : el.closest("section");
           return { el, top: sec ? absTop(sec) : absTop(el), done: el.classList.contains("in") };
         });
       const gr = document.querySelector("[data-ghostrows]");
@@ -396,8 +398,10 @@ function App() {
 
       /* per-chapter progress */
       progs.forEach((c) => {
+        /* floor widened to -0.6 so stages can choreograph an entrance PRELUDE
+           during the glide-in (canvases that gate on p<=0 are unaffected) */
         window.__progress[c.id] = window.__forceProg != null ? window.__forceProg
-          : aClamp((ss - c.top) / Math.max(c.h - vh, 1), -0.1, 1.1);
+          : aClamp((ss - c.top) / Math.max(c.h - vh, 1), -0.6, 1.1);
       });
 
       /* reveals — no IntersectionObserver, pure geometry */
@@ -406,26 +410,66 @@ function App() {
         if (ss + vh * 0.72 > o.top) { o.done = true; o.el.classList.add("in"); runCounters(o.el); }
       });
 
-      /* drive the tone recolor crossfade — bg + text + lines + accents as one */
-      if (bgFade) {
-        const t = BG_DUR ? Math.min((now - bgStart) / BG_DUR, 1) : 1;
-        const e = t * t * (3 - 2 * t);
-        const next = {};
-        for (const k of VK) {
-          const a = from[k], b = to[k];
-          const aa = a[3] == null ? 1 : a[3], ba = b[3] == null ? 1 : b[3];
-          next[k] = [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e, aa + (ba - aa) * e];
+      /* ── tone — scroll-DRIVEN crossfade (was a 700ms timer). Each boundary
+         between two DIFFERENT tones owns a ±22vh mixing band; the viewport
+         midline's position inside the band IS the blend. Pure function of the
+         damped scroll: slow scrolling melts the tones together, reverse
+         scrolling rewinds, and resting at a boundary holds a stable mix — the
+         timer used to re-trigger a full-page fade on every wiggle, and its
+         fixed 700ms could never stay in step with the content's own scroll-
+         driven entrances. ── */
+      if (window.__toneDirty) { snapCache = {}; window.__toneDirty = false; }
+      if (tones.length) {
+        const mid = ss + vh * 0.5;
+        const BAND = reduce ? vh * 0.02 : vh * 0.22;
+        let ti = 0;
+        for (let k = 0; k < tones.length; k++) {
+          if (mid >= tones[k].top) ti = k; else break;
         }
-        cur = next; emit(cur);
-        if (t >= 1) { cur = to; emit(cur); bgFade = false; }
-      }
-
-      /* tone — section under the viewport's midline */
-      const mid = ss + vh * 0.5;
-      for (const tn of tones) {
-        if (mid >= tn.top && mid < tn.top + tn.h) {
-          if (tn.tone !== lastTone) { lastTone = tn.tone; setTone(tn.tone); }
-          break;
+        /* nearest different-tone boundary and the blend across its band */
+        let A = tones[ti].tone, B = A, e = 0;
+        const prevT = tones[ti - 1], nextT = tones[ti + 1];
+        if (prevT && prevT.tone !== A && mid < tones[ti].top + BAND) {
+          B = A; A = prevT.tone;
+          e = (mid - (tones[ti].top - BAND)) / (BAND * 2);
+        } else if (nextT && nextT.tone !== A && mid > nextT.top - BAND) {
+          B = nextT.tone;
+          e = (mid - (nextT.top - BAND)) / (BAND * 2);
+        }
+        e = aClamp(e, 0, 1);
+        /* double smoothstep — steepen the middle so the low-contrast
+           mid-blend moment stays brief */
+        e = e * e * (3 - 2 * e);
+        e = e * e * (3 - 2 * e);
+        /* the TEXT family gets two more passes: fg and bg cross each other at
+           the band centre (both hit the same grey — text vanishes for an
+           instant), so the text's own grey zone is compressed to a sliver
+           (~4vh of scroll) it snaps across while the ground melts slowly */
+        let ef = e * e * (3 - 2 * e);
+        ef = ef * ef * (3 - 2 * ef);
+        /* discrete data-tone flip at band centre, with hysteresis so hovering
+           at the midpoint can't flicker the non-color selectors */
+        let want = lastTone;
+        if (e > 0.55) want = B; else if (e < 0.45) want = A;
+        if (!TONE_VARS[want]) want = A;
+        if (want !== lastTone) { lastTone = want; document.body.dataset.tone = want; }
+        /* interpolate + emit only when the blend actually moved */
+        const key = A + B + ((e * 255) | 0);
+        if (key !== lastToneKey) {
+          lastToneKey = key;
+          if (e <= 0) cur = snap(A);
+          else if (e >= 1) cur = snap(B);
+          else {
+            const sa = snap(A), sb = snap(B), next = {};
+            for (const k of VK) {
+              const a = sa[k], b = sb[k];
+              const t2 = (k === "fg" || k === "fgDim" || k === "hard") ? ef : e;
+              const aa = a[3] == null ? 1 : a[3], ba = b[3] == null ? 1 : b[3];
+              next[k] = [a[0] + (b[0] - a[0]) * t2, a[1] + (b[1] - a[1]) * t2, a[2] + (b[2] - a[2]) * t2, aa + (ba - aa) * t2];
+            }
+            cur = next;
+          }
+          emit(cur);
         }
       }
 
@@ -464,7 +508,9 @@ function App() {
         const bandH = (H * 0.34) * wsScale;
         const wcX = W * 0.5 - bandW * 0.5;
         const wcY = H * 0.46 - bandH;
-        const einW = sm(0, 0.05, pW);
+        /* lift-off begins during the glide-in (pW<0) so the mark is already
+           travelling as the works stage rises — no parked-then-jump beat */
+        const einW = sm(-0.12, 0.05, pW);
         x += (wcX - x) * einW;
         y += (wcY - y) * einW;
         sc += (wsScale - sc) * einW;
@@ -477,8 +523,11 @@ function App() {
         sc += (brand.s - sc) * eoutW;
 
         /* phase F — grow large and settle onto the footer band slot; keyed to
-           Contact's arrival, not Works' end (Works no longer sits beside it) */
-        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan);
+           Contact's arrival, not Works' end (Works no longer sits beside it).
+           Starts only AFTER phase W-out completes (pW 1.17) — the two phases
+           used to fight over the mark and bend its flight into a hesitant
+           dog-leg; now it's dock, then one clean arc to the footer. */
+        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan * 1.17);
         const q = aClamp((ss - fStart) / Math.max(brand.maxScroll - fStart, 1), 0, 1);
         const e3 = q * q * (3 - 2 * q);
         x += (brand.fslotL - x) * e3;

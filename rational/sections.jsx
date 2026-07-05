@@ -83,13 +83,13 @@ const WHO_CHRONO = [
    like a print with a drop shadow (用户: 左边索引，右边生活照，阴影卡一下).
    Click a row jumps into its chapter; hover focuses the row, the rest recede. */
 const WHO_INDEX = [
-  { id: "developer", ix: "01", tx: "A Developer", d: 1.6,
+  { id: "developer", ix: "01", tx: "A Developer", d: 1.0,
     mt: "From idea to shipped", zh: "保持从想法到落地的能力",
     band: [0.6, 1, 0.7, 0.9] },
-  { id: "aipm", ix: "02", tx: "An AIPM", d: 1.95,
+  { id: "aipm", ix: "02", tx: "An AIPM", d: 1.2,
     mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
     band: [0.85, 0.6, 1, 0.55] },
-  { id: "architect", ix: "03", tx: "An Architect", d: 2.3,
+  { id: "architect", ix: "03", tx: "An Architect", d: 1.4,
     mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
     band: [1, 0.66, 0.5, 0.9] },
 ];
@@ -106,24 +106,28 @@ function Whoami({ jump }) {
         <BarWord text="WHOAMI" />
       </h2>
       {/* 他唯一允许的自述格言 — 中文为主，英文平实直译作点缀 */}
-      <p className="who-lede" data-rv style={{ "--rd": "1.15s" }}>
+      {/* 编排链从 3.1s 压到 ≤1.6s——触发点在滚入 28vh 处，旧链快滚到场时
+          还在演中段、慢滚到场时早已演完；短链让节奏跟得上手 */}
+      <p className="who-lede" data-rv style={{ "--rd": ".5s" }}>
         我不追更快的马，想知道这趟路是不是该换种走法。
         <span className="en">I'm not chasing a faster horse — I'm asking whether this road needs a different way of walking.</span>
       </p>
-      <div className="rule who-rule" style={{ "--rd": "1.3s" }}></div>
+      <div className="rule who-rule" style={{ "--rd": ".65s" }}></div>
 
       <div className="who-index">
         <div className="who-index-list">
           <div className="dex-head kick">
-            <span data-rv style={{ "--rd": "1.45s" }}>INDEX / 三个身份 — I AM …</span>
-            <span data-rv style={{ "--rd": "1.58s" }}>点击进入章节 · CLICK TO ENTER</span>
+            <span data-rv style={{ "--rd": ".8s" }}>INDEX / 三个身份 — I AM …</span>
+            <span data-rv style={{ "--rd": ".9s" }}>点击进入章节 · CLICK TO ENTER</span>
           </div>
           <div className="dex-list">
             {WHO_INDEX.map((it, i) => (
-              <div key={it.id} className="dex-it" data-hov style={{ "--rd": (1.5 + i * 0.18) + "s" }} onClick={() => jump(it.id)}>
-                <span className="ix mono" data-rv style={{ "--rd": (1.65 + i * 0.35) + "s" }}>{it.ix}</span>
+              <div key={it.id} className="dex-it" data-hov role="button" tabIndex={0}
+                   style={{ "--rd": (0.95 + i * 0.15) + "s" }} onClick={() => jump(it.id)}
+                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jump(it.id); } }}>
+                <span className="ix mono" data-rv style={{ "--rd": (1.0 + i * 0.18) + "s" }}>{it.ix}</span>
                 <BarWord className="tx" text={it.tx} delay={it.d} />
-                <div className="side" data-rv style={{ "--rd": (1.9 + i * 0.35) + "s" }}>
+                <div className="side" data-rv style={{ "--rd": (1.1 + i * 0.18) + "s" }}>
                   <BarBand h={it.band} />
                   {/* 中文为主：他的中文一句话是正文，英文 motto 缩为点缀 */}
                   <div className="mt">{it.zh}</div>
@@ -133,9 +137,9 @@ function Whoami({ jump }) {
               </div>
             ))}
           </div>
-          <div className="dex-note kick" data-rv style={{ "--rd": "3.1s" }}>ONE DISCIPLINE · THREE PROOFS — 一种理性，三个证明</div>
+          <div className="dex-note kick" data-rv style={{ "--rd": "1.6s" }}>ONE DISCIPLINE · THREE PROOFS — 一种理性，三个证明</div>
         </div>
-        <div className="who-index-photo" data-rv style={{ "--rd": "1.5s" }}>
+        <div className="who-index-photo" data-rv style={{ "--rd": "1.0s" }}>
           <figure className="who-photo-card">
             <img src="uploads/whoami-portrait.jpg" alt="李文苑 · Lee Wenyuan" loading="lazy" />
             <figcaption className="mono">李文苑 · LEE WENYUAN — 深圳</figcaption>
@@ -144,7 +148,7 @@ function Whoami({ jump }) {
       </div>
 
       <div className="who-chrono">
-        <div className="kick" data-rv style={{ "--rd": "1.95s" }}><span>CHRONO / 成就时间柱 — 点选回看 · TAP A YEAR</span></div>
+        <div className="kick" data-rv style={{ "--rd": ".5s" }}><span>CHRONO / 成就时间柱 — 点选回看 · TAP A YEAR</span></div>
         <BarChrono items={WHO_CHRONO} />
       </div>
     </section>
@@ -504,8 +508,12 @@ function Works({ jump }) {
     const mix = (a, b, t) => "rgb(" + a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",") + ")";
     let barRects = null;
 
-    const tick = () => {
-      const p = clp((window.__progress && window.__progress.works) || 0, 0, 1);
+    let tkLast = performance.now();
+    const tick = (now) => {
+      const tNow = now || performance.now();
+      const dt = Math.min(Math.max((tNow - tkLast) / 1000, 0), 0.05); tkLast = tNow;
+      /* negative floor keeps a slice of the glide-in for the intro prelude */
+      const p = clp((window.__progress && window.__progress.works) || 0, -0.1, 1);
       const r = stage.getBoundingClientRect();
       const W = r.width, H = r.height;
 
@@ -531,16 +539,19 @@ function Works({ jump }) {
       const seg = k + smooth(0.34, 0.66, raw - k);
       const hv = hoverRef.current;
       const target = (hv != null && eS > 0.55) ? hv : seg;
-      /* silky inertia — the focus glides toward target rather than snapping. */
-      disp += (target - disp) * 0.12;
+      /* silky inertia — the focus glides toward target rather than snapping.
+         dt-normalised (0.12/frame @60Hz ≡ 1-e^(-7.6dt)) so 120Hz screens
+         don't run the glide at double speed. */
+      disp += (target - disp) * (1 - Math.exp(-dt * 7.6));
       if (Math.abs(target - disp) < 0.002) disp = target;
       /* while the deck is closed, snap focus home so a fast scroll-out-and-back
          never flashes a stale work on re-entry */
       if (eS < 0.08) { disp = seg; hoverRef.current = null; }
 
-      /* intro caption blooms as the logo lands at centre, then lifts away as
+      /* intro caption blooms DURING the glide-in (negative p — the prelude),
+         so the arriving stage already carries its headline; it lifts away as
          the mark unfolds */
-      const introOp = smooth(0, 0.028, p) * (1 - smooth(0.05, 0.12, p));
+      const introOp = smooth(-0.085, 0.002, p) * (1 - smooth(0.05, 0.12, p));
       intro.style.opacity = introOp.toFixed(3);
       intro.style.transform = "translate(-50%," + (-40 * eS).toFixed(1) + "px)";
 

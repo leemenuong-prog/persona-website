@@ -28,24 +28,17 @@
 }
 
 /* ── 03 · AN AIPM — CO-WORK AGENT PLATFORM ───────── */
-.apx {
-  --bg: var(--paper);
-  --fg: var(--ink);
-  --fg-dim: rgba(11,11,14,.55);
-  --line: rgba(11,11,14,.28);
-  --ghost: rgba(11,11,14,.06);
-  --acc: var(--blue);
-  background: var(--paper);
-  color: var(--ink);
-}
+/* (曾经把全套 tone 变量钉死在 paper 并给不透明底——那让本章脱离全页
+   crossfade，滚向 Architect 时屏幕上出现一条纸/墨硬边。现在与其他
+   章节一样透明地坐在 body 上，颜色随滚动统一渐变。) */
 /* NORMAL FLOW on every size — no pinned wrap, no keynote steps. The one-column
    pairing the phone layout proved (text → its board, one continuous read) is
    now the layout for all widths: 标题 → 01 能力 → 转换图 → 02 定义 → 闭环图 →
    影片引言 → 影片 → 数据条 → CTA. Blocks fade in on arrival via [data-rv]. */
-.apx-stage { position: relative; padding: 88px 40px 46px; background: var(--paper); color: var(--ink); }   /* 88 = 章节页眉统一基线 */
+.apx-stage { position: relative; padding: 88px 40px 46px; }   /* 88 = 章节页眉统一基线 */
 .apx-kicker {
   position: relative; z-index: 4; display: flex; justify-content: space-between; gap: 18px;
-  padding-bottom: 13px; border-bottom: 1px solid var(--line);
+  padding-bottom: 13px; border-bottom: 1px solid var(--line-strong);
   font-size: 10px; letter-spacing: .26em; color: var(--fg-dim);
 }
 /* the hero is ONE flex column; the old copy/media boxes flatten away
@@ -57,7 +50,7 @@
 .apx-cap { order: 0; font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
 .apx-title { order: 1;
   margin-top: 20px; font-size: clamp(54px, 6.5vw, 112px); font-weight: 800;
-  letter-spacing: -.055em; line-height: .86;
+  letter-spacing: -.038em; line-height: .92;   /* 紧而不糊——-.055/.86 在 800 重下已经挤到粘连 */
 }
 .apx-title .psq {
   display: inline-block; width: .105em; height: .105em; margin-left: .11em; margin-bottom: .1em;
@@ -247,7 +240,9 @@
 /* the film — a big 16:9 board in flow (the section's second act) */
 .apx-video { order: 7;
   position: relative; width: min(100%, 1120px); aspect-ratio: 16 / 9; margin-top: 14px;
-  background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+  background: var(--ink); color: var(--paper); border: 1px solid rgba(11, 11, 14, .35);
+  background-image: linear-gradient(180deg, rgba(239, 236, 230, .05), transparent 38%);
+  box-shadow: var(--shadow-media);
   overflow: hidden;
 }
 .apx-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
@@ -346,7 +341,10 @@
     padding: 0; border: 0; background: var(--ink); cursor: pointer; overflow: hidden; }
   .apx-video-play img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .42; }
   .apx-play-ico { position: relative; width: 64px; height: 64px; border-radius: 50%;
-    border: 2px solid var(--paper); background: rgba(11, 11, 14, .5); display: grid; place-items: center; }
+    border: 2px solid var(--paper); background: rgba(11, 11, 14, .5); display: grid; place-items: center;
+    transition: transform var(--t-micro) var(--ez), background var(--t-micro) var(--ez); }
+  .apx-video-play:hover .apx-play-ico { transform: scale(1.06); background: rgba(11, 11, 14, .72); }
+  .apx-video-play:active .apx-play-ico { transform: scale(.96); }
   .apx-play-ico::before { content: ""; width: 0; height: 0; margin-left: 5px;
     border-left: 18px solid var(--paper); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
   .apx-play-cap { position: relative; color: var(--paper); font-size: 11px; letter-spacing: .2em;
@@ -399,7 +397,7 @@
   transition: opacity .8s var(--ez), transform .9s var(--ez); }
 .c4-ann.on { opacity: 1; transform: none; }
 .c4-ann::before { content: ""; position: absolute; left: -44px; top: 3px; width: 36px; height: 1px; background: var(--line); }
-.c4-ann .sq { display: block; width: 8px; height: 8px; background: var(--acc); transition: background-color .9s var(--ez-io); }
+.c4-ann .sq { display: block; width: 8px; height: 8px; background: var(--acc); }
 .c4-ann b { display: block; margin-top: 10px; font-size: clamp(20px, 2vw, 34px); font-weight: 800; letter-spacing: -.02em; }
 .c4-ann .l { display: block; margin-top: 6px; font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
   line-height: 1.8; color: var(--fg-dim); }
@@ -489,7 +487,8 @@
    viewport HEIGHT so header + frame + bar compose inside one screen. */
 .reel-deck { width: min(100%, 1040px, calc((100vh - 340px) * 16 / 9)); margin: 0 auto; align-self: center; cursor: pointer; }
 .reel-frame { position: relative; width: 100%; aspect-ratio: 16 / 9;
-  border: 1px solid var(--line); background: var(--bg); overflow: hidden; }
+  border: 1px solid var(--line); background: var(--bg); overflow: hidden;
+  box-shadow: var(--shadow-media); }
 .reel-cell { position: absolute; inset: 0; width: 100%; height: 100%;
   opacity: 0; transition: opacity var(--t-hover) var(--ez); }
 .reel-cell.on { opacity: 1; }
@@ -511,16 +510,19 @@
 .reel-ix2 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .reel-ix2 b { color: var(--fg); font-weight: 700; letter-spacing: .12em; }
 .reel-pips { display: flex; align-items: center; gap: 9px; margin-left: auto; flex: 0 0 auto; }
-.reel-pips i { position: relative; width: 8px; height: 8px; background: var(--line); cursor: pointer;
-  transition: background var(--t-micro), transform var(--t-micro); }
+.reel-pips i { position: relative; width: 8px; height: 8px; background: var(--line-strong); cursor: pointer;
+  transition: background var(--t-micro) var(--ez), transform var(--t-micro) var(--ez); }
 .reel-pips i::after { content: ""; position: absolute; inset: -6px; }   /* finger-sized hit zone */
+.reel-pips i:hover { background: var(--fg-dim); }
 .reel-pips i.on { background: var(--acc); transform: scale(1.2); }
 .reel-autohint { flex: 0 0 auto; white-space: nowrap; }
 
 /* Part 2 — the film column (ink frame on the paper page, like every site video) */
 .reel-filmcol { width: min(100%, 1040px, calc((100vh - 340px) * 16 / 9)); margin: 0 auto; align-self: center; }
 .reel-video { position: relative; width: 100%; aspect-ratio: 16 / 9;
-  background: var(--ink); border: 1px solid var(--line); }
+  background: var(--ink); border: 1px solid var(--line);
+  background-image: linear-gradient(180deg, rgba(239, 236, 230, .05), transparent 38%);
+  box-shadow: var(--shadow-media); }
 .reel-video video { width: 100%; height: 100%; object-fit: contain; background: var(--ink); display: block; }
 /* loading poster — same bars-and-caption language as .apx-video-loading. Shown the
    instant autoplay is triggered; hidden on 'playing' / 'error' + an 8s safety net. */

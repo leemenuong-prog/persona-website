@@ -123,7 +123,9 @@ function BarChrono({ items, intro = true, className = "" }) {
               style={{ left: (((act + 0.5) / n) * 100).toFixed(2) + "%", bottom: "calc(" + (it.h * 100).toFixed(1) + "% + 9px)" }}></span>
         {items.map((d, i) => (
           <span key={i} className={"bc-col" + (i === act ? " on" : "")} data-hov
-                onPointerEnter={() => pick(i)} onClick={() => pick(i)}>
+                role="button" tabIndex={0} aria-label={d.y + " · " + d.t}
+                onPointerEnter={() => pick(i)} onClick={() => pick(i)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(i); } }}>
             <i style={{ "--h": d.h, "--bi": (i * 0.07).toFixed(2) + "s" }}></i>
             <b className="mono">{d.y}</b>
           </span>

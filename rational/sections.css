@@ -59,10 +59,10 @@ body.ready .roles span.dim { opacity: .18; }
 .hl-ghost div { will-change: transform; }
 .hl-brand { position: relative; z-index: 1; }
 .hl-brand .of { font-size: clamp(20px, 2vw, 30px); font-weight: 800; letter-spacing: -.01em;
-  opacity: 0; transform: translateY(30px); transition: all 1s var(--ez) 1s; }
+  opacity: 0; transform: translateY(30px); transition: opacity 1s var(--ez) 1s, transform 1s var(--ez) 1s; }
 .hl-brand .big {
   font-size: clamp(44px, 6.6vw, 118px); font-weight: 300; letter-spacing: .015em; line-height: 1.02;
-  color: var(--fg); opacity: 0; transform: translateY(36px); transition: all 1.1s var(--ez) 1.12s;
+  color: var(--fg); opacity: 0; transform: translateY(36px); transition: opacity 1.1s var(--ez) 1.12s, transform 1.1s var(--ez) 1.12s;
 }
 .hl-brand .zh { letter-spacing: .5em; opacity: 0; transition: opacity 1s var(--ez) 1.5s; }
 body.ready .hl-brand .of, body.ready .hl-brand .big { opacity: 1; transform: none; }
@@ -74,9 +74,15 @@ body.ready .hl-brand .zh { opacity: .8; }
   opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ez) 1.8s, transform 1s var(--ez) 1.8s; }
 body.ready .hero-chips { opacity: 1; transform: none; }
 .hero-chips a { display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px 18px; border: 1px solid var(--line); color: var(--fg);
+  padding: 12px 18px; border: 1px solid var(--line-strong); color: var(--fg);
   font-family: var(--mono); font-size: 11px; letter-spacing: .16em; white-space: nowrap;
-  transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez); }
+  transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez),
+    transform .25s var(--ez), box-shadow .25s var(--ez); }
+/* lift + weight on hover (mirrors .ch-cta — one grammar for every button) */
+@media (hover: hover) and (pointer: fine) {
+  .hero-chips a:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -18px rgba(5, 8, 30, .5); }
+}
+.hero-chips a:active { transform: translateY(0); box-shadow: none; }
 .hero-chips a .sq { width: 7px; height: 7px; background: var(--fg); flex: 0 0 auto;
   transition: background-color .25s var(--ez); }
 .hero-chips a .arr { font-size: 13px; letter-spacing: 0; }
@@ -133,7 +139,7 @@ body.ready .hero-chips { opacity: 1; transform: none; }
   padding: 3vh 0; cursor: pointer; transition: opacity .35s var(--ez); }
 /* hairlines draw themselves, top to bottom */
 .dex-it::before, .dex-it:last-of-type::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
-  background: var(--line); transform: scaleX(0); transform-origin: left;
+  background: var(--line-strong); transform: scaleX(0); transform-origin: left;
   transition: transform 1.2s var(--ez); transition-delay: var(--rd, 0s); }
 .dex-it:last-of-type::after { top: auto; bottom: 0; }
 .in .dex-it::before, .in .dex-it:last-of-type::after { transform: scaleX(1); }
@@ -166,6 +172,10 @@ body.ready .hero-chips { opacity: 1; transform: none; }
   background: var(--paper); border: 1px solid rgba(11, 11, 14, .08);
   box-shadow: var(--shadow-card);
   padding: 12px 12px 26px;
+  transition: box-shadow .5s var(--ez), transform .5s var(--ez);
+}
+@media (hover: hover) and (pointer: fine) {
+  .who-photo-card:hover { box-shadow: var(--shadow-card-hi); transform: translateY(-4px); }
 }
 .who-photo-card img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top center; }
 .who-photo-card figcaption { margin-top: 14px; text-align: center;
@@ -298,6 +308,8 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
    to the page. 卡 = 舞台，作品 = 淡入淡出的面板. ── */
 .wk-cardstage { position: absolute; left: 0; top: 0; z-index: 60;
   background: var(--ink); color: var(--paper);
+  /* 4% paper top-light — the dark slab reads as a lit object, not flat vinyl */
+  background-image: linear-gradient(180deg, rgba(239, 236, 230, .05), transparent 38%);
   border: 1px solid var(--card-line); box-shadow: var(--shadow-card);
   overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none; }
 /* panes lift their own pointer-events via JS; ident/award periods sit on the
@@ -362,7 +374,13 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-ctas { display: flex; flex-direction: column; gap: 8px; }
 .wf-cta { align-self: flex-start; flex-shrink: 0; margin-top: 4px; padding: 9px 18px;
   border: 1px solid rgba(239, 236, 230, .4); color: var(--paper);
-  font-size: 9.5px; letter-spacing: .18em; transition: background .25s, color .25s, border-color .25s; }
+  font-size: 9.5px; letter-spacing: .18em;
+  transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez),
+    transform .25s var(--ez), box-shadow .25s var(--ez); }
+@media (hover: hover) and (pointer: fine) {
+  .wf-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -14px rgba(0, 0, 0, .55); }
+}
+.wf-cta:active { transform: translateY(0); box-shadow: none; }
 .wf-ctas .wf-cta { margin-top: 0; }
 .wf-cta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
 
@@ -372,7 +390,8 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
    inside the pane on short viewports. */
 .sc-media { position: relative; width: 100%; height: auto; aspect-ratio: 16 / 9; max-width: 100%; max-height: 100%;
   margin: auto; overflow: hidden; display: block;
-  background: var(--ink); border: 1px solid var(--line); }
+  background: var(--ink); border: 1px solid var(--line);
+  box-shadow: var(--shadow-media); }   /* the film is an object ON the page, not printed into it */
 .sc-still { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ez); display: block; }
 .sc-media:hover .sc-still { transform: scale(1.03); }
 /* once the film is rolling, show the whole frame (no crop) on near-black,
@@ -386,8 +405,8 @@ button.sc-media { appearance: none; padding: 0; font: inherit; color: inherit; t
 iframe.sc-still { border: 0; background: var(--ink); transition: none; }
 .sc-media.playing iframe.sc-still { object-fit: fill; }
 .sc-media::before, .sc-media::after { content: ""; position: absolute; z-index: 4; width: 20px; height: 20px; pointer-events: none; }
-.sc-media::before { top: 11px; left: 11px; border-top: 2px solid rgba(239,236,230,.92); border-left: 2px solid rgba(239,236,230,.92); }
-.sc-media::after { bottom: 11px; right: 11px; border-bottom: 2px solid rgba(239,236,230,.92); border-right: 2px solid rgba(239,236,230,.92); }
+.sc-media::before { top: 11px; left: 11px; border-top: 1.5px solid rgba(239,236,230,.55); border-left: 1.5px solid rgba(239,236,230,.55); }
+.sc-media::after { bottom: 11px; right: 11px; border-bottom: 1.5px solid rgba(239,236,230,.55); border-right: 1.5px solid rgba(239,236,230,.55); }
 .sc-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 84px; height: 56px;
   border: 1.5px solid rgba(239,236,230,.92); background: rgba(8,10,20,.34);
   display: flex; align-items: center; justify-content: center; transition: transform var(--t-micro) var(--ez), background var(--t-micro); }
@@ -397,7 +416,8 @@ iframe.sc-still { border: 0; background: var(--ink); transition: none; }
   background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(11,11,14,.05) 0 12px, transparent 12px 24px);
   display: flex; align-items: center; justify-content: center; }
 .sc-ph .n { text-align: center; font-family: var(--mono); font-size: 10px; letter-spacing: .26em; color: var(--fg-dim); }
-.sc-ph .n b { display: block; font-size: 12px; letter-spacing: .2em; color: var(--fg); margin-bottom: 8px; font-weight: 400; }
+.sc-ph .n b { display: block; font-size: 12px; letter-spacing: .2em; color: var(--fg); margin-bottom: 8px; font-weight: 400;
+  transition: color .25s var(--ez); }
 a.sc-ph.as-link { text-decoration: none; cursor: pointer; transition: background .3s, border-color .3s; }
 a.sc-ph.as-link:hover { border-color: var(--blue); background: var(--paper-dim) repeating-linear-gradient(135deg, rgba(0,71,171,.08) 0 12px, transparent 12px 24px); }
 a.sc-ph.as-link:hover .n b { color: var(--blue); }
@@ -551,13 +571,15 @@ body[data-tone="ink"] .iamf .who, body[data-tone="blue"] .iamf .who { color: var
 /* aligned ledger — label + value share one baseline per row */
 .c-list { flex: 1 1 480px; max-width: 580px; }
 .crow { display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
-  padding: 15px 2px; border-bottom: 1px solid var(--line); }
-.crow:first-child { border-top: 1px solid var(--line); }
-.crow .cl { flex: 0 0 auto; font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+  padding: 15px 2px; border-bottom: 1px solid var(--line-strong); }
+.crow:first-child { border-top: 1px solid var(--line-strong); }
+.crow .cl { flex: 0 0 auto; font-size: 14px; font-weight: 600; letter-spacing: .02em;
+  transition: transform .35s var(--ez); }   /* label slides, border stays put (was padding-left — layout thrash) */
 .crow .cv { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--fg);
-  text-align: right; white-space: nowrap; }
-a.crow { transition: padding-left .35s var(--ez), border-color .3s var(--ez); }
-a.crow:hover { padding-left: 12px; border-bottom-color: var(--blue); }
+  text-align: right; white-space: nowrap; transition: color .25s var(--ez); }
+a.crow { transition: border-color .3s var(--ez); }
+a.crow:hover { border-bottom-color: var(--blue); }
+a.crow:hover .cl { transform: translateX(12px); }
 a.crow:hover .cv { color: var(--blue); }
 body[data-tone="ink"] a.crow:hover, body[data-tone="blue"] a.crow:hover { border-bottom-color: var(--blue-up); }
 body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv { color: var(--blue-up); }
@@ -689,6 +711,13 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
 }
 @media (max-width: 374px) and (max-height: 740px) {
   .wf-zh { -webkit-line-clamp: 4; }
+}
+
+/* reduced-motion — the perpetual loops the global reveal-reset misses */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cue .ln i { animation: none; }
+  .code-panel .caret, .iamf .caret { animation: none; opacity: 1; }
+  .iamf .who { animation: none; }
 }
 
 /* ── touch (phone OR coarse pointer) — promote every hover-gated affordance to

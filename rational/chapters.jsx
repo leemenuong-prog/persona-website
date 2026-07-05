@@ -144,25 +144,27 @@ function ChAipmPlatform({ jump }) {
      这一页现在就是 An AIPM 章节本身 (id="aipm" — WHO_INDEX 的 02 直达此处)。 */
   return (
     <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
-      <div className="apx-stage" data-ob ref={ref}>
-        <div className="apx-kicker mono">
+      {/* 舞台不再整体 data-ob——这一章有 3–4 屏高，单锚点会把全部显影在
+          章顶一次烧完；改为每个块 data-ob="self"，到达哪块显影哪块 */}
+      <div className="apx-stage" ref={ref}>
+        <div className="apx-kicker mono" data-rv data-ob="self">
           <span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
         </div>
 
         <div className="apx-hero">
           <div className="apx-copy">
-            <div className="apx-cap mono" data-rv style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
-            <h2 className="apx-title" data-rv style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
+            <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
+            <h2 className="apx-title" data-rv data-ob="self" style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
 
             <div className="apx-intro">
               {APX_INTRO_PAGES.map((page, i) => (
-                <article key={page.ix} className={"apx-page apx-page-" + i + " on"} data-rv style={{ "--rd": ".2s" }}>
+                <article key={page.ix} className={"apx-page apx-page-" + i + " on"} data-rv data-ob="self" style={{ "--rd": ".1s" }}>
                   <div className="apx-page-k mono"><span>{page.ix}</span><b>{page.tag}</b></div>
                   <h3>{page.title}</h3>
                   <p>{page.body}</p>
                 </article>
               ))}
-              <article className="apx-page apx-page-video on">
+              <article className="apx-page apx-page-video on" data-rv data-ob="self" style={{ "--rd": ".05s" }}>
                 <div className="apx-page-k mono"><span>03</span><b>平台影片</b></div>
                 <h3>看它怎么跑。</h3>
               </article>
@@ -174,7 +176,7 @@ function ChAipmPlatform({ jump }) {
               {/* 图1 · 人效工作 → Agent 工作流（配 01 平台能力）——左：同样四个
                   环节靠人反复做；中：交给 Agent；右：同样四个环节排成一条自动
                   轨道，钴蓝方块=交付（句点收尾），一枚蓝色信号沿轨道反复跑。 */}
-              <div className="apx-visual apx-visual-flow on" data-rv style={{ "--rd": ".3s" }}>
+              <div className="apx-visual apx-visual-flow on" data-rv data-ob="self" style={{ "--rd": ".1s" }}>
                 <div className="apx-visual-cap mono">人效工作 → AGENT 工作流</div>
                 <div className="apx-flow">
                   <div className="apx-flow-manual">
@@ -204,7 +206,7 @@ function ChAipmPlatform({ jump }) {
               {/* 图2 · 系统闭环（配 02 平台定义）——用户发起 → Agent（上方两个
                   来源：外部数据 + RAG 知识库落入）生成内容 → 飞书；U 形回路把
                   结果送回用户。一枚钴蓝信号沿整条回路巡回（reduce 时静止）。 */}
-              <div className="apx-visual apx-visual-loop on" data-rv style={{ "--rd": ".3s" }}>
+              <div className="apx-visual apx-visual-loop on" data-rv data-ob="self" style={{ "--rd": ".1s" }}>
                 <div className="apx-visual-cap mono">一套系统 · 内容生产闭环</div>
                 <div className="apx-loop">
                   <div className="apx-loop-src">
@@ -280,14 +282,19 @@ function Structure3D() {
   const ref = useCanvas((ctx, W, H, now) => {
     const S = simR.current;
     let p = (window.__progress && window.__progress.developer) || 0;
-    if (p <= 0) {
+    /* PRELUDE — the glide-in used to be a blank stage (grid only arrived
+       after the pin). Negative p now draws the ground grid + the nine
+       foundation stubs fading in: 地基先落，塔楼后起. */
+    if (p <= -0.45) {
       ctx.clearRect(0, 0, W, H);
       S.last = now; return;
     }
     if (p > 1) p = 1;   /* scrolled past — hold the assembled skyline */
+    const ent = aEase(aClamp((p + 0.45) / 0.35, 0, 1));   /* prelude envelope, 1 by the pin */
     const dt = Math.min(Math.max((now - S.last) / 1000, 0), 0.05); S.last = now;
     ctx.clearRect(0, 0, W, H);
 
+    ctx.globalAlpha = ent;
     if (!S.drag) S.trot += dt * 0.06;
     S.rot += (S.trot - S.rot) * Math.min(1, dt * 5);
     const rot = S.rot + Math.sin(now / 4600) * 0.025;
@@ -303,8 +310,8 @@ function Structure3D() {
     const ink = (a) => `rgba(11,11,14,${a.toFixed(3)})`;
     const blu = (a) => `rgba(0,71,171,${a.toFixed(3)})`;
 
-    /* ground grid — the discipline plane */
-    const gv = aSeg(p, 0.04, 0.18);
+    /* ground grid — the discipline plane; starts DURING the glide-in */
+    const gv = aSeg(p, -0.42, 0.08);
     if (gv > 0.01) {
       ctx.strokeStyle = ink(0.13 * gv); ctx.lineWidth = 1;
       for (let gx = -6; gx <= 6.01; gx += 1.5) {
@@ -438,7 +445,7 @@ function ChArch({ jump }) {
               <span className="c4-an"><BarWord text="An" period={false} /></span>
               <span className="c4-big"><BarWord text="Architect" delay={0.3} /></span>
             </h2>
-            <div className="rule ch-rule c4-rule" style={{ "--rd": ".4s" }}></div>
+            <div className="rule ch-rule c4-rule" style={{ "--rd": ".22s" }}></div>{/* 线先于正文（与 Dev 章同序） */}
           </div>
           <div className="ch-motto">
             <div className="mt lm" style={{ "--rd": ".3s" }}><span>把零散的需求搭成稳定的体系<i className="psq" aria-hidden="true"></i></span></div>
@@ -547,7 +554,7 @@ function ChReel({ jump }) {
              data-screen-label="02·B · The Evidence — PEARS">
       {/* ── PART 1 · 路演提案 deck — 大标题 = 作品信息 ── */}
       <div className="reel-part sec" data-ob>
-        <div className="apx-kicker mono">
+        <div className="apx-kicker mono" data-rv>
           <span>02·B · THE EVIDENCE</span><span>PEARS DECK · 路演提案</span>
         </div>
         <header className="reel-head2">
@@ -590,7 +597,9 @@ function ChReel({ jump }) {
 
       {/* ── PART 2 · 路演影片 — 大标题与平台影片同拍。字幕只报内容，
           不解说播放机制（用户 2026-07-03: 个人网站别写系统行为类文案）。 */}
-      <div className="reel-part reel-filmpart sec" data-ob>
+      {/* data-ob="self" — 第二屏量自身顶：到场才显影（旧的 section 顶锚点让
+          它与 Part 1 同刻触发，入场动画在用户还停在 deck 时就烧完了） */}
+      <div className="reel-part reel-filmpart sec" data-ob="self">
         <header className="reel-head2">
           <h2 className="reel-title2 lm" data-rv style={{ "--rd": ".1s" }}>
             <span>现在看它如何工作<i className="psq" aria-hidden="true"></i></span>
