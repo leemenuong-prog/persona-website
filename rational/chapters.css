@@ -332,12 +332,12 @@
   .apx-src::after { top: calc(100% + 4px); height: 26px; }
   .apx-src::before { top: calc(100% + 29px); }
   .apx-node b { font-size: 13px; letter-spacing: .06em; }
-  .apx-node .mono { font-size: 7.5px; letter-spacing: .18em; }
+  .apx-node .mono { font-size: 9px; letter-spacing: .12em; }
   .apx-core { gap: 8px; padding: 0 10px; }
   .apx-core b { font-size: 20px; }
-  .apx-core .mono { font-size: 8px; letter-spacing: .1em; }
+  .apx-core .mono { font-size: 9.5px; letter-spacing: .08em; }
   .apx-return { margin: 0 31.5px; }
-  .apx-return-label { font-size: 8.5px; letter-spacing: .14em; padding: 2px 8px; }
+  .apx-return-label { font-size: 10px; letter-spacing: .12em; padding: 2px 8px; }
   .apx-loop-track { left: 44px; right: 44px; top: 152px; height: 102px; }
   .apx-video { margin: 4px 0 0; }
   /* phone/tablet: the film loads on an explicit TAP (obvious labelled poster) */
@@ -577,8 +577,11 @@
   .ch3 .ch-motto .st .en, .ch4 .ch-motto .st .en { display: none; }   /* 中文为主 — keep the band short */
   .ch3 .ch-stats .st .n { font-size: clamp(22px, 7vw, 32px); }
   .c4-title .c4-big { margin-left: 4vw; font-size: clamp(34px, 11vw, 54px); }
-  .c4-ann b { font-size: clamp(14px, 4.6vw, 18px); }
-  .c4-ann .l { font-size: 7px; -webkit-line-clamp: 3; }
+
+  /* AIPM 章 — 图上的中文标签是语义内容，不是装饰：手机上守住 10px 线 */
+  .apx-cap { font-size: 10.5px; letter-spacing: .2em; }
+  .apx-flow-note, .apx-flow-join span { font-size: 10.5px; }
+  .apx-strip { font-size: 11px; letter-spacing: .14em; gap: 10px 18px; }
 
   /* ── 02·B PEARS 两段式 — phone tweaks: content-sized parts (no forced 100vh),
      the deck keeps the same auto-turn + tap carousel as desktop. ── */
@@ -602,4 +605,6 @@
   .apx-video iframe { touch-action: pan-y; }
   /* developer skyline canvas: drop the misleading grab cursor on touch */
   .c3-art canvas { cursor: default; }
+  /* BGM chip — keep it low-key but give the finger a real target */
+  .reel-sound { min-height: 36px; padding: 9px 13px; font-size: 10.5px; }
 }

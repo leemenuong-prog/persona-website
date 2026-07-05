@@ -203,8 +203,10 @@ body[data-tone="ink"] .brandmorph .band .bdot { background: var(--blue-up); }
 .nav .wordmark { align-items: flex-end; }
 .nav .wordmark .logoslot { display: block; width: 118px; height: 24px; }
 @media (max-width: 900px) {
-  .brandmorph { left: 20px; width: calc(100vw - 40px); }
-  .band-slot { margin: 0 20px; }
+  /* ≤900 the band is proportionally tall/dense enough to paint over the nav
+     menu (desktop only grazes it) — drop the hero slot below the bar */
+  .brandmorph { left: 20px; width: calc(100vw - 40px); top: 60px; }
+  .band-slot { margin: 0 20px; margin-top: 60px; }
   .fband-slot { margin-left: 20px; margin-right: 20px; }
   .nav .wordmark .logoslot { width: 88px; height: 20px; }
 }
@@ -224,9 +226,11 @@ body[data-tone="ink"] .brandmorph .band .bdot { background: var(--blue-up); }
   .nav .menu .sl { display: none; }
   /* ≥44px touch targets with a visible resting state (no hover dep) */
   .nav .menu a { padding: 12px 9px; min-height: 44px; display: flex; align-items: center; opacity: .92; }
+  .nav .wordmark { padding: 8px 0; }
   /* wider, shorter band → the dock fits the nav; hero/footer logo
-     reads as a skyline strip rather than a near-square block */
-  .brandmorph, .band-slot, .fband-slot { height: 22vh; min-height: 128px; }
+     reads as a skyline strip rather than a near-square block.
+     (The below-the-nav drop itself lives in the ≤900 tier.) */
+  .brandmorph, .band-slot, .fband-slot { height: 18vh; min-height: 108px; }
   /* loader breathing room on a narrow screen */
   .loader .lbar, .loader .lrow { width: min(84vw, 440px); }
   .loader .lrow { letter-spacing: .16em; }

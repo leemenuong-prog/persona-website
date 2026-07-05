@@ -484,7 +484,7 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
   .wf-text { justify-content: flex-start; gap: clamp(9px, 1.5vh, 15px); }
   .wf-ident { font-size: clamp(19px, 5.4vw, 28px); }
   .wk-headline .wh-name { font-size: clamp(30px, 8vw, 46px); }
-  .wk-headline .wh-kick { font-size: 9.5px; letter-spacing: .2em; }
+  .wk-headline .wh-kick { font-size: 10px; letter-spacing: .2em; }
   .wf-zh { -webkit-line-clamp: 4; }
   /* fold to CHINESE-only on the single-column card (中文为主 — the annotation
      language folds first). The dense AI cards (2 CTAs + long award) otherwise
@@ -503,8 +503,10 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
      length, so the row wraps INSIDE each button rather than each button
      claiming a full row (which cost as much height as stacking). */
   .wf-ctas { flex-direction: row; flex-wrap: nowrap; gap: 8px; }
-  .wf-ctas .wf-cta { flex: 1 1 0; min-width: 0; padding: 9px 8px;
-    font-size: 8.5px; letter-spacing: .08em; white-space: normal; text-align: center; }
+  /* 10px floor — 8.5px was unreadable at arm's length; the labels wrap inside
+     their half instead of shrinking below legibility */
+  .wf-ctas .wf-cta { flex: 1 1 0; min-width: 0; padding: 11px 8px;
+    font-size: 10px; letter-spacing: .06em; white-space: normal; text-align: center; }
 }
 
 /* 601–900px specifically (tablet portrait, e.g. 768×1024) — a wider column
@@ -613,8 +615,9 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   /* the quick chips: allow wrapping on ultra-narrow screens + finger-sized */
   .hero-chips { flex-wrap: wrap; }
   .hero-chips a { min-height: 44px; }
-  /* hero — calm the decorative ghost rows so they don't read as stray text */
-  .hl-ghost { font-size: 22px; line-height: 1.5; opacity: .6; }
+  /* hero — calm the decorative ghost rows so they don't read as stray text;
+     at 375px they sit directly UNDER the headline, so they must be a whisper */
+  .hl-ghost { font-size: 22px; line-height: 1.5; opacity: .3; }
 
   /* whoami — ease the desktop-drama floor */
   .who-q { font-size: clamp(40px, 13vw, 60px); }
@@ -633,9 +636,15 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
      serials and the ACTIVE work's name reads in the centered rail line instead.
      The rail line sits a band ABOVE the serial row (they share ~107px-from-
      bottom otherwise and the centre serials get covered). */
-  .wt-item { gap: 0; padding: 4px 4px; }
+  .wt-item { gap: 0; padding: 13px 12px 15px; min-height: 44px; align-items: center; justify-content: center; }
+  .wt-item b { font-size: 10px; }
   .wt-item span { display: none; }
   .wk-railread { display: block; bottom: clamp(128px, 17.5vh, 152px); }
+  /* the dossier on a 375px card: the role line is redundant with the identity
+     word + the award corner — dropping it buys the narrative two more lines,
+     so the Chinese body reads WHOLE (clamp 4 sliced it mid-sentence) */
+  .wf-role { display: none; }
+  .wf-zh { font-size: 14px; -webkit-line-clamp: 6; }
 
   /* contact — stack each row label-over-value so long URLs wrap, not clip */
   .crow { flex-direction: column; align-items: flex-start; gap: 4px; padding: 13px 2px;
@@ -646,6 +655,40 @@ body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv 
   /* footer — stack the three credits so the CJK middle line doesn't overrun */
   .foot { flex-direction: column; align-items: center; text-align: center; gap: 6px;
     padding: 16px 20px 24px; letter-spacing: .18em; }
+}
+
+/* ── short phones (SE/mini class) — the 812px-tuned hero stack overflows a
+   568–740px viewport; compress every band so roles + brand + chips close
+   inside one screen. ───────────────────────────────────────────────────── */
+@media (max-width: 600px) and (max-height: 740px) {
+  .brandmorph, .band-slot { height: 14vh; min-height: 84px; }
+  .roles span { font-size: clamp(30px, 8.4vw, 40px); }
+  .hl-left { padding-top: 1.6vh; }
+  .hl-right { padding-top: 1.6vh; margin-top: 1vh; }
+  .hl-brand .of { font-size: 17px; }
+  .hl-brand .big { font-size: clamp(34px, 10.4vw, 44px); }
+  .hlow { margin-bottom: 18px; }
+  .hero-chips { margin-top: 14px; }
+  .hero-chips a { min-height: 40px; }
+  /* works — the short card can't hold the 6-line dossier; budget 4 lines,
+     tighten the column chrome, and park the rail line in the lane between
+     the card and the serial row */
+  .wf-zh { -webkit-line-clamp: 4; }
+  .wf-ident { font-size: 17px; }
+  .wf-text { gap: 8px; }
+  .wf-ctas .wf-cta { padding: 9px 8px; }
+  .wk-railread { bottom: clamp(104px, 16vh, 128px); }
+}
+
+/* ── ultra-narrow (≤374px, 360-class Androids & older) — fewer characters per
+   line pushes the longest dossiers to 7 lines; a smaller identity word and a
+   13px body buy that line back. ── */
+@media (max-width: 374px) {
+  .wf-ident { font-size: 17px; }
+  .wf-zh { font-size: 13px; -webkit-line-clamp: 7; }
+}
+@media (max-width: 374px) and (max-height: 740px) {
+  .wf-zh { -webkit-line-clamp: 4; }
 }
 
 /* ── touch (phone OR coarse pointer) — promote every hover-gated affordance to
