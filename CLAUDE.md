@@ -1,59 +1,49 @@
-# 设计语言规则 — Alnt Med · The Art of Rationality
+# 设计语言与文案规则 — 李文苑 Alnt Med 个人站（2026-07-06 wenxin 式改版）
 
-确定稿设计语言：**跳动的数据条**（`rational/barmorph.*` 的「字⇄条」体系）。
-条 = 编码态（Logo 的天际线节奏），字 = 解码态，蓝色方块 = 句点（自我）。
-所有新增视觉必须沿用此语言，不得引入新的图形母题。
+照老师站 wenxin.design 复刻的**纯静态多页站**：无框架无构建，`config/projects.json` 单一事实源。
+旧 React 单页站（「理性的艺术」钴蓝三色版）已整体退役，完整保留在 git 历史（快照 `ba7ebcd`）。
 
-## 章节流与作品画廊（2026-07-06「作品为主角」改版 · 现行结构）
-- **章节流**：Hero → Whoami（两身份 01 AIPM / 02 Architect）→ **WorksGallery（作品前置，全站主角）** → AIPM 章（`ChAipmOpen` 开场 + `IntroPears`/`IntroCowork`/`IntroYijian`/`IntroMeco` 四段介绍）→ Architect 章（`ChArch` 开场 + `IntroUabb` 多模态 / `IntroArchfolio` 作品集）→ Contact。渲染队列在 `app.jsx`。
-- **身份合并两组**：原 Developer 章并入 AIPM；`WHO_INDEX` 两项、`who-tag`、Contact finale ids 都是两身份口径。改身份数须同步这几处 + `app.jsx` 渲染队列。
-- **作品画廊**（`.gw-*`，`WorksGallery`/`GalleryCard`/`CoverArt`）：六竖卡 3:4 网格墙（桌面 3×2，≤900/≤600 均 2 列）；卡自带三色底 **cobalt·ink·paper / paper·ink·cobalt 对角排布**；进场「聚拢→散开」用 `data-ob="self"` 一次性 reveal（零引擎代码，CSS transition + nth-child 位移）；点整卡 `jump(wk.introId)` 滚到介绍锚点。正式封面未上传前用 `CoverArt` 程序化 SVG 占位（线用 `var(--cardfg)` 随卡底翻色、句点用 `var(--cardacc)`）；上线正式封面 = 给该卡加 `heroCover` 图片路径。
-- **数据**：`WORKS` 六卡（`key`/`introId`/`group`/`status`/`heroCover` + 原字段）；建筑四作整组存 `ARCH_WORKS` 供翻书；章内 CTA lookup 一律按 `w.key`。
-- **品牌带三拍**：hero 槽 → nav dock → contact 页脚。旧 phase W（8 条⇄8 作品天际线交接、`__wkOpen`）已随 crossfade 卡组退役，勿加回。
-- **建筑作品集收尾**：`IntroArchfolio` 末尾「logo 天际线展开成四作排列」（`.af-*`：四条 = 四作 + 蓝方块句点）——设计语言的收束，勿改成别的母题。
-- **章节大标题静态化**：BarWord 传 `static`（直显不再字⇄条解码），外层套 `.rv-soft`（极轻 14px 淡入）；保留方块句点。**唯一例外 = Hero 的 `I am` loader 飞条动画，不动**。品牌带 / `BarBand` / `BarChrono` 的字⇄条不受影响。
-- **圆角坡道**（`base.css` 令牌）：出血软纸片 24 › 媒体对象/画廊卡 20 › 按钮 `--r-btn:12` › 小件 `--r-btn-sm:10` › **方块句点 0（永远直角）**。按钮圆角化后方点（`.psq`/`.sq`/pips）仍直角。`.reel-nav` ‹ › 透明字形不加底色不加圆角（历史教训）。
-- **底部波点** `.fdots`（Contact 内）：半调渐隐钴蓝点（跳色只落点），顶部 mask 渐隐、底部最浓接住 Logo 收尾；一次性淡入不响应滚动。
-- **介绍页密度 v2**：`.apx-*` 全面收紧（标题 clamp(46,5.6vw,92)、正文行高 1.75/max-width 30em 等）；`.apx-compact` 给 Pears/Co-work 多对页再收一档；新介绍章用 `IntroShell` 轻模板（kicker→标题→`.apx-meta`→导语→`.intro-media`→数据条+CTA）。
+## 色板（灰阶体系 · 钴蓝已退役，全站不再使用 #0047AB）
 
-## 跳色点缀规则（重要）
-点缀色**只放在「点」上，永远不要给标题字母跳色**。
+- 背景：暖白径向渐变 `radial-gradient(ellipse, #FFFBF0 0%, #EAEAEA 53%, #FFFFFF 100%)`（body::before 固定层）
+- 灰阶：`#E0E0E0` 边框 › `#D7D7D7` 页脚 › `#BEBEBE` 次要 › `#999` 关键词 › `#6F6F6F` 正文 › `#5F5F5F` header › `#333` 次强调 › `#181818` 标题 › `#000` 仅强调词与方点
+- **跳色只落在「点」上，由旧站的色相跳改为明度跳**（灰条黑点）；标题字母永不跳色
+- 全部颜色引用 `css/tokens.css` 令牌；插图（SVG 字卡等）同口径
 
-1. 所有大标题以方块句点收尾：BarWord 自带 `.bmp`；纯文本标题用行内 `.psq`。
-2. 句点颜色统一取 `var(--acc)`，随章节底色（body[data-tone]）翻转，
-   原则是「与字色形成跳色」：
-   - `paper` 纸色底（字为墨色）→ 钴蓝 `--blue`
-   - `blue` 钴蓝底（字为纸色）→ 深蓝 `--blue-dn`（`#002a66`）。跳色始终是「更深的同色系」而非黑：
-     白字在蓝底上，点用更深的蓝，不用墨色。
-   - `ink` 墨色底（字为纸色）→ 亮蓝 `--blue-up`
-3. 例外——「条上的点」：Logo 带（`.brandmorph` 的 `.bsq/.bdot`）、迷你数据条
-   （`.bband .sq`）、时间柱自我方块（`.bc-self`）以墨色条为底，
-   故在钴蓝底上翻转为 paper，其余同上。它们是 Logo 的延伸，保持现状。
+## 品牌编舞（「.IAM. 数据条」语言的延续）
 
-## 色板与字
-- 仅 cobalt `#0047AB` / ink `#0b0b0e` / paper `#efece6`（+ 亮蓝 `--blue-up`、深蓝 `--blue-dn`），不引入新色。
-- 大标题 weight 800、紧 letter-spacing，词从条中「解码」升起（BarWord）。
-- 价格/编号/注释用 JetBrains Mono；中文为辅注（.zh）。
+- **Logo**：header 右上角 8 条天际线（IAM_BARS=[.97,.58,1,.66,.9,.52,.74,1]）+ 双黑方点，`js/barmorph.js`
+- **启动页**（仅 index，每会话一次 sessionStorage.loaderPlayed）：「I am」→「I alnt med」展开 → 字母冻结成条（I→1 a→3 m→4）→ 飞入右上角 Logo。暖纸底。`js/loader.js`
+- **页脚 finale**（index）：「I am ___」五词轮换（Alnt Med / an AIPM / an Architect / a Builder / anything.）→ 灰阶波点带（双层半调+mask 渐隐）→ Logo 从 header 下坠落入 fband-slot（smoothstep 插值，`js/index-fx.js`）
+- **中轴进度指示**（用户原创，替代老师站波浪线+圆珠）：竖向数据条轨道 + 随滚动生长的墨色填充（IAM 节奏微调制）+ 作品节点水平分支指向标题、标题提亮。**无圆珠**，效果克制
+- BarWord（词从条中解码）保留在 about 页标题；方块句点 `.psq` 永远直角
 
-## 介绍层软语法（作品介绍「三大页」· 杂志对页模板，2026-07 用户选定）
-作品介绍章（现 AIPM/Co-work，后续多作品复用）走**杂志对页**子语言，Logo/导航/方点仍硬朗直角：
-- 三个 spread：P1 左文右图（图版右出血）· P2 镜像拉页（左出血）· P3 压轴影片 + 刊末条 + CTA
-- 超大衬底页码（`--ghost` 6% 墨 · clamp(300px,34vw,520px)）出血咬合标题；`overflow-x: clip` 收边
-- 「软纸片」图版：`--ghost` 底 + 24px 大圆角 + 出血侧圆角归零 + 无描边无投影（印刷色版，非浮卡）
-- 示意图 = 圆头线 SVG 信息图：`stroke-linecap:round`、粗细对比（7/2.25）、圆环站点、圆头 chevron、
-  线逐笔画出（`.draw` + pathLength=1 + `--d` 延迟）、节点后弹（`.pop`）、蓝点 spline 到站减速
-- 示意图**每板两个版本**：桌面横版 `.apx-dk` + 手机竖版 `.apx-ph`（≤600 由 CSS 切换）——
-  横版 960 宽缩到手机后文字只剩 ~6px，竖版按 375px 宽重排字号；元素要对齐成网格，
-  不做「刻意参差」；图内不放系统提示文字（点选重看类），巡回只用小蓝点（带停顿节拍）
-- 跳色仍只落「点」：句点方块、「交付」直角蓝块（全图唯一直角=蓝色句点）、巡回蓝点、CTA；数字墨色
-- 影片管线不可动：`.apx-video`/`.apx-video-loading` 类名与层级（useApxFilm 依赖）、≤900 tap-to-play
-- 复用：换 APX_INTRO_PAGES 文案 + 两张 SVG 内容 + APX_STATS 即可套到新作品
+## 版式基准（老师站实证规格）
 
-## 语言规范（全站文案口径）
-- **分层制**：操作类标签（CTA / 按钮 / 播放 / 复制 / 翻页提示）一律 `中文 · ENGLISH`；
-  结构注释类（章节 kick、取景框标签、图注）一律 `ENGLISH · 中文` 或 `NN · ENGLISH / 中文`。两层内部各自严格统一。
-- **口吻**：中文是唯一正文层——Whoami / 身份章 / AI 四作（W·05–08）第一人称叙事；
-  建筑四作（W·01–04）图录式。英文一律一句话点缀（身份章 `.en` / 作品卡 `wf-body`），不写长段。
-- **奖项**：卡片右下角「奖名 · 中文等级」两段式；不写英文等级、百分比、题材词。
-- **术语**：产品名 **Pears**（勿写 Pear / PeersWork）；平台名 **Co-work**（勿写 Pear Agent / XTOOL Agent Platform）。
-- 页面永不解说系统机制（自动播放 / 默认静音 / 自动翻页等）；操作可供性标签（点击播放、点选回看）保留。
+- intro：Monterey 24px/500 + `text-decoration: underline`，三档分词色（#6F6F6F / #000 / #BBB）
+- 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px
+- 揭示层：`assets/project/{id}/float/1.jpg`，clip-path 圆随鼠标显影——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**
+- 详情页：大衬线标题+↗ → 斜体开场段（左对齐引线）→ 章节 h2+通栏细线 → 「—」列表（行首「标签：」≤10 字自动加粗）→ 小型大写技术栈 → 白卡图版容器+图注+文字球
+- 字体：MontereyFLF woff2×3（拉丁 unicode-range，中文落系统栈）+ Garamond/Georgia 衬线
+
+## 数据与素材约定
+
+- 加作品 = projects.json 加一条 + `assets/project/{id}/{thumbnails,float,content}/` 放图，零代码
+- 媒体：`video-local` / `iframe-lazy` 一律门面点击才加载；视频 ffmpeg H.264 crf26 `+faststart` <30MB，原片留 `../源文件/`
+- 资产文件名全小写（GH Pages 大小写敏感）；`annotations` 图注内联 JSON（图右下 12px 文字球）
+
+## 作品集文案规则（用户定稿 2026-07-06，中英通用，写任何项目介绍必须遵守）
+
+**结构（固定章节，顺序不变）**：产品自我介绍（一句话）→ 先说结论 · The Short Version → 为什么做这个 · Why → 核心贡献 · Key Contributions → 系统如何运作 · How It Works → 影响与意义 · Impact → 技术栈 · Stack。
+
+- **开场 = 产品自我介绍**：只有一句话，以作品第一人称开口（「你好，我是 Meco 🍄‍🟫……」）。这是全文唯一一处产品视角，其余章节全部是文苑第一人称（文苑是男性，用「他」）。
+- **STAR 藏在结构里，不外露**：「先说结论」四条 = 完整 STAR（处境→要解决什么→做了什么→结果），只看这段也能懂全貌；Why=S+T，核心贡献+系统如何运作=A，影响与意义=R。**禁止出现 S/T/A/R 字样或标签**。
+- **标题口径**：用「系统如何运作 / How It Works」这个清晰度级别——一眼知道这段讲什么。不用说明书腔黑话（「可行性路径」），也不用过于口语的模糊标题（「当时卡在哪」）。
+- **语气基线**：第一人称，平视，不张扬也不自卑。一个人做的就写「一个人做的」；不用「业界领先/颠覆」，也不贬成「小玩具」。技术词降噪成人话（「乐观锁」→「防止重复投票」），但保留能体现判断力的关键决策（「只读白名单」「单进程」「SSOT 只读」）。
+- 字段映射：one_liner=产品自我介绍 · tldr=先说结论 · why_built=为什么做这个 · key_contributions · how_it_works · why_it_matters=影响与意义 · tech_stack。
+- 老铁律沿用：页面永不解说系统机制；奖项「奖名 · 中文等级」两段式；产品名 Pears / Co-work（勿写 Pear/PeersWork/XTOOL Agent Platform）。
+
+## 部署（不变）
+
+改完 commit + `git push origin main` → GitHub Actions 自动部署 Netlify `alnt-med`。**不要**脱离仓库手动 `netlify deploy`。
+本地预览必须 HTTP：`python3 -m http.server 8080`（Claude Code 用预览配置 persona-site:8099）。
