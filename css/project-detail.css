@@ -53,6 +53,7 @@
 .media-frame video, .media-frame iframe {
   position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
 }
+.media-frame video { object-fit: contain; }
 .media-facade { cursor: pointer; }
 .media-facade .facade-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .9; }
 .media-facade .facade-btn {

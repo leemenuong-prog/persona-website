@@ -1,0 +1,4 @@
+# 旧站被删目录的直链兜底（Netlify）
+/ai-portfolio/*   /uploads/portfolio-ai.pdf   302
+/lab/*            /                           302
+/scraps/*         /                           302

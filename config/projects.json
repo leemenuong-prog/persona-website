@@ -54,7 +54,16 @@
         "assets/project/pears/content/7.jpg",
         "assets/project/pears/content/8.jpg"
       ],
-      "annotations": {}
+      "annotations": {
+        "1": { "kick_zh": "看你做一遍", "kick_en": "Watch it once", "body_zh": "把重复工作交给 Pears。", "body_en": "Hand your repetitive work to Pears." },
+        "2": { "kick_zh": "产品洞察", "kick_en": "Product insight", "body_zh": "软件越来越容易生成，难的是把工作说清楚。", "body_en": "Software is easy to generate now — the hard part is stating the work clearly." },
+        "3": { "kick_zh": "产品差异", "kick_en": "The difference", "body_zh": "Vibe Coding 从你说的开始，Pears 从你做的开始。", "body_en": "Vibe coding starts from what you say. Pears starts from what you do." },
+        "4": { "kick_zh": "示范与学习", "kick_en": "Demonstrate & learn", "body_zh": "每一次点击与切换，都在告诉它什么值得自动化。", "body_en": "Every click and switch tells it what is worth automating." },
+        "5": { "kick_zh": "工作流拍板", "kick_en": "You call the line", "body_zh": "自动化到哪一步，由你拍板。", "body_en": "How far the automation goes is your call." },
+        "6": { "kick_zh": "隐私设计", "kick_en": "Privacy by design", "body_zh": "只在你开口时才记，停止任务记录立即结束。", "body_en": "It only records when you say so, and stops the moment you stop." },
+        "7": { "kick_zh": "Agent 构建", "kick_en": "Agent build", "body_zh": "拍板之后，工作流开始成为 Agent。", "body_en": "Once you sign off, the workflow becomes an agent." },
+        "8": { "kick_zh": "产品生态", "kick_en": "Ecosystem", "body_zh": "你的做法，不只为你工作 · Agent App 生态。", "body_en": "Your way of working works beyond you — an Agent App ecosystem." }
+      }
     },
     {
       "id": "cowork",
@@ -381,11 +390,11 @@
       "links": [],
       "thumb": "assets/project/hidden-lingnan-garden/thumbnails/1.jpg",
       "float": { "reveal": "assets/project/hidden-lingnan-garden/content/2.jpg" },
-      "desc_zh": "以岭南庭园为原型的零碳科技文化馆——天井与院廊调节气候，节能藏进园林。（草稿，待复核）",
-      "desc_en": "A zero-carbon science pavilion patterned on the Lingnan garden. (draft)",
+      "desc_zh": "基于建筑能耗与文化回应的科技馆设计——以岭南庭园为原型，节能藏进园林。",
+      "desc_en": "A science pavilion designed around energy use and cultural response, patterned on the Lingnan garden.",
       "one_liner_zh": "",
       "one_liner_en": "",
-      "full_description_zh": "以岭南庭园为原型的零碳科技文化馆：天井与院廊组织气候适应性的游园动线，双层通风幕墙与光伏一体化把节能系统藏进园林语言——「绿光」与「园」互为表里。（从作品集板面「设计概念」改写的草稿，待用户复核）",
+      "full_description_zh": "基于建筑能耗与文化回应的科技馆设计。以岭南庭园为原型：天井与院廊组织气候适应性的游园动线，双层通风幕墙与光伏一体化把节能系统藏进园林语言。",
       "full_description_en": "",
       "tech_stack_zh": "",
       "tech_stack_en": "",
@@ -421,11 +430,11 @@
       "links": [],
       "thumb": "assets/project/vista-out/thumbnails/1.jpg",
       "float": { "reveal": "assets/project/vista-out/content/2.jpg" },
-      "desc_zh": "把夏季主导风变成空间组织逻辑的山地旅宿——公共风廊通风，客房顺山势展开。（草稿，待复核）",
-      "desc_en": "A mountainside hotel that turns the prevailing summer wind into its plan. (draft)",
+      "desc_zh": "基于地景最大化与公共风道的山地旅馆设计——客房顺山势展开，与山景相眺。",
+      "desc_en": "A mountain hotel designed around landscape maximisation and a public air duct.",
       "one_liner_zh": "",
       "one_liner_en": "",
-      "full_description_zh": "把夏季主导风变成空间组织逻辑的山地旅宿：公共风廊贯穿体量、自循环通风，客房顺山势展开，与山景相眺——「远山」既是看的对象，也是建筑生长的方式。（从作品集板面「设计概念」改写的草稿，待用户复核）",
+      "full_description_zh": "基于地景最大化与公共风道的山地旅馆设计。公共风廊贯穿体量、组织通风，客房顺山势展开，与山景相眺。课程设计评分 94/100。",
       "full_description_en": "",
       "tech_stack_zh": "",
       "tech_stack_en": "",
