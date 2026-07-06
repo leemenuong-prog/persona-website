@@ -18,6 +18,8 @@
 - **页脚 finale**（index）：「I am ___」五词轮换（Alnt Med / an AIPM / an Architect / a Builder / anything.）→ 灰阶波点带（双层半调+mask 渐隐）→ Logo 从 header 下坠落入 fband-slot（smoothstep 插值，`js/index-fx.js`）
 - **中轴进度指示**（用户原创，替代老师站波浪线+圆珠）：竖向数据条轨道 + 随滚动生长的墨色填充（IAM 节奏微调制）+ 作品节点水平分支、标题提亮。**分支必须吸附在某根短横线行上**（看起来是那根短横线在延伸，不能凭空生线），从中轴向左划到**大标题左缘正下方**收在方点。**走过的横线保持伸展态不回缩**（波只在进度头前方做预备）；轨道**头尾都不许压到文字**——尾端止于「尾声」标题上方。**无圆珠**，效果克制
 - **页脚 Logo 落底**：下坠进度以「滚动到页面最底」为终点归一化（勿用固定 span——页底永远到不了 1，Logo 会悬在半空）
+- **品牌条尺寸走 `--bb-*` 令牌**（barmorph.css：`--bb-h/--bb-bar/--bb-gap/--bb-dot`，默认=header 档 69×22）。**放大场景一律换令牌原生渲染，禁 transform scale 放大**（合成层按原生栅格化再放大必糊）。页脚落槽档 `.brandband--footer`：桌面 96px 高 / 总宽 360（3.75:1，比 header 档更横长），平板 72、手机 56；fly-band 飞行全程只缩小、落底 scale=1 像素完美。极窄屏（≤374）header 条切 18px 小档
+- **页脚站内导航 `.foot-nav`**（PROJECTS / AROUND / ABOUTME）：<1024 无侧钮时的 ABOUTME 唯一入口，桌面同显为站点地图；注意选择器用 `.site-footer .foot-nav a`（同权重会被后文 `.site-footer a` 按顺序压掉）
 - BarWord（词从条中解码）保留在 about 页标题；方块句点 `.psq` 永远直角
 
 ## 版式基准（老师站实证规格）
@@ -31,6 +33,16 @@
 - 建筑翻页图（content/）一律取**母版完整版面（带页边白）**，不做去白边裁切——上桥曾因裁掉顶部白边与其他五作不一致（2026-07-06 已重导）
 - 详情页：Monterey 大标题+↗ → 斜体开场段（左对齐引线）→ 章节 h2（衬线）+通栏细线 → 「—」列表（行首「标签：」≤10 字自动加粗）→ 小型大写技术栈 → 白卡图版容器+图注+文字球
 - 字体：MontereyFLF woff2×3（拉丁 unicode-range，中文落系统栈）+ Garamond/Georgia 衬线
+
+## 移动端与触屏（2026-07-07 定稿）
+
+- **断点体系**：`1023 / 767 / 479 / 374` 四档递进（374 只管 header 极窄收纳）。中轴进度条与侧钮 <1024 隐藏是设计决定，勿做移动替代。
+- **safe-area**：六页 viewport meta 带 `viewport-fit=cover`；tokens 层 `--safe-*` 四令牌 + `--header-h: calc(70px + var(--safe-top))` 一次性兜底，header/footer/modal/侧钮全部 env() 补偿。桌面预览 env()=0，刘海效果需真机复核。
+- **触屏热区 pattern**：`@media (pointer:coarse),(max-width:1023px)` 下用 `::after` 伪元素 `max(100%,44px)` 扩热区（不可见/不占布局/不改设计稿）；落点 `.text-ball`、`.media-cta a`、`.modal-close`、`.about-bio li a`。可见块级目标（返回钮/门面钮/列表行）直接真实达标 ≥44。
+- **立方体触屏**：`touch-action: pan-y`（竖划归页面滚动，横向起手归拖拽）；面变换 `layoutFaces()` 在 resize 重算（否则横竖屏切换会散架）。
+- **⚠️ 横向溢出防线在 body**（`overflow-x: hidden; overflow-x: clip`）——**绝不能放 html**：html 上的 clip 会把整页竖向滚动一起钳死（Chrome 实测）。装饰层禁止横向负 inset 出血。
+- **vh 一律双写 svh**（`height: Xvh; height: Xsvh;` 回退行在前），防 iOS 地址栏收放抖动。
+- 尾声网格：767 两列（gap 28/20）→ 479 单列满幅；详情页 479 档白卡 `margin-inline:-12px` 回收页边（与 `.container` 的 `100%-48px` 强耦合）。
 
 ## 数据与素材约定
 
