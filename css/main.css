@@ -135,12 +135,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 /* 站内导航列：<1024 无侧钮时的 ABOUTME 入口；桌面同显（站点地图） */
 .foot-nav { display: flex; flex-direction: column; gap: 2px; }
-.foot-nav a {
+/* 特异性须压过后文的 .site-footer a（同权重时文件顺序会输） */
+.site-footer .foot-nav a {
   font-family: var(--font-display); font-size: 15px; font-weight: 500;
   letter-spacing: .14em; color: var(--c-sub);
   padding: 9px 0; border-bottom: none;
 }
-.foot-nav a:hover, .foot-nav a[aria-current="page"] { color: var(--c-title); border-bottom: none; }
+.site-footer .foot-nav a:hover, .site-footer .foot-nav a[aria-current="page"] { color: var(--c-title); border-bottom: none; }
 .site-footer .foot-name { font-family: var(--font-display); font-size: 20px; color: var(--c-title); }
 .site-footer .foot-name .sep { color: var(--c-kw); padding: 0 6px; }
 .site-footer .foot-contact { text-align: right; }
@@ -219,6 +220,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 @media (max-width: 479px) {
   .page-title { font-size: 22px; margin: 20px 0 18px; }
+}
+/* 极窄屏（320 级）：header 一排收进 320——nav 缩字号、品牌条切小档 */
+@media (max-width: 374px) {
+  .site-header { padding-left: calc(8px + var(--safe-left)); padding-right: calc(8px + var(--safe-right)); }
+  .site-header .nav-btn { font-size: 13px; padding: 0 5px; }
+  .header-right { gap: 4px; }
+  .site-header .brandband { --bb-h: 18px; --bb-bar: 3px; --bb-gap: 2.5px; --bb-dot: 4px; }
 }
 
 /* ── 触屏热区（不可见、不占布局；宿主需非 static 定位） ── */
