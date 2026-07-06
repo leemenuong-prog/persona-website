@@ -1,78 +1,109 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync, statSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 
-/* 2026-07-06 改版结构守卫 —「作品为主角」重构:作品画廊前置、身份合并两组
-   (AIPM / Architect)、每作杂志式介绍、品牌带 phase W 退役。 */
+/* 2026-07-06 wenxin 式改版结构守卫:纯静态多页站(无框架无构建),
+   config/projects.json 单一事实源,素材按 assets/project/{id}/ 约定放置。
+   旧 React 站(rational/)已退役,见 git 历史快照 ba7ebcd。 */
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const read = (file) => readFileSync(join(root, file), "utf8");
+const exists = (file) => existsSync(join(root, file));
 
-const chapters = read("rational/chapters.jsx");
-const sections = read("rational/sections.jsx");
-const app = read("rational/app.jsx");
-const secCss = read("rational/sections.css");
-
-/* ── 组件存在:AIPM 开场 + 四段介绍 + Architect + 两段介绍 + 画廊 ── */
-for (const fn of ["ChAipmOpen", "IntroPears", "IntroCowork", "IntroYijian", "IntroMeco", "IntroUabb", "IntroArchfolio", "ChArch"]) {
-  assert.match(chapters, new RegExp("function " + fn + "\\s*\\("), fn + " component should exist");
+/* ── 五个页面 + 404 存在且是完整 HTML ── */
+const PAGES = ["index.html", "projects.html", "project.html", "about.html", "around.html", "404.html"];
+for (const page of PAGES) {
+  assert.ok(exists(page), page + " should exist");
+  const html = read(page);
+  assert.match(html, /<html/i, page + " should be an HTML document");
+  assert.match(html, /js\/main\.js/, page + " should load the shared js/main.js");
 }
-assert.match(sections, /function WorksGallery\s*\(/, "WorksGallery component should exist");
-assert.match(sections, /function CoverArt\s*\(/, "CoverArt (placeholder covers) should exist");
 
-/* ── 旧组件名不再渲染 ── */
-for (const dead of ["ChDev", "ChReel", "ChAipmPlatform"]) {
-  assert.equal(app.indexOf("<" + dead + " "), -1, dead + " must not render (renamed in the redesign)");
+/* ── 旧 React 站不得回魂 ── */
+assert.ok(!exists("rational"), "the retired rational/ React app must stay deleted");
+for (const page of PAGES) {
+  assert.doesNotMatch(read(page), /rational\//, page + " must not reference the retired rational/ app");
 }
-assert.equal(sections.indexOf("function Works("), -1, "old scroll-scrub Works must be deleted");
 
-/* ── id 移交:开场章拿 aipm,平台介绍改 intro-cowork ── */
-assert.match(chapters, /id="aipm"[^>]*data-prog="aipm"/, "ChAipmOpen carries the aipm id + progress (WHOAMI 01 lands here)");
-assert.match(chapters, /id="intro-cowork"/, "Co-work platform page moved to intro-cowork id");
-assert.match(chapters, /id="intro-pears"/, "Pears reel moved to intro-pears id");
-assert.match(chapters, /function useApxFilm/, "the Co-work film-loading hook must be intact");
-assert.match(chapters, /xtool\/\?fresh=1/, "Co-work film should still embed the xtool interactive movie");
+/* ── projects.json 可解析:11 作品,主线 5 作在前、尾声建筑 6 作在后 ── */
+const data = JSON.parse(read("config/projects.json"));
+assert.ok(Array.isArray(data.projects), "projects.json should carry a projects array");
+const projects = data.projects;
+assert.equal(projects.length, 11, "the site holds 11 works");
 
-/* ── 进度键改名 developer → aipm(三处),不得残留活引用 ── */
-assert.doesNotMatch(chapters, /useChProg\("developer"/, "progress key must be renamed to aipm");
-assert.doesNotMatch(sections, /__progress\.developer/, "CodePanel must read __progress.aipm");
+const ids = projects.map((p) => p.id);
+assert.deepEqual(
+  ids,
+  ["pears", "cowork", "yijian", "meco", "uabb",
+   "after-silence", "upper-via", "air-cube", "hidden-lingnan-garden", "vista-out", "ring-world"],
+  "work order: five mainline AI works, then the six-architecture epilogue",
+);
 
-/* ── 渲染顺序:Hero → Whoami → 画廊 → AIPM 章(开场+4 介绍) → Architect 章(+2) → Contact ── */
-const at = (tag) => app.indexOf(tag);
-const order = [
-  "<Whoami jump={jump} />", "<WorksGallery jump={jump} />", "<ChAipmOpen jump={jump} />",
-  "<IntroPears jump={jump} />", "<IntroCowork jump={jump} />", "<IntroYijian jump={jump} />",
-  "<IntroMeco jump={jump} />", "<ChArch jump={jump} />", "<IntroUabb jump={jump} />",
-  "<IntroArchfolio jump={jump} />", "<Contact jump={jump} />",
-];
-for (let i = 0; i < order.length; i++) assert.ok(at(order[i]) > -1, order[i] + " should render");
-for (let i = 1; i < order.length; i++) assert.ok(at(order[i - 1]) < at(order[i]), order[i] + " should follow " + order[i - 1]);
+const mainline = projects.filter((p) => p.main === true);
+assert.deepEqual(mainline.map((p) => p.id), ids.slice(0, 5), "exactly the first five works are mainline (main: true)");
+for (const p of projects.slice(5)) {
+  assert.equal(p.category, "Architecture", p.id + " should be an Architecture epilogue work");
+}
 
-/* ── WORKS 六卡 + ARCH_WORKS 四作,新字段齐备 ── */
-assert.match(sections, /const ARCH_WORKS\s*=\s*\[/, "ARCH_WORKS (four architecture works) should exist");
-const keys = [...sections.matchAll(/key:\s*"(pears|cowork|yijian|meco|uabb|archfolio)"/g)].map((m) => m[1]);
-assert.deepEqual(keys, ["pears", "cowork", "yijian", "meco", "uabb", "archfolio"], "WORKS should hold the six cards in order");
-assert.match(sections, /status:\s*"in-progress"/, "Meco should carry the in-progress status");
-assert.match(sections, /introId:\s*"intro-yijian"/, "cards should link to their intro anchors");
-/* 章内 lookup 按 key 查询,与数据一致 */
-assert.match(chapters, /w\.key === "pears"/, "Pears CTA lookup should key off w.key");
-assert.match(chapters, /w\.key === "cowork"/, "Co-work CTA lookup should key off w.key");
+/* ── 每作字段齐备(加作品零代码的前提是数据完整) ── */
+const REQUIRED = ["id", "main", "category", "category_zh", "category_en", "desc_zh", "desc_en",
+                  "one_liner_en", "full_description_zh", "full_description_en", "media", "contentImages", "links", "float"];
+for (const p of projects) {
+  for (const field of REQUIRED) {
+    assert.ok(field in p, p.id + " should carry the " + field + " field");
+  }
+  assert.ok(Array.isArray(p.contentImages) && p.contentImages.length > 0, p.id + " should list its content page images");
+}
 
-/* ── 品牌带 phase W 退役:app 不再引用 __wkOpen / .wk-wrap ── */
-assert.doesNotMatch(app, /__wkOpen/, "brandmorph phase W (__wkOpen) must be retired");
-assert.doesNotMatch(app, /\.wk-wrap/, "the 640vh works scroll budget must be gone");
+/* ── 素材落盘:封面缩略图 + json 里引用的每个本地文件都真实存在 ── */
+for (const p of projects) {
+  const thumbDir = join(root, "assets", "project", p.id, "thumbnails");
+  const thumbs = existsSync(thumbDir) ? readdirSync(thumbDir) : [];
+  assert.ok(thumbs.some((f) => /^1\.(jpg|jpeg|png|svg|webp)$/i.test(f)),
+    p.id + " should have a cover thumbnail assets/project/" + p.id + "/thumbnails/1.*");
+}
+const referenced = [];
+for (const p of projects) {
+  referenced.push(...p.contentImages.map((src) => [p.id, src]));
+  if (p.float && p.float.reveal) referenced.push([p.id, p.float.reveal]);
+  for (const m of p.media || []) {
+    for (const src of [m.src, m.poster]) {
+      if (src && !/^https?:/.test(src)) referenced.push([p.id, src]);
+    }
+  }
+}
+for (const [id, src] of referenced) {
+  assert.ok(exists(src), id + " references a missing file: " + src);
+}
 
-/* ── 画廊网格墙 CSS + 底部波点 ── */
-assert.match(secCss, /\.gw-grid\s*\{/, "gallery grid CSS should exist");
-assert.match(secCss, /\.gw-t-cobalt|\.gw-t-ink|\.gw-t-paper/, "gallery cards carry tone classes");
-assert.match(secCss, /\.fdots\s*\{/, "footer halftone dots band should exist");
+/* ── 数据接线:main.js 拉取 projects.json,详情页按 ?id= 查询 ── */
+assert.match(read("js/main.js"), /fetch\(['"]config\/projects\.json['"]\)/, "js/main.js should fetch config/projects.json");
+assert.match(read("js/project-detail.js"), /URLSearchParams\(location\.search\)\.get\(['"]id['"]\)/,
+  "project.html should resolve the work from the ?id= query param");
+assert.match(read("project.html"), /js\/project-detail\.js/, "project.html should load js/project-detail.js");
 
-/* ── 章节大标题静态化:BarWord static + .rv-soft ── */
-assert.match(read("rational/barmorph.jsx"), /static:\s*still\s*=\s*false/, "BarWord should accept a static prop");
-assert.match(read("rational/base.css"), /\.rv-soft\s*\{/, "the light static-title reveal tier should exist");
+/* ── 播放纪律:门面点击加载,顶层页面不写 autoplay ── */
+for (const page of PAGES) {
+  assert.doesNotMatch(read(page), /\bautoplay\b/i, page + " must not autoplay media (facade click-to-load only)");
+}
 
-/* ── 圆角按钮令牌 ── */
-assert.match(read("rational/base.css"), /--r-btn:\s*12px/, "button corner-radius token should exist");
+/* ── 小文件纪律:仓库内(除 .git)不得出现 >95MB 的文件(GitHub 硬上限 100MB) ── */
+const LIMIT = 95 * 1024 * 1024;
+const walk = (dir) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === ".git") continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) walk(full);
+    else if (entry.isFile()) {
+      const size = statSync(full).size;
+      assert.ok(size < LIMIT, full.slice(root.length) + " is " + (size / 1e6).toFixed(0) + "MB — masters belong in 源文件/, not the repo");
+    }
+  }
+};
+walk(root);
+
+/* ── GitHub Pages 镜像:.nojekyll 必需(xtool bundle 含下划线目录) ── */
+assert.ok(exists(".nojekyll"), ".nojekyll must exist so GitHub Pages serves xtool/_ds/");
 
 console.log("site-structure: all assertions passed");

@@ -166,9 +166,14 @@
     var input = window.prompt('口令');
     if (input == null || input === '') return;
     sha256(input).then(function (hex) {
-      if (hex === GATE) {
-        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) { /* noop */ }
+      if (hex !== GATE) return;
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) { /* noop */ }
+      if (PAGE === 'project') {
         enable();
+      } else {
+        /* 非详情页：记住已解锁，去任意作品页即自动进入编辑态 */
+        injectStyle();
+        toast('已解锁——打开任意作品页即可直接编辑');
       }
     });
   }
@@ -198,9 +203,9 @@
     armFooter();
     var resume = false;
     try { resume = sessionStorage.getItem(SESSION_KEY) === '1'; } catch (e) { /* noop */ }
-    if (resume) {
+    if (resume && PAGE === 'project') {
       enable();                                     /* 本会话已验证过，直接恢复 */
-    } else if (location.hash === '#atelier') {
+    } else if (location.hash === '#atelier' && !resume) {
       /* 入口 ②：URL 带 #atelier。等 chrome 注入完再弹口令 */
       setTimeout(gate, 400);
     }
