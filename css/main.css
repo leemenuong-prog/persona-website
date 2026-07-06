@@ -27,7 +27,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0; min-height: 100vh;
+  margin: 0; min-height: 100vh; min-height: 100svh;
   font-family: var(--font-serif);
   font-size: 17px; line-height: 1.65; color: var(--c-body);
   display: flex; flex-direction: column;
@@ -53,9 +53,9 @@ img, video { max-width: 100%; height: auto; display: block; }
 /* ── header（fixed · 毛玻璃） ── */
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  height: var(--header-h);
+  height: var(--header-h);   /* 含 --safe-top；内容区恒 70px */
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px;
+  padding: var(--safe-top) calc(28px + var(--safe-right)) 0 calc(28px + var(--safe-left));
   background: var(--header-bg);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--c-border);
@@ -113,16 +113,30 @@ img, video { max-width: 100%; height: auto; display: block; }
   transition: background-color .2s, color .2s;
 }
 .side-btn:hover { background: var(--hover-bg); color: var(--c-title); }
-.side-btn.right { right: 14px; transform: translateY(-50%) rotate(90deg); }
+.side-btn.right { right: calc(14px + var(--safe-right)); transform: translateY(-50%) rotate(90deg); }
+
+/* ── 页面级标题（projects / around 索引类页共用口径） ── */
+.page-title {
+  margin: 48px 0 40px; font-size: 26px; font-weight: 500;
+  letter-spacing: .18em; color: var(--c-title);
+}
 
 /* ── footer ── */
 .site-footer {
   flex-shrink: 0; z-index: 2;
   background: var(--c-footer);
-  padding: 22px 50px;
+  padding: 22px calc(50px + var(--safe-right)) calc(22px + var(--safe-bottom)) calc(50px + var(--safe-left));
   display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
   font-size: 16px; line-height: 1.5; color: #1B1B1B;
 }
+/* 站内导航列：<1024 无侧钮时的 ABOUTME 入口；桌面同显（站点地图） */
+.foot-nav { display: flex; flex-direction: column; gap: 2px; }
+.foot-nav a {
+  font-family: var(--font-display); font-size: 15px; font-weight: 500;
+  letter-spacing: .14em; color: var(--c-sub);
+  padding: 9px 0; border-bottom: none;
+}
+.foot-nav a:hover, .foot-nav a[aria-current="page"] { color: var(--c-title); border-bottom: none; }
 .site-footer .foot-name { font-family: var(--font-display); font-size: 20px; color: var(--c-title); }
 .site-footer .foot-name .sep { color: var(--c-kw); padding: 0 6px; }
 .site-footer .foot-contact { text-align: right; }
@@ -138,7 +152,8 @@ img, video { max-width: 100%; height: auto; display: block; }
 .modal-overlay {
   position: fixed; inset: 0; z-index: 3000;
   background: var(--overlay);
-  display: flex; align-items: center; justify-content: center; padding: 24px;
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(24px + var(--safe-top)) calc(24px + var(--safe-right)) calc(24px + var(--safe-bottom)) calc(24px + var(--safe-left));
   animation: fadeIn .3s ease both;
 }
 .modal-box {

@@ -103,10 +103,10 @@
       ],
       "annotations": {
         "1": {
-          "kick_zh": "整体流程",
-          "kick_en": "How it all connects",
-          "body_zh": "你把工作做一遍，插件把轨迹蒸馏成一份你确认过的说明书，再交给编码 Agent 生成专属的 Workflow Agent——它替你重复，也可以分享给别人。",
-          "body_en": "You walk through the job once; the extension distills the trail into a brief you approve, and a coding agent builds your own workflow agent — it repeats the work for you, and can be shared with others."
+          "kick_zh": "把能力分发出去",
+          "kick_en": "Coding, handed to everyone",
+          "body_zh": "过去所有 Agent 需求都要排队等一支开发团队；现在把工作做一遍给 Pears 看，每个岗位都能拿到自己的 Workflow Agent——能力被分发到了人。",
+          "body_en": "Every agent request used to queue for one dev team. Now you walk the job through once, and every role gets a workflow agent of its own — the capability is handed out, not queued for."
         },
         "2": {
           "kick_zh": "看你做一遍",
@@ -255,10 +255,10 @@
       ],
       "annotations": {
         "1": {
-          "kick_zh": "整体流程",
-          "kick_en": "How it all connects",
-          "body_zh": "需求从飞书进来，七个共用一套记忆与规则的工具生成内容——高创意环节三候选并出、由人挑选——结果回到飞书，每一步都进 ROI 看板。",
-          "body_en": "Requests arrive in Feishu; seven tools sharing one memory and one rulebook do the making — creative steps ship three drafts for a human to pick — results land back in Feishu, and every step feeds the ROI board."
+          "kick_zh": "台子跑流程，人做判断",
+          "kick_en": "The bench runs; people decide",
+          "body_zh": "重复的活在台子上自动流转，七个工位共用一套记忆和规则；人只站在一个位置上——三张候选里挑一张。其余的人，被从流水线上解放出来。",
+          "body_en": "The routine runs itself along the bench — seven stations, one shared memory and rulebook. People stand at exactly one spot: picking one of three drafts. Everyone else walks away from the line."
         }
       }
     },
@@ -346,10 +346,10 @@
       ],
       "annotations": {
         "1": {
-          "kick_zh": "整体流程",
-          "kick_en": "How it all connects",
-          "body_zh": "一件待决策的事摆上桌，多角色各自陈述立场，四层框架逐层收敛，最后给出共识度、达成条件与仍待解决的分歧——每一步都能回看。",
-          "body_en": "A pending decision goes on the table; the roles argue their positions, four layers converge one by one, and out comes a consensus score, the conditions to meet, and what's still open — every step replayable."
+          "kick_zh": "分歧终于上桌",
+          "kick_en": "Finally on the table",
+          "body_zh": "每个人真正想说的，从头顶的乱线穿过四层漏斗，落在桌面上变成一条能一步步回看的直线——分歧不再藏在会议室的空气里。",
+          "body_en": "What each person actually means rises as tangled threads, passes the four-layer funnel, and lands on the table as one line you can replay step by step — disagreement no longer hides in the room."
         }
       }
     },
@@ -540,10 +540,10 @@
       ],
       "annotations": {
         "1": {
-          "kick_zh": "整体流程",
-          "kick_en": "How it all connects",
-          "body_zh": "图纸、照片、文字，什么形态都能进；管线先理解、再生成、最后按同一套标准出厂——非标的东西进来，标准的资产出去。",
-          "body_en": "Sketches, photos, words — anything goes in; the pipeline understands, generates, then ships through one standard gate. Odd things in, standard things out."
+          "kick_zh": "非标进，标准出",
+          "kick_en": "Odd in, standard out",
+          "body_zh": "同一箱奇形怪状的展品，两条路：人扛着走要一个月；走管线的门架，几天就到展台——每一件出来都是同一个标准。",
+          "body_en": "The same crate of odd exhibits, two roads: carried by hand, it takes a month; through the gantry line, days — and everything comes out to one standard."
         }
       }
     },

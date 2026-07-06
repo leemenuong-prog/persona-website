@@ -612,7 +612,211 @@ def plate_flow():
     return '\n'.join('  ' + e for e in S.el)
 
 
-# ══════════════════════ 流程横图 · 通用件与四个项目 ══════════════════════
+# ══════════════════════ 叙事原语（人形 / 非标物 / 漏斗 / 乱麻） ══════════════════════
+def person_iso(S, x, y, lv='L1', seated=False, face=None):
+    """建筑图版式极简人形：头空心圆 + 躯干线 + 腿线。无脸无手无衣饰。"""
+    if seated:
+        hx, hy = S.P(x, y, 30)
+        S.raw(f'<circle cx="{fmt(hx)}" cy="{fmt(hy)}" r="5" {_a(lv, "#FFFFFF")}/>')
+        S.line3((x, y, 25), (x, y, 12), lv)
+        fx, fy = face or (1, 0)
+        n = math.hypot(fx, fy); fx, fy = fx/n, fy/n
+        S.line3((x, y, 12), (x + 10*fx, y + 10*fy, 12), lv)          # 大腿
+        S.line3((x + 10*fx, y + 10*fy, 12), (x + 10*fx, y + 10*fy, 0), lv)  # 小腿
+    else:
+        hx, hy = S.P(x, y, 30)
+        S.raw(f'<circle cx="{fmt(hx)}" cy="{fmt(hy)}" r="4.5" {_a(lv, "#FFFFFF")}/>')
+        S.line3((x, y, 25.5), (x, y, 10), lv)
+        S.line3((x, y, 10), (x + 3.2, y - 3.2, 0), lv)
+        S.line3((x, y, 10), (x - 3.2, y + 3.2, 0), lv)
+
+def odd_blob(S, x, y, z, s=16):
+    pts = [(-0.25, -1.0), (0.62, -0.72), (1.0, 0.05), (0.55, 0.62), (-0.28, 0.82), (-0.95, 0.2)]
+    p = [S.P(x + px*s, y + py*s*0.8, z) for px, py in pts]
+    d = 'M ' + ' L '.join(f'{fmt(a)} {fmt(b)}' for a, b in p) + ' Z'
+    S.path2(d, 'L1', '#FFFFFF')
+
+def odd_star(S, x, y, z, s=16):
+    p = []
+    for i in range(10):
+        r = s if i % 2 == 0 else s*0.45
+        th = math.pi/2 + i*math.pi/5
+        p.append(S.P(x + r*math.cos(th), y + r*math.sin(th)*0.8, z))
+    d = 'M ' + ' L '.join(f'{fmt(a)} {fmt(b)}' for a, b in p) + ' Z'
+    S.path2(d, 'L1', '#FFFFFF')
+
+def odd_arch(S, x, y, z, s=16):
+    ox, oy = S.P(x, y, z)
+    S.path2(f'M {fmt(ox-s)} {fmt(oy)} A {s} {s*0.75:.1f} 0 0 1 {fmt(ox+s)} {fmt(oy)} '
+            f'L {fmt(ox+s*0.55)} {fmt(oy)} A {s*0.55:.1f} {s*0.42:.1f} 0 0 0 {fmt(ox-s*0.55)} {fmt(oy)} Z',
+            'L1', '#FFFFFF')
+
+def plinth_iso(S, x, y, cube=None):
+    S.box(x-20, y-20, 0, 40, 40, 46, fill='#FFFFFF')
+    S.box(x-27, y-27, 46, 54, 54, 8, fill='#FFFFFF')
+    if cube:
+        S.box(x-cube/2, y-cube/2, 54, cube, cube, cube, fill='#FFFFFF')
+
+def funnel_iso(S, cx, cy, z0=44, rings=(66, 47, 29, 12), step=25):
+    tops = []
+    for i, R in enumerate(rings):
+        z = z0 + (len(rings)-1-i) * step
+        px, py = S.P(cx, cy, z)
+        lv = 'L1' if i == 0 else 'L2'
+        S.el.append(f'<ellipse cx="{fmt(px)}" cy="{fmt(py)}" rx="{fmt(K*R)}" ry="{fmt(KY*R)}" {_a(lv)}/>')
+        tops.append((px, py, K*R))
+    S.line2((tops[0][0]-tops[0][2], tops[0][1]), (tops[-1][0]-tops[-1][2], tops[-1][1]), 'L1')
+    S.line2((tops[0][0]+tops[0][2], tops[0][1]), (tops[-1][0]+tops[-1][2], tops[-1][1]), 'L1')
+    return tops[0], tops[-1]   # (口沿, 底口) 屏幕参数
+
+def tangle(S, heads, mouth):
+    """乱麻：从各头顶升起、交叉、汇入漏斗口。手写控制偏移，无随机。"""
+    spread = ((44, -66, -14), (-38, -80, 10), (56, -50, -6), (-46, -92, 14), (36, -104, 5), (-58, -58, -10))
+    for i, (hx, hy) in enumerate(heads):
+        dx1, dy1, dx2 = spread[i % len(spread)]
+        toward = 1 if mouth[0] >= hx else -1
+        dx1 = abs(dx1) * toward if i % 2 == 0 else dx1 * 0.6   # 半数拉向漏斗，半数保留横摆制造交叉
+        lv = 'L1' if i % 3 == 0 else 'L2'
+        S.path2(f'M {fmt(hx)} {fmt(hy-7)} '
+                f'C {fmt(hx+dx1)} {fmt(hy+dy1)} {fmt(mouth[0]-dx1*0.5)} {fmt(mouth[1]-62+dy1*0.25)} '
+                f'{fmt(mouth[0]+dx2)} {fmt(mouth[1]-5)}', lv)
+
+
+# ══════════════════════ 四张产品叙事图版（价值故事，替换节点图） ══════════════════════
+def story_pears():
+    S = Scene(600, 430)
+    # 左：唯一的开发塔（玻璃 + 门窗蚀刻），塔前长队
+    S.box(-400, 40, 0, 90, 90, 170, lv='L1', hidden='L3', outline='L0')
+    g0, g1 = S.face_group((-310, 52, 156), (0, 1, 0), (0, 0, -1))
+    S.raw(g0)
+    for r in range(3):
+        for c in range(2):
+            S.raw(f'<rect x="{8 + c*30}" y="{r*30}" width="14" height="18" {_a("L2")}/>')
+    S.raw(f'<rect x="20" y="112" width="22" height="44" {_a("L2")}/>')
+    S.raw(g1)
+    for k in range(5):
+        person_iso(S, -285 + 13*k, 100 + 33*k)
+    note(S, 150, 490, 'one team, everyone waiting.', anchor='middle')
+
+    # 中：一人做示范 → 轨迹流入 Pears 小盒（主角虚线）
+    S.box(-60, 6, 0, 66, 40, 22, fill='#FFFFFF')                    # 小桌
+    person_iso(S, -86, 62)
+    ph = S.P(-86, 62, 30)
+    box_top = S.P(80, 30, 34)
+    S.path2(f'M {fmt(ph[0]+9)} {fmt(ph[1]-3)} C {fmt(ph[0]+76)} {fmt(ph[1]-58)} '
+            f'{fmt(box_top[0]-76)} {fmt(box_top[1]-62)} {fmt(box_top[0])} {fmt(box_top[1])}', 'L3k')
+    S.box(63, 13, 0, 34, 34, 34, fill='#FFFFFF', outline='L0')      # Pears 盒（主角）
+    note(S, ph[0] + 74, ph[1] - 70, 'shown once.')
+
+    # 右：人手一只自己的 Agent 方块（沿屏幕水平排布，轨迹 L3）
+    spots = ((250, -90), (330, -170), (300, -40), (382, -122))
+    src = S.P(97, 30, 24)
+    for gx, gy in spots:
+        person_iso(S, gx, gy)
+        S.box(gx + 16, gy - 28, 0, 18, 18, 18, fill='#FFFFFF')
+        S.cable(src, S.P(gx + 25, gy - 19, 18), -30, 'L3')
+    note(S, 985, 456, 'everyone gets their own.', anchor='middle')
+    return '\n'.join('  ' + e for e in S.el)
+
+
+def story_cowork():
+    S = Scene(620, 430)
+    # 工作台（人体尺度）+ 七工位 + 带线 + 流转件
+    S.box(-240, -50, 0, 480, 90, 20, fill='#FFFFFF', outline='L0')
+    for k in range(7):
+        S.box(-212 + k*66, -16, 20, 18, 18, 18, lv='L1', hidden='L3')
+    S.line2(S.P(-230, -5, 28), S.P(230, -5, 28), 'L2')
+    for wx in (-160, -28, 104):
+        S.box(wx, -10, 20, 12, 12, 12, fill='#FFFFFF')
+
+    # 唯一有人的工位：站在台前，三选一
+    person_iso(S, 56, 68)
+    for i, (dx, dy) in enumerate(((-30, 6), (0, 0), (28, 8))):
+        x0, y0 = 26 + dx, 8 + dy - (10 if i == 1 else 0)
+        S.poly3([(x0, y0, 20.5), (x0 + 24, y0, 20.5),
+                 (x0 + 24, y0 + 17, 20.5), (x0, y0 + 17, 20.5)], 'L1', '#FFFFFF')
+    pn = S.P(56, 68, 0)
+    note(S, pn[0] + 16, pn[1] + 44, 'people keep the call.', anchor='middle')
+
+    # 被解放的人：沿一条点线小径离开台子
+    exit0 = S.P(-240, 42, 0)
+    exit1 = S.P(-410, 190, 0)
+    S.path2(f'M {fmt(exit0[0])} {fmt(exit0[1])} Q {fmt((exit0[0]+exit1[0])/2 - 30)} '
+            f'{fmt((exit0[1]+exit1[1])/2 + 10)} {fmt(exit1[0])} {fmt(exit1[1])}', 'L5t')
+    for gx, gy in ((-282, 92), (-330, 138), (-382, 176)):
+        person_iso(S, gx, gy)
+    ln = S.P(-330, 138, 0)
+    note(S, ln[0] - 10, ln[1] + 48, 'the bench runs the routine.', anchor='middle')
+    return '\n'.join('  ' + e for e in S.el)
+
+
+def story_yijian():
+    S = Scene(600, 450)
+    # 玻璃薄桌：桌面双椭圆 + 四腿（桌面 z24，人头 z30 高于桌面）
+    cx, cy24 = S.P(0, 0, 24)
+    rx, ry = K*150, KY*150
+    S.el.append(f'<ellipse cx="{fmt(cx)}" cy="{fmt(cy24)}" rx="{fmt(rx)}" ry="{fmt(ry)}" {_a("L1")}/>')
+    _, cy20 = S.P(0, 0, 20)
+    S.path2(f'M {fmt(cx-rx)} {fmt(cy20)} A {fmt(rx)} {fmt(ry)} 0 0 0 {fmt(cx+rx)} {fmt(cy20)}', 'L2')
+    S.line2((cx-rx, cy24), (cx-rx, cy20), 'L1')
+    S.line2((cx+rx, cy24), (cx+rx, cy20), 'L1')
+    for lx, ly in ((-96, -96), (96, -96), (-96, 96), (96, 96)):
+        S.line3((lx, ly, 20), (lx, ly, 0), 'L1')
+
+    # 四人围站（避开漏斗与收束句区），头顶乱麻
+    heads = []
+    for th_d in (150, 200, 265, 320):
+        th = math.radians(th_d)
+        gx, gy = 182*math.cos(th), 182*math.sin(th)
+        person_iso(S, gx, gy)
+        heads.append(S.P(gx, gy, 30))
+
+    # 四层漏斗 + 直线落桌 + 墨方
+    mouth, bottom = funnel_iso(S, 66, 12, z0=50)
+    tangle(S, heads, mouth)
+    drop = S.P(66, 12, 24)
+    end = S.P(118, 42, 24)
+    S.line2((bottom[0], bottom[1]), drop, 'L0')
+    S.line2(drop, end, 'L0')
+    S.ink_square(end[0] - 1, end[1] - 5, 9)
+
+    note(S, 330, 200, 'what everyone actually means.', anchor='middle')
+    note(S, end[0] + 118, end[1] + 16, 'step by step, on record.', anchor='middle')
+    return '\n'.join('  ' + e for e in S.el)
+
+
+def story_uabb():
+    S = Scene(600, 400)
+    # 左：板条箱 + 非标物
+    S.box(-450, -10, 0, 120, 90, 64, lv='L1', hidden='L3', outline='L0')
+    odd_blob(S, -420, 20, 72, 15)
+    odd_star(S, -372, 48, 78, 14)
+    odd_arch(S, -350, 6, 70, 13)
+
+    # 上路：地面点线远路（绕上半幅）+ 扛件的人
+    sp = [S.P(*p) for p in ((-370, -80, 0), (-160, -260, 0), (140, -290, 0), (245, -60, 0))]
+    S.path2(f'M {fmt(sp[0][0])} {fmt(sp[0][1])} C {fmt(sp[1][0]-70)} {fmt(sp[1][1]+14)} '
+            f'{fmt(sp[1][0]+50)} {fmt(sp[1][1]-14)} {fmt((sp[1][0]+sp[2][0])/2)} {fmt((sp[1][1]+sp[2][1])/2)} '
+            f'S {fmt(sp[2][0]+90)} {fmt(sp[2][1]+24)} {fmt(sp[3][0])} {fmt(sp[3][1])}', 'L3')
+    person_iso(S, -60, -240)
+    odd_blob(S, -60, -240, 46, 11)
+    hn = S.P(-60, -240, 0)
+    note(S, hn[0] + 10, hn[1] - 96, 'by hand — a month.', anchor='middle')
+
+    # 下路：短传送带穿过管线门架（细柱 + 横梁，龙门吊式），非标进、标准出
+    S.box(-300, 96, 0, 330, 52, 14, fill='#FFFFFF')
+    S.box(-134, 82, 0, 12, 12, 58, fill='#FFFFFF')
+    S.box(-134, 150, 0, 12, 12, 58, fill='#FFFFFF')
+    S.box(-138, 78, 58, 20, 90, 10, fill='#FFFFFF')
+    odd_blob(S, -244, 122, 20, 13)
+    S.box(-52, 110, 14, 22, 22, 22, fill='#FFFFFF')
+    bn = S.P(-140, 176, 0)
+    note(S, bn[0] + 4, bn[1] + 42, 'through the line — days.', anchor='middle')
+
+    # 右：沿屏幕水平线一排展台，各顶一只标准立方
+    for gx, gy in ((250, -50), (318, -118), (386, -186)):
+        plinth_iso(S, gx, gy, cube=22)
+    return '\n'.join('  ' + e for e in S.el)
 NW, NH = 180, 92
 
 def f_node(S, x, y, label, w=NW):
@@ -910,14 +1114,15 @@ def main():
           plate_05, caption='in, through, out.')
     plate('flow-overview.svg', 1200, 520, 'Meco — 整体流程 / How it all connects',
           plate_flow, caption='everything, through one app.')
-    plate('flow-pears.svg', 1200, 520, 'Pears — 整体流程 / How it all connects',
-          flow_pears, caption='show it once — it does the rest.')
-    plate('flow-cowork.svg', 1200, 520, 'Co-work — 整体流程 / How it all connects',
-          flow_cowork, caption='seven tools, one memory.')
-    plate('flow-yijian.svg', 1200, 520, '议见 — 整体流程 / How it all connects',
-          flow_yijian, caption='many voices, one answer.')
-    plate('flow-uabb.svg', 1200, 520, 'UABB — 整体流程 / How it all connects',
-          flow_uabb, caption='odd things in, standard things out.')
+    # 叙事版（价值故事）——旧 2D 节点图函数 flow_* 保留但不再输出
+    plate('flow-pears.svg', 1200, 640, 'Pears — 编程能力分发到每个人 / Coding, handed to everyone',
+          story_pears, caption='coding, handed to everyone.')
+    plate('flow-cowork.svg', 1200, 640, 'Co-work — 台子跑流程，人做判断 / The bench runs; people decide',
+          story_cowork, caption='the bench runs; people decide.')
+    plate('flow-yijian.svg', 1200, 640, '议见 — 分歧终于上桌 / The disagreement, finally on the table',
+          story_yijian, caption='the disagreement, finally on the table.')
+    plate('flow-uabb.svg', 1200, 640, 'UABB — 非标进标准出 / Odd things in, standard things out',
+          story_uabb, caption='odd things in, standard things out.')
     plate('cover.svg', 720, 720, 'Meco — 蘑菇管家 / A homegrown butler', plate_cover)
 
 if __name__ == '__main__':

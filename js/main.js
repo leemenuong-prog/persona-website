@@ -40,6 +40,12 @@
         '<div class="foot-name">李<span class="sep">·</span>LI &nbsp;文苑<span class="sep">·</span>MENUONG</div>' +
         '<div data-zh="AI 产品 × 建筑 — 作品集" data-en="AI Product × Architecture — Portfolio">AI 产品 × 建筑 — 作品集</div>' +
       '</div>' +
+      /* 站内导航：页脚是 finale 编舞的终点，也是 <1024（无侧钮）时的 ABOUTME 入口 */
+      '<nav class="foot-nav" aria-label="站内导航 · Site">' +
+        '<a href="projects.html"' + (PAGE === 'projects' ? ' aria-current="page"' : '') + '>PROJECTS</a>' +
+        '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
+        '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUTME</a>' +
+      '</nav>' +
       '<div class="foot-contact">' +
         '<div><a href="mailto:lee.menuong@gmail.com">lee.menuong@gmail.com</a></div>' +
         '<div><a href="https://github.com/leemenuong-prog" target="_blank" rel="noopener">github.com/leemenuong-prog</a></div>' +

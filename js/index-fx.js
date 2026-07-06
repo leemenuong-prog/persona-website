@@ -248,7 +248,7 @@
 
   /* ── 4. 页脚 finale ── */
   var IDS = ['Alnt Med', 'an AIPM', 'an Architect', 'a Builder', 'anything.'];
-  var finale = { flyband: null, headerBand: null, slot: null, started: false };
+  var finale = { flyband: null, band: null, headerBand: null, slot: null, started: false };
 
   function initFinale() {
     if (finale.started) return;
@@ -270,18 +270,19 @@
     }, 2200);
 
     if (REDUCE || !DESKTOP.matches) {
-      /* 静态落底：槽内直接放一条放大的品牌带 */
+      /* 静态落底：footer 档原生大尺寸渲染（勿 transform scale 放大——会糊） */
       var stat = document.createElement('div');
       stat.className = 'fband-static';
-      window.Barmorph.mountBrandBand(stat);
+      window.Barmorph.mountBrandBand(stat).classList.add('brandband--footer');
       slot.appendChild(stat);
       return;
     }
 
-    /* 下坠飞行体：fixed 单元素，每帧在 header 槽位与 footer 槽位间插值 */
+    /* 下坠飞行体：footer 档原生大条，飞行全程只缩小（header 端）→ 落底 scale=1 像素完美 */
     var fb = document.createElement('div');
     fb.className = 'fly-band';
-    window.Barmorph.mountBrandBand(fb);
+    finale.band = window.Barmorph.mountBrandBand(fb);
+    finale.band.classList.add('brandband--footer');
     fb.style.display = 'none';
     document.body.appendChild(fb);
     finale.flyband = fb;
@@ -316,9 +317,10 @@
     finale.flyband.style.display = '';
     if (finale.headerBand) finale.headerBand.style.opacity = '0';
 
-    /* 目标：槽内居中，高约槽高 55%（保持带宽高比 69:22） */
-    var natW = 69, natH = 22;
-    var sB = Math.min((b.height * 0.55) / natH, (b.width * 0.5) / natW);
+    /* 原生尺寸实测（offsetWidth/Height 不受 transform 影响，媒体查询换档自动跟随）；
+       落底 scale=1 原生渲染，槽装不下才等比缩小 */
+    var natW = finale.band.offsetWidth || 360, natH = finale.band.offsetHeight || 96;
+    var sB = Math.min(1, (b.height * 0.8) / natH, (b.width * 0.9) / natW);
     var bx = b.left + (b.width - natW * sB) / 2;
     var by = b.top + (b.height - natH * sB) / 2;
     var sA = a.height / natH;

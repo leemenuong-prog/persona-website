@@ -227,7 +227,7 @@ main { position: relative; }
   height: 30vh; min-height: 180px;
   display: flex; align-items: center; justify-content: center;
 }
-.fband-static .brandband { transform: scale(4.6); transform-origin: center; }
+/* fband-static 尺寸由 .brandband--footer 令牌档决定（原生渲染，勿 scale 放大） */
 .fly-band {
   position: fixed; left: 0; top: 0; z-index: 900;
   transform-origin: top left; pointer-events: none;
@@ -246,7 +246,6 @@ main { position: relative; }
   .project-item .image-container { order: 1; }
   .project-item .text-container { order: 2; min-height: 0; gap: 18px; }
   .line-container { display: none; }
-  .fband-static .brandband { transform: scale(3.2); }
 }
 @media (max-width: 767px) {
   .intro-container { margin-top: 60px; }
@@ -264,8 +263,7 @@ main { position: relative; }
     background-size: 16px 16px, 16px 16px;
     background-position: 0 0, 8px 8px;
   }
-  .fband-slot { height: 18vh; min-height: 108px; }
-  .fband-static .brandband { transform: scale(2.4); }
+  .fband-slot { height: 18vh; height: 18svh; min-height: 108px; }
   .project-desc { font-size: 15.5px; }
 }
 @media (max-width: 479px) {

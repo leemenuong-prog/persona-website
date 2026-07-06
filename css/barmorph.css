@@ -6,21 +6,28 @@
    触发：祖先获得 .in（main.js 的 [data-reveal] IntersectionObserver）。
    ════════════════════════════════════════════════════════════ */
 
-/* ── 品牌带 .IAM. — header 常驻小型天际线 ───────────────── */
+/* ── 品牌带 .IAM. — header 常驻小型天际线 ───────────────────
+   尺寸走 --bb-* 令牌（默认=header 档 69×22）。放大场景一律换令牌
+   原生渲染，禁 transform scale 放大（合成层按原生栅格化会糊）。 */
 .brandband {
-  display: inline-flex; align-items: flex-end; gap: 3px;
-  height: 22px; width: auto;
+  display: inline-flex; align-items: flex-end; gap: var(--bb-gap, 3px);
+  height: var(--bb-h, 22px); width: auto;
 }
 .brandband .bsq, .brandband .bdot {
-  flex: 0 0 5px; width: 5px; height: 5px; background: var(--bm-acc);
+  flex: 0 0 var(--bb-dot, 5px); width: var(--bb-dot, 5px); height: var(--bb-dot, 5px);
+  background: var(--bm-acc);
   transform: scale(0); transform-origin: bottom left;
 }
 .brandband i {
-  flex: 0 0 4px; width: 4px; height: 100%; background: var(--bm-bar);
+  flex: 0 0 var(--bb-bar, 4px); width: var(--bb-bar, 4px); height: 100%; background: var(--bm-bar);
   transform: scaleY(calc(var(--h, .8) * 0)); transform-origin: bottom;
   transition: transform .9s var(--ez), background-color .35s;
   transition-delay: var(--d, 0s), 0s;
 }
+/* 页脚落槽档：原生大尺寸 + 条距拉开（横向比 header 档更长，3.75:1 vs 3.14:1） */
+.brandband--footer { --bb-h: 96px; --bb-bar: 10px; --bb-gap: 28px; --bb-dot: 14px; }
+@media (max-width: 1023px) { .brandband--footer { --bb-h: 72px; --bb-bar: 8px; --bb-gap: 21px; --bb-dot: 11px; } }
+@media (max-width: 767px)  { .brandband--footer { --bb-h: 56px; --bb-bar: 7px; --bb-gap: 16px; --bb-dot: 9px; } }
 .brandband.in i    { transform: scaleY(var(--h, .8)); }
 .brandband.in .bsq { transform: scale(1); transition: transform .5s var(--ez) .1s; }
 .brandband.in .bdot{ transform: scale(1); transition: transform .5s var(--ez) .95s; }
