@@ -169,10 +169,15 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 @media (max-width: 767px) {
   body { font-size: 16px; }
-  .site-header { padding: 0 14px; }
-  .site-header .nav-btn { min-width: 0; font-size: 17px; padding: 0 10px; }
-  .header-right { gap: 10px; }
+  .site-header { padding: 0 10px; }
+  .site-header .nav-btn { min-width: 0; font-size: 15px; padding: 0 7px; letter-spacing: .02em; }
+  .header-left { gap: 2px; }
+  .header-right { gap: 6px; }
   .header-name { display: none; }
+  .wordmark { padding: 6px; }
+  .lang-toggle { min-width: 44px; padding: 0 6px; }
+  .gh-link { width: 28px; height: 28px; }
+  .gh-link svg { width: 17px; height: 17px; }
   .site-footer { flex-direction: column; padding: 20px 24px; }
   .site-footer .foot-contact { text-align: left; }
 }

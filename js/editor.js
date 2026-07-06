@@ -12,7 +12,8 @@
 (function () {
   'use strict';
 
-  if ((document.body.getAttribute('data-page') || '') !== 'project') return;
+  /* 全站都可解锁（页脚入口）；实际的就地编辑只发生在作品详情页 */
+  var PAGE = document.body.getAttribute('data-page') || '';
 
   /* 口令摘要（SHA-256）。改口令：shasum -a 256 算新摘要替换。 */
   var GATE = '294e5da2a8497d218e41cd2426c3132064c7a3748d8a1a3ba70db838898889a5';

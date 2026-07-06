@@ -12,17 +12,19 @@
 
 ## 品牌编舞（「.IAM. 数据条」语言的延续）
 
-- **Logo**：header 右上角 8 条天际线（IAM_BARS=[.97,.58,1,.66,.9,.52,.74,1]）+ 双黑方点，`js/barmorph.js`
-- **启动页**（仅 index，每会话一次 sessionStorage.loaderPlayed）：「I am」→「I alnt med」展开 → 字母冻结成条（I→1 a→3 m→4）→ 飞入右上角 Logo。暖纸底。`js/loader.js`
+- **Logo**：header 左上角 8 条天际线（IAM_BARS=[.97,.58,1,.66,.9,.52,.74,1]）+ 双黑方点，`js/barmorph.js`；Logo 即回首页按钮
+- **Header 布局（2026-07-06 定稿）**：左＝Logo + PROJECTS + AROUND；右＝「李文苑 · ALNT MED」名字 + EN 语言切换 + GitHub 图标（→ github.com/leemenuong-prog）。浮动侧钮只剩右侧 ABOUTME。站名统一「Alnt_med」（`<title>` 口径）
+- **启动页**（仅 index，每会话一次 sessionStorage.loaderPlayed）：「I am」→「I alnt med」展开 → 字母冻结成条（I→1 a→3 m→4）→ 飞入左上角 Logo。暖纸底。`js/loader.js`
 - **页脚 finale**（index）：「I am ___」五词轮换（Alnt Med / an AIPM / an Architect / a Builder / anything.）→ 灰阶波点带（双层半调+mask 渐隐）→ Logo 从 header 下坠落入 fband-slot（smoothstep 插值，`js/index-fx.js`）
-- **中轴进度指示**（用户原创，替代老师站波浪线+圆珠）：竖向数据条轨道 + 随滚动生长的墨色填充（IAM 节奏微调制）+ 作品节点水平分支指向标题、标题提亮。**无圆珠**，效果克制
+- **中轴进度指示**（用户原创，替代老师站波浪线+圆珠）：竖向数据条轨道 + 随滚动生长的墨色填充（IAM 节奏微调制）+ 作品节点水平分支、标题提亮。**分支必须吸附在某根短横线行上**（看起来是那根短横线在延伸，不能凭空生线），从中轴向左划到**大标题左缘正下方**收在方点。**无圆珠**，效果克制
 - BarWord（词从条中解码）保留在 about 页标题；方块句点 `.psq` 永远直角
 
 ## 版式基准（老师站实证规格）
 
 - intro：Monterey 24px/500 + `text-decoration: underline`，三档分词色（#6F6F6F / #000 / #BBB）
-- 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px
-- 揭示层：`assets/project/{id}/float/1.jpg`，clip-path 圆随鼠标显影——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**
+- 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px；文字列**居中收拢**（justify-content:center + 30px 簇间距，禁 space-between 把标题/正文撑到两端）；作品间距 `--mainline-gap: 320px`（老师页实证的呼吸感）
+- 揭示层：`assets/project/{id}/float/1.jpg`，clip-path 圆随鼠标显影——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**；尾声（建筑）揭示层是横构图版面 → `object-fit: contain` 白底整页收进方格，**禁 cover 拦腰裁半**
+- 建筑翻页图（content/）一律取**母版完整版面（带页边白）**，不做去白边裁切——上桥曾因裁掉顶部白边与其他五作不一致（2026-07-06 已重导）
 - 详情页：大衬线标题+↗ → 斜体开场段（左对齐引线）→ 章节 h2+通栏细线 → 「—」列表（行首「标签：」≤10 字自动加粗）→ 小型大写技术栈 → 白卡图版容器+图注+文字球
 - 字体：MontereyFLF woff2×3（拉丁 unicode-range，中文落系统栈）+ Garamond/Georgia 衬线
 
