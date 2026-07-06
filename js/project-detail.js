@@ -72,7 +72,7 @@
       host.appendChild(tags);
     }
 
-    document.title = title + ' · 李文苑 Alnt Med';
+    document.title = title + ' · Alnt_med';
   }
 
   /* ── 媒体块 ── */
@@ -207,6 +207,7 @@
         var s = sections[k];
         if (!s || !t(s, 'body')) return;
         var sec = el('section', 'detail-section');
+        sec.setAttribute('data-skey', k);
         sec.appendChild(el('h2', null, esc(t(s, 'title'))));
         sec.insertAdjacentHTML('beforeend', sectionBody(t(s, 'body')));
         var fg = sectionFigure(s, p);
@@ -277,6 +278,8 @@
     renderMedia(p);
     renderContent(p);
     renderImages(p);
+    /* 编辑者模式（js/editor.js）监听此事件重挂可编辑区 */
+    document.dispatchEvent(new CustomEvent('detailrendered', { detail: { project: p } }));
   }
 
   function boot() {
@@ -290,6 +293,16 @@
     window.Site.loadProjects().then(function (data) {
       var p = (data.projects || []).find(function (x) { return x.id === id; });
       if (!p) { renderNotFound(id); return; }
+      /* 编辑者模式的本机草稿：有则整体覆盖该项目（仅本浏览器可见） */
+      try {
+        var ov = JSON.parse(localStorage.getItem('siteEditorOverlay') || '{}');
+        if (ov[id]) {
+          var i = data.projects.indexOf(p);
+          p = ov[id];
+          data.projects[i] = p;
+        }
+      } catch (e) { /* 草稿损坏则忽略 */ }
+      window.__detail = { project: p, data: data, render: function () { render(p); } };
       render(p);
       document.addEventListener('localechange', function () { render(p); });
     }).catch(function (err) {

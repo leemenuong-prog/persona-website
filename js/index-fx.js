@@ -138,7 +138,8 @@
     host.appendChild(frag);
     spine.prevLo = 0; spine.prevHi = -1; spine.prevHeadIdx = -1;
 
-    /* 分支：在标题高度，从中轴一直伸到标题右缘 */
+    /* 分支：吸附到最近的短横线行（看起来是那根短横线在延伸，而不是凭空多一条线），
+       从中轴向左一直伸到标题左缘——划过整个大标题的下方 */
     spine.branches = [];
     var hostRect = { top: mainRect.top + top, centerX: host.getBoundingClientRect().left + host.offsetWidth / 2 };
     document.querySelectorAll('#mainline .project-item').forEach(function (item) {
@@ -148,9 +149,9 @@
       /* 纵向用 offsetTop 链（不受 data-reveal 入场位移影响），横向用 rect */
       var oy = 0, el = title;
       while (el && el !== main) { oy += el.offsetTop; el = el.offsetParent; }
-      var cy = oy + title.offsetHeight / 2 - top;
+      var cy = Math.round((oy + title.offsetHeight + 8 - top) / TICK_GAP) * TICK_GAP;
       if (cy < 0 || cy > h) return;
-      var w = Math.max(24, hostRect.centerX - tr.right - 14);
+      var w = Math.max(24, hostRect.centerX - tr.left);
       var br = document.createElement('div');
       br.className = 'spine-branch';
       br.style.top = cy.toFixed(0) + 'px';

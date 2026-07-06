@@ -71,18 +71,30 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 .site-header .nav-btn:hover { background: var(--hover-bg); }
 .site-header .nav-btn[aria-current="page"] { color: var(--c-title); }
+.header-left { display: flex; align-items: center; gap: 6px; }
 .header-right { display: flex; align-items: center; gap: 18px; }
 .wordmark {
-  display: inline-flex; align-items: flex-end; gap: 10px;
+  display: inline-flex; align-items: center;
   padding: 6px 10px; border-radius: 8px;
   transition: background-color .2s;
 }
 .wordmark:hover { background: var(--hover-bg); }
-.wordmark small {
-  font-family: var(--font-display); font-size: 13px; font-weight: 500;
-  letter-spacing: .22em; color: var(--c-header); line-height: 1;
-  padding-bottom: 2px;
+.header-name {
+  font-family: var(--font-sans); font-size: 14px; color: var(--c-header);
+  white-space: nowrap;
 }
+.header-name .sep { font-style: normal; color: var(--c-kw); padding: 0 7px; }
+.header-name .name-en {
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  letter-spacing: .22em; color: var(--c-header);
+}
+.gh-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  color: var(--c-header);
+  transition: background-color .2s, color .2s;
+}
+.gh-link:hover { background: var(--hover-bg); color: var(--c-title); }
 .lang-toggle {
   min-width: 64px; height: 30px; padding: 0 10px;
   border: 1px solid var(--c-header); border-radius: 2px;
@@ -92,7 +104,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 .lang-toggle:hover { background: var(--c-header); color: var(--c-white); }
 
-/* ── 浮动侧钮（AROUND / ABOUT · rotate ±90°） ── */
+/* ── 浮动侧钮（右 ABOUTME · rotate 90°；AROUND 已入 header） ── */
 .side-btn {
   position: fixed; top: 50%; z-index: 100;
   font-family: var(--font-display); font-size: 16px; letter-spacing: .12em;
@@ -101,7 +113,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   transition: background-color .2s, color .2s;
 }
 .side-btn:hover { background: var(--hover-bg); color: var(--c-title); }
-.side-btn.left  { left: 14px;  transform: translateY(-50%) rotate(-90deg); }
 .side-btn.right { right: 14px; transform: translateY(-50%) rotate(90deg); }
 
 /* ── footer ── */
@@ -159,8 +170,9 @@ img, video { max-width: 100%; height: auto; display: block; }
 @media (max-width: 767px) {
   body { font-size: 16px; }
   .site-header { padding: 0 14px; }
-  .site-header .nav-btn { min-width: 0; font-size: 17px; padding: 0 14px; }
-  .wordmark small { display: none; }
+  .site-header .nav-btn { min-width: 0; font-size: 17px; padding: 0 10px; }
+  .header-right { gap: 10px; }
+  .header-name { display: none; }
   .site-footer { flex-direction: column; padding: 20px 24px; }
   .site-footer .foot-contact { text-align: left; }
 }

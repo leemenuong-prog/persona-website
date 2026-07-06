@@ -199,5 +199,13 @@
   <line x1="894.4" y1="324" x2="894.4" y2="410" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
   <line x1="305.6" y1="244" x2="305.6" y2="330" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
   <line x1="669.3" y1="454" x2="669.3" y2="540" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <text x="588" y="172" text-anchor="start" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">the bot.</text>
+  <line x1="584" y1="177" x2="556" y2="188" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="872" y="418" text-anchor="start" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">the doors.</text>
+  <line x1="868" y1="423" x2="850" y2="432" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="356" y="552" text-anchor="end" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">the clock.</text>
+  <line x1="362" y1="546" x2="426" y2="500" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="734" y="622" text-anchor="start" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">the window.</text>
+  <line x1="730" y1="616" x2="676" y2="580" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
   <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">one body, four organs.</text>
 </svg>

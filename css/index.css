@@ -79,16 +79,16 @@ main { position: relative; }
   will-change: transform;
 }
 .spine-tick.on { background: var(--c-title); }
-/* 节点分支：在标题高度，从中轴伸到标题右缘（宽度由 JS 写） */
+/* 节点分支：吸附在短横线行上，从该短横线向左生长、伸到大标题下方（宽度由 JS 写） */
 .spine-branch {
-  position: absolute; right: 50%; margin-right: 2px;
+  position: absolute; right: 50%; margin-right: 0;
   height: 2px;
   background: var(--c-title);
   transform: scaleX(0); transform-origin: right center;
   transition: transform .7s var(--ez);
 }
 .spine-branch.on { transform: scaleX(1); }
-/* 分支尾端小方点（直角，落在标题一侧） */
+/* 分支尾端小方点（直角，落在标题起笔处） */
 .spine-branch::after {
   content: ""; position: absolute; left: -2px; top: -2px;
   width: 6px; height: 6px; background: var(--c-title);
@@ -105,10 +105,11 @@ main { position: relative; }
   grid-template-columns: var(--card-size) var(--spine-gap) var(--card-size);
   justify-content: center; align-items: center;
 }
+/* 文字列：标题簇与正文收拢居中（老师页规格——不要 space-between 把两端撑开） */
 .project-item .text-container {
   width: var(--card-size); min-height: var(--card-size);
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: 8px 0; text-align: center;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 30px; padding: 8px 0; text-align: center;
 }
 .project-title {
   font-family: var(--font-display); font-size: 24px; font-weight: 500;
@@ -174,6 +175,8 @@ main { position: relative; }
 .gallery-item .image-container {
   width: 100%; height: auto; aspect-ratio: 1 / 1;
 }
+/* 尾声揭示层多为横构图版面：整页收进方格（白底 contain），不再拦腰裁半 */
+.gallery-item .layer-reveal { object-fit: contain; background: var(--c-white); }
 .gallery-item .gallery-title {
   margin-top: 12px; text-align: center;
   font-family: var(--font-display); font-size: 14px; font-weight: 500;

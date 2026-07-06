@@ -150,6 +150,13 @@ class Scene:
 
 SERIF = "Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif"
 
+def note(S, x, y, text, anchor='start', leader=None, size=19):
+    """克制的英文组件标注：斜体小字 + 可选发丝引线。"""
+    S.raw(f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{SERIF}" '
+          f'font-style="italic" font-size="{size}" letter-spacing="1" fill="#999999">{text}</text>')
+    if leader:
+        S.line2(leader[0], leader[1], 'L5')
+
 def caption_el(text, w, h):
     """极简英文一行：主站衬线斜体气质，小写、轻字距、弱灰。"""
     return (f'<text x="{w // 2}" y="{h - 44}" text-anchor="middle" '
@@ -224,6 +231,12 @@ def plate_01():
     for cx, cy in ((HX0, HY0), (HX1, HY0), (HX0, HY1), (HX1, HY1)):
         S.line3((cx, cy, 236), (cx, cy, HZ), 'L5t')
 
+    # 组件标注
+    note(S, 588, 172, 'the bot.', leader=((584, 177), (556, 188)))
+    note(S, 872, 418, 'the doors.', leader=((868, 423), (850, 432)))
+    note(S, 356, 552, 'the clock.', anchor='end', leader=((362, 546), (426, 500)))
+    note(S, 734, 622, 'the window.', leader=((730, 616), (676, 580)))
+
     return '\n'.join('  ' + e for e in S.el)
 
 
@@ -294,6 +307,7 @@ def plate_02():
 
     etches = [etch_calendar, etch_rings, etch_line, etch_kanban, etch_wave]
 
+    names = ('calendar.', 'goals.', 'learning.', 'work.', 'life.')
     for i, (x0, y0, z0) in enumerate(panels):
         outline = 'L0' if i == 4 else None
         S.box(x0, y0, z0, W, T, H, fill='#FFFFFF', outline=outline)
@@ -302,6 +316,9 @@ def plate_02():
         for e in etches[i]():
             S.raw(e)
         S.raw(g1)
+        # 组件标注：沿台座前沿阶梯排布
+        lx, ly = S.P(x0 + W/2, 85, 0)
+        note(S, lx + 6, ly + 26, names[i], anchor='middle')
 
     return '\n'.join('  ' + e for e in S.el)
 
@@ -359,6 +376,10 @@ def plate_03():
     fence_front = ys[-1] + CUBE + 34
     S.line3((drum_c[0], drum_c[1] - 28, 0), (drum_c[0], fence_front, 0), 'L1')
     S.line3((drum_c[0], fence_front, 0), (drum_c[0], ys[-1] + CUBE, 0), 'L3')
+
+    # 组件标注
+    note(S, 610, 526, 'the brain.', anchor='middle')
+    note(S, 200, 298, 'read-only.', anchor='middle')
 
     return '\n'.join('  ' + e for e in S.el)
 
@@ -558,7 +579,7 @@ def plate_flow():
     for r in range(2):
         for cc in range(4):
             S.raw(f'<rect x="{tx+cc*24}" y="{ty+r*24}" width="16" height="16" {_a("L2", "#FFFFFF")}/>')
-    S.raw(f'<text x="{MX+MW/2}" y="{MY+MH-20}" text-anchor="middle" {ITAL}>one process.</text>')
+    S.raw(f'<text x="{MX+MW/2}" y="{MY+MH-20}" text-anchor="middle" {ITAL}>one app.</text>')
 
     # ── 右：三个去处 ──
     node(950, 86, 'OBSIDIAN')
@@ -667,7 +688,7 @@ def main():
     plate('plate-05-journey.svg', 1200, 640, 'Meco — 一条消息的旅程 / In, through, out',
           plate_05, caption='in, through, out.')
     plate('flow-overview.svg', 1200, 520, 'Meco — 整体流程 / How it all connects',
-          plate_flow, caption='everything, through one process.')
+          plate_flow, caption='everything, through one app.')
     plate('cover.svg', 720, 720, 'Meco — 蘑菇管家 / A homegrown butler', plate_cover)
 
 if __name__ == '__main__':

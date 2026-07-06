@@ -359,22 +359,20 @@
       "float": {},
       "desc_zh": "我给自己造的 AI 生活管家：一个 Python 程序，替我打理求职冲刺期的日常。",
       "desc_en": "The AI butler I built for myself — one Python program that runs my daily life.",
-      "one_liner_zh": "你好，我是 Meco 🍄‍🟫——文苑给自己造的蘑菇管家：一个 Python 程序，串起飞书机器人、桌面窗口、日程闹钟和他的 Obsidian 笔记库，替他打理求职冲刺期的日常。",
-      "one_liner_en": "Hi, I'm Meco 🍄‍🟫 — the mushroom butler Wenyuan built for himself: one Python program tying together a Feishu bot, a desktop window, a scheduler and his Obsidian vault, so his daily life runs itself.",
-      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人用一个 Python 程序造了 Meco：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体，配上 8 个能真动手的工具。现在晨报、复盘每天自动跑，人肉搬信息基本归零。",
-      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Python program: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one, with 8 tools it can actually use. Now the daily briefs run themselves, and the information-carrying is basically gone.",
+      "one_liner_zh": "你好，我是 Meco 🍄‍🟫——文苑给自己造的蘑菇管家：一个 Mac 应用，串起飞书机器人、桌面窗口、日程闹钟和他的 Obsidian 笔记库，替他打理求职冲刺期的日常。",
+      "one_liner_en": "Hi, I'm Meco 🍄‍🟫 — the mushroom butler Wenyuan built for himself: a Mac app tying together a Feishu bot, a desktop window, a scheduler and his Obsidian vault, so his daily life runs itself.",
+      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体，配上 8 个能真动手的工具。现在晨报、复盘每天自动跑，人肉搬信息基本归零。",
+      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one, with 8 tools it can actually use. Now the daily briefs run themselves, and the information-carrying is basically gone.",
       "tech_stack_zh": "Python · FastAPI · pywebview · 飞书开放平台（长连接）· Obsidian · Tavily · Claude / LLM · Claude Code",
       "tech_stack_en": "Python · FastAPI · pywebview · Feishu Open Platform · Obsidian · Tavily · Claude / LLM · Claude Code",
       "sections": {
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方，每天光搬运信息就得花掉快一个小时。\n我想要的不是再下一个 App，而是一条把它们串起来的线——让 AI 主动替我打理，而不是我伺候工具。\n于是我一个人用一个 Python 程序，把飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成了 Meco，还给它配了 8 个能真动手的工具。\n现在晨报、复盘每天自动跑，早上打开窗口就知道今天干嘛，人肉搬信息基本归零。",
-          "body_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar — moving information around ate almost an hour a day.\nI didn't want yet another app. I wanted one thread through them all — an AI that runs things for me, instead of me babysitting the tools.\nSo I built Meco alone, with a single Python program: a Feishu bot, a desktop window, a scheduler and my Obsidian vault wired into one, plus 8 tools it can actually use.\nNow the morning brief and evening review run themselves. I open the window and today is already laid out.",
+          "body_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方，每天光搬运信息就得花掉快一个小时。\n我想要的不是再下一个 App，而是一条把它们串起来的线——让 AI 主动替我打理，而不是我伺候工具。\n于是我一个人做了一个 Mac 应用，把飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成了 Meco，还给它配了 8 个能真动手的工具。\n现在晨报、复盘每天自动跑，早上打开窗口就知道今天干嘛，人肉搬信息基本归零。",
+          "body_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar — moving information around ate almost an hour a day.\nI didn't want yet another app. I wanted one thread through them all — an AI that runs things for me, instead of me babysitting the tools.\nSo I built Meco alone, as one Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault wired into one, plus 8 tools it can actually use.\nNow the morning brief and evening review run themselves. I open the window and today is already laid out.",
           "figure": {
-            "src": "assets/project/meco/content/plate-01-organs.svg",
-            "caption_zh": "一具身体，四个器官",
-            "caption_en": "one body, four organs"
+            "src": "assets/project/meco/content/plate-01-organs.svg"
           }
         },
         "why_built": {
@@ -386,12 +384,10 @@
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口收进同一个 Python 进程——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，同时为无人值守的定时任务划出只读边界，任何写入都要经我确认。\n把投递、健康、目标、学习画成一屏图表看板，并打通 Claude Code 与飞书——后台长任务跑完，它会主动来报。",
-          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Python process — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and drew a read-only boundary around unattended runs — anything that writes waits for my explicit yes.\nTurned applications, health, goals and learning into one screen of charts, and wired Claude Code to Feishu — when a long job finishes, it reports back on its own.",
+          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口装进同一个 Mac 应用——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，同时为无人值守的定时任务划出只读边界，任何写入都要经我确认。\n把投递、健康、目标、学习画成一屏图表看板，并打通 Claude Code 与飞书——后台长任务跑完，它会主动来报。",
+          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Mac app — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and drew a read-only boundary around unattended runs — anything that writes waits for my explicit yes.\nTurned applications, health, goals and learning into one screen of charts, and wired Claude Code to Feishu — when a long job finishes, it reports back on its own.",
           "figure": {
-            "src": "assets/project/meco/content/plate-02-boards.svg",
-            "caption_zh": "五个视角，一种生活",
-            "caption_en": "five views of one life"
+            "src": "assets/project/meco/content/plate-02-boards.svg"
           }
         },
         "how_it_works": {
@@ -400,9 +396,7 @@
           "body_zh": "我在飞书或桌面窗口说一句话，大脑理解意图后调用合适的工具去办——记笔记、设提醒、查看板、搜网页。\n看板上的每个数字都实时从 Obsidian 笔记库解析而来，Meco 只读不写，笔记库永远是唯一的原本。\n晨报、复盘这类自动化本质上是排好的日程，到点触发、办完把结果推回飞书，而这条无人值守的路上它只拿得到只读工具。",
           "body_en": "I say something in Feishu or the desktop window; the brain reads the intent and picks the right tool — take a note, set a reminder, check the boards, search the web.\nEvery number on the boards is parsed live from the Obsidian vault; Meco reads and never writes, so the vault stays the only original.\nThe daily briefs and reviews are simply scheduled tasks — they fire on time and push their results back to Feishu, and on that unattended lane the tools are read-only.",
           "figure": {
-            "src": "assets/project/meco/content/plate-03-brain-fence.svg",
-            "caption_zh": "只可看，不可写",
-            "caption_en": "look, don't touch"
+            "src": "assets/project/meco/content/plate-03-brain-fence.svg"
           }
         },
         "why_it_matters": {
@@ -429,8 +423,8 @@
         "1": {
           "kick_zh": "整体流程",
           "kick_en": "How it all connects",
-          "body_zh": "三个入口进来——飞书、桌面、Claude Code；一个进程在中间调度大脑、节拍和 8 个工具；右边是三个去处：只读的笔记库、看板，和到点送达的飞书提醒。",
-          "body_en": "Three ways in — Feishu, the desktop, Claude Code. One process in the middle, with a brain, a beat and eight tools. Three ways out: the vault it only reads, the boards, and a Feishu ping right on time."
+          "body_zh": "三个入口进来——飞书、桌面窗口、Claude Code；中间是唯一的应用本体，带着大脑、定时器和八个工具；右边是三个去处——只读的笔记库、看板，和到点送达的飞书提醒。",
+          "body_en": "Three ways in — Feishu, the desktop, Claude Code. One app in the middle, with a brain, a timer and eight tools. Three ways out: the vault it only reads, the boards, and a Feishu ping right on time."
         }
       }
     },

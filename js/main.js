@@ -13,14 +13,23 @@
     var header = document.createElement('header');
     header.className = 'site-header';
     header.innerHTML =
-      '<a class="nav-btn" href="projects.html"' +
-        (PAGE === 'projects' ? ' aria-current="page"' : '') +
-        ' data-zh="PROJECTS" data-en="PROJECTS">PROJECTS</a>' +
-      '<div class="header-right">' +
-        '<a class="wordmark" href="index.html" aria-label=".IAM. — Alnt Med · 回首页">' +
-          '<span class="logoslot"></span><small>ALNT MED</small>' +
+      '<div class="header-left">' +
+        '<a class="wordmark" href="index.html" aria-label=".IAM. — Alnt_med · 回首页">' +
+          '<span class="logoslot"></span>' +
         '</a>' +
+        '<a class="nav-btn" href="projects.html"' +
+          (PAGE === 'projects' ? ' aria-current="page"' : '') +
+          ' data-zh="PROJECTS" data-en="PROJECTS">PROJECTS</a>' +
+        '<a class="nav-btn" href="around.html"' +
+          (PAGE === 'around' ? ' aria-current="page"' : '') +
+          ' data-zh="AROUND" data-en="AROUND">AROUND</a>' +
+      '</div>' +
+      '<div class="header-right">' +
+        '<span class="header-name">李文苑<i class="sep">·</i><span class="name-en">ALNT MED</span></span>' +
         '<button class="lang-toggle" type="button">EN</button>' +
+        '<a class="gh-link" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" aria-label="GitHub">' +
+          '<svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>' +
+        '</a>' +
       '</div>';
     document.body.prepend(header);
 
@@ -37,16 +46,11 @@
       '</div>';
     document.body.appendChild(footer);
 
-    /* 浮动侧钮：左 AROUND（档案柜）· 右 ABOUT */
-    var left = document.createElement('a');
-    left.className = 'side-btn left';
-    left.href = 'around.html';
-    left.textContent = 'AROUND';
+    /* 浮动侧钮：右 ABOUTME（AROUND 已并入 header 顶栏） */
     var right = document.createElement('a');
     right.className = 'side-btn right';
     right.href = 'about.html';
-    right.textContent = 'ABOUT';
-    document.body.appendChild(left);
+    right.textContent = 'ABOUTME';
     document.body.appendChild(right);
 
     /* 品牌带 */

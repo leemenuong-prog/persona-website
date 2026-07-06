@@ -43,7 +43,7 @@
   --cube-size:     420px;
   --card-size:     360px;
   --spine-gap:     96px;    /* 主线卡中轴让位 */
-  --mainline-gap:  180px;   /* 主线项间距 */
+  --mainline-gap:  320px;   /* 主线项间距（老师页实证：作品间留足呼吸） */
   --grid-min:      200px;   /* 尾声网格最小列宽 */
   --grid-gap:      40px;
   --bead-size:     20px;
