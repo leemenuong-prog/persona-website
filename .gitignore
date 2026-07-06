@@ -9,3 +9,7 @@
 *.zip
 PeersWork-路演视频.mp4
 作品集【李文苑】.pdf
+
+# AI 作品集:母版与原始截图不入库(母版在 ../源文件/AI作品集/)
+portfolio-ai-master.pdf
+ai-portfolio/raw/
