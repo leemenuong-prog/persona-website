@@ -1098,6 +1098,141 @@ def plate_cover():
     return '\n'.join('  ' + e for e in S.el)
 
 
+# ══════════════════════ 核心点图版（Meco 级体块，每项目一台"机器"） ══════════════════════
+def core_pears():
+    """Pears 核心点：一次示范被浇铸成许多个一模一样的 Agent。"""
+    S = Scene(600, 500)
+    S.box(-240, -140, 0, 480, 280, 8, fill='#FFFFFF')                 # 底板
+    # 玻璃机壳
+    S.box(-240, -140, 8, 480, 280, 180, lv='L1', hidden='L3', outline='L0')
+    # 压铸鼓（带刻齿）
+    S.cylinder(-90, 0, 8, 56, 110)
+    S.tick_ring(-90, 0, 118, 51, n=60, major_every=15, lmin=6, lmaj=13)
+    # 示范轨迹：从壳外左侧进入，卷入鼓顶（主角虚线）
+    t0 = S.P(-350, -50, 148)
+    t1 = S.P(-90, 0, 126)
+    S.path2(f'M {fmt(t0[0])} {fmt(t0[1])} C {fmt(t0[0]+90)} {fmt(t0[1]-46)} '
+            f'{fmt(t1[0]-110)} {fmt(t1[1]-52)} {fmt(t1[0])} {fmt(t1[1])}', 'L3k')
+    # 出料皮带（实体，穿墙而出）
+    S.box(-30, -26, 8, 270, 56, 12, fill='#FFFFFF')
+    S.box(70, -12, 20, 20, 20, 20, fill='#FFFFFF')                    # 带上一件
+    S.box(170, -12, 20, 20, 20, 20, fill='#FFFFFF')
+    # 右墙出料口（x+ 面蚀刻，对准皮带）
+    g0, g1 = S.face_group((240, -28, 52), (0, 1, 0), (0, 0, -1))
+    S.raw(g0); S.raw(f'<rect x="0" y="0" width="60" height="34" {_a("L2")}/>'); S.raw(g1)
+    # 壳外皮带延伸 + 一排成品
+    S.box(240, -26, 8, 96, 56, 12, fill='#FFFFFF')
+    S.box(268, -12, 20, 20, 20, 20, fill='#FFFFFF')
+    S.box(356, 6, 0, 20, 20, 20, fill='#FFFFFF')
+    S.box(396, -52, 0, 20, 20, 20, fill='#FFFFFF')
+    note(S, 244, 168, 'the run-through.', leader=((246, 174), (270, 188)))
+    note(S, 1010, 494, 'cast, one per person.', anchor='middle')
+    return chr(10).join('  ' + e for e in S.el)
+
+
+def core_cowork():
+    """Co-work 核心点：七个工具头，铸在同一块记忆基座上。"""
+    S = Scene(600, 480)
+    S.box(-320, -110, 0, 640, 220, 58, fill='#FFFFFF', outline='L0')  # 共用基座
+    xs = (-270, -180, -90, 0, 90, 180, 270)
+    for cx in xs:                                                      # 安装颈
+        S.box(cx - 8, -28, 58, 16, 16, 9, fill='#FFFFFF')
+    # 七个形态各异的工具头
+    S.cylinder(-270, -20, 67, 26, 34)
+    S.tick_ring(-270, -20, 101, 23, n=12, major_every=3, lmin=4, lmaj=8)
+    S.box(-198, -38, 67, 36, 36, 36, fill='#FFFFFF')
+    S.box(-102, -32, 67, 24, 24, 52, fill='#FFFFFF')
+    S.box(-12, -32, 67, 10, 10, 40, fill='#FFFFFF')                    # 门架
+    S.box(12, -32, 67, 10, 10, 40, fill='#FFFFFF')
+    S.box(-16, -34, 107, 36, 14, 8, fill='#FFFFFF')
+    S.cylinder(90, -20, 67, 30, 18)
+    for i in range(3):                                                 # 叠板
+        S.box(158 + i*4, -34 + i*3, 67 + i*9, 44, 30, 7, fill='#FFFFFF')
+    S.box(256, -34, 67, 28, 28, 28, fill='#FFFFFF')
+    # 基座正面：一条总线蚀刻，向七个接口各引一根抽头
+    g0, g1 = S.face_group((-306, 110, 52), (1, 0, 0), (0, 0, -1))
+    S.raw(g0)
+    S.raw(f'<line x1="0" y1="30" x2="612" y2="30" {_a("L2")}/>')
+    S.raw(f'<line x1="0" y1="34" x2="612" y2="34" {_a("L2")}/>')
+    for cx in xs:
+        u = cx + 306
+        S.raw(f'<line x1="{u}" y1="30" x2="{u}" y2="8" {_a("L2")}/>')
+        S.raw(f'<rect x="{u-4}" y="2" width="8" height="6" {_a("L2")}/>')
+    S.raw(g1)
+    note(S, 600, 208, 'seven heads.', anchor='middle')
+    note(S, 600, 668, 'one memory, cast into the base.', anchor='middle')
+    return chr(10).join('  ' + e for e in S.el)
+
+
+def core_yijian():
+    """议见核心点：四层筛塔——乱线一层比一层少，塔底只剩一条。"""
+    S = Scene(600, 470)
+    sizes = (150, 118, 86, 54)
+    zs = (192, 132, 72, 12)
+    # 塔身：四层玻璃筛框 + 角部锥形轮廓线
+    for k, (s, z) in enumerate(zip(sizes, zs)):
+        S.box(-s, -s, z, 2*s, 2*s, 12, lv='L1', hidden='L3',
+              outline='L0' if k == 0 else None)
+    for sgn in ((1, 1), (1, -1), (-1, 1)):
+        pts = [S.P(sgn[0]*s, sgn[1]*s, z + 6) for s, z in zip(sizes, zs)]
+        S.path2('M ' + ' L '.join(f'{fmt(a)} {fmt(b)}' for a, b in pts), 'L5')
+    # 顶部落入的乱线（5 条）
+    top = S.P(0, 0, 204)
+    drops = ((-150, -70, -26), (120, -90, 18), (-60, -120, -8), (170, -50, 30), (40, -130, 4))
+    for i, (dx1, dy1, dx2) in enumerate(drops):
+        lv = 'L1' if i % 2 == 0 else 'L2'
+        S.path2(f'M {fmt(top[0]+dx1)} {fmt(top[1]+dy1-70)} '
+                f'C {fmt(top[0]+dx1)} {fmt(top[1]+dy1)} {fmt(top[0]+dx2*1.6)} {fmt(top[1]-44)} '
+                f'{fmt(top[0]+dx2)} {fmt(top[1]-2)}', lv)
+    # 层间：3 → 2 → 1 条短线（收敛可数）
+    for k, n in ((0, 3), (1, 2), (2, 1)):
+        za, zb = zs[k], zs[k+1] + 10
+        for j in range(n):
+            off = (j - (n-1)/2) * 46
+            pa = S.P(off, off*0.5, za)
+            pb = S.P(off*0.45, off*0.2, zb)
+            S.path2(f'M {fmt(pa[0])} {fmt(pa[1])} C {fmt(pa[0]+20)} {fmt(pa[1]+24)} '
+                    f'{fmt(pb[0]-20)} {fmt(pb[1]-22)} {fmt(pb[0])} {fmt(pb[1])}', 'L1' if j == 0 else 'L2')
+    # 塔底：一条 L0 直线引到侧前方的小台，落墨方
+    S.box(96, 96, 0, 78, 78, 12, fill='#FFFFFF')
+    pa = S.P(0, 0, 16)
+    pb = S.P(128, 128, 12)
+    S.line2(pa, pb, 'L0')
+    sq = S.P(133, 133, 12)
+    S.ink_square(sq[0] - 1, sq[1] - 5, 9)
+    note(S, 268, 232, 'every layer, fewer knots.', anchor='middle')
+    note(S, sq[0] + 96, sq[1] + 34, 'one verdict.', anchor='middle')
+    return chr(10).join('  ' + e for e in S.el)
+
+
+def core_uabb():
+    """UABB 核心点：标准化转换窑——怪东西进，标准件出。"""
+    S = Scene(600, 500)
+    S.box(-280, -170, 0, 560, 340, 8, fill='#FFFFFF')                 # 底板
+    S.box(-150, -120, 8, 300, 240, 150, fill='#FFFFFF', outline='L0') # 窑体
+    S.cylinder(60, -60, 158, 22, 40)                                   # 烟囱
+    S.box(-92, -76, 158, 34, 34, 20, fill='#FFFFFF')                   # 排风
+    # 正面舷窗：转化瞬间（左半团块，右半方角）
+    g0, g1 = S.face_group((-150, 120, 158), (1, 0, 0), (0, 0, -1))
+    S.raw(g0)
+    S.raw(f'<circle cx="150" cy="76" r="40" {_a("L2")}/>')
+    S.raw(f'<path d="M 150 44 C 128 46 118 62 124 78 C 128 92 138 102 150 104" {_a("L1")}/>')
+    S.raw(f'<path d="M 150 44 L 176 44 L 176 104 L 150 104" {_a("L1")}/>')
+    S.raw(f'<line x1="150" y1="44" x2="150" y2="104" {_a("L3")}/>')
+    S.raw(g1)
+    # 进料皮带（没入窑体后侧）与出料皮带
+    S.box(-268, -34, 8, 118, 64, 12, fill='#FFFFFF')
+    odd_blob(S, -218, -2, 26, 15)
+    S.box(150, -34, 8, 118, 64, 12, fill='#FFFFFF')
+    S.box(196, -14, 20, 24, 24, 24, fill='#FFFFFF')
+    # 出料口蚀刻（x+ 面）
+    g0, g1 = S.face_group((150, -28, 46), (0, 1, 0), (0, 0, -1))
+    S.raw(g0); S.raw(f'<rect x="0" y="0" width="52" height="26" {_a("L2")}/>'); S.raw(g1)
+    note(S, 214, 258, 'in — anything.', leader=((220, 264), (258, 292)))
+    note(S, 936, 560, 'out — one standard.', leader=((900, 552), (856, 534)))
+    return chr(10).join('  ' + e for e in S.el)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     plate('plate-01-organs.svg', 1200, 750, 'Meco — 一个进程，四个器官 / One vessel, four organs',
@@ -1123,6 +1258,14 @@ def main():
           story_yijian, caption='the disagreement, finally on the table.')
     plate('flow-uabb.svg', 1200, 640, 'UABB — 非标进标准出 / Odd things in, standard things out',
           story_uabb, caption='odd things in, standard things out.')
+    plate('core-pears.svg', 1200, 750, 'Pears — 核心点：浇铸 Agent / Shown once, cast for everyone',
+          core_pears, caption='shown once — cast for everyone.')
+    plate('core-cowork.svg', 1200, 750, 'Co-work — 核心点：七头一座 / Seven tools, one memory',
+          core_cowork, caption='seven tools, one memory.')
+    plate('core-yijian.svg', 1200, 750, '议见 — 核心点：四层筛塔 / Four sieves, one answer',
+          core_yijian, caption='four sieves, one answer.')
+    plate('core-uabb.svg', 1200, 750, 'UABB — 核心点：转换窑 / Odd in, standard out',
+          core_uabb, caption='odd things in, standard things out.')
     plate('cover.svg', 720, 720, 'Meco — 蘑菇管家 / A homegrown butler', plate_cover)
 
 if __name__ == '__main__':

@@ -25,16 +25,16 @@
 
 /* ── 基底 ── */
 *, *::before, *::after { box-sizing: border-box; }
-html {
-  scroll-behavior: smooth; -webkit-text-size-adjust: 100%;
-  /* 波点场等装饰层负 inset 不得撑出横向滚动（clip 不产生滚动容器；hidden 为旧浏览器回退） */
-  overflow-x: hidden; overflow-x: clip;
-}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* ⚠️ 横向溢出防线放 body，绝不能放 html——html 上的 overflow-x:clip 会把
+   整个文档的滚动一起钳死（Chrome 实测页面无法竖向滚动）。 */
 body {
   margin: 0; min-height: 100vh; min-height: 100svh;
   font-family: var(--font-serif);
   font-size: 17px; line-height: 1.65; color: var(--c-body);
   display: flex; flex-direction: column;
+  /* 装饰层负 inset（波点场等）不得撑出横向滚动；clip 不产生滚动容器，hidden 为回退 */
+  overflow-x: hidden; overflow-x: clip;
 }
 /* 暖白径向渐变 — 固定层，长页面不被拉伸（iOS 忽略 fixed attachment 的规避） */
 body::before {

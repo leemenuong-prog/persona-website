@@ -53,7 +53,8 @@ p.intro-line { font-size: clamp(18px, 2.1vw, 26px); }
 }
 /* 波点场：灰阶半调双层错位，四周径向渐隐（旧站 .fdots 语法的英雄区变体） */
 .polygon-container::before {
-  content: ""; position: absolute; inset: -40px -10%;
+  /* 横向不再负 inset 出血：径向 mask 在边缘早已把点淡光，出血只会撑宽布局 */
+  content: ""; position: absolute; inset: -40px 0;
   background-image:
     radial-gradient(circle, rgba(24, 24, 24, .16) 2.2px, transparent 2.7px),
     radial-gradient(circle, rgba(24, 24, 24, .09) 1.4px, transparent 1.8px);

@@ -54,7 +54,10 @@
           "title_zh": "先说结论",
           "title_en": "The Short Version",
           "body_zh": "在 XTOOL 实习时我看到：一个开发团队，永远填不满全公司的 Agent 需求。\n我想把做 Agent 的门槛从「向 AI 描述工作」降到「把工作做一遍」。\n我独立构建了一个浏览器插件：看你操作、把轨迹蒸馏成可编辑的 PRD、再由 AI 编码 Agent 生成专属 Workflow Agent，从 0 做到上线。\n拿了 ADVENTURE-X 高校联盟黑客松季军，是现场企业对接意向最多的项目之一。",
-          "body_en": "Interning at XTOOL, I saw one dev team that could never keep up with the whole company's agent requests.\nI wanted to lower the bar from \"describe your work to an AI\" to \"just do it once.\"\nI built a browser extension solo, zero to launch: it watches you work, distills the trace into an editable PRD, and has an AI coding agent build your own workflow agent.\nIt took 2nd runner-up at the ADVENTURE-X hackathon and drew some of the most enterprise interest on site."
+          "body_en": "Interning at XTOOL, I saw one dev team that could never keep up with the whole company's agent requests.\nI wanted to lower the bar from \"describe your work to an AI\" to \"just do it once.\"\nI built a browser extension solo, zero to launch: it watches you work, distills the trace into an editable PRD, and has an AI coding agent build your own workflow agent.\nIt took 2nd runner-up at the ADVENTURE-X hackathon and drew some of the most enterprise interest on site.",
+          "figure": {
+            "src": "assets/project/pears/content/plate-core.svg"
+          }
         },
         "why_built": {
           "title_zh": "为什么做这个",
@@ -206,7 +209,10 @@
           "title_zh": "先说结论",
           "title_en": "The Short Version",
           "body_zh": "在 XTOOL 实习时，部门的生产力被大量重复工作和靠人跑的流程拖着走。\n我的任务是把这些人效工作升级成 Agent 工作流——而且这件事只有我一个人做。\n我逐个团队调研、拆解需求，从 0 到 1 搭起部门 Agent 平台：7 个生产工具铺满内容生产链，用埋点数据推动三代迭代。\n现在覆盖 4 个部门 65 人，任务完成率 80%+；自建 ROI 看板算得清——每投入 $1 节省 0.39 工时。",
-          "body_en": "At XTOOL, the department's output was dragged down by repetitive work and processes that ran on human legs.\nMy job was to turn that manual effort into agent workflows — and I was the only one on it.\nI interviewed each team, broke down their needs, and built the department's agent platform zero to one: seven production tools covering the content pipeline, iterated three generations on analytics.\nIt now serves 65 people across 4 departments at an 80%+ completion rate; my own ROI dashboard shows $1 in saves 0.39 work-hours."
+          "body_en": "At XTOOL, the department's output was dragged down by repetitive work and processes that ran on human legs.\nMy job was to turn that manual effort into agent workflows — and I was the only one on it.\nI interviewed each team, broke down their needs, and built the department's agent platform zero to one: seven production tools covering the content pipeline, iterated three generations on analytics.\nIt now serves 65 people across 4 departments at an 80%+ completion rate; my own ROI dashboard shows $1 in saves 0.39 work-hours.",
+          "figure": {
+            "src": "assets/project/cowork/content/plate-core.svg"
+          }
         },
         "why_built": {
           "title_zh": "为什么做这个",
@@ -309,7 +315,10 @@
           "title_zh": "先说结论",
           "title_en": "The Short Version",
           "body_zh": "企业里的决策会经常开成表态会：分歧藏在没说出口的立场里，结论靠职级压。\n在香港中文大学的企业 Agent 黑客松上，我负责产品与开发，想把「达成共识」这件事结构化。\n它组织 7 个角色的视角，在战略目标、事实证据、利益角色、权重权责四层收敛分歧。\n拿了黑客松亚军；给出的结论不是一句话，而是共识度评分、要满足的条件、仍待解决的分歧点。",
-          "body_en": "Corporate decision meetings often devolve into position-taking: the real disagreements stay unspoken, and seniority settles the verdict.\nAt CUHK's enterprise agent hackathon, I owned product and build, trying to give \"reaching consensus\" an actual structure.\nIt orchestrates seven role perspectives and converges disagreement through four layers: strategic goals, factual evidence, stakeholders, and weighted accountability.\nWe took runner-up; the output isn't one sentence but a consensus score, the conditions the decision must satisfy, and the disagreements still open."
+          "body_en": "Corporate decision meetings often devolve into position-taking: the real disagreements stay unspoken, and seniority settles the verdict.\nAt CUHK's enterprise agent hackathon, I owned product and build, trying to give \"reaching consensus\" an actual structure.\nIt orchestrates seven role perspectives and converges disagreement through four layers: strategic goals, factual evidence, stakeholders, and weighted accountability.\nWe took runner-up; the output isn't one sentence but a consensus score, the conditions the decision must satisfy, and the disagreements still open.",
+          "figure": {
+            "src": "assets/project/yijian/content/plate-core.svg"
+          }
         },
         "why_built": {
           "title_zh": "为什么做这个",
@@ -494,7 +503,10 @@
           "title_zh": "先说结论",
           "title_en": "The Short Version",
           "body_zh": "深港双年展的板块里有 50+ 件非标展品，逐件人工转译要 30 天起步。\n我负责多模态 AIGC，要在展期前把它们全部变成可用的 3D 资产。\n我用 ComfyUI 外接 Gemini / Tripo API 搭了自动化转译工作流，配一套标准化 3D 资产 SOP；背后是 120+ 次草图与模型迭代。\n处理周期从 30 天缩到 5 天；我作为板块唯一学生代表，带着这套管线在展会现场做了分享。",
-          "body_en": "The biennale section held 50+ one-off exhibits; translating them by hand runs 30 days minimum.\nI owned multimodal AIGC and had to turn all of them into usable 3D assets before opening.\nI orchestrated Gemini and Tripo through ComfyUI into an automated translation pipeline, backed by a standardized 3D-asset SOP — with 120+ sketch and model iterations behind it.\nProcessing fell from 30 days to 5; as the section's only student representative, I presented the pipeline on-site."
+          "body_en": "The biennale section held 50+ one-off exhibits; translating them by hand runs 30 days minimum.\nI owned multimodal AIGC and had to turn all of them into usable 3D assets before opening.\nI orchestrated Gemini and Tripo through ComfyUI into an automated translation pipeline, backed by a standardized 3D-asset SOP — with 120+ sketch and model iterations behind it.\nProcessing fell from 30 days to 5; as the section's only student representative, I presented the pipeline on-site.",
+          "figure": {
+            "src": "assets/project/uabb/content/plate-core.svg"
+          }
         },
         "why_built": {
           "title_zh": "为什么做这个",

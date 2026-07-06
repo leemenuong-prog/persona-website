@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>议见 — 核心点：四层筛塔 / Four sieves, one answer</title>
+  <style>line,rect,circle,ellipse,path,polyline,polygon{vector-effect:non-scaling-stroke}</style>
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFFFF"/>
+  <line x1="600" y1="128" x2="340.2" y2="278" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="128" x2="859.8" y2="278" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="128" x2="600" y2="116" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="428" x2="600" y2="416" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="859.8" y1="266" x2="600" y2="416" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="340.2" y1="266" x2="600" y2="416" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="859.8" y1="278" x2="600" y2="428" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="340.2" y1="278" x2="600" y2="428" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="600" y1="116" x2="859.8" y2="266" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="600" y1="116" x2="340.2" y2="266" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="859.8" y1="278" x2="859.8" y2="266" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="340.2" y1="278" x2="340.2" y2="266" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="600" y1="220" x2="395.6" y2="338" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="220" x2="804.4" y2="338" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="220" x2="600" y2="208" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="456" x2="600" y2="444" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="804.4" y1="326" x2="600" y2="444" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="395.6" y1="326" x2="600" y2="444" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="804.4" y1="338" x2="600" y2="456" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="395.6" y1="338" x2="600" y2="456" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="208" x2="804.4" y2="326" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="208" x2="395.6" y2="326" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="804.4" y1="338" x2="804.4" y2="326" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="395.6" y1="338" x2="395.6" y2="326" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="312" x2="451" y2="398" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="312" x2="749" y2="398" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="312" x2="600" y2="300" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="484" x2="600" y2="472" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="749" y1="386" x2="600" y2="472" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="451" y1="386" x2="600" y2="472" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="749" y1="398" x2="600" y2="484" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="451" y1="398" x2="600" y2="484" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="300" x2="749" y2="386" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="300" x2="451" y2="386" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="749" y1="398" x2="749" y2="386" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="451" y1="398" x2="451" y2="386" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="404" x2="506.5" y2="458" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="404" x2="693.5" y2="458" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="404" x2="600" y2="392" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="600" y1="512" x2="600" y2="500" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="693.5" y1="446" x2="600" y2="500" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="506.5" y1="446" x2="600" y2="500" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="693.5" y1="458" x2="600" y2="512" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="506.5" y1="458" x2="600" y2="512" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="392" x2="693.5" y2="446" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="392" x2="506.5" y2="446" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="693.5" y1="458" x2="693.5" y2="446" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="506.5" y1="458" x2="506.5" y2="446" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 600 422 L 600 450 L 600 478 L 600 506" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <path d="M 859.8 272 L 804.4 332 L 749 392 L 693.5 452" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <path d="M 340.2 272 L 395.6 332 L 451 392 L 506.5 452" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <path d="M 450 126 C 450 196 558.4 222 574 264" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 720 106 C 720 176 628.8 222 618 264" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 540 76 C 540 146 587.2 222 592 264" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 770 146 C 770 216 648 222 630 264" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 640 66 C 640 136 606.4 222 604 264" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 580.1 243.5 C 600.1 267.5 570 291.1 590 313.1" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 600 278 C 620 302 580 306 600 328" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 619.9 312.5 C 639.9 336.5 590 320.9 610 342.9" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 590 320.8 C 610 344.8 575 358.5 595 380.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 610 355.2 C 630 379.2 585 373.5 605 395.5" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 600 398 C 620 422 580 426 600 448" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="600,554 667.5,593 600,632 532.5,593" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="667.5,605 600,644 600,632 667.5,593" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="532.5,605 600,644 600,632 532.5,593" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="644" x2="600" y2="632" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="667.5" y1="593" x2="600" y2="632" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="532.5" y1="593" x2="600" y2="632" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="667.5" y1="605" x2="600" y2="644" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="532.5" y1="605" x2="600" y2="644" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="554" x2="667.5" y2="593" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="554" x2="532.5" y2="593" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="667.5" y1="605" x2="667.5" y2="593" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="532.5" y1="605" x2="532.5" y2="593" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="454" x2="600" y2="586" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <rect x="599" y="586" width="9" height="9" fill="#181818"/>
+  <text x="268" y="232" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">every layer, fewer knots.</text>
+  <text x="696.0" y="625.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">one verdict.</text>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">four sieves, one answer.</text>
+</svg>
