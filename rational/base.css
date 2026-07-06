@@ -33,6 +33,12 @@
   /* media frames (films / decks / galleries) — same family as --shadow-card,
      tighter spread: the object sits ON the page instead of printing into it */
   --shadow-media: 0 18px 50px -12px rgba(5, 8, 30, .28);
+
+  /* corner ramp — bleed chip 24 › media object / gallery card 20 › button 12
+     › small control 10 › period square 0 (the self stays hard-cornered).
+     Buttons are "softened bars", never pills. */
+  --r-btn: 12px;
+  --r-btn-sm: 10px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -254,7 +260,13 @@ body[data-tone="ink"] .brandmorph .band .bdot { background: var(--blue-up); }
 .rule { height: 2px; background: var(--fg); transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ez); transition-delay: var(--rd, 0s); }
 .in .rule, .rule.in { transform: scaleX(1); }
 
+/* rv-soft — the lightest reveal tier, for STATIC chapter titles (2026-07-06:
+   字⇄条 birth retired on titles). Not a hard cut (a ghost among the reveals),
+   not the .lm slit-rise (that's its own drama) — just a 14px breath. */
+.rv-soft { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ez), transform .7s var(--ez); transition-delay: var(--rd, 0s); }
+.in .rv-soft, .rv-soft.in { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  [data-rv], .lm > span, .rule { transition: none !important; transform: none !important; opacity: 1 !important; }
+  [data-rv], .lm > span, .rule, .rv-soft { transition: none !important; transform: none !important; opacity: 1 !important; }
   .lreveal .ins { transition: none; max-width: 4.2em; opacity: 1; }
 }

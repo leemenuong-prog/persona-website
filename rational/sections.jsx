@@ -78,18 +78,15 @@ const WHO_CHRONO = [
   { y: "2026", h: 1,    tag: "AI PRODUCT · NOW", t: "Co-work Agent Platform — 0→1",                zh: "覆盖 4 部门 · 65 人 · 完成率 80%+ · 每投入 $1 省 0.39 工时（高于 2026 企业均值 0.2–0.3）" },
 ];
 
-/* the index — three identities, as a jump table. Left: number · BarWord
+/* the index — two identities, as a jump table. Left: number · BarWord
    title (跳色 period) · motto + proof. Right (desktop): a life photo, matted
    like a print with a drop shadow (用户: 左边索引，右边生活照，阴影卡一下).
    Click a row jumps into its chapter; hover focuses the row, the rest recede. */
 const WHO_INDEX = [
-  { id: "developer", ix: "01", tx: "A Developer", d: 1.0,
-    mt: "From idea to shipped", zh: "保持从想法到落地的能力",
-    band: [0.6, 1, 0.7, 0.9] },
-  { id: "aipm", ix: "02", tx: "An AIPM", d: 1.2,
-    mt: "Making AI fit real situations", zh: "让 AI 能力贴合真实场景",
+  { id: "aipm", ix: "01", tx: "An AIPM", d: 0,
+    mt: "From idea to shipped AI", zh: "让 AI 贴合真实场景，从想法到落地",
     band: [0.85, 0.6, 1, 0.55] },
-  { id: "architect", ix: "03", tx: "An Architect", d: 1.4,
+  { id: "architect", ix: "02", tx: "An Architect", d: 0,
     mt: "Scattered needs into a system", zh: "把零散的需求搭成稳定的体系",
     band: [1, 0.66, 0.5, 0.9] },
 ];
@@ -100,10 +97,10 @@ function Whoami({ jump }) {
     <section className="whoami sec" id="whoami" data-tone="ink" data-ob data-screen-label="WHOAMI">
       <div className="who-top">
         <div className="kick lm"><span>01 · WHOAMI / 我是谁</span></div>
-        <div className="who-tag mono" data-rv style={{ "--rd": ".1s" }}>AIPM · DEVELOPER · ARCHITECT</div>
+        <div className="who-tag mono" data-rv style={{ "--rd": ".1s" }}>AIPM · ARCHITECT</div>
       </div>
-      <h2 className="who-q">
-        <BarWord text="WHOAMI" />
+      <h2 className="who-q rv-soft" style={{ "--rd": ".2s" }}>
+        <BarWord text="WHOAMI" static />
       </h2>
       {/* 他唯一允许的自述格言 — 中文为主，英文平实直译作点缀 */}
       {/* 编排链从 3.1s 压到 ≤1.6s——触发点在滚入 28vh 处，旧链快滚到场时
@@ -117,7 +114,7 @@ function Whoami({ jump }) {
       <div className="who-index">
         <div className="who-index-list">
           <div className="dex-head kick">
-            <span data-rv style={{ "--rd": ".8s" }}>INDEX / 三个身份 — I AM …</span>
+            <span data-rv style={{ "--rd": ".8s" }}>INDEX / 两个身份 — I AM …</span>
             <span data-rv style={{ "--rd": ".9s" }}>点击进入章节 · CLICK TO ENTER</span>
           </div>
           <div className="dex-list">
@@ -126,7 +123,7 @@ function Whoami({ jump }) {
                    style={{ "--rd": (0.95 + i * 0.15) + "s" }} onClick={() => jump(it.id)}
                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jump(it.id); } }}>
                 <span className="ix mono" data-rv style={{ "--rd": (1.0 + i * 0.18) + "s" }}>{it.ix}</span>
-                <BarWord className="tx" text={it.tx} delay={it.d} />
+                <BarWord className="tx rv-soft" text={it.tx} static />
                 <div className="side" data-rv style={{ "--rd": (1.1 + i * 0.18) + "s" }}>
                   <BarBand h={it.band} />
                   {/* 中文为主：他的中文一句话是正文，英文 motto 缩为点缀 */}
@@ -137,7 +134,7 @@ function Whoami({ jump }) {
               </div>
             ))}
           </div>
-          <div className="dex-note kick" data-rv style={{ "--rd": "1.6s" }}>ONE DISCIPLINE · THREE PROOFS — 一种理性，三个证明</div>
+          <div className="dex-note kick" data-rv style={{ "--rd": "1.6s" }}>ONE DISCIPLINE · TWO PROOFS — 一种理性，两个证明</div>
         </div>
         <div className="who-index-photo" data-rv style={{ "--rd": "1.0s" }}>
           <figure className="who-photo-card">
@@ -155,48 +152,10 @@ function Whoami({ jump }) {
   );
 }
 
-/* ── CHAPTER ──────────────────────────────────────────────── */
-function Chapter({ id, tone, ghost, kick, title, motto, mottoZh, statement, statementZh, ring, stats, art, extra, jump }) {
-  return (
-    <section className="chapter" id={id} data-tone={tone} data-prog={id} data-screen-label={title}>
-      <div className="ch-wrap">
-        <div className="ch-stage sec" data-ob>
-          <div className="ch-ghost" data-parallax="0.2" aria-hidden="true">{ghost}</div>
-          <div className="ch-head">
-            <div className="kick lm"><span>{kick}</span></div>
-            <h2 className="ch-title lm" style={{ "--rd": ".1s", marginTop: "12px" }}><span>{title}<i className="psq" aria-hidden="true"></i></span></h2>
-            <div className="rule ch-rule" style={{ "--rd": ".22s" }}></div>
-            <div className="ch-sub" data-rv style={{ "--rd": ".34s" }}>
-              <span data-hov onClick={() => jump("works")} style={{ cursor: "pointer" }}>TO MY WORK</span>
-              <span className="arr">→</span>
-            </div>
-          </div>
-          <div className="ch-art">
-            {art}
-            <RingText text={ring} />
-          </div>
-          <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>{motto}</span></div>
-            <div className="st" data-rv style={{ "--rd": ".45s" }}>{statement}
-              <span className="zh">{statementZh}</span>
-            </div>
-          </div>
-          <div className="ch-stats">
-            {stats.map((s, i) => (
-              <div className="st" key={i} data-rv style={{ "--rd": (0.5 + i * 0.12) + "s" }}>
-                <div className="n" data-cnt={s.cnt != null ? s.cnt : undefined} data-fmt={s.fmt || ""}>{s.cnt != null ? "0" : s.n}</div>
-                <div className="l">{s.l}</div>
-              </div>
-            ))}
-          </div>
-          {extra || null}
-        </div>
-      </div>
-    </section>
-  );
-}
+/* (死代码 Chapter/RingText 已删 — 2026-07-06 改版:身份章改由 chapters.jsx
+   的 ChAipmOpen/ChArch + intro 系列承担,此通用 Chapter 模板不再使用。) */
 
-/* typed governance config — the Developer chapter's right panel */
+/* typed governance config — the AIPM chapter's right panel */
 const CODE_TEXT = [
   ["c", "// governance.config.ts — AI builds, I govern\n"],
   ["k", "const"], ["p", " pipeline = {\n"],
@@ -218,7 +177,7 @@ function CodePanel() {
     CODE_TEXT.forEach(([cls, txt]) => { for (const ch of txt) flat.push([cls, ch]); });
     let shown = -1;
     const stop = window.__addLoop(() => {
-      const p = (window.__progress && window.__progress.developer) || 0;
+      const p = (window.__progress && window.__progress.aipm) || 0;
       const want = Math.floor(aSeg(p, 0.18, 0.7) * flat.length);
       if (want === shown) return;
       shown = want;
@@ -237,12 +196,10 @@ function CodePanel() {
   return <div className="code-panel" ref={ref} aria-hidden="true"></div>;
 }
 
-/* ── WORKS data — eight real proofs, two acts ─────────────────
-   Act I   architecture — the root system · 2023–25
-   Act II  AI products & agents · 2025–26
-   (建筑在前、AI 在后 — 根系先立，再到当下。award 只留「奖名 · 中文
-   等级」，题材词/百分比/英文等级都不进卡片：它只是右下角一行小字。) */
-const WORKS = [
+/* ── 建筑四作 — 降级为子数据,供 IntroArchfolio 合并翻书 ──
+   pages[]/doc/zh/award/role 一字不动;整组从 WORKS 搬到这里(2026-07-06 改版:
+   六卡画廊里建筑四作合并成「建筑作品集」一张卡)。 */
+const ARCH_WORKS = [
   {
     ix: "W·01", t: "After_Silence", display: "After_Silence", tag: "ARCHITECTURE", year: "2025", identity: "Architect",
     award: "深港双年展 UABB · 板块代表作品",
@@ -275,67 +232,76 @@ const WORKS = [
     body: "The public realm flipped vertical — a roaming loop and an acoustic façade trading view against silence.",
     zh: "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音，释放出 5000 ㎡ 的共享场域。",
   },
+];
+
+/* ── WORKS — 六卡画廊数据（2026-07-06 改版：作品前置、身份合并两组）─────
+   AIPM 组：Pears · Co-work · 议见 · Meco(进行中)  ·  Architect 组：多模态 · 建筑作品集
+   字段：key(稳定查询键) · introId(点击卡片滚动锚点) · group(aipm/architect,画廊分区)
+   · status(live/in-progress) · heroCover(正式竖封面,留空则用 CoverArt 程序化占位)
+   · 其余(t/display/tag/year/identity/award/link/links/poster/video/embed/role/body/zh)沿用。
+   两处章内 lookup(IntroPears/IntroCowork)改为按 key 查询,与此处一致。 */
+const WORKS = [
   {
-    ix: "W·05", t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
+    key: "pears", ix: "W·01", introId: "intro-pears", group: "aipm", status: "live",
+    t: "Pears — Agent Factory", display: "Pears", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
     award: "ADVENTURE-X 高校联盟黑客松 · 季军",
     link: "https://and-pear.netlify.app/login",
     links: [
       { label: "访问应用 · PEARS APP ↗", url: "https://and-pear.netlify.app/login" },
       { label: "产品官网 · OFFICIAL SITE ↗", url: "https://pear-web-leemenuong.netlify.app/" },
     ],
-    poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true,    role: ["独立构建 0 → 上线", "Solo build"],
+    poster: "works/pears-roadshow-cover.jpg", video: "works/pears-roadshow.mp4", videoReady: true, role: ["独立构建 0 → 上线", "Solo build"],
     body: "Do it once — Pears watches, distills a PRD, and builds your own workflow agent.",
     zh: "想法来自我在 XTOOL 的观察：一个开发团队，永远填不满全公司的 Agent 需求——那就把门槛从「描述 AI」降到「做一遍」。我做的浏览器插件看你把工作做一遍，把轨迹蒸馏成可编辑的 PRD，再由 AI 编码 Agent 生成你专属的 Workflow Agent。现场企业对接意向最多的项目之一。",
   },
   {
-    ix: "W·06", t: "Co-work Agent Platform", display: "Co-work", tag: "AI PLATFORM", year: "2026", identity: "AIPM",
+    key: "cowork", ix: "W·02", introId: "intro-cowork", group: "aipm", status: "live",
+    t: "Co-work Agent Platform", display: "Co-work", tag: "AI PLATFORM", year: "2026", identity: "AIPM",
     poster: "xtool/screenshots/demo_review.png", embed: "xtool/", link: "https://peersagent.netlify.app/",
-    links: [{ label: "访问平台 · CO-WORK PLATFORM ↗", url: "https://peersagent.netlify.app/" }],    role: ["AIPM · 平台负责人", "Intern · platform owner"],
+    links: [{ label: "访问平台 · CO-WORK PLATFORM ↗", url: "https://peersagent.netlify.app/" }], role: ["AIPM · 平台负责人", "Intern · platform owner"],
     body: "A one-person build of the department's agent OS — seven tools, four departments.",
     zh: "我在 XTOOL 单人把部门 Agent 平台从 0 做到 1：7 个生产工具铺满内容生产链。埋点告诉我 Hook 段流失 52%，判断是高创意内容无法一次成型，于是合并生成阶段、三候选并出，推动三代迭代。现覆盖 4 部门 65 人，完成率 80%+；自建 ROI 看板——每投入 $1 省 0.39 工时。",
   },
   {
-    ix: "W·07", t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
+    key: "yijian", ix: "W·03", introId: "intro-yijian", group: "aipm", status: "live",
+    t: "议见 Yijian — Consensus Engine", display: "议见 Yijian", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
     award: "香港中文大学企业 Agent 黑客松 · 亚军",
     link: "https://yijian-demo4.netlify.app",
     links: [{ label: "在线体验 · LIVE DEMO ↗", url: "https://yijian-demo4.netlify.app" }],
-    poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app",    role: ["产品与开发", "Product & build"],
+    poster: "works/yijian-cover.jpg", embed: "https://yijian-demo4.netlify.app", role: ["产品与开发", "Product & build"],
     body: "A consensus engine for enterprise decisions — four layers, one auditable verdict.",
     zh: "给企业团队做的「决策共识」Agent。把一项待决策的事交给它——选方案、加预算、进不进一个市场——它组织多角色视角，在战略目标、事实证据、利益角色、权重权责四层收敛分歧，最后给出可追溯的结论：共识度评分、决策要满足的条件、仍待解决的分歧点。",
   },
   {
-    ix: "W·08", t: "UABB · AIGC Pipeline", tag: "AIGC PIPELINE", year: "2025", identity: "Developer",
+    key: "meco", ix: "W·04", introId: "intro-meco", group: "aipm", status: "in-progress",
+    t: "Meco", display: "Meco", tag: "AI PRODUCT", year: "2026", identity: "AIPM",
+    role: ["独立构建", "Solo build"],
+    body: "In progress — a new AI product taking shape.",
+    zh: "一个正在做的 AI 产品。等它成形，我会把完整的故事放上来。",
+  },
+  {
+    key: "uabb", ix: "W·05", introId: "intro-uabb", group: "architect", status: "live",
+    t: "UABB · AIGC Pipeline", display: "多模态工具", tag: "AIGC PIPELINE", year: "2025", identity: "Architect",
     award: "深港双年展 UABB 2025 · 板块唯一学生代表",
-    poster: "works/aftersilence-cover.jpg", video: "works/aftersilence.mp4", videoReady: true,    role: ["多模态 AIGC 负责人", "UABB 2025 curatorial team"],
+    poster: "works/aftersilence-cover.jpg", video: "works/aftersilence.mp4", videoReady: true, role: ["多模态 AIGC 负责人", "UABB 2025 curatorial team"],
     body: "A ComfyUI + API pipeline that cut 50+ exhibits' processing from 30 days to 5.",
     zh: "我给双年展搭了一条 ComfyUI 外接 API（Gemini / Tripo）的自动化转译工作流，加一套标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。背后是 120+ 次草图与模型迭代，最后我带着这套管线在展会现场做了分享。",
   },
+  {
+    key: "archfolio", ix: "W·06", introId: "intro-archfolio", group: "architect", status: "live",
+    t: "建筑作品集 Architecture Portfolio", display: "建筑作品集", tag: "ARCHITECTURE", year: "2023–25", identity: "Architect",
+    award: "一等奖 ×2 · 卓越奖 · UABB 代表作品",
+    doc: "uploads/portfolio.pdf", role: ["设计主创 / 项目组长", "Design lead"],
+    body: "Four architecture projects — constraints turned into places worth staying in.",
+    zh: "四件建筑作品：从火星人居到旧城更新，把互相冲突的限制收敛成能让人待下去的体系。",
+    works: ARCH_WORKS,
+  },
 ];
 
-/* the logo's skyline rhythm — the same eight bars as the .IAM. mark.
-   THIS is the thesis of the WORKS section: the mark is not decoration,
-   it is an index. Eight bars, eight works — bar[i] indexes work[i]
-   (heights are the mark's fixed rhythm, positional, not per-work data).
-   The blue square (the self · the period) walks the skyline as the
-   reader's cursor. 条 → 字. */
-const OVR_BARS = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
-
-/* ── WORKS — the mark UNFOLDS into the works (scroll-scrubbed) ─
-   Back to the logo-expand idea, rebuilt on the engine's __progress
-   system instead of CSS transitions (which stall under this
-   preview's idle compositor throttling — the chapter canvases all
-   JS-drive for the same reason). The .IAM. skyline mark sits
-   centered like the loader logo; scroll UNFOLDS it into a full-
-   width index, then DECODES the eight bars into eight works, one
-   in focus at a time. Every property is written per frame off
-   window.__progress.works, so it always renders. 条 → 字. */
-const clp = (v, a, b) => (v < a ? a : v > b ? b : v);
-const lerp = (a, b, t) => a + (b - a) * t;
-const smooth = (e0, e1, x) => { const t = clp((x - e0) / (e1 - e0 || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
-const eOut = (t) => 1 - Math.pow(1 - t, 3);
+/* 作品短名 — 画廊卡 / 翻书组件用(去掉英文副标题与破折号后缀)。 */
 const wkShort = (wk) => wk.display || wk.t.split(/\s+—\s+|\s+·\s+/)[0];
-/* each work answers to one of the three identities — carried on the work
-   itself (wk.identity) so reordering the deck never re-labels anyone. 字⇄身份. */
+/* (旧 scroll-scrub 卡组的 OVR_BARS / clp / lerp / smooth / eOut 已随卡组退役 —
+   2026-07-06 改版:作品改由 WorksGallery 网格墙 + data-ob 一次性进场承担。) */
 
 /* ── the portfolio flip-book — for the architecture works whose body
    lives as作品集 spreads. The same .sc-media 16:9 frame, but the A3 page
@@ -445,357 +411,157 @@ function WorkMedia({ wk }) {
   return <div className="sc-ph"><div className="n"><b>WORK SHOWCASE</b>作品展示 · 待上线 / TBD</div></div>;
 }
 
-function Works({ jump }) {
-  const stageRef = useSecRef(null);
-  const hoverRef = useSecRef(null);
-  const readRef = useSecRef(null);
-  const headRef = useSecRef(null);
-  const selfRef = useSecRef(null);
-  const deckRef = useSecRef(null);
-
-  /* click / Enter on a TOC bar or label — scroll to that work's browse
-     position so it works whether the deck is open or still closed. */
-  const jumpToWork = (i) => {
-    const sec = document.getElementById("works");
-    const wrap = sec && sec.querySelector(".wk-wrap");
-    if (wrap) {
-      const top = wrap.getBoundingClientRect().top + window.scrollY;
-      const span = Math.max(wrap.offsetHeight - window.innerHeight, 1);
-      const pp = 0.24 + (i / (WORKS.length - 1)) * 0.58;   /* mirrors pB */
-      window.scrollTo(0, Math.round(top + pp * span));
-    }
-    hoverRef.current = i;
-  };
-  /* hover preview — sweeping the pointer across the skyline TOC pulls focus
-     to the bar/label under it (a soft crossfade now, not a balloon). */
-  const onTocMove = (ev) => {
-    if ((window.__wkOpen || 0) <= 0.55) return;
-    const it = ev.target.closest("[data-i]");
-    if (it && it.dataset.i != null) hoverRef.current = +it.dataset.i;
-  };
-
-  /* the whole stage is driven by scroll progress — one rAF, only
-     style writes, mirroring useChProg in chapters.jsx. */
-  useSecEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const cards = [...stage.querySelectorAll(".wk-card")];
-    const spines = cards.map((c) => c.querySelector(".wc-spine"));
-    const deck = deckRef.current;
-    const fulls = deck ? [...deck.querySelectorAll(".wc-full")] : [];
-    const tocs = [...stage.querySelectorAll(".wt-item")];
-    const intro = stage.querySelector(".wk-intro");
-    const readEl = readRef.current;
-    const headEl = headRef.current;
-    const selfEl = selfRef.current;
-    const N = cards.length;
-    /* touch has no hover; scrolling is the ONLY way to browse, so a film must
-       not pause the instant the scrub drifts — only when its card is truly gone */
-    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-    let disp = 0, lastActive = -1;
-
-    /* BARS ⇄ SKYLINE — the eight .wk-card elements ARE the logo's bars, and
-       now stay bars for good: they unfold from the logo into a permanent
-       skyline TOC along the bottom and fly home on reconverge. The works
-       themselves live in ONE fixed card frame above (.wk-cardstage) whose
-       eight content panes crossfade — so browsing no longer stretches
-       geometry between the rail and the card. 条 → 目录 · 卡 → 淡入淡出. */
-    const bmBars = [...document.querySelectorAll(".brandmorph .band i")];
-    const toRGB = (s) => { const m = (s || "").match(/-?\d+(\.\d+)?/g); return m ? m.slice(0, 3).map(Number) : [11, 11, 14]; };
-    const srcRGB = bmBars[0] ? toRGB(getComputedStyle(bmBars[0]).backgroundColor) : [11, 11, 14];
-    const tgtRGB = cards.map((c) => toRGB(getComputedStyle(c).backgroundColor));
-    const COBALT = [0, 71, 171];
-    const mix = (a, b, t) => "rgb(" + a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",") + ")";
-    let barRects = null;
-
-    let tkLast = performance.now();
-    const tick = (now) => {
-      const tNow = now || performance.now();
-      const dt = Math.min(Math.max((tNow - tkLast) / 1000, 0), 0.05); tkLast = tNow;
-      /* negative floor keeps a slice of the glide-in for the intro prelude */
-      const p = clp((window.__progress && window.__progress.works) || 0, -0.1, 1);
-      const r = stage.getBoundingClientRect();
-      const W = r.width, H = r.height;
-
-      /* open → reconverge: the mark UNFOLDS into the skyline (openRaw), then near
-         the end the skyline collapses BACK into the mark (close). eS is the live
-         "openness" — the brandmorph logo reads it (window.__wkOpen) to know when
-         to hand off the closed mark and when to take it back. 条 ⇄ 目录 ⇄ 条. */
-      const openRaw = eOut(smooth(0.04, 0.24, p));     /* closed mark → open skyline */
-      const close = eOut(smooth(0.82, 0.96, p));       /* skyline → reconverged mark */
-      const eS = openRaw * (1 - close);
-      window.__wkOpen = eS;
-      /* GEOMETRY GATE — the bars must sit PIXEL-EXACT on the logo bars while the
-         logo fades off the top of them (eS 0→~0.12). Below FHAND the bars are
-         frozen; the logo dissolves into identical, motionless rectangles. */
-      const FHAND = 0.12;
-      const eGeo = clp((eS - FHAND) / (1 - FHAND), 0, 1);
-      const pB = clp((p - 0.24) / 0.58, 0, 1);         /* scrub across the deck (browse window — 必须与 jumpToWork 点击映射镜像) */
-      /* DWELL — instead of a linear scrub (where the next work surfaces while
-         the last is still arriving), each work HOLDS in focus, then the scrub
-         moves briskly to the next. The plateau at each integer is the dwell. */
-      const raw = pB * (N - 1);
-      const k = Math.min(Math.floor(raw), N - 2);
-      const seg = k + smooth(0.34, 0.66, raw - k);
-      const hv = hoverRef.current;
-      const target = (hv != null && eS > 0.55) ? hv : seg;
-      /* silky inertia — the focus glides toward target rather than snapping.
-         dt-normalised (0.12/frame @60Hz ≡ 1-e^(-7.6dt)) so 120Hz screens
-         don't run the glide at double speed. */
-      disp += (target - disp) * (1 - Math.exp(-dt * 7.6));
-      if (Math.abs(target - disp) < 0.002) disp = target;
-      /* while the deck is closed, snap focus home so a fast scroll-out-and-back
-         never flashes a stale work on re-entry */
-      if (eS < 0.08) { disp = seg; hoverRef.current = null; }
-
-      /* intro caption blooms DURING the glide-in (negative p — the prelude),
-         so the arriving stage already carries its headline; it lifts away as
-         the mark unfolds */
-      const introOp = smooth(-0.085, 0.002, p) * (1 - smooth(0.05, 0.12, p));
-      intro.style.opacity = introOp.toFixed(3);
-      intro.style.transform = "translate(-50%," + (-40 * eS).toFixed(1) + "px)";
-
-      /* read the live logo bars (relative to the stage) — the bars' closed
-         state. Re-measured through the morph zone; cached during browse where
-         the logo is parked dead-still at centre. This guarantees each bar
-         BEGINS exactly on its logo twin, so the handoff has nothing to dissolve. */
-      if (bmBars.length === N && (eS < 0.55 || !barRects)) {
-        barRects = bmBars.map((b) => {
-          const br = b.getBoundingClientRect();
-          return { x: br.left - r.left, y: br.top - r.top, w: br.width, h: br.height };
-        });
-      }
-      const colorT = smooth(0.0, 0.45, eGeo);
-
-      /* the fixed card frame + the skyline TOC geometry. 大卡一次定位，条列底部. */
-      const narrow = W < 900;
-      const bigW = Math.min(W * (narrow ? 0.95 : 0.86), 1160);
-      const bigTop = H * (narrow ? 0.165 : 0.155);   /* phone: drop the card enough to fit the floating title BELOW the fixed nav */
-      const bigBot = H * (narrow ? 0.80 : 0.68);
-      const bigH = bigBot - bigTop;
-      const bigCx = W * 0.5;
-      /* the skyline index rail — slim bars along the bottom edge */
-      const railBaseY = H * 0.965;
-      const railMaxH = clp(H * 0.072, 32, 60);
-      const railTotW = Math.min(W * (narrow ? 0.88 : 0.58), 920);
-      const railLeft = W * 0.5 - railTotW * 0.5;
-      const railStep = railTotW / (N - 1);
-      const spineW = clp(railTotW / (N * 2.4), 8, 22);
-      const labY = railBaseY - railMaxH - (narrow ? 20 : 26);   /* TOC label row, above the tallest bar */
-
-      const ai = Math.round(clp(disp, 0, N - 1));
-      window.__wkActive = ai;
-      if (ai !== lastActive) {
-        lastActive = ai; const wk = WORKS[ai];
-        /* phone readout — ≤600px hides the TOC names, so the active work's name
-           reads here instead (desktop hides this line via CSS) */
-        if (readEl) readEl.innerHTML = '<b>' + String(ai + 1).padStart(2, "0") + '</b>&nbsp;&nbsp;' + wkShort(wk);
-        /* the floating headline — the work's title + serial, OUTSIDE the card */
-        if (headEl) headEl.innerHTML =
-          '<span class="wh-kick">' + wk.ix + ' · ' + wk.tag + ' · ' + wk.year + '</span>' +
-          '<span class="wh-name">' + wkShort(wk) + '<i class="wh-sq"></i></span>';
-        tocs.forEach((t, j) => t.classList.toggle("on", j === ai));
-      }
-      const railFadeN = smooth(0.45, 0.95, eS) * (1 - close);
-      const railFade = railFadeN.toFixed(3);
-      if (readEl) readEl.style.opacity = railFade;
-      /* park the headline at the card frame's top-left corner, just above it */
-      if (headEl) {
-        const hx = bigCx - bigW / 2;
-        const hy = Math.max(bigTop - (narrow ? 70 : 96), narrow ? 70 : 10);
-        headEl.style.transform = "translate(" + Math.round(hx) + "px," + Math.round(hy) + "px)";
-        headEl.style.opacity = railFade;
-      }
-      /* the self-square (the period · 自我) rides the skyline at the live scrub
-         position — the reading cursor of the TOC */
-      if (selfEl) {
-        const di = clp(disp, 0, N - 1);
-        const lo = Math.floor(di), hi = Math.min(lo + 1, N - 1);
-        const hAt = lerp(OVR_BARS[lo], OVR_BARS[hi], di - lo);
-        const selfH = railMaxH * (0.40 + 0.60 * hAt);
-        const sx = railLeft + di * railStep - 4.5;
-        const sy = railBaseY - selfH - 11;
-        selfEl.style.transform = "translate(" + Math.round(sx) + "px," + Math.round(sy) + "px)";
-        selfEl.style.opacity = (smooth(0.5, 0.95, eS) * (1 - close)).toFixed(3);
-      }
-
-      /* ── the ONE card frame — appears as the unfold completes, retires as the
-         skyline flies home. Its geometry never tracks the scrub: only the panes
-         inside crossfade, so a work swap is a dissolve, not a stretch. ── */
-      const stOp = smooth(0.86, 1, eGeo);
-      if (deck) {
-        const rise = (1 - stOp) * 22;
-        deck.style.width = Math.round(bigW) + "px";
-        deck.style.height = Math.round(bigH) + "px";
-        deck.style.transform = "translate(" + Math.round(bigCx - bigW / 2) + "px," + Math.round(bigTop + rise) + "px)";
-        deck.style.opacity = stOp.toFixed(3);
-        deck.style.visibility = stOp > 0.01 ? "visible" : "hidden";
-      }
-
-      /* ── the eight bars — a permanent skyline TOC. The reader sweep (disp)
-         pulls the active bar to cobalt; labels ride their slots below. ── */
-      const appear = smooth(0.0, 0.05, eS);
-      cards.forEach((card, i) => {
-        /* closed (bar) geometry — straight off the live logo. */
-        const bc = barRects && barRects[i];
-        const barX = bc ? bc.x : (W * 0.3 + i * 30);
-        const barW = bc ? bc.w : 14;
-        const barH = bc ? bc.h : (OVR_BARS[i] * H * 0.15);
-        const barTop = bc ? bc.y : (H * 0.46 - barH);
-
-        /* this work's home in the skyline index (slim bar, height = logo rhythm) */
-        const hSig = OVR_BARS[i % OVR_BARS.length];
-        const spineH = railMaxH * (0.40 + 0.60 * hSig);
-        const spineCx = railLeft + i * railStep;
-        const spineTop = railBaseY - spineH;
-
-        /* unfold the logo bar into its rail slot — same element, continuous geometry */
-        const x = lerp(barX, spineCx - spineW / 2, eGeo);
-        const w = lerp(barW, spineW, eGeo);
-        const h = lerp(barH, spineH, eGeo);
-        const top = lerp(barTop, spineTop, eGeo);
-        card.style.width = Math.round(w) + "px";
-        card.style.height = Math.round(h) + "px";
-        card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(top) + "px)";
-
-        /* reader sweep — how close the focus is to THIS bar. The active bar
-           turns cobalt (跳色在「当前」上) and lifts to full ink-strength. */
-        const prox = 1 - Math.min(Math.abs(i - disp), 1);
-        const barHot = smooth(0.55, 0.95, prox);
-        card.style.backgroundColor = eGeo < 0.52
-          ? mix(srcRGB, tgtRGB[i], colorT)
-          : mix(tgtRGB[i], COBALT, barHot);
-        card.style.opacity = (appear * lerp(0.5, 1, barHot)).toFixed(3);
-        if (spines[i]) spines[i].style.pointerEvents = eS > 0.5 ? "auto" : "none";
-
-        /* the TOC label under this slot */
-        const tc = tocs[i];
-        if (tc) {
-          tc.style.transform = "translate(" + Math.round(spineCx) + "px," + Math.round(labY) + "px) translateX(-50%)";
-          tc.style.opacity = railFade;
-          tc.style.pointerEvents = (eS > 0.5 && railFadeN > 0.4) ? "auto" : "none";
-        }
-      });
-
-      /* ── the eight content panes — a gentle crossfade around the damped focus.
-         The frame behind them is opaque ink, so mid-swap the two panes dissolve
-         through the card's own ground — never through to the page. ── */
-      fulls.forEach((f, i) => {
-        const dd = i - disp;
-        const prox = 1 - Math.min(Math.abs(dd), 1);
-        const op = smooth(0.18, 0.82, prox);
-        const eff = op * stOp;
-        f.style.opacity = op.toFixed(3);
-        f.style.transform = "translateY(" + (clp(dd, -1, 1) * 18).toFixed(1) + "px)";
-        f.style.zIndex = String(10 + Math.round(op * 20));
-        const live = eff > 0.02;
-        f.style.pointerEvents = eff > 0.6 ? "auto" : "none";
-        /* drop the 7 inactive dossiers out of the a11y tree + tab order —
-           opacity:0 alone leaves their links/media keyboard-reachable behind
-           an invisible layer (inert neutralises the nested controls too) */
-        f.style.visibility = live ? "visible" : "hidden";
-        f.toggleAttribute("inert", !live);
-        /* pause a film once its pane leaves focus — an opacity:0 video keeps
-           playing. on touch, hold until the pane is essentially gone so a small
-           scrub doesn't stop playback; on desktop keep the tighter 0.4 cutoff. */
-        if (eff < 0.02 || (eff < 0.4 && !coarse)) { const v = f.querySelector("video"); if (v && !v.paused) v.pause(); }
-      });
-    };
-
-    if (!window.__addLoop) { tick(); return; }
-    const stop = window.__addLoop(tick);
-    return () => stop();
-  }, []);
-
-  useSecEffect(() => {
-    /* the hover selection STICKS — it won't fly back to the scrubbed card when the
-       pointer leaves. Scrolling is what hands control back to the scroll-scrub. */
-    const onScroll = () => { hoverRef.current = null; };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+/* ── 占位封面 — 六作各一个可识别抽象母题(设计语言三色 + 条/点)。线用
+   var(--cardfg)(随卡底自动翻色),句点方块用 var(--cardacc)。正式封面上线后:
+   给该卡加 heroCover 图片路径,GalleryCard 改渲 <img>。viewBox 600×600 · slice。 ── */
+function CoverArt({ kind }) {
+  const fg = "var(--cardfg)", ac = "var(--cardacc)";
+  const ln = { fill: "none", stroke: fg, strokeLinecap: "round", strokeLinejoin: "round" };
+  const box = () => ({ viewBox: "0 0 600 600", preserveAspectRatio: "xMidYMid slice", className: "gw-cover-svg" });
+  if (kind === "pears") {   /* 漏斗:轨迹 → 收敛 → 蒸馏出的 Agent → 方块句点 */
+    return (
+      <svg {...box()}>
+        <g {...ln} strokeWidth="7" opacity=".5">
+          {[130, 175, 220, 265].map((y) => [150, 236, 322].map((x) => <line key={x + "_" + y} x1={x} y1={y} x2={x + 50} y2={y} />))}
+        </g>
+        <path {...ln} strokeWidth="7" d="M150,322 L292,452" />
+        <path {...ln} strokeWidth="7" d="M450,322 L308,452" />
+        <rect x="284" y="452" width="32" height="84" fill={fg} />
+        <rect x="287" y="546" width="26" height="26" fill={ac} />
+      </svg>
+    );
+  }
+  if (kind === "cowork") {   /* 闭环七站 + 环心三条 + 交付方块 */
+    return (
+      <svg {...box()}>
+        <rect {...ln} strokeWidth="7" x="90" y="150" width="420" height="320" rx="44" />
+        <g fill="none" stroke={fg} strokeWidth="4">
+          {[160, 250, 340, 430].map((x) => <circle key={"t" + x} cx={x} cy="150" r="12" />)}
+          {[200, 300, 400].map((x) => <circle key={"b" + x} cx={x} cy="470" r="12" />)}
+        </g>
+        <g {...ln} strokeWidth="7" opacity=".5">
+          <line x1="240" y1="290" x2="360" y2="290" />
+          <line x1="255" y1="315" x2="345" y2="315" />
+          <line x1="248" y1="340" x2="352" y2="340" />
+        </g>
+        <rect x="497" y="457" width="26" height="26" fill={ac} />
+      </svg>
+    );
+  }
+  if (kind === "yijian") {   /* 四层收敛 → 共识贯通条 + 方块 */
+    const rows = [[190, 410], [225, 375], [255, 345], [280, 320]];
+    return (
+      <svg {...box()}>
+        <g {...ln} strokeWidth="14">
+          {rows.map(([l, r], i) => (
+            <g key={i}>
+              <line x1="90" y1={150 + i * 80} x2={l} y2={150 + i * 80} />
+              <line x1={r} y1={150 + i * 80} x2="510" y2={150 + i * 80} />
+            </g>
+          ))}
+          <line x1="90" y1="470" x2="510" y2="470" />
+        </g>
+        <rect x="516" y="458" width="24" height="24" fill={ac} />
+      </svg>
+    );
+  }
+  if (kind === "meco") {   /* 未落笔的天际线:前 3 实心,后 5 虚线;句点空心 */
+    const H = [0.97, 0.58, 1.0, 0.66, 0.9, 0.52, 0.74, 1.0];
+    return (
+      <svg {...box()}>
+        {H.map((h, i) => {
+          const x = 56 + i * 64, top = 470 - h * 300;
+          return i < 3
+            ? <rect key={i} x={x} y={top} width="40" height={470 - top} fill={fg} />
+            : <rect key={i} x={x} y={top} width="40" height={470 - top} fill="none" stroke={fg} strokeWidth="2.5" strokeDasharray="6 8" />;
+        })}
+        <line {...ln} strokeWidth="3" x1="56" y1="474" x2="544" y2="474" />
+        <rect x="552" y="446" width="24" height="24" fill="none" stroke={ac} strokeWidth="3" />
+      </svg>
+    );
+  }
+  if (kind === "uabb") {   /* 多源 → 门 → 点阵(其中一粒 = 蓝方块) */
+    const cols = [120, 180, 240, 300, 360, 420], rows = [430, 480, 530, 580];
+    return (
+      <svg {...box()}>
+        <g {...ln} strokeWidth="4">
+          <line x1="150" y1="96" x2="292" y2="236" />
+          <line x1="300" y1="76" x2="300" y2="236" />
+          <line x1="450" y1="96" x2="308" y2="236" />
+        </g>
+        <rect x="268" y="240" width="16" height="110" fill={fg} />
+        <rect x="316" y="240" width="16" height="110" fill={fg} />
+        {rows.map((y) => cols.map((x) => (
+          (x === 300 && y === 480)
+            ? <rect key={x + "_" + y} x={x - 7} y={y - 7} width="14" height="14" fill={ac} />
+            : <circle key={x + "_" + y} cx={x} cy={y} r="6" fill={fg} />
+        )))}
+      </svg>
+    );
+  }
+  /* archfolio — 等高线台地 + 门槛句点 */
   return (
-    <section className="works3 chapter" id="works" data-tone="paper" data-prog="works" data-screen-label="WORKS">
-      <div className="ch-wrap wk-wrap">
-        <div className="ch-stage wk-stage" ref={stageRef}>
-          <div className="wk-ghost" data-parallax="0.12" aria-hidden="true">WORKS</div>
+    <svg {...box()}>
+      <rect {...ln} strokeWidth="7" x="120" y="150" width="360" height="330" rx="40" />
+      <rect {...ln} strokeWidth="4" x="172" y="196" width="256" height="238" rx="28" />
+      <rect {...ln} strokeWidth="2.5" x="224" y="242" width="152" height="146" rx="18" />
+      <rect x="456" y="456" width="24" height="24" fill={ac} />
+    </svg>
+  );
+}
 
-          <div className="wk-intro">
-            <div className="kick mono">05 · SELECTED WORK / 作品</div>
-            <h2 className="wk-zh">每一份数据，支撑着一个作品<i className="psq" aria-hidden="true"></i></h2>
-          </div>
+/* 卡底色对角排布:cobalt · ink · paper / paper · ink · cobalt(钴蓝坐两角)。
+   句点色随卡底翻转(paper→--blue · ink→--blue-up · cobalt→--blue-dn)由 CSS 定。 */
+const GW_TONES = ["cobalt", "ink", "paper", "paper", "ink", "cobalt"];
 
-          {/* ── the skyline TOC — eight permanent bars along the bottom (the logo's
-              own bars, unfolded). Pointer-only hit targets; the labelled TOC row
-              below carries keyboard access. 条 = 目录. */}
-          <div className="wk-fan" aria-hidden="true" onPointerMove={onTocMove}>
-            {WORKS.map((wk, i) => (
-              <div key={i} data-i={i} className="wk-card ink">
-                <button className="wc-spine" type="button" data-hov tabIndex={-1} aria-hidden="true"
-                        onClick={() => jumpToWork(i)}></button>
-              </div>
-            ))}
-          </div>
-          {/* the TOC labels — serial + short name under each bar's slot; the
-              active one flips cobalt. These are the keyboard path to the deck. */}
-          <div className="wk-toc" onPointerMove={onTocMove}>
-            {WORKS.map((wk, i) => (
-              <button key={i} data-i={i} type="button" data-hov
-                      className={"wt-item mono" + (i === 0 ? " on" : "")}
-                      aria-label={"View " + wk.ix + " · " + wk.t}
-                      onClick={() => jumpToWork(i)}>
-                <b>{String(i + 1).padStart(2, "0")}</b><span>{wkShort(wk)}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* ── the ONE card frame — fixed geometry; the eight works are stacked
-              content panes that crossfade inside it. 卡不再从条里长出来. */}
-          <div className="wk-cardstage" ref={deckRef}>
-            {WORKS.map((wk, i) => (
-              <div key={i} data-i={i} className="wc-full">
-                <div className="wf-media"><WorkMedia wk={wk} /></div>
-                <div className="wf-text">
-                  <div className="wf-ident">{wk.identity}<i className="psq" aria-hidden="true"></i></div>
-                  <div className="wf-role mono">{wk.role[0]} · {wk.role[1]}</div>
-                  {/* 中文叙事为主，英文缩为点缀；三格 metrics 计分板已删（纯叙事） */}
-                  <p className="wf-zh">{wk.zh}</p>
-                  <p className="wf-body">{wk.body}</p>
-                  {wk.links ? (
-                    <div className="wf-ctas">
-                      {wk.links.map((ln, j) => (
-                        <a key={j} className="wf-cta mono" href={ln.url} target="_blank" rel="noopener" data-hov>{ln.label}</a>
-                      ))}
-                    </div>
-                  ) : wk.link ? (
-                    <a className="wf-cta mono" href={wk.link} target="_blank" rel="noopener" data-hov>访问项目 · VISIT LIVE ↗</a>
-                  ) : wk.doc ? (
-                    <a className="wf-cta mono" href={wk.doc} target="_blank" rel="noopener" data-hov>查看作品集 · PORTFOLIO ↗</a>
-                  ) : null}
-                  {/* 获奖角标 — 卡片右下角一行小字：只有「奖名 · 中文等级」，行尾方块
-                      句点收束（同标题的 .psq 语义）。角落停靠、非徽章补丁；无奖不渲染。 */}
-                  {wk.award ? (
-                    <div className="wf-award mono">{wk.award}<i className="sq" aria-hidden="true"></i></div>
-                  ) : null}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="wk-headline" ref={headRef} aria-hidden="true"></div>
-          <div className="wk-railread mono" ref={readRef} role="status" aria-live="polite"></div>
-          <i className="wk-railself" ref={selfRef} aria-hidden="true"></i>
+function GalleryCard({ wk, tone, ix, jump }) {
+  const inProg = wk.status === "in-progress";
+  return (
+    <button className={"gw-card gw-t-" + tone + (inProg ? " gw-wip" : "")} type="button" data-hov
+            onClick={() => jump(wk.introId)} aria-label={(wk.display || wk.t) + " — 查看介绍"}>
+      <div className="gw-cover" aria-hidden="true">
+        {wk.heroCover ? <img className="gw-cover-img" src={wk.heroCover} alt="" loading="lazy" draggable="false" /> : <CoverArt kind={wk.key} />}
+      </div>
+      {inProg && <span className="gw-flag mono">IN PROGRESS · 进行中<i className="gw-flag-sq" aria-hidden="true"></i></span>}
+      <div className="gw-info">
+        <div className="gw-row1 mono">
+          <span className="gw-ix">{"G·" + String(ix + 1).padStart(2, "0")}</span>
+          <span className="gw-tagyr">{wk.tag} · {wk.year}</span>
         </div>
+        <div className="gw-name">{wk.display || wkShort(wk)}<i className="psq" aria-hidden="true"></i>
+          <span className="gw-arr" aria-hidden="true">→</span></div>
+        {wk.zh && <div className="gw-line">{wk.zh}</div>}
+        {wk.award && <div className="gw-award mono">{wk.award}<i className="gw-award-sq" aria-hidden="true"></i></div>}
+      </div>
+    </button>
+  );
+}
+
+/* ── WORKS 画廊 — 六竖卡网格墙,进场「聚拢→散开」(data-ob 一次性,零引擎
+   代码);点卡片平滑滚到对应介绍锚点。作品前置到 Whoami 之后,成为全站主角。 ── */
+function WorksGallery({ jump }) {
+  return (
+    <section className="gwall sec" id="works" data-tone="paper" data-ob data-screen-label="WORKS">
+      <div className="gw-head">
+        <div className="kick lm"><span>02 · WORKS / 作品</span></div>
+        <h2 className="gw-title rv-soft" data-ob="self" style={{ "--rd": ".08s" }}>六个作品<i className="psq" aria-hidden="true"></i></h2>
+        <p className="gw-sub" data-rv data-ob="self" style={{ "--rd": ".18s" }}>
+          两种身份，一种理性。点开任一张看完整介绍。
+          <span className="en">Six works, two identities — click any card for the full story.</span>
+        </p>
+      </div>
+      <div className="gw-grid" data-ob="self">
+        {WORKS.map((wk, i) => (
+          <GalleryCard key={wk.key} wk={wk} tone={GW_TONES[i % GW_TONES.length]} ix={i} jump={jump} />
+        ))}
       </div>
     </section>
   );
 }
 
-
 /* ── the finale thread — "I am ___" keeps filling the blank ── */
 function IamFinale() {
-  const ids = ["Alnt Med", "an AIPM", "a Developer", "an Architect", "a Builder", "anything."];
+  const ids = ["Alnt Med", "an AIPM", "an Architect", "a Builder", "anything."];
   const [i, setI] = useSecState(0);
   useSecEffect(() => {
     const t = setInterval(() => setI((v) => (v + 1) % ids.length), 2200);
@@ -824,7 +590,7 @@ function Contact({ jump }) {
   return (
     <section className="contact sec" id="contact" data-tone="paper" data-ob data-screen-label="CONTACT" style={{ paddingLeft: 0, paddingRight: 0 }}>
       <div style={{ padding: "0 clamp(20px, 5vw, 40px)" }}>
-        <div className="kick lm"><span>06 · CONTACT / 联系 — 求职方向：AI 产品 · 深圳</span></div>
+        <div className="kick lm"><span>05 · CONTACT / 联系 — 求职方向：AI 产品 · 深圳</span></div>
         <div style={{ marginTop: "3vh" }}>
           <IamFinale />
         </div>
@@ -853,7 +619,7 @@ function Contact({ jump }) {
                 TODO: 换成独立静态 AI 作品集页（用户后续单独任务） */}
             <a className="crow" href="#works" data-hov
                onClick={(e) => { e.preventDefault(); jump && jump("works"); }}>
-              <span className="cl">AI 作品集 · Portfolio</span><span className="cv">站内浏览 8 个作品&nbsp;→</span>
+              <span className="cl">AI 作品集 · Portfolio</span><span className="cv">站内浏览 6 个作品&nbsp;→</span>
             </a>
             <a className="crow" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" data-hov>
               <span className="cl">GitHub</span><span className="cv">@leemenuong-prog&nbsp;↗</span>
@@ -867,6 +633,9 @@ function Contact({ jump }) {
           </div>
         </div>
       </div>
+      {/* 底部波点带 — 半调渐隐(2026-07-06 用户):页面在化成点,点落成 Logo。
+          钴蓝点(跳色只落点),不响应滚动,一次性淡入。 */}
+      <div className="fdots" aria-hidden="true"></div>
       <div className="fband-slot" aria-hidden="true"></div>
       <div className="foot">
         <span>© 2026 ALNT MED</span>
@@ -877,4 +646,4 @@ function Contact({ jump }) {
   );
 }
 
-Object.assign(window, { Hero, Whoami, Chapter, CodePanel, Works, IamFinale, Contact, WORKS });
+Object.assign(window, { Hero, Whoami, CodePanel, WorksGallery, WorkGallery, WorkMedia, IamFinale, Contact, WORKS, ARCH_WORKS });

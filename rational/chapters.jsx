@@ -134,14 +134,16 @@ function useApxFilm(ref, frameRef) {
   }, []);
 }
 
-function ChAipmPlatform({ jump }) {
+/* 03·B · CO-WORK — 平台介绍页（原 ChAipmPlatform;id 从 aipm 让给开场章,
+   本页改 intro-cowork)。杂志对页三段 + 影片管线(useApxFilm 的 .apx-video/
+   .apx-video-loading 类名与层级不可动)全部保留;加 .apx-compact 收紧间距。 */
+function IntroCowork({ jump }) {
   const ref = useChR(null);
   const frameRef = useChR(null);
   const [filmOn, setFilmOn] = React.useState(false);
   useApxFilm(ref, frameRef);
-  /* closing CTA — after the platform film, the same live-site link as the AIPM
-     identity chapter (XTOOL Agent Platform). Resolved from WORKS. */
-  const aipmWk = (window.WORKS || []).find((w) => w.tag === "AI PLATFORM");
+  /* closing CTA — 平台官网链接,从 WORKS 查 Co-work(tag AI PLATFORM)。 */
+  const aipmWk = (window.WORKS || []).find((w) => w.key === "cowork");
   const aipmUrl = (aipmWk && aipmWk.link) || "https://peersagent.netlify.app/";
   /* 杂志对页（变体 B）：三个 spread 顺滚——P1 左文右图（右出血）、P2 镜像
      拉页、P3 压轴影片 + 刊末条 + CTA。每个 spread 一个 data-ob="self" 锚点，
@@ -153,10 +155,10 @@ function ChAipmPlatform({ jump }) {
      （2026-07-05 用户：P2 只留小蓝点巡回——旅行的消息卡 + 点选重播提示已删。） */
   const [p1, p2, p3] = APX_INTRO_PAGES;
   return (
-    <section className="chapter apx" id="aipm" data-tone="paper" data-screen-label="03 · An AIPM — Co-work Agent Platform">
+    <section className="chapter apx apx-compact" id="intro-cowork" data-tone="paper" data-screen-label="03·B · Co-work Agent Platform">
       <div className="apx-stage" ref={ref}>
         <div className="apx-kicker mono" data-rv data-ob="self">
-          <span>03 · AN AIPM</span><span>CO-WORK AGENT PLATFORM · 平台</span>
+          <span>03·B · CO-WORK</span><span>AGENT PLATFORM · 平台</span>
         </div>
         <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
         <h2 className="apx-title" data-rv data-ob="self" style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
@@ -478,7 +480,7 @@ function Structure3D() {
 
   const ref = useCanvas((ctx, W, H, now) => {
     const S = simR.current;
-    let p = (window.__progress && window.__progress.developer) || 0;
+    let p = (window.__progress && window.__progress.aipm) || 0;
     /* PRELUDE — the glide-in used to be a blank stage (grid only arrived
        after the pin). Negative p now draws the ground grid + the nine
        foundation stubs fading in: 地基先落，塔楼后起. */
@@ -587,29 +589,33 @@ function Structure3D() {
   return <canvas ref={ref}></canvas>;
 }
 
-function ChDev({ jump }) {
+/* 03 · AN AIPM — 开场叙事页（原 ChDev 的体结构画布 + 代码面板改造）
+   身份合并后,AIPM 章 = 这一叙事开场 + 其后 Pears/Co-work/议见/Meco 四段
+   杂志对页介绍。开场吸收原 Developer 叙事:我做 AI 产品——钻进真实业务调研、
+   拆需求,再自己写代码 / 指挥 agent 写代码把它落地。Structure3D 天际线正是
+   「从想法搭成结构」的隐喻,保留;CodePanel 装饰性保留。 */
+function ChAipmOpen({ jump }) {
   const { BarWord, CodePanel } = window;
   const ref = useChR(null);
-  useChProg("developer", ref);
-  /* NOTE: the "VISIT PEARS" CTA deliberately lives only on the Reel showcase
-     chapter (ChReel · 介绍页), NOT here on the identity/animation page — it was
-     a duplicate otherwise (用户: 动画页不要按钮，介绍页出现). */
+  useChProg("aipm", ref);
+  /* NOTE: 叙事/动画开场页不放按钮(用户: 动画页不要按钮);各作品的 CTA 落在
+     其后的介绍页(IntroPears / IntroCowork …)。 */
   return (
-    <section className="chapter ch3" id="developer" data-tone="paper" data-prog="developer" data-screen-label="02 · A Developer — 3D">
+    <section className="chapter ch3" id="aipm" data-tone="paper" data-prog="aipm" data-screen-label="03 · An AIPM — 开场">
       <div className="ch-wrap">
         <div className="ch-stage sec c3" data-ob ref={ref}>
-          <div className="ch-ghost" data-parallax="0.2" aria-hidden="true">STACK</div>
+          <div className="ch-ghost" data-parallax="0.2" aria-hidden="true">SHIP</div>
           <div className="c3-art" aria-hidden="true"><Structure3D /></div>
           <div className="ch-head c3-head">
-            <h2 className="ch-title c3-title"><BarWord text="A Developer" delay={0.15} /></h2>
+            <h2 className="ch-title c3-title rv-soft"><BarWord text="An AIPM" static /></h2>
             <div className="rule ch-rule" style={{ "--rd": ".22s" }}></div>
           </div>
           <CodePanel />
           <div className="ch-motto">
-            <div className="mt lm" style={{ "--rd": ".3s" }}><span>保持从想法到落地的能力<i className="psq" aria-hidden="true"></i></span></div>
+            <div className="mt lm" style={{ "--rd": ".3s" }}><span>让 AI 贴合真实场景，从想法到落地<i className="psq" aria-hidden="true"></i></span></div>
             <div className="st" data-rv style={{ "--rd": ".45s" }}>
-              我自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做出来。
-              <span className="en">From idea to shipped — I write code myself, and I also direct agents that write it. The fastest way to test an idea is usually just to build it.</span>
+              我钻进真实业务里做调研、把需求拆开，再动手把它做出来——自己写代码，也指挥 agent 写代码。想验证一个想法，最快的路常常是先做一遍。
+              <span className="en">An AI product manager who ships — I dig into how work actually happens, break the problem down, then build it: writing code myself and directing the agents that write it.</span>
             </div>
           </div>
         </div>
@@ -639,8 +645,8 @@ function ChArch({ jump }) {
           <div className="ch-ghost c4-ghost" data-parallax="0.16" aria-hidden="true">FORM</div>
           <div className="ch-head c4-head">
             <h2 className="c4-title">
-              <span className="c4-an"><BarWord text="An" period={false} /></span>
-              <span className="c4-big"><BarWord text="Architect" delay={0.3} /></span>
+              <span className="c4-an rv-soft"><BarWord text="An" period={false} static /></span>
+              <span className="c4-big rv-soft" style={{ "--rd": ".08s" }}><BarWord text="Architect" static /></span>
             </h2>
             <div className="rule ch-rule c4-rule" style={{ "--rd": ".22s" }}></div>{/* 线先于正文（与 Dev 章同序） */}
           </div>
@@ -694,7 +700,7 @@ const REEL = [
 const REEL_VIDEO = { src: "works/pears-roadshow.mp4", poster: "works/pears-roadshow-cover.jpg", zh: "路演", g: "Pears 产品路演 · Demo Day" };
 const REEL_N = REEL.length;   /* 8 提案帧 — 影片是第二段，不再占 cell */
 
-function ChReel({ jump }) {
+function IntroPears({ jump }) {
   const deckRef = useChR(null);
   const vidRef = useChR(null);
   const [idx, setIdx] = React.useState(0);
@@ -743,18 +749,18 @@ function ChReel({ jump }) {
   /* closing CTA — the reel is the Developer's evidence (Pears); link straight to
      the live product. Looked up by name, NOT by index — the deck's order is
      curatorial (建筑在前) and must be free to change without re-aiming this link. */
-  const devWk = (window.WORKS || []).find((w) => w.t && w.t.indexOf("Pears") === 0);
+  const devWk = (window.WORKS || []).find((w) => w.key === "pears");
   const devUrl = (devWk && devWk.link) || "https://and-pear.netlify.app/login";
   const s = REEL[idx];
   /* 杂志对页模板（与 AIPM 章同一套 .apx-spread 体系）· 两页：
      P1 对页 = 轮播 deck（auto-turn/手动/pips/触摸全保留），
      P2 压轴 = 路演视频（到场静音自动播/BGM chip/CTA 全保留）。 */
   return (
-    <section className="chapter reel" id="reel" data-tone="paper"
-             data-screen-label="02·B · The Evidence — PEARS">
+    <section className="chapter reel apx-compact" id="intro-pears" data-tone="paper"
+             data-screen-label="03·A · Pears — Agent Factory">
       <div className="reel-stage">
         <div className="apx-kicker mono" data-rv data-ob="self">
-          <span>02·B · THE EVIDENCE</span><span>PEARS · 路演现场</span>
+          <span>03·A · PEARS</span><span>AGENT FACTORY · 路演现场</span>
         </div>
 
         {/* ── P1 · 路演提案 — 左文右 deck，图版右出血 ── */}
@@ -848,4 +854,152 @@ function ChReel({ jump }) {
   );
 }
 
-Object.assign(window, { ChAipmPlatform, ChDev, ChArch, ChReel, Structure3D });
+/* ════════════════════════════════════════════════════════════
+   介绍页轻模板 — 议见 / Meco / UABB / 建筑作品集共用。
+   与 Pears/Co-work 的多对页富版式不同,这四个走「干净紧凑」版:
+   kicker → 大标题(+psq) → meta 行(角色·年份·奖项) → 一段正文 →
+   16:9 媒体 → 刊末数据条 + CTA。信息密度高、留白克制——正对
+   用户「要更清晰、更密」的诉求。媒体复用 window.WorkMedia /
+   WorkGallery(embed/video/翻书/TBD 分支现成)。 ═══════════════ */
+function IntroMeta({ role, year, award }) {
+  return (
+    <div className="apx-meta mono" data-rv data-ob="self" style={{ "--rd": ".14s" }}>
+      {role && <span>{role}</span>}
+      {year && <span>{year}</span>}
+      {award && <span className="apx-meta-award">{award}<i className="psq" aria-hidden="true"></i></span>}
+    </div>
+  );
+}
+
+function IntroShell({ id, kickL, kickR, cap, title, flag, role, year, award, lead, children, stats, cta }) {
+  return (
+    <section className="chapter apx apx-intro apx-compact" id={id} data-tone="paper" data-screen-label={kickL}>
+      <div className="apx-stage">
+        <div className="apx-kicker mono" data-rv data-ob="self"><span>{kickL}</span><span>{kickR}</span></div>
+        {cap && <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>{cap}</div>}
+        <h2 className="apx-title apx-intro-title rv-soft" data-ob="self" style={{ "--rd": ".1s" }}>
+          {title}<i className="psq" aria-hidden="true"></i>
+          {flag && <span className="apx-flag mono">{flag}</span>}
+        </h2>
+        {(role || year || award) && <IntroMeta role={role} year={year} award={award} />}
+        {lead && <p className="apx-lead" data-rv data-ob="self" style={{ "--rd": ".2s" }}>{lead}</p>}
+        {children}
+        {stats && stats.length ? (
+          <div className="apx-strip2 apx-intro-strip" data-rv data-ob="self" style={{ "--rd": ".28s" }}>
+            {stats.map((s, i) => <div className="apx-stat" key={i}><b>{s.n}</b><span>{s.label}</span></div>)}
+          </div>
+        ) : null}
+        {cta && (
+          <div className="apx-ctarow apx-intro-cta" data-rv data-ob="self" style={{ "--rd": ".34s" }}>
+            <a className="apx-cta ch-cta" href={cta.url} target="_blank" rel="noopener" data-hov>
+              <span className="sq" aria-hidden="true"></span>{cta.label}<span className="arr" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* 03·C · 议见 Yijian — embed 分支(海报点开 iframe demo) */
+function IntroYijian({ jump }) {
+  const { WorkMedia } = window;
+  const wk = (window.WORKS || []).find((w) => w.key === "yijian") || {};
+  const stats = [
+    { n: "亚军", label: "CUHK 企业 Agent 黑客松" },
+    { n: "4 层", label: "目标 · 证据 · 角色 · 权责" },
+    { n: "7 角色", label: "多视角组织" },
+    { n: "可追溯", label: "共识度 · 条件 · 分歧" },
+  ];
+  const cta = wk.link ? { url: wk.link, label: "在线体验 · LIVE DEMO" } : null;
+  return (
+    <IntroShell id="intro-yijian" kickL="03·C · YIJIAN" kickR="CONSENSUS ENGINE · 议见"
+      cap="议见 Yijian / 企业决策共识 Agent" title="议见 Yijian"
+      role={wk.role && wk.role[0]} year={wk.year} award={wk.award} lead={wk.zh} stats={stats} cta={cta}>
+      <div className="intro-media" data-rv data-ob="self" style={{ "--rd": ".22s" }}>
+        {WorkMedia ? <WorkMedia wk={wk} /> : null}
+      </div>
+    </IntroShell>
+  );
+}
+
+/* 03·D · Meco — 进行中占位(WorkMedia 无媒体 → TBD 板) */
+function IntroMeco({ jump }) {
+  const { WorkMedia } = window;
+  const wk = (window.WORKS || []).find((w) => w.key === "meco") || {};
+  return (
+    <IntroShell id="intro-meco" kickL="03·D · MECO" kickR="IN PROGRESS · 进行中"
+      cap="Meco / 进行中的新作品" title="Meco" flag="IN PROGRESS · 进行中"
+      role="AI 产品" year="2026"
+      lead={wk.zh || "一个正在做的 AI 产品。等它成形，我会把完整的故事放上来。"}>
+      <div className="intro-media" data-rv data-ob="self" style={{ "--rd": ".22s" }}>
+        {WorkMedia ? <WorkMedia wk={{ display: "Meco" }} /> : null}
+      </div>
+    </IntroShell>
+  );
+}
+
+/* 04·A · 多模态 UABB — video 分支(aftersilence.mp4) */
+function IntroUabb({ jump }) {
+  const { WorkMedia } = window;
+  const wk = (window.WORKS || []).find((w) => w.key === "uabb") || {};
+  const stats = [
+    { n: "30→5 天", label: "50+ 展品处理周期" },
+    { n: "50+", label: "非标展品转译" },
+    { n: "120+", label: "草图与模型迭代" },
+    { n: "唯一", label: "板块学生代表" },
+  ];
+  return (
+    <IntroShell id="intro-uabb" kickL="04·A · MULTIMODAL" kickR="AIGC PIPELINE · 多模态工具"
+      cap="UABB · 多模态 AIGC 管线" title="AIGC Pipeline"
+      role={wk.role && wk.role[0]} year={wk.year} award={wk.award} lead={wk.zh} stats={stats}>
+      <div className="intro-media" data-rv data-ob="self" style={{ "--rd": ".22s" }}>
+        {WorkMedia ? <WorkMedia wk={wk} /> : null}
+      </div>
+    </IntroShell>
+  );
+}
+
+/* 04·B · 建筑作品集 — 四作合并翻书(12 页) + 名录 + PDF CTA。
+   收尾「logo 展开成作品排列」动效在阶段 3 补(用户 2026-07-06)。 */
+function IntroArchfolio({ jump }) {
+  const { WorkGallery } = window;
+  const arch = window.ARCH_WORKS || (window.WORKS || []).filter((w) => w.tag === "ARCHITECTURE");
+  const pages = arch.reduce((a, w) => a.concat(w.pages || []), []);
+  const bookWk = { display: "建筑作品集", pages };
+  return (
+    <IntroShell id="intro-archfolio" kickL="04·B · PORTFOLIO" kickR="ARCHITECTURE · 建筑作品集"
+      cap="建筑作品集 / 2023–2025" title="建筑作品集"
+      lead="从火星人居到旧城更新——四件建筑作品，把互相冲突的限制（光线、动线、声音、尺度）收敛成一个能让人待下去的体系。"
+      cta={{ url: "uploads/portfolio.pdf", label: "完整作品集 · PORTFOLIO PDF" }}>
+      <div className="intro-media" data-rv data-ob="self" style={{ "--rd": ".22s" }}>
+        {WorkGallery && pages.length ? <WorkGallery wk={bookWk} /> : null}
+      </div>
+      <div className="intro-roster" data-rv data-ob="self" style={{ "--rd": ".3s" }}>
+        {arch.map((w, i) => (
+          <div className="introster-it" key={i}>
+            <span className="introster-ix mono">{w.ix}</span>
+            <span className="introster-t">{w.display || w.t}</span>
+            {w.award && <span className="introster-aw mono">{w.award}</span>}
+          </div>
+        ))}
+      </div>
+      {/* 收尾 — logo 的天际线展开成作品排列(用户 2026-07-06)：四条 = 四件作品,
+          蓝方块句点收尾。设计语言:条=编码态天际线、蓝方块=句点/自我。 */}
+      <div className="arch-finale" data-ob="self">
+        <div className="af-kick mono" data-rv data-ob="self">ONE MARK · FOUR WORKS — 一个标记，四件作品</div>
+        <div className="af-sky" aria-hidden="true">
+          {arch.map((w, i) => (
+            <span className="af-col" key={i} style={{ "--h": [0.97, 0.58, 1.0, 0.66][i] != null ? [0.97, 0.58, 1.0, 0.66][i] : 0.7, "--bd": (i * 0.1) + "s" }}>
+              <span className="af-bar"></span>
+              <span className="af-lab">{w.display || w.t}</span>
+            </span>
+          ))}
+          <span className="af-sq"></span>
+        </div>
+      </div>
+    </IntroShell>
+  );
+}
+
+Object.assign(window, { ChAipmOpen, IntroPears, IntroCowork, IntroYijian, IntroMeco, IntroUabb, IntroArchfolio, ChArch, Structure3D });

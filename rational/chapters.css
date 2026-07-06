@@ -13,6 +13,7 @@
    is what makes it read as a real CTA. Cobalt is the brand's action colour. */
 .ch-cta { display: inline-flex; align-items: center; gap: 13px; width: max-content; max-width: 100%;
   margin-top: 28px; padding: 18px 32px; pointer-events: auto;
+  border-radius: var(--r-btn);   /* 圆角按钮（2026-07-06 用户：方形太硬）；方点母题仍直角 */
   background: var(--ink); color: var(--paper); border: 0;   /* 简洁黑按钮（2026-07-05 用户：不要蓝色方块 CTA） */
   font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .16em; white-space: nowrap;
   box-shadow: 0 12px 30px -16px rgba(11, 11, 14, .45);
@@ -47,9 +48,12 @@
    （--ghost 底 + 24px 圆角 + 出血侧归零 · 无描边无投影 = 印刷色版）·
    示意图 = 圆头线 SVG 信息图（线逐笔画出、节点后弹、蓝点到站减速）。
    跳色仍只落「点」：句点方块、交付方块、巡回蓝点、CTA。 ═══ */
-.apx-cap { margin-top: 26px; font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
+.apx-cap { margin-top: 22px; font-size: 9.5px; letter-spacing: .28em; color: var(--fg-dim); }
+/* 密度 v2（2026-07-06）— 画廊成为主角后,介绍页标题降半档、间距全面收紧,
+   解决「不够清晰 / 信息不密 / 空隙太大」。行高换宽度:正文更窄行高 + 更宽
+   测量宽度,每屏字数 +45% 仍保留杂志留白。 */
 .apx-title {
-  margin-top: 20px; font-size: clamp(54px, 6.5vw, 112px); font-weight: 800;
+  margin-top: 14px; font-size: clamp(46px, 5.6vw, 92px); font-weight: 800;
   letter-spacing: -.038em; line-height: .92;
 }
 .apx-title .psq {
@@ -59,8 +63,8 @@
 
 /* spread 骨架 — 不钉住，顺滚 */
 .apx-spread { position: relative; display: grid; grid-template-columns: repeat(12, 1fr);
-  column-gap: clamp(14px, 2vw, 28px); margin-top: clamp(72px, 12vh, 130px); }
-.apx-ghost { position: absolute; z-index: 0; font-weight: 800; font-size: clamp(300px, 34vw, 520px);
+  column-gap: clamp(14px, 2vw, 28px); margin-top: clamp(48px, 7vh, 84px); }
+.apx-ghost { position: absolute; z-index: 0; font-weight: 800; font-size: clamp(240px, 26vw, 400px);
   line-height: .72; letter-spacing: -.06em; color: var(--ghost); pointer-events: none; user-select: none;
   opacity: 0; transform: scale(1.04); transition: opacity .9s var(--ez), transform .9s var(--ez); }
 .apx-spread.in .apx-ghost { opacity: 1; transform: scale(1); }
@@ -68,13 +72,13 @@
 .apx-kick2 { font-family: var(--mono); font-size: 10px; letter-spacing: .24em; color: var(--fg-dim);
   opacity: 0; transform: translateX(-24px); transition: opacity .5s var(--ez) .1s, transform .5s var(--ez) .1s; }
 .apx-spread.in .apx-kick2 { opacity: 1; transform: none; }
-.apx-copy2 h3 { margin-top: 14px; font-size: clamp(30px, 3.4vw, 52px); font-weight: 800;
-  letter-spacing: -.02em; line-height: 1.18; text-wrap: balance;
+.apx-copy2 h3 { margin-top: 10px; font-size: clamp(26px, 2.9vw, 44px); font-weight: 800;
+  letter-spacing: -.02em; line-height: 1.16; text-wrap: balance;
   opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ez) .18s, transform .9s var(--ez) .18s; }
 .apx-spread.in .apx-copy2 h3 { opacity: 1; transform: none; }
 .apx-copy2 h3 .psq { display: inline-block; width: .12em; height: .12em; background: var(--acc); margin-left: .12em; }
-.apx-copy2 p { margin-top: 16px; max-width: 24em; font-size: clamp(14px, 1.1vw, 16.5px);
-  line-height: 1.95; font-weight: 500; color: var(--fg-dim);
+.apx-copy2 p { margin-top: 12px; max-width: 30em; font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.75; font-weight: 500; color: var(--fg-dim);
   opacity: 0; transform: translateY(16px); transition: opacity .5s var(--ez) .3s, transform .5s var(--ez) .3s; }
 .apx-spread.in .apx-copy2 p { opacity: 1; transform: none; }
 
@@ -89,13 +93,13 @@
 
 /* P1 · 左文右图，右出血 */
 .apx-p1 .apx-ghost { left: -56px; top: -4%; }
-.apx-p1 .apx-copy2 { grid-column: 2 / 8; grid-row: 1; padding-top: clamp(64px, 9vw, 150px); }
-.apx-p1 .apx-chipart { grid-column: 5 / 13; grid-row: 2; margin-top: -56px; margin-right: -40px;
+.apx-p1 .apx-copy2 { grid-column: 2 / 7; grid-row: 1; padding-top: clamp(40px, 5.5vw, 88px); }
+.apx-p1 .apx-chipart { grid-column: 5 / 13; grid-row: 2; margin-top: -64px; margin-right: -40px;
   border-radius: 24px 0 0 24px; transform: translateX(28px) scaleX(.97); transform-origin: right center; }
 /* P2 · 镜像拉页，左出血 */
 .apx-p2 .apx-ghost { right: -56px; left: auto; top: -4%; text-align: right; }
-.apx-p2 .apx-copy2 { grid-column: 7 / 12; grid-row: 1; padding-top: clamp(64px, 9vw, 150px); }
-.apx-p2 .apx-chipart { grid-column: 1 / 9; grid-row: 2; margin-top: -44px; margin-left: -40px;
+.apx-p2 .apx-copy2 { grid-column: 7 / 12; grid-row: 1; padding-top: clamp(40px, 5.5vw, 88px); }
+.apx-p2 .apx-chipart { grid-column: 1 / 9; grid-row: 2; margin-top: -56px; margin-left: -40px;
   border-radius: 0 24px 24px 0; transform: translateX(-28px) scaleX(.97); transform-origin: left center; }
 /* P3 · 压轴：影片被 03 压角，刊末条收尾 */
 .apx-p3 .apx-ghost { left: -56px; bottom: -6%; top: auto; }
@@ -111,7 +115,7 @@
 
 /* 刊末条 — 大数字 + mono 图注 + 44px 圆头短 rule 自画 */
 .apx-strip2 { grid-column: 2 / 12; grid-row: 3; display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: clamp(14px, 2vw, 28px); margin-top: 44px; }
+  gap: clamp(12px, 1.6vw, 22px); margin-top: 30px; }
 .apx-stat { opacity: 0; transform: translateY(14px);
   transition: opacity .5s var(--ez), transform .5s var(--ez); }
 .apx-spread.in .apx-stat { opacity: 1; transform: none; }
@@ -120,9 +124,9 @@
   transition: transform .9s var(--ez); transition-delay: inherit; }
 .apx-spread.in .apx-stat::before { transform: scaleX(1); }
 .apx-stat b { font-size: clamp(24px, 2.4vw, 36px); font-weight: 800; letter-spacing: -.02em; }
-.apx-stat span { display: block; margin-top: 7px; font-family: var(--mono); font-size: 9.5px;
+.apx-stat span { display: block; margin-top: 5px; font-family: var(--mono); font-size: 9.5px;
   letter-spacing: .2em; color: var(--fg-dim); }
-.apx-ctarow { grid-column: 8 / 12; grid-row: 4; justify-self: end; margin-top: 48px;
+.apx-ctarow { grid-column: 8 / 12; grid-row: 4; justify-self: end; margin-top: 26px;
   opacity: 0; transform: translateY(14px);
   transition: opacity .5s var(--ez) .5s, transform .5s var(--ez) .5s; }
 .apx-spread.in .apx-ctarow { opacity: 1; transform: none; }
@@ -146,9 +150,78 @@
 @media (hover: hover) and (pointer: fine) { .reel-p2 .reel-video:hover { box-shadow: var(--shadow-card-hi); } }
 .reel-p2 .apx-ctarow { grid-row: 3; }
 
+/* ── 介绍页轻模板（议见 / Meco / UABB / 建筑作品集）——干净紧凑版 ──
+   与 Pears/Co-work 富对页不同:kicker → 大标题 → meta 行 → 导语 →
+   16:9 媒体 → 数据条 + CTA,全部左对齐密排,正对「更清晰更密」诉求。 */
+.apx-intro .apx-stage { padding-bottom: 40px; }
+.apx-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 16px;
+  font-size: 10px; letter-spacing: .18em; color: var(--fg-dim); }
+.apx-meta-award { color: var(--fg); }
+.apx-meta-award .psq { display: inline-block; width: 5px; height: 5px; background: var(--acc);
+  margin-left: 7px; vertical-align: middle; }
+/* In Progress 角标（Meco）— 点承载跳色仍在方点上,此处是描边芯片 */
+.apx-flag { display: inline-block; margin-left: 16px; vertical-align: middle;
+  font-size: 10px; letter-spacing: .18em; color: var(--fg-dim);
+  border: 1px solid var(--line-strong); border-radius: var(--r-btn-sm); padding: 5px 11px; }
+.apx-lead { margin-top: 18px; max-width: 40em; font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.7; font-weight: 500; color: var(--fg-dim); }
+/* 16:9 媒体槽 — 复用 .sc-media,限宽左对齐 */
+.intro-media { margin-top: 28px; max-width: 940px; }
+/* 刊末数据条(非 grid 定位版)— 容器 data-rv 统一显影,内部静态 */
+.apx-intro-strip { grid-column: auto; grid-row: auto; margin-top: 34px; max-width: 940px; }
+.apx-intro-strip .apx-stat { opacity: 1; transform: none; }
+.apx-intro-strip .apx-stat::before { transform: scaleX(1); }
+.apx-intro-cta { grid-column: auto; grid-row: auto; justify-self: start; margin-top: 26px; }
+/* 建筑作品集 — 四作名录 */
+.intro-roster { margin-top: 24px; max-width: 940px; border-top: 1px solid var(--line-strong); }
+.introster-it { display: grid; grid-template-columns: 64px 1fr auto; align-items: baseline; gap: 14px;
+  padding: 11px 0; border-bottom: 1px solid var(--line); }
+.introster-ix { font-size: 10px; letter-spacing: .12em; color: var(--fg-dim); }
+.introster-t { font-size: 15px; font-weight: 700; }
+.introster-aw { font-size: 9.5px; letter-spacing: .16em; color: var(--fg-dim); text-align: right; }
+/* 建筑作品集收尾 — logo 天际线展开成四作排列(条→作品, 蓝方块=句点) */
+.arch-finale { margin-top: clamp(48px, 8vh, 96px); max-width: 940px; }
+.af-kick { font-size: 10px; letter-spacing: .24em; color: var(--fg-dim); }
+.af-sky { position: relative; margin-top: 28px; display: flex; align-items: flex-end; gap: clamp(20px, 4vw, 56px);
+  height: clamp(140px, 22vh, 220px); border-bottom: 2px solid var(--fg); padding: 0 6px; }
+.af-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 100%; }
+.af-bar { width: 100%; height: calc(var(--h, .8) * 100%); background: var(--hard);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .9s var(--ez); transition-delay: var(--bd, 0s); }
+.arch-finale.in .af-bar { transform: scaleY(1); }
+.af-lab { margin-top: 12px; font-size: clamp(12px, 1vw, 15px); font-weight: 700; letter-spacing: -.01em;
+  opacity: 0; transform: translateY(8px); transition: opacity .5s var(--ez), transform .5s var(--ez);
+  transition-delay: calc(var(--bd, 0s) + .5s); }
+.arch-finale.in .af-lab { opacity: 1; transform: none; }
+.af-sq { position: absolute; right: -2px; bottom: -9px; width: 16px; height: 16px; background: var(--acc);
+  transform: scale(0); transition: transform .5s var(--ez) 1s; }
+.arch-finale.in .af-sq { transform: scale(1); }
+@media (max-width: 600px) {
+  .af-sky { gap: 12px; height: clamp(120px, 18vh, 160px); }
+  .af-lab { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .af-bar, .af-lab, .af-sq { transition: none !important; transform: none !important; opacity: 1 !important; }
+  .af-bar { transform: scaleY(1) !important; }
+}
+/* .apx-compact — Pears/Co-work 多对页在密度 v2 基础上再收一档 */
+.apx-compact .apx-spread { margin-top: clamp(36px, 5vh, 60px); }
+
+@media (max-width: 900px) {
+  .apx-lead { font-size: 15px; line-height: 1.65; }
+  .apx-intro-strip { grid-template-columns: 1fr 1fr; }
+  .apx-flag { display: block; margin-left: 0; margin-top: 10px; width: max-content; }
+}
+@media (max-width: 600px) {
+  .apx-meta { gap: 6px 14px; }
+  .introster-it { grid-template-columns: 48px 1fr; }
+  .introster-aw { grid-column: 2; text-align: left; margin-top: 2px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .apx-ghost, .apx-kick2, .apx-copy2 h3, .apx-copy2 p, .apx-chipart,
-  .apx-stat, .apx-ctarow, .apx-art .pop, .reel-award2, .reel-p2 .reel-video
+  .apx-stat, .apx-ctarow, .apx-art .pop, .reel-award2, .reel-p2 .reel-video,
+  .apx-meta, .apx-lead, .intro-media, .intro-roster
     { opacity: 1 !important; transform: none !important; transition: none !important; }
   .apx-art .draw { stroke-dashoffset: 0 !important; transition: none !important; }
 }
@@ -196,21 +269,22 @@
 
 /* closing CTA — COMPACT (smaller than the base .ch-cta)，坐在 .apx-ctarow 里 */
 .apx-cta { position: relative; z-index: 4;
-  padding: 11px 17px; gap: 9px; font-size: 10px; letter-spacing: .12em; }
+  padding: 11px 17px; gap: 9px; font-size: 10px; letter-spacing: .12em;
+  border-radius: var(--r-btn-sm); }
 .apx-cta .sq { width: 7px; height: 7px; }
 .apx-cta .arr { font-size: 13px; }
 
 @media (max-height: 760px) {
   .apx-stage { padding-top: 74px; }
-  .apx-title { font-size: clamp(44px, 5.4vw, 86px); }
-  .apx-copy2 h3 { font-size: clamp(24px, 2.6vw, 40px); }
-  .apx-copy2 p { font-size: 13px; line-height: 1.7; }
+  .apx-title { font-size: clamp(40px, 5vw, 72px); }
+  .apx-copy2 h3 { font-size: clamp(24px, 2.6vw, 38px); }
+  .apx-copy2 p { font-size: 13px; line-height: 1.65; }
 }
 
 @media (max-width: 900px) {
   .apx-stage { padding: 72px 20px 38px; }
   .apx-kicker { flex-direction: column; letter-spacing: .18em; }
-  .apx-title { font-size: clamp(46px, 15vw, 84px); margin-top: 4px; }
+  .apx-title { font-size: clamp(40px, 12vw, 72px); margin-top: 4px; }
   /* spread 折叠为单列；衬底页码缩小仍出血 */
   .apx-spread { display: block; margin-top: 88px; }
   .apx-ghost { font-size: clamp(150px, 40vw, 220px); }
@@ -238,7 +312,7 @@
   .apx-play-ico::before { content: ""; width: 0; height: 0; margin-left: 5px;
     border-left: 18px solid var(--paper); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
   .apx-play-cap { position: relative; color: var(--paper); font-size: 11px; letter-spacing: .2em;
-    background: rgba(11, 11, 14, .62); padding: 7px 14px; }
+    background: rgba(11, 11, 14, .62); padding: 7px 14px; border-radius: var(--r-btn-sm); }
 }
 
 /* ── 03 · A DEVELOPER — AXONOMETRIC STRUCTURE ────────────── */
@@ -435,7 +509,7 @@
 .reel-sound {
   position: absolute; top: 14px; right: 14px; z-index: 3;
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 7px 11px; border: 0; cursor: pointer;
+  padding: 7px 11px; border: 0; cursor: pointer; border-radius: var(--r-btn-sm);
   background: rgba(11, 11, 14, .56); color: var(--paper);
   -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
   font-size: 10px; letter-spacing: .18em;

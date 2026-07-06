@@ -71,6 +71,7 @@
   transition: transform .52s var(--ez), opacity .4s var(--ez); }
 .bmw.set .bars i { animation: none; transform: scaleY(0); opacity: 1;
   transition: transform .55s var(--ez), opacity .4s var(--ez); }
+.bmw.set .bmp { animation: none; transform: none; }
 
 /* ── BarBand — the mini skyline + period, for labels/cells ── */
 .bband { display: flex; align-items: flex-end; gap: 4px; height: 16px; width: 64px; }

@@ -329,8 +329,8 @@ function App() {
         const fslot = document.querySelector(".fband-slot");
         const fr = fslot ? fslot.getBoundingClientRect() : null;
         const maxScroll = Math.max(document.documentElement.scrollHeight - vh, 1);
-        const wkEl = document.getElementById("works");
-        const wkWrap = wkEl ? wkEl.querySelector(".wk-wrap") : null;
+        /* brandmorph 三拍(2026-07-06):hero 槽 → nav dock →(全程停靠)→ contact
+           页脚。旧 phase W(8 条⇄8 作品天际线交接)随 crossfade 卡组退役。 */
         brand = {
           el: bm,
           baseL: br.left, baseT: br.top,
@@ -344,8 +344,6 @@ function App() {
           M: Math.max(sr.top + window.scrollY + sr.height, 1),
           fslotL: fr ? fr.left : 0, fslotT: fr ? fr.top + window.scrollY : 0,
           maxScroll,
-          wkTop: wkEl ? absTop(wkEl) : maxScroll,
-          wkSpan: wkWrap ? Math.max(wkWrap.offsetHeight - vh, 1) : 1,
           ctTop: (() => { const c = document.getElementById("contact"); return c ? absTop(c) : maxScroll; })(),
         };
       }
@@ -468,8 +466,7 @@ function App() {
          section unfolds from) → footer band. One fixed element does the whole
          narrative; opacity hands the closed mark off to the works deck. */
       if (brand) {
-        const W = innerWidth, H = vh;
-        const sm = (a, b, v) => { const t = aClamp((v - a) / ((b - a) || 1e-6), 0, 1); return t * t * (3 - 2 * t); };
+        const H = vh;
         /* phase A — hero slot → nav dock */
         const p = aClamp(ss / brand.M, 0, 1);
         const e2 = p * p * (3 - 2 * p);
@@ -477,31 +474,10 @@ function App() {
         let y = (brand.slotT - ss) * (1 - e2) + brand.dockT * e2;
         let sc = 1 + (brand.s - 1) * e2;
 
-        /* phase W — WORKS arrives: the nav mark flies to the stage centre and
-           grows into the enlarged closed logo. It vanishes (opacity) while the
-           deck is open and re-forms at the end. */
-        /* floor -0.2 (was 0): einW's lift-off reads pW<0 during the glide-in —
-           a 0-floor pinned pW at 0 everywhere above Works, which evaluated
-           einW≈0.82 and parked the mark mid-screen on every chapter. */
-        const pW = aClamp((ss - brand.wkTop) / brand.wkSpan, -0.2, 1.2);
-        const wsScale = Math.min(0.46, (W * 0.42) / Math.max(W - 80, 1));
-        const bandW = (W - 80) * wsScale;
-        const bandH = (H * 0.34) * wsScale;
-        const wcX = W * 0.5 - bandW * 0.5;
-        const wcY = H * 0.46 - bandH;
-        /* lift-off begins during the glide-in (pW<0) so the mark is already
-           travelling as the works stage rises — no parked-then-jump beat */
-        const einW = sm(-0.12, 0.05, pW);
-        x += (wcX - x) * einW;
-        y += (wcY - y) * einW;
-        sc += (wsScale - sc) * einW;
-
-        /* phase F — the deck reconverges into the mark at stage centre, then
-           the mark rides ONE arc straight DOWN to the footer band slot —
-           用户 2026-07-05: 看完作品不用回左上角，变回 logo 直接往下到底。
-           (The old W-out dock-return phase is gone; scrolling back UP past
-           works still re-opens the deck via einW/phase W as before.) */
-        const fStart = Math.max(brand.ctTop - H, brand.wkTop + brand.wkSpan);
+        /* phase F — near the end the docked mark rides ONE arc straight DOWN
+           to the footer band slot (用户 2026-07-05: 变回 logo 直接往下到底)。
+           旧 phase W(作品天际线交接)已随 crossfade 卡组退役。 */
+        const fStart = brand.ctTop - H;
         const q = aClamp((ss - fStart) / Math.max(brand.maxScroll - fStart, 1), 0, 1);
         const e3 = q * q * (3 - 2 * q);
         x += (brand.fslotL - x) * e3;
@@ -509,19 +485,16 @@ function App() {
         sc += (1 - sc) * e3;
 
         brand.el.style.transform = `translate3d(${(x - brand.baseL).toFixed(2)}px, ${(y - brand.baseT).toFixed(2)}px, 0) scale(${sc.toFixed(4)})`;
-        /* opacity — the logo fades OFF THE TOP of cards that already exactly
-           replicate its bars (same place, width, ink), so the bar columns show
-           no change at all — only the two blue periods softly melt. A true
-           handoff, not a crossfade. The works tick publishes openness as
-           window.__wkOpen; we hold full until the cards are present (eS≈0.05). */
-        const op = 1 - sm(0.02, 0.12, window.__wkOpen || 0);
-        brand.el.style.opacity = op.toFixed(3);
-        brand.el.style.pointerEvents = op < 0.5 ? "none" : "";
+        brand.el.style.opacity = "1";
+        brand.el.style.pointerEvents = "";
       }
 
-      /* nav active group */
+      /* nav active group — 「work」组从画廊(#works)顶部起(画廊不再发进度,
+         不能再用 progs[0]=aipm 作边界,否则滚到画廊时高亮还停在 whoami)。 */
       if (navRef.current) {
-        const grp = (ss + vh * 0.5) < (progs[0] ? progs[0].top : 1e9) ? "whoami"
+        const wgEl = document.getElementById("works");
+        const wgTop = wgEl ? absTop(wgEl) : (progs[0] ? progs[0].top : 1e9);
+        const grp = (ss + vh * 0.5) < wgTop ? "whoami"
           : lastToneIsContact() ? "contact" : "work";
         navRef.current.querySelectorAll("a[data-nav]").forEach((el) =>
           el.classList.toggle("active", el.dataset.nav === grp));
@@ -542,7 +515,7 @@ function App() {
 
   useAppEffect(() => { document.body.style.overflow = loading ? "hidden" : ""; }, [loading]);
 
-  const { Hero, Whoami, Works, Contact, ChAipmPlatform, ChDev, ChReel, ChArch } = window;
+  const { Hero, Whoami, WorksGallery, Contact, ChAipmOpen, IntroPears, IntroCowork, IntroYijian, IntroMeco, IntroUabb, IntroArchfolio, ChArch } = window;
 
   return (
     <>
@@ -552,11 +525,18 @@ function App() {
       <main>
         <Hero jump={jump} />
         <Whoami jump={jump} />
-        <ChDev jump={jump} />
-        <ChReel jump={jump} />
-        <ChAipmPlatform jump={jump} />
+        {/* 作品画廊 — 前置到 Whoami 之后,全站主角 */}
+        <WorksGallery jump={jump} />
+        {/* ── AIPM 章:叙事开场 + Pears/Co-work/议见/Meco 四段介绍 ── */}
+        <ChAipmOpen jump={jump} />
+        <IntroPears jump={jump} />
+        <IntroCowork jump={jump} />
+        <IntroYijian jump={jump} />
+        <IntroMeco jump={jump} />
+        {/* ── Architect 章:叙事 + 多模态 + 建筑作品集 ── */}
         <ChArch jump={jump} />
-        <Works jump={jump} />
+        <IntroUabb jump={jump} />
+        <IntroArchfolio jump={jump} />
         <Contact jump={jump} />
       </main>
 

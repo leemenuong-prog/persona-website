@@ -4,6 +4,18 @@
 条 = 编码态（Logo 的天际线节奏），字 = 解码态，蓝色方块 = 句点（自我）。
 所有新增视觉必须沿用此语言，不得引入新的图形母题。
 
+## 章节流与作品画廊（2026-07-06「作品为主角」改版 · 现行结构）
+- **章节流**：Hero → Whoami（两身份 01 AIPM / 02 Architect）→ **WorksGallery（作品前置，全站主角）** → AIPM 章（`ChAipmOpen` 开场 + `IntroPears`/`IntroCowork`/`IntroYijian`/`IntroMeco` 四段介绍）→ Architect 章（`ChArch` 开场 + `IntroUabb` 多模态 / `IntroArchfolio` 作品集）→ Contact。渲染队列在 `app.jsx`。
+- **身份合并两组**：原 Developer 章并入 AIPM；`WHO_INDEX` 两项、`who-tag`、Contact finale ids 都是两身份口径。改身份数须同步这几处 + `app.jsx` 渲染队列。
+- **作品画廊**（`.gw-*`，`WorksGallery`/`GalleryCard`/`CoverArt`）：六竖卡 3:4 网格墙（桌面 3×2，≤900/≤600 均 2 列）；卡自带三色底 **cobalt·ink·paper / paper·ink·cobalt 对角排布**；进场「聚拢→散开」用 `data-ob="self"` 一次性 reveal（零引擎代码，CSS transition + nth-child 位移）；点整卡 `jump(wk.introId)` 滚到介绍锚点。正式封面未上传前用 `CoverArt` 程序化 SVG 占位（线用 `var(--cardfg)` 随卡底翻色、句点用 `var(--cardacc)`）；上线正式封面 = 给该卡加 `heroCover` 图片路径。
+- **数据**：`WORKS` 六卡（`key`/`introId`/`group`/`status`/`heroCover` + 原字段）；建筑四作整组存 `ARCH_WORKS` 供翻书；章内 CTA lookup 一律按 `w.key`。
+- **品牌带三拍**：hero 槽 → nav dock → contact 页脚。旧 phase W（8 条⇄8 作品天际线交接、`__wkOpen`）已随 crossfade 卡组退役，勿加回。
+- **建筑作品集收尾**：`IntroArchfolio` 末尾「logo 天际线展开成四作排列」（`.af-*`：四条 = 四作 + 蓝方块句点）——设计语言的收束，勿改成别的母题。
+- **章节大标题静态化**：BarWord 传 `static`（直显不再字⇄条解码），外层套 `.rv-soft`（极轻 14px 淡入）；保留方块句点。**唯一例外 = Hero 的 `I am` loader 飞条动画，不动**。品牌带 / `BarBand` / `BarChrono` 的字⇄条不受影响。
+- **圆角坡道**（`base.css` 令牌）：出血软纸片 24 › 媒体对象/画廊卡 20 › 按钮 `--r-btn:12` › 小件 `--r-btn-sm:10` › **方块句点 0（永远直角）**。按钮圆角化后方点（`.psq`/`.sq`/pips）仍直角。`.reel-nav` ‹ › 透明字形不加底色不加圆角（历史教训）。
+- **底部波点** `.fdots`（Contact 内）：半调渐隐钴蓝点（跳色只落点），顶部 mask 渐隐、底部最浓接住 Logo 收尾；一次性淡入不响应滚动。
+- **介绍页密度 v2**：`.apx-*` 全面收紧（标题 clamp(46,5.6vw,92)、正文行高 1.75/max-width 30em 等）；`.apx-compact` 给 Pears/Co-work 多对页再收一档；新介绍章用 `IntroShell` 轻模板（kicker→标题→`.apx-meta`→导语→`.intro-media`→数据条+CTA）。
+
 ## 跳色点缀规则（重要）
 点缀色**只放在「点」上，永远不要给标题字母跳色**。
 

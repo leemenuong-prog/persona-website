@@ -75,6 +75,7 @@ body.ready .hl-brand .zh { opacity: .8; }
 body.ready .hero-chips { opacity: 1; transform: none; }
 .hero-chips a { display: inline-flex; align-items: center; gap: 10px;
   padding: 12px 18px; border: 1px solid var(--line-strong); color: var(--fg);
+  border-radius: var(--r-btn);
   font-family: var(--mono); font-size: 11px; letter-spacing: .16em; white-space: nowrap;
   transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez),
     transform .25s var(--ez), box-shadow .25s var(--ez); }
@@ -238,6 +239,107 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
   animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* ══ WORKS 画廊（2026-07-06 改版）— 六竖卡网格墙,前置到 Whoami 之后 ══════
+   卡自带三色底(cobalt/ink/paper 对角排布);进场「聚拢→散开」一次性 data-ob;
+   点整卡滚到对应介绍锚点。软容器 × 硬句点:卡角 20px 圆角,方块句点仍直角。 */
+.gwall { padding: 12vh 40px 10vh; }
+.gw-head { max-width: 1520px; margin: 0 auto; }
+.gw-title { margin-top: 12px; font-size: clamp(40px, 5vw, 84px); font-weight: 800;
+  letter-spacing: -.03em; line-height: 1; }
+.gw-title .psq { display: inline-block; width: .1em; height: .1em; background: var(--acc); margin-left: .1em; margin-bottom: .06em; }
+.gw-sub { margin-top: 14px; max-width: 40em; font-size: 14px; line-height: 1.7; color: var(--fg-dim); }
+.gw-grid { max-width: 1520px; margin: 6vh auto 0; display: grid;
+  grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.2vw, 32px); }
+
+/* 卡片 = 竖向英雄封面(3:4) + 坐实卡底的信息区(非遮罩浮层) */
+.gw-card { position: relative; appearance: none; border: 0; padding: 0; margin: 0;
+  font: inherit; text-align: left; cursor: pointer; color: inherit;
+  aspect-ratio: 3 / 4; border-radius: 20px; overflow: hidden;
+  display: flex; flex-direction: column; box-shadow: var(--shadow-card);
+  /* 进场:从墙心聚拢态展开 */
+  opacity: 0; transform: translate(var(--gx, 0), var(--gy, 0)) scale(.9);
+  transition: opacity .6s var(--ez), transform .8s var(--ez), box-shadow .5s var(--ez);
+  transition-delay: var(--gd, 0s); }
+.gw-grid.in .gw-card { opacity: 1; transform: none; }
+/* 卡底三色 — cobalt/ink 用 paper 字,paper 卡用 ink 字 + 纸上纸描边;
+   句点色随卡底(paper→--blue · ink→--blue-up · cobalt→--blue-dn) */
+.gw-t-cobalt { background: #0047AB; --cardfg: var(--paper); --cardacc: var(--blue-dn); color: var(--paper); }
+.gw-t-ink    { background: #0b0b0e; --cardfg: var(--paper); --cardacc: var(--blue-up); color: var(--paper); }
+.gw-t-paper  { background: var(--paper-dim); --cardfg: var(--ink); --cardacc: var(--blue); color: var(--ink);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px rgba(11,11,14,.10); }
+/* nth-child 偏移 — 中列先落(.05s),两翼后开(.16–.2s):一叠牌散成一面墙 */
+.gw-grid .gw-card:nth-child(1) { --gx: 62%;  --gy: 48%;  --gd: .16s; }
+.gw-grid .gw-card:nth-child(2) { --gx: 0;    --gy: 54%;  --gd: .05s; }
+.gw-grid .gw-card:nth-child(3) { --gx: -62%; --gy: 48%;  --gd: .16s; }
+.gw-grid .gw-card:nth-child(4) { --gx: 62%;  --gy: -48%; --gd: .2s; }
+.gw-grid .gw-card:nth-child(5) { --gx: 0;    --gy: -54%; --gd: .1s; }
+.gw-grid .gw-card:nth-child(6) { --gx: -62%; --gy: -48%; --gd: .2s; }
+
+.gw-cover { flex: 1; min-height: 0; overflow: hidden; display: flex; }
+.gw-cover-svg { width: 100%; height: 100%; display: block; transition: transform 1s var(--ez); }
+.gw-cover-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s var(--ez); }
+
+/* In Progress 角标(Meco)— 点承载跳色(直角蓝点) */
+.gw-flag { position: absolute; top: 14px; right: 14px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 9px; letter-spacing: .16em; color: var(--cardfg);
+  border: 1px solid var(--cardfg); border-radius: var(--r-btn-sm); padding: 6px 10px;
+  background: color-mix(in srgb, var(--cardfg) 8%, transparent); }
+.gw-flag-sq { width: 6px; height: 6px; background: var(--cardacc); flex: 0 0 auto; }
+
+/* 信息区 — 坐实卡底色 */
+.gw-info { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
+.gw-row1 { display: flex; justify-content: space-between; gap: 10px;
+  font-size: 9px; letter-spacing: .16em; opacity: .62; }
+.gw-name { display: flex; align-items: center; font-size: clamp(19px, 1.6vw, 26px);
+  font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.gw-name .psq { width: .12em; height: .12em; background: var(--cardacc); margin-left: .1em; }
+.gw-arr { margin-left: auto; font-size: 16px; opacity: 0; transform: translateX(-8px);
+  transition: opacity .3s var(--ez), transform .3s var(--ez); }
+.gw-line { font-size: 12.5px; line-height: 1.5; opacity: .72;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.gw-award { display: flex; align-items: center; gap: 7px; margin-top: 2px;
+  font-size: 9px; letter-spacing: .14em; opacity: .68; }
+.gw-award-sq { width: 5px; height: 5px; background: var(--cardacc); flex: 0 0 auto; }
+
+@media (hover: hover) and (pointer: fine) {
+  .gw-grid.in .gw-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card-hi);
+    transition: transform .35s var(--ez), box-shadow .35s var(--ez); transition-delay: 0s; }
+  .gw-t-paper.gw-card:hover { box-shadow: var(--shadow-card-hi), inset 0 0 0 1px rgba(11,11,14,.10); }
+  .gw-card:hover .gw-cover-svg, .gw-card:hover .gw-cover-img { transform: scale(1.035); }
+  .gw-card:hover .gw-arr { opacity: 1; transform: none; }
+}
+.gw-card:active { transform: translateY(-1px); }
+
+/* ≤900 — 2×3;偏移改列 ±52% / 行 r0 +86% · r1 0 · r2 -86% */
+@media (max-width: 900px) {
+  .gwall { padding: 10vh 20px 8vh; }
+  .gw-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .gw-card { border-radius: 16px; }
+  .gw-grid .gw-card:nth-child(odd)  { --gx: 52%; }
+  .gw-grid .gw-card:nth-child(even) { --gx: -52%; }
+  .gw-grid .gw-card:nth-child(1), .gw-grid .gw-card:nth-child(2) { --gy: 86%; --gd: .06s; }
+  .gw-grid .gw-card:nth-child(3), .gw-grid .gw-card:nth-child(4) { --gy: 0;   --gd: .12s; }
+  .gw-grid .gw-card:nth-child(5), .gw-grid .gw-card:nth-child(6) { --gy: -86%; --gd: .18s; }
+  .gw-line { -webkit-line-clamp: 1; }
+}
+/* ≤600 — 保持 2 列(作品墙密度 > 单列长卷);信息区收两行 */
+@media (max-width: 600px) {
+  .gw-grid { gap: 12px; }
+  .gw-info { padding: 12px 13px 13px; gap: 5px; }
+  .gw-name { font-size: clamp(15px, 4.4vw, 18px); }
+  .gw-line, .gw-award { display: none; }
+  .gw-flag { top: 10px; right: 10px; padding: 5px 8px; font-size: 8px; }
+}
+@media (max-width: 374px) {
+  .gw-grid { gap: 10px; }
+  .gw-name { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gw-card { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .gw-cover-svg, .gw-cover-img { transition: none; }
+}
+
 /* ══ WORKS — THE MARK UNFOLDS INTO THE WORK ═══════════════════
    A pinned, scroll-scrubbed chapter. The .IAM. mark sits centered
    like the logo, then unfolds into a full-width skyline index and
@@ -374,6 +476,7 @@ body[data-tone="ink"] .code-panel .k, body[data-tone="blue"] .code-panel .k { co
 .wf-ctas { display: flex; flex-direction: column; gap: 8px; }
 .wf-cta { align-self: flex-start; flex-shrink: 0; margin-top: 4px; padding: 9px 18px;
   border: 1px solid rgba(239, 236, 230, .4); color: var(--paper);
+  border-radius: var(--r-btn-sm);
   font-size: 9.5px; letter-spacing: .18em;
   transition: background-color .25s var(--ez), color .25s var(--ez), border-color .25s var(--ez),
     transform .25s var(--ez), box-shadow .25s var(--ez); }
@@ -408,7 +511,7 @@ iframe.sc-still { border: 0; background: var(--ink); transition: none; }
 .sc-media::before { top: 11px; left: 11px; border-top: 1.5px solid rgba(239,236,230,.55); border-left: 1.5px solid rgba(239,236,230,.55); }
 .sc-media::after { bottom: 11px; right: 11px; border-bottom: 1.5px solid rgba(239,236,230,.55); border-right: 1.5px solid rgba(239,236,230,.55); }
 .sc-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 84px; height: 56px;
-  border: 1.5px solid rgba(239,236,230,.92); background: rgba(8,10,20,.34);
+  border: 1.5px solid rgba(239,236,230,.92); background: rgba(8,10,20,.34); border-radius: var(--r-btn-sm);
   display: flex; align-items: center; justify-content: center; transition: transform var(--t-micro) var(--ez), background var(--t-micro); }
 .sc-media:hover .sc-play { transform: translate(-50%,-50%) scale(1.08); background: rgba(8,10,20,.58); }
 .sc-play .tri { width: 0; height: 0; border-left: 18px solid var(--paper); border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 4px; }
@@ -435,12 +538,15 @@ a.sc-ph.as-link:hover .n b { color: var(--blue); }
   display: flex; align-items: center; justify-content: center;
   border: 0; background: rgba(8,10,20,.34); color: var(--paper); cursor: pointer;
   font-size: 30px; line-height: 0; opacity: .5; transition: opacity var(--t-micro), background var(--t-micro); }
-.gl-nav.prev { left: 0; } .gl-nav.next { right: 0; }
+/* inner-edge radius only — the buttons stay flush to the frame edge */
+.gl-nav.prev { left: 0; border-radius: 0 var(--r-btn-sm) var(--r-btn-sm) 0; }
+.gl-nav.next { right: 0; border-radius: var(--r-btn-sm) 0 0 var(--r-btn-sm); }
 .gl-nav span { transform: translateY(-2px); }
 .sc-media.gallery:hover .gl-nav { opacity: .92; }
 .gl-nav:hover { background: rgba(0,71,171,.78); opacity: 1; }   /* cobalt on hover */
 .gl-pips { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6;
-  display: flex; align-items: center; gap: 7px; padding: 6px 11px; background: rgba(8,10,20,.46); }
+  display: flex; align-items: center; gap: 7px; padding: 6px 11px; background: rgba(8,10,20,.46);
+  border-radius: 8px; }   /* 容器 chrome 圆角；pips 方点本体保持直角 */
 .gl-pips i { width: 7px; height: 7px; background: rgba(239,236,230,.42); cursor: pointer;
   transition: background var(--t-micro), transform var(--t-micro); }
 .gl-pips i.on { background: var(--blue-up); transform: scale(1.18); }   /* accent square on ink */
@@ -583,6 +689,30 @@ a.crow:hover .cl { transform: translateX(12px); }
 a.crow:hover .cv { color: var(--blue); }
 body[data-tone="ink"] a.crow:hover, body[data-tone="blue"] a.crow:hover { border-bottom-color: var(--blue-up); }
 body[data-tone="ink"] a.crow:hover .cv, body[data-tone="blue"] a.crow:hover .cv { color: var(--blue-up); }
+
+/* 底部波点带 — 半调渐隐(非均匀壁纸网):双层钴蓝点错位半格成 45° 半调阵,
+   顶部 mask 揉掉、底部最浓,接住 fband 的 Logo 收尾。跳色只落点 → 钴蓝。
+   不响应滚动(底部已有 fband 生长 + brandmorph 飞落两层动效),一次性淡入。 */
+.fdots { height: clamp(120px, 18vh, 220px); margin-top: 8vh; pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(0,71,171,.30) 2.4px, transparent 2.9px),
+    radial-gradient(circle, rgba(0,71,171,.20) 1.5px, transparent 1.9px);
+  background-size: 22px 22px, 22px 22px;
+  background-position: 0 0, 11px 11px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 62%, #000 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 62%, #000 100%);
+  opacity: 0; transition: opacity 1.2s var(--ez) .2s; }
+.in .fdots, .contact.in .fdots { opacity: 1; }
+@media (max-width: 900px) {
+  .fdots { height: clamp(90px, 14vh, 160px); background-size: 18px 18px, 18px 18px; background-position: 0 0, 9px 9px; }
+}
+@media (max-width: 600px) {
+  .fdots { height: clamp(72px, 12vh, 120px); background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px;
+    background-image:
+      radial-gradient(circle, rgba(0,71,171,.26) 2px, transparent 2.5px),
+      radial-gradient(circle, rgba(0,71,171,.16) 1.3px, transparent 1.7px); }
+}
+@media (prefers-reduced-motion: reduce) { .fdots { opacity: 1; transition: none; } }
 
 .fband { display: flex; align-items: flex-end; gap: 1.4vw; height: 22vh; min-height: 150px; margin-top: auto; padding: 0 40px; }
 .fband i { display: block; flex: 1; background: var(--hard); height: calc(var(--h) * 100%); transform: scaleY(0);

@@ -7,28 +7,37 @@
 
 | 路径 | 内容 |
 |---|---|
-| `/` (`index.html`) | 主站 · 理性的艺术。在浏览器里现编译 `rational/*.jsx`（React + Babel），滚到 **WORK** 即是作品区 |
-| `/xtool/` | Pear Agent 动态影片（xtool 平台 · 可交互 React 影片；W·02 点开后在框内播放） |
+| `/` (`index.html`) | 主站 · 理性的艺术。在浏览器里现编译 `rational/*.jsx`（React + Babel）。**Whoami 之后即是作品画廊（WORKS）** |
+| `/xtool/` | Pear Agent 动态影片（xtool 平台 · 可交互 React 影片；Co-work 介绍页点开后在框内播放） |
 
-> 注：作品区是主站的 **WORK** 章节，源码在 `rational/sections.jsx`（不是某个单独页面）。
+> 注：作品区是主站 Whoami 之后的 **WORKS 画廊**，源码在 `rational/sections.jsx`（不是某个单独页面）。
 > 仓库里 `Alnt Med - The Art of Rationality.html` 是 `index.html` 的同源副本（设计工具导出名）。
 
-## 作品接线 / Works wiring（`rational/sections.jsx` 的 `WORKS` 数组）
+## 章节流 / Chapter flow（2026-07-06 改版：作品为主角、身份合并两组）
 
-`WorkMedia` 按字段优先级渲染：`pages` → 作品集翻书画廊；`video`+`videoReady` → 内嵌 `<video>`；`embed` → 封面点击后框内 `<iframe>`；`poster`(+`link`) → 封面图跳转；`doc` → 打开作品集 PDF；否则 TBD。
+```
+Hero → Whoami(两身份 01 AIPM / 02 Architect) → WorksGallery(六竖卡网格墙)
+→ AIPM 章:ChAipmOpen 开场 + IntroPears / IntroCowork / IntroYijian / IntroMeco
+→ Architect 章:ChArch 开场 + IntroUabb(多模态) / IntroArchfolio(建筑作品集翻书 + logo 展开收尾)
+→ Contact(底部波点带 .fdots)
+```
 
-| 卡片 | 作品 | 媒体方式 |
-|---|---|---|
-| W·01 | **After_Silence** 地外人居 | 作品集翻书（2 页图）· `doc` 指向 PDF 第 3 页 |
-| W·02 | **上桥** Upper-Via | 作品集翻书（4 页图）· PDF 第 5 页 |
-| W·03 | **风贯·立方** Air Cube | 作品集翻书（3 页图）· PDF 第 9 页 |
-| W·04 | **环·世界** The Ring-World | 作品集翻书（3 页图）· PDF 第 18 页 |
-| W·05 | **Pears** — Agent Factory | 内嵌 `<video>`（`works/pears-roadshow.mp4`，459MB→**69MB**）+ 双 CTA（应用 / 官网）|
-| W·06 | **Co-work** Agent Platform | 封面点击 → 框内载入 `/xtool/` 互动影片 + CTA 访问平台 |
-| W·07 | **议见 Yijian** — Consensus Engine | 封面点击 → 框内载入 `yijian-demo4.netlify.app` + CTA 在线体验 |
-| W·08 | **UABB · AIGC Pipeline** | 内嵌 `<video>`（`works/aftersilence.mp4`，H.264 720p，16MB）|
+渲染顺序在 `rational/app.jsx`；身份章 + 介绍章在 `rational/chapters.jsx`；画廊 + 数据在 `rational/sections.jsx`。
 
-UABB 是同一作品两面：**W·08 = AIGC 影像内容**，**W·01 = 设计图纸（作品集）**。文案口径见 `CLAUDE.md` 的「语言规范」。
+## 作品接线 / Works wiring（`rational/sections.jsx` 的 `WORKS` 数组 · 六卡）
+
+画廊卡（`GalleryCard`）= 竖向 3:4 英雄封面（正式封面未上传前用 `CoverArt` 程序化占位）+ 卡面信息；点整卡 `jump(introId)` 平滑滚到对应介绍章。介绍章的媒体复用 `WorkMedia`（`pages`→翻书；`video`+`videoReady`→`<video>`；`embed`→框内 `<iframe>`；`doc`→PDF；否则 TBD）。
+
+| 卡 | key | 作品 | group | 介绍锚点 · 媒体 |
+|---|---|---|---|---|
+| G·01 | `pears` | **Pears** — Agent Factory | aipm | `#intro-pears`：8 帧 deck 自动翻页 + 路演 `<video>` |
+| G·02 | `cowork` | **Co-work** Agent Platform | aipm | `#intro-cowork`：三对页 + `/xtool/` 互动影片 |
+| G·03 | `yijian` | **议见 Yijian** — Consensus Engine | aipm | `#intro-yijian`：封面点开 `yijian-demo4` iframe |
+| G·04 | `meco` | **Meco**（进行中） | aipm | `#intro-meco`：In Progress 占位板（内容待补）|
+| G·05 | `uabb` | **多模态工具**（UABB · AIGC Pipeline） | architect | `#intro-uabb`：`<video>`（`works/aftersilence.mp4`）|
+| G·06 | `archfolio` | **建筑作品集**（原 W·01–04 合并） | architect | `#intro-archfolio`：四作合并翻书（12 页）+ 名录 + PDF CTA + logo 展开收尾 |
+
+建筑四作原对象整体保留在 `ARCH_WORKS`（`pages[]`/`doc`/`award` 一字不动），archfolio 卡的翻书 = `ARCH_WORKS.flatMap(w=>w.pages)`。CTA 链接章内按 `w.key` 查询。文案口径见 `CLAUDE.md` 的「语言规范」。
 
 ## 关于文件大小 —— 一律用「小文件」
 

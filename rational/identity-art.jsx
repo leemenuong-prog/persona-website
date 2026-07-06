@@ -597,14 +597,7 @@ function SiteForm3D() {
       /* (the blue self is held back here — it arrives once, as the cobalt
          block at the threshold; no period nested in the rising colonnade.) */
 
-      /* left ink scrim — fades IN with the chapter; a soft, low veil only at
-         the far edge, just enough to seat the title; never a hard dark band */
-      const sv0 = aSeg(p, 0.04, 0.18) * 0.32;
-      if (sv0 > 0.005) {
-        const g0 = ctx.createLinearGradient(0, 0, W * 0.30, 0);
-        g0.addColorStop(0, `rgba(11,11,14,${sv0.toFixed(3)})`); g0.addColorStop(1, "rgba(11,11,14,0)");
-        ctx.fillStyle = g0; ctx.fillRect(0, 0, W * 0.30, H);
-      }
+      /* (left ink scrim removed — 2026-07-06 用户：去掉 Architect 画布左侧阴影) */
       return;
     }
 
@@ -698,16 +691,7 @@ function SiteForm3D() {
     /* (no cobalt self block at the threshold — the architect canvas reads as
        pure massing; the blue self lives only in the title period + badges.) */
 
-    /* left ink scrim — a soft, low veil beneath the DOM title, but FADED OUT
-       as the chapter exits (p→1) so it never lingers as a grey band once the
-       page tone turns to paper below. kept light otherwise. */
-    const sv = (1 - aSeg(p, 0.86, 1.0)) * 0.32;
-    if (sv > 0.005) {
-      const g = ctx.createLinearGradient(0, 0, W * 0.30, 0);
-      g.addColorStop(0, `rgba(11,11,14,${sv.toFixed(3)})`);
-      g.addColorStop(1, "rgba(11,11,14,0)");
-      ctx.fillStyle = g; ctx.fillRect(0, 0, W * 0.30, H);
-    }
+    /* (left ink scrim removed — 2026-07-06 用户：去掉 Architect 画布左侧阴影) */
   });
   return <canvas ref={ref}></canvas>;
 }

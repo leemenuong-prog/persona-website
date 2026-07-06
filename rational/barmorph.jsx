@@ -30,9 +30,9 @@ const bmW = (ch) => { const n = BM_STROKES[ch.toLowerCase()] != null ? BM_STROKE
 /* bar zone — caps/ascenders get cap height, low x-height glyphs less */
 const bmZone = (ch) => (/[a-z]/.test(ch) && !/[bdfhklt]/.test(ch)) ? ".52em" : ".72em";
 
-function BarWord({ text, period = true, delay = 0, rhythm = BM_RHYTHM, accent = [], className = "" }) {
+function BarWord({ text, period = true, delay = 0, rhythm = BM_RHYTHM, accent = [], className = "", static: still = false }) {
   const ref = React.useRef(null);
-  const [set, setSet] = React.useState(false);
+  const [set, setSet] = React.useState(!!still);
   const glyphs = [...text];
   /* full birth length, measured from the first bar's animationstart */
   const runMs = (glyphs.length * 0.09 + 2.5) * 1000;
@@ -40,8 +40,10 @@ function BarWord({ text, period = true, delay = 0, rhythm = BM_RHYTHM, accent = 
   /* the birth plays once (when the ancestor gains .in). The moment the
      last bar/letter/period has animated in, mark it settled — that swaps
      the one-shot keyframes for hover-driven transitions, so hovering
-     toggles 字⇄条 instead of re-triggering the birth. */
+     toggles 字⇄条 instead of re-triggering the birth.
+     static: born settled — the decoded word from frame one, no birth. */
   React.useEffect(() => {
+    if (still) return;
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) { setSet(true); return; }
     const host = ref.current;
