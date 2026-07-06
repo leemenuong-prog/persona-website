@@ -24,7 +24,7 @@
     'assets/project/pears/thumbnails/1.png',
     'assets/project/cowork/thumbnails/1.jpg',
     'assets/project/yijian/thumbnails/1.jpg',
-    'assets/project/uabb/thumbnails/1.jpg',
+    'assets/project/ring-world/thumbnails/1.jpg',
     'assets/project/air-cube/thumbnails/1.jpg',
     'assets/cube/brand.svg'
   ];
@@ -114,10 +114,12 @@
 
     host.innerHTML = '';
 
-    /* 相对 main 定位：从立方体台下缘垂到尾声网格上缘 */
+    /* 相对 main 定位：从立方体台下缘垂到「尾声」标题上方（勿压到标题文字） */
     var mainRect = main.getBoundingClientRect();
-    var top = polygon.getBoundingClientRect().bottom - mainRect.top + 32;
-    var end = gallery.getBoundingClientRect().top - mainRect.top - 48;
+    var top = polygon.getBoundingClientRect().bottom - mainRect.top + 48;
+    var epi = document.querySelector('.epilogue-title');
+    var endEl = epi || gallery;
+    var end = endEl.getBoundingClientRect().top - mainRect.top - 56;
     var h = Math.max(200, end - top);
     host.style.top = top + 'px';
     host.style.height = h + 'px';
@@ -190,14 +192,20 @@
     for (var i = from; i <= to; i++) {
       var t = spine.ticks[i];
       if (!t) continue;
-      var dist = Math.abs(t.y - head);
-      var s = t.base;
-      if (dist < WAVE_R) {
-        var k = Math.cos((dist / WAVE_R) * Math.PI / 2);   /* 进度头处最大，向两侧衰减 */
-        s = t.base * (1 + 1.1 * k * k);
+      var on = t.y <= head;
+      var s;
+      if (on) {
+        /* 走过的横线保持伸展态，不再缩回去 */
+        s = t.base * 2.1;
+      } else {
+        s = t.base;
+        var dist = t.y - head;
+        if (dist < WAVE_R) {
+          var k = Math.cos((dist / WAVE_R) * Math.PI / 2);   /* 进度头前方的预备波，向下衰减 */
+          s = t.base * (1 + 1.1 * k * k);
+        }
       }
       t.el.style.transform = 'translateX(-50%) scaleX(' + s.toFixed(2) + ')';
-      var on = t.y <= head;
       if (on !== t.on) { t.on = on; t.el.classList.toggle('on', on); }
     }
     spine.prevLo = lo; spine.prevHi = hi; spine.prevHeadIdx = headIdx;
@@ -285,9 +293,14 @@
     if (!fin) return;
     var fr = fin.getBoundingClientRect();
     var vh = window.innerHeight;
-    /* 进入 finale 区一屏内开始下坠，到 finale 底部完成 */
-    var span = Math.max(fr.height + vh * 0.4, 1);
-    var q = clamp((vh * 0.85 - fr.top) / span, 0, 1);
+    /* 进入 finale 即开始下坠，滚到页面底部时恰好完成落槽
+       （旧算法用固定 span，页底永远到不了 1，Logo 悬在半空） */
+    var sy = window.scrollY || window.pageYOffset || 0;
+    var fTopAbs = fr.top + sy;
+    var doc = document.documentElement;
+    var maxScroll = Math.max(doc.scrollHeight - vh, 1);
+    var start = Math.max(fTopAbs - vh, 0);           /* finale 顶进入视口那一刻 */
+    var q = clamp((sy - start) / Math.max(maxScroll - start, 1), 0, 1);
     var e3 = smoothstep(q);
 
     var headerSlot = document.querySelector('.site-header .logoslot');

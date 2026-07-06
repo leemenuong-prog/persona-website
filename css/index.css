@@ -53,7 +53,7 @@ h1.intro-line { font-size: var(--fs-intro); }
 }
 .cube .face {
   position: absolute; inset: 0;
-  background: rgba(255, 255, 255, .2);
+  background: var(--c-white);   /* 实底：透明 PNG 封面不透出对面 */
   border: 1px solid rgba(0, 0, 0, .1);
   overflow: hidden;
   -webkit-backface-visibility: hidden; backface-visibility: hidden;
@@ -172,10 +172,11 @@ main { position: relative; }
   padding-bottom: 40px;
 }
 .gallery-item { display: block; }
+/* 尾声卡改 3:2 横构图（建筑渲染都是横图，方图裁得啥都看不见——用户裁定放矩形） */
 .gallery-item .image-container {
-  width: 100%; height: auto; aspect-ratio: 1 / 1;
+  width: 100%; height: auto; aspect-ratio: 3 / 2;
 }
-/* 尾声揭示层多为横构图版面：整页收进方格（白底 contain），不再拦腰裁半 */
+/* 尾声揭示层是横构图版面：整页收进框（白底 contain），不再拦腰裁半 */
 .gallery-item .layer-reveal { object-fit: contain; background: var(--c-white); }
 .gallery-item .gallery-title {
   margin-top: 12px; text-align: center;
