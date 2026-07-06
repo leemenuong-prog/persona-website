@@ -37,12 +37,10 @@
       '</div>';
     document.body.appendChild(footer);
 
-    /* 浮动侧钮：左 AROUND（M5 前暂指作品集 PDF）· 右 ABOUT */
+    /* 浮动侧钮：左 AROUND（档案柜）· 右 ABOUT */
     var left = document.createElement('a');
     left.className = 'side-btn left';
-    left.href = 'uploads/portfolio.pdf';
-    left.target = '_blank';
-    left.rel = 'noopener';
+    left.href = 'around.html';
     left.textContent = 'AROUND';
     var right = document.createElement('a');
     right.className = 'side-btn right';

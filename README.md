@@ -1,74 +1,58 @@
-# Alnt Med — The Art of Rationality · 个人站
+# 李文苑 Alnt Med — 个人作品集站
 
-李文苑的个人网站（Maker02 (4)）。静态站，部署在 GitHub Pages：
-**https://leemenuong-prog.github.io/persona-website/**
+照老师站（wenxin.design）架构复刻的**纯静态多页站**：无框架、无构建，
+作品数据集中在一个 `config/projects.json` 里驱动渲染。2026-07-06 大改版上线，
+旧 React 单页版完整保留在 git 历史（`ba7ebcd` 之前）。
 
-## 页面 / Pages
+- **线上（主）**：https://alnt-med.netlify.app/ — push `main` 后由 GitHub Actions 自动部署
+- **GitHub Pages 镜像**：https://leemenuong-prog.github.io/persona-website/（根目录 `.nojekyll` 必需）
 
-| 路径 | 内容 |
+## 页面结构
+
+| 页面 | 内容 |
 |---|---|
-| `/` (`index.html`) | 主站 · 理性的艺术。在浏览器里现编译 `rational/*.jsx`（React + Babel）。**Whoami 之后即是作品画廊（WORKS）** |
-| `/xtool/` | Pear Agent 动态影片（xtool 平台 · 可交互 React 影片；Co-work 介绍页点开后在框内播放） |
+| `index.html` | 首页：两行 intro → 3D 立方体 → 中轴滚动线+珠 → **主线 5 大卡**（AI 产品/AIGC）→ **尾声网格 6 建筑作品** |
+| `project.html?id={id}` | 作品详情模板：标题(外链↗)/keywords/奖项/Meta/tags → 媒体（本地视频门面 / iframe 门面）→ 正文（四段式，缺段回退 full_description）→ Tech → 内容长图 + 文字球图注 + lightbox |
+| `projects.html` | 全部作品索引（主线组 + 尾声组） |
+| `about.html` | 关于：BarWord 标题 · 画像 · 履历时间线 · PDF 下载 · 联系 |
+| `around.html` | 档案柜：两份 PDF、线上 demo 直达、xtool 交互影片 |
+| `xtool/` | Co-work 交互影片子页（Co-work 详情页门面点开后内嵌） |
 
-> 注：作品区是主站 Whoami 之后的 **WORKS 画廊**，源码在 `rational/sections.jsx`（不是某个单独页面）。
-> 仓库里 `Alnt Med - The Art of Rationality.html` 是 `index.html` 的同源副本（设计工具导出名）。
+## 数据：config/projects.json（单一事实源）
 
-## 章节流 / Chapter flow（2026-07-06 改版：作品为主角、身份合并两组）
+11 个作品一站式：`main: true` = 主线（sort_order 1-5），`false` = 尾声（6-11）。
+双语字段一律 `*_zh` / `*_en`。加作品 = 加一条 JSON + 放好素材，不改代码：
 
 ```
-Hero → Whoami(两身份 01 AIPM / 02 Architect) → WorksGallery(六竖卡网格墙)
-→ AIPM 章:ChAipmOpen 开场 + IntroPears / IntroCowork / IntroYijian / IntroMeco
-→ Architect 章:ChArch 开场 + IntroUabb(多模态) / IntroArchfolio(建筑作品集翻书 + logo 展开收尾)
-→ Contact(底部波点带 .fdots)
+assets/project/{id}/
+├── thumbnails/1.jpg    # 720×720 方图（首页卡/网格/索引通用）
+├── float/1.jpg         # 揭示层（鼠标 clip-path 圆随行显影；可省略→自动降级单图）
+└── content/1.jpg, 2..  # 详情页长图序列（JSON contentImages 显式列出，不做 404 扫描）
 ```
 
-渲染顺序在 `rational/app.jsx`；身份章 + 介绍章在 `rational/chapters.jsx`；画廊 + 数据在 `rational/sections.jsx`。
+媒体字段 `media[]`：`video-local`（本地 mp4，封面门面点击才拉流）/ `iframe-lazy`（封面门面点击才注入 iframe，配 cta_url 兜底）。
+图注 `annotations`：`{"图序号": {kick_zh/en, body_zh/en}}` → 图右下角 12px 文字球。
 
-## 作品接线 / Works wiring（`rational/sections.jsx` 的 `WORKS` 数组 · 六卡）
+## 大文件纪律（不变）
 
-画廊卡（`GalleryCard`）= 竖向 3:4 英雄封面（正式封面未上传前用 `CoverArt` 程序化占位）+ 卡面信息；点整卡 `jump(introId)` 平滑滚到对应介绍章。介绍章的媒体复用 `WorkMedia`（`pages`→翻书；`video`+`videoReady`→`<video>`；`embed`→框内 `<iframe>`；`doc`→PDF；否则 TBD）。
-
-| 卡 | key | 作品 | group | 介绍锚点 · 媒体 |
-|---|---|---|---|---|
-| G·01 | `pears` | **Pears** — Agent Factory | aipm | `#intro-pears`：8 帧 deck 自动翻页 + 路演 `<video>` |
-| G·02 | `cowork` | **Co-work** Agent Platform | aipm | `#intro-cowork`：三对页 + `/xtool/` 互动影片 |
-| G·03 | `yijian` | **议见 Yijian** — Consensus Engine | aipm | `#intro-yijian`：封面点开 `yijian-demo4` iframe |
-| G·04 | `meco` | **Meco**（进行中） | aipm | `#intro-meco`：In Progress 占位板（内容待补）|
-| G·05 | `uabb` | **多模态工具**（UABB · AIGC Pipeline） | architect | `#intro-uabb`：`<video>`（`works/aftersilence.mp4`）|
-| G·06 | `archfolio` | **建筑作品集**（原 W·01–04 合并） | architect | `#intro-archfolio`：四作合并翻书（12 页）+ 名录 + PDF CTA + logo 展开收尾 |
-
-建筑四作原对象整体保留在 `ARCH_WORKS`（`pages[]`/`doc`/`award` 一字不动），archfolio 卡的翻书 = `ARCH_WORKS.flatMap(w=>w.pages)`。CTA 链接章内按 `w.key` 查询。文案口径见 `CLAUDE.md` 的「语言规范」。
-
-## 关于文件大小 —— 一律用「小文件」
-
-GitHub 单文件硬上限 **100MB**，超过直接拒绝；Pages 也有带宽限制，大文件拖慢加载。所以视频都用 ffmpeg 压成浏览器通用的 H.264 才入库，原片留在本地：
-
-| 文件 | 处理 |
-|---|---|
-| 路演视频 | 459MB 原片 → **69MB**（`works/pears-roadshow.mp4`，1080p，`+faststart` 边下边播）。原片不入库 |
-| Aftersilence | **16MB** H.264 720p，直接入库内嵌 |
-| 作品集 PDF | 压缩版 **8.6MB**（`uploads/portfolio.pdf`）。原版 131MB **不入库** |
-| xtool Pear Agent | 交互式 React 作品（~28MB 含 GIF），作为 `/xtool/` 子页 |
-
-### 路演视频怎么压的（ffmpeg，`brew install ffmpeg`）
-
-源片 3324×2160 / 60fps / HEVC（浏览器对 HEVC 支持不全）→ 两遍编码转 H.264：
+GitHub 单文件硬上限 100MB。视频一律 ffmpeg 压 H.264 + `+faststart` 再入库，原片留 `../源文件/`：
 
 ```bash
-VF="scale=-2:1080,fps=30"
-ffmpeg -y -i 原片.mp4 -c:v libx264 -b:v 3800k -pass 1 -vf "$VF" -pix_fmt yuv420p -preset medium -an -f mp4 /dev/null
-ffmpeg -y -i 原片.mp4 -c:v libx264 -b:v 3800k -pass 2 -vf "$VF" -pix_fmt yuv420p -preset medium -profile:v high -c:a aac -b:a 128k -movflags +faststart works/pears-roadshow.mp4
+ffmpeg -y -i 原片.mp4 -c:v libx264 -crf 26 -preset slow -vf "scale=1920:-2" \
+       -movflags +faststart -c:a aac -b:a 128k works/xxx.mp4
 ```
 
-## 本地预览 / Run locally
+现状：`works/pears-roadshow.mp4` 16MB（73MB 版重压，原片 481MB 在源文件）· `works/aftersilence.mp4` 16MB。
 
-需要本地 HTTP server（`file://` 下 `.jsx`、`<iframe>`、CDN 会被拦）：
+## 本地预览
 
 ```bash
-cd persona-website
-python3 -m http.server 8080   # 打开 http://localhost:8080/ ，滚到 WORK
+cd persona-website && python3 -m http.server 8080
+# file:// 下 fetch(projects.json) 会被拦，必须走 HTTP
+# Claude Code 内可用预览配置 persona-site（端口 8099）
 ```
 
-## 设计语言 / Design language
+## 设计语言
 
-见 `CLAUDE.md`：跳动的数据条（字⇄条），仅用 cobalt `#0047AB` / ink `#0b0b0e` / paper `#efece6`，点缀色只落在「点」上。新增的 WORKS 媒体（视频 / 嵌入 / 封面）沿用此语言。
+见 `CLAUDE.md`：目标站灰阶体系（暖白径向渐变 + 11 级灰）+「.IAM. 数据条」品牌带灰阶版。
+资产文件名**全小写**（GH Pages 大小写敏感）。
