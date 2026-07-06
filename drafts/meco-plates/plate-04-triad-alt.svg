@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Meco — 三端互联（备选） / Never out of touch (alt)</title>
+  <style>line,rect,circle,ellipse,path,polyline,polygon{vector-effect:non-scaling-stroke}</style>
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFFFF"/>
+  <line x1="110" y1="640" x2="1090" y2="640" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <line x1="150" y1="654" x2="1050" y2="654" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <line x1="340.2" y1="210" x2="244.9" y2="265" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="340.2" y1="210" x2="435.5" y2="265" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="340.2" y1="210" x2="340.2" y2="100" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="340.2" y1="320" x2="340.2" y2="210" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="435.5" y1="155" x2="340.2" y2="210" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="155" x2="340.2" y2="210" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="435.5" y1="265" x2="340.2" y2="320" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="265" x2="340.2" y2="320" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="340.2" y1="100" x2="435.5" y2="155" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="340.2" y1="100" x2="244.9" y2="155" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="435.5" y1="265" x2="435.5" y2="155" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="265" x2="244.9" y2="155" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1007" y1="545" x2="911.8" y2="600" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="1007" y1="545" x2="1102.3" y2="600" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="1007" y1="545" x2="1007" y2="435" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="1007" y1="655" x2="1007" y2="545" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1102.3" y1="490" x2="1007" y2="545" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="911.8" y1="490" x2="1007" y2="545" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1102.3" y1="600" x2="1007" y2="655" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="911.8" y1="600" x2="1007" y2="655" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1007" y1="435" x2="1102.3" y2="490" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1007" y1="435" x2="911.8" y2="490" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="1102.3" y1="600" x2="1102.3" y2="490" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="911.8" y1="600" x2="911.8" y2="490" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="193" y1="385" x2="97.7" y2="440" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="193" y1="385" x2="288.2" y2="440" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="193" y1="385" x2="193" y2="275" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="193" y1="495" x2="193" y2="385" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="288.2" y1="330" x2="193" y2="385" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="97.7" y1="330" x2="193" y2="385" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="288.2" y1="440" x2="193" y2="495" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="97.7" y1="440" x2="193" y2="495" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="193" y1="275" x2="288.2" y2="330" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="193" y1="275" x2="97.7" y2="330" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="288.2" y1="440" x2="288.2" y2="330" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="97.7" y1="440" x2="97.7" y2="330" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 478.7 355 A 112.7 65.1 0 0 1 704 355" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <polygon points="591.3,328 638.1,355 591.3,382 544.6,355" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="638.1,475 591.3,502 591.3,382 638.1,355" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="544.6,475 591.3,502 591.3,382 544.6,355" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="591.3" y1="502" x2="591.3" y2="382" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="638.1" y1="355" x2="591.3" y2="382" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="544.6" y1="355" x2="591.3" y2="382" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="638.1" y1="475" x2="591.3" y2="502" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="544.6" y1="475" x2="591.3" y2="502" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="591.3" y1="328" x2="638.1" y2="355" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="591.3" y1="328" x2="544.6" y2="355" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="638.1" y1="475" x2="638.1" y2="355" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="544.6" y1="475" x2="544.6" y2="355" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 478.7 355 A 112.7 112.7 0 0 1 704 355" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <path d="M 704 355 A 112.7 65.1 0 0 1 478.7 355" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <path d="M 491.9 311.8 A 99.5 57.4 0 0 0 690.8 311.8" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 528.3 278.7 A 63 36.4 0 0 0 654.3 278.7" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 620.5 417.8 L 620.1 400.9 L 618.7 382.6 L 616.6 363.4 L 613.7 344 L 610.1 324.9 L 605.9 306.7 L 601.3 290 L 596.4 275.3 L 591.3 263" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 493.8 387.5 L 495.2 371.1 L 499.6 354.1 L 506.8 337.2 L 516.6 320.8 L 528.6 305.4 L 542.5 291.6 L 558 279.7 L 574.4 270 L 591.3 263" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 387.8 202.5 Q 433.7 318.8 479.5 347.1" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 701.6 341.5 Q 830.5 465.5 959.4 477.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 266.6 356.5 Q 388.4 404.3 510.3 400.2" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <path d="M 467 406.4 L 476.2 400.3 L 467.3 393.8" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">never out of touch.</text>
+</svg>

@@ -94,8 +94,16 @@
     ensure();
   }
 
-  /* ── 2. 中轴数据条进度指示 ── */
-  var spine = { host: null, fill: null, branches: [], ok: false, topAbs: 0, h: 0 };
+  /* ── 2. 中轴数据条进度指示 ──
+     一串小短横线（呼应 Logo 的节奏条，基础长度按 IAM_BARS 循环），
+     滚动时进度头附近的横线起波浪式放大；已滚过的染墨色。
+     每个作品在【标题高度】伸出一根到标题边的分支。 */
+  var TICK_GAP = 16;      /* 横线间距 */
+  var WAVE_R = 96;        /* 波浪影响半径 */
+  var spine = {
+    host: null, ticks: [], branches: [], ok: false,
+    prevLo: 0, prevHi: -1, prevHeadIdx: -1
+  };
 
   function buildSpine() {
     var host = document.getElementById('line-container');
@@ -105,38 +113,50 @@
     if (!host || !gallery || !polygon || !main) return;
 
     host.innerHTML = '';
-    var track = document.createElement('div');
-    track.className = 'spine-track';
-    var fill = document.createElement('div');
-    fill.className = 'spine-fill';
-    track.appendChild(fill);
-    host.appendChild(track);
 
     /* 相对 main 定位：从立方体台下缘垂到尾声网格上缘 */
-    var mainTop = main.getBoundingClientRect().top;
-    var top = polygon.getBoundingClientRect().bottom - mainTop + 32;
-    var end = gallery.getBoundingClientRect().top - mainTop - 48;
+    var mainRect = main.getBoundingClientRect();
+    var top = polygon.getBoundingClientRect().bottom - mainRect.top + 32;
+    var end = gallery.getBoundingClientRect().top - mainRect.top - 48;
     var h = Math.max(200, end - top);
     host.style.top = top + 'px';
     host.style.height = h + 'px';
 
-    spine.host = host;
-    spine.fill = fill;
-    spine.h = h;
-    spine.topAbs = top + mainTop + window.scrollY;
+    /* 横线阵列 */
+    spine.ticks = [];
+    var n = Math.floor(h / TICK_GAP);
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i <= n; i++) {
+      var t = document.createElement('i');
+      t.className = 'spine-tick';
+      t.style.top = (i * TICK_GAP) + 'px';
+      var base = 0.55 + IAM_BARS[i % IAM_BARS.length] * 0.6;
+      t.style.transform = 'translateX(-50%) scaleX(' + base.toFixed(2) + ')';
+      frag.appendChild(t);
+      spine.ticks.push({ el: t, y: i * TICK_GAP, base: base, on: false });
+    }
+    host.appendChild(frag);
+    spine.prevLo = 0; spine.prevHi = -1; spine.prevHeadIdx = -1;
 
-    /* 每个主线作品：节点分支（指向左侧标题列） */
+    /* 分支：在标题高度，从中轴一直伸到标题右缘 */
     spine.branches = [];
-    document.querySelectorAll('#mainline .project-item').forEach(function (item, i) {
-      var r = item.getBoundingClientRect();
-      var cy = r.top + r.height / 2 - mainTop - top;   /* 相对 line-container */
+    var hostRect = { top: mainRect.top + top, centerX: host.getBoundingClientRect().left + host.offsetWidth / 2 };
+    document.querySelectorAll('#mainline .project-item').forEach(function (item) {
+      var title = item.querySelector('.project-title');
+      if (!title) return;
+      var tr = title.getBoundingClientRect();
+      /* 纵向用 offsetTop 链（不受 data-reveal 入场位移影响），横向用 rect */
+      var oy = 0, el = title;
+      while (el && el !== main) { oy += el.offsetTop; el = el.offsetParent; }
+      var cy = oy + title.offsetHeight / 2 - top;
       if (cy < 0 || cy > h) return;
+      var w = Math.max(24, hostRect.centerX - tr.right - 14);
       var br = document.createElement('div');
       br.className = 'spine-branch';
       br.style.top = cy.toFixed(0) + 'px';
-      br.style.transitionDelay = (i * 0.04).toFixed(2) + 's';
+      br.style.width = w.toFixed(0) + 'px';
       host.appendChild(br);
-      spine.branches.push({ el: br, item: item });
+      spine.branches.push({ el: br, item: item, title: title });
     });
     spine.ok = true;
     onScroll();
@@ -153,11 +173,33 @@
 
   function tickSpine() {
     if (!spine.ok || !DESKTOP.matches) return;
-    var rect = spine.host.getBoundingClientRect();
+    var host = document.getElementById('line-container');
+    if (!host) return;
+    var rect = host.getBoundingClientRect();
     var p = clamp((window.innerHeight * 0.5 - rect.top) / rect.height, 0, 1);
-    /* 进度生长；端头位置按 IAM 节奏做 ±3px 微调制，避免死直 */
-    var mod = (IAM_BARS[Math.floor(p * 16) % IAM_BARS.length] - 0.75) * 12;
-    spine.fill.style.height = clamp(p * rect.height + mod, 0, rect.height).toFixed(1) + 'px';
+    var head = p * rect.height;
+    var headIdx = Math.round(head / TICK_GAP);
+
+    /* 只更新受影响区间：本帧波浪范围 ∪ 上帧波浪范围 ∪ 进度头扫过的区间 */
+    var lo = Math.max(0, Math.floor((head - WAVE_R) / TICK_GAP));
+    var hi = Math.min(spine.ticks.length - 1, Math.ceil((head + WAVE_R) / TICK_GAP));
+    var from = Math.min(lo, spine.prevLo, spine.prevHeadIdx < 0 ? lo : spine.prevHeadIdx);
+    var to = Math.max(hi, spine.prevHi, spine.prevHeadIdx < 0 ? hi : spine.prevHeadIdx);
+
+    for (var i = from; i <= to; i++) {
+      var t = spine.ticks[i];
+      if (!t) continue;
+      var dist = Math.abs(t.y - head);
+      var s = t.base;
+      if (dist < WAVE_R) {
+        var k = Math.cos((dist / WAVE_R) * Math.PI / 2);   /* 进度头处最大，向两侧衰减 */
+        s = t.base * (1 + 1.1 * k * k);
+      }
+      t.el.style.transform = 'translateX(-50%) scaleX(' + s.toFixed(2) + ')';
+      var on = t.y <= head;
+      if (on !== t.on) { t.on = on; t.el.classList.toggle('on', on); }
+    }
+    spine.prevLo = lo; spine.prevHi = hi; spine.prevHeadIdx = headIdx;
 
     var mid = window.innerHeight / 2;
     spine.branches.forEach(function (b) {
@@ -283,6 +325,10 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { buildSpine(); });
+  /* Monterey 晚到会移动标题基线 — 字体就绪后重测分支位置 */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { buildSpine(); });
+  }
   if ('ResizeObserver' in window) {
     var t = null;
     new ResizeObserver(function () {

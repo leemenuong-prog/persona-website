@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meco 图版 v2 · 草稿对比预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: radial-gradient(ellipse at center, #FFFBF0 0%, #EAEAEA 53%, #FFFFFF 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    color: #6F6F6F;
+  }
+  .note {
+    text-align: center; padding: 26px 0 0;
+    font-size: 12px; letter-spacing: .12em; color: #BEBEBE;
+  }
+  .col { max-width: 760px; margin: 0 auto; padding: 40px 20px 90px; transition: max-width .3s; }
+  body.narrow .col { max-width: 340px; }
+  h1 {
+    font-family: Georgia, 'Songti SC', serif; font-weight: 400;
+    font-size: 1.6rem; color: #181818; margin: 18px 0 40px; text-align: center;
+  }
+  figure { margin: 0 0 56px; }
+  figure img {
+    width: 100%; height: auto; display: block;
+    border: 1px solid #E0E0E0; cursor: zoom-in; background: #fff;
+  }
+  figcaption {
+    font-size: .8rem; letter-spacing: .04em; color: #999999;
+    text-align: center; margin-top: .55rem;
+  }
+  .thumb-row { text-align: center; margin: 70px 0 0; }
+  .thumb-row .card {
+    width: 360px; max-width: 90%; display: inline-block;
+    border: 1px solid #E0E0E0; background: #fff;
+  }
+  .thumb-row img { width: 100%; display: block; cursor: zoom-in; }
+  .thumb-row p { font-size: .8rem; color: #999; margin-top: .55rem; }
+  .tools {
+    position: fixed; top: 14px; right: 16px; z-index: 50;
+    display: flex; gap: 8px;
+  }
+  .tools button {
+    font-size: 12px; padding: 5px 12px; cursor: pointer;
+    border: 1px solid #E0E0E0; background: rgba(255,255,255,.95); color: #6F6F6F;
+    border-radius: 4px;
+  }
+  .tools button.on { color: #181818; border-color: #999; }
+  .lb {
+    position: fixed; inset: 0; background: rgba(0,0,0,.7);
+    display: none; align-items: center; justify-content: center; z-index: 99;
+    cursor: zoom-out;
+  }
+  .lb.show { display: flex; }
+  .lb img { max-width: 94vw; max-height: 92vh; display: block; }
+</style>
+</head>
+<body>
+<div class="tools">
+  <button id="w760" class="on" type="button">760</button>
+  <button id="w340" type="button">340</button>
+</div>
+<p class="note">DRAFTS · 图版 v2 对比预览 · 阅后即焚</p>
+<div class="col">
+  <h1>Meco 图版 v2 · 无字轴测</h1>
+
+  <figure><img src="plate-01-organs.svg" alt="一个进程，四个器官">
+    <figcaption>01 · ONE PROCESS, FOUR ORGANS / 一个进程，四个器官</figcaption></figure>
+
+  <figure><img src="plate-02-boards.svg" alt="五域看板">
+    <figcaption>02 · FIVE BOARDS, CHARTS FIRST / 五域看板，图表优先</figcaption></figure>
+
+  <figure><img src="plate-03-brain-fence.svg" alt="大脑与只读围栏">
+    <figcaption>03 · ONE BRAIN, TWO PERMISSION LANES / 一个大脑，两套权限</figcaption></figure>
+
+  <figure><img src="plate-04-triad.svg" alt="三端互联 · 主案">
+    <figcaption>04 · WIRED TOGETHER / 三端互联（主案 · 端点拟态）</figcaption></figure>
+
+  <figure><img src="plate-04-triad-alt.svg" alt="三端互联 · 备选">
+    <figcaption>04b · WIRED TOGETHER / 三端互联（备选 · 纯立方）</figcaption></figure>
+
+  <figure><img src="plate-05-journey.svg" alt="一条消息的旅程">
+    <figcaption>05 · ONE MESSAGE, END TO END / 一条消息的完整旅程</figcaption></figure>
+
+  <div class="thumb-row">
+    <div class="card"><img src="cover.svg" alt="封面 · 网壳蘑菇"></div>
+    <p>COVER · 网壳蘑菇（360px 卡片尺度对照）</p>
+  </div>
+</div>
+<div class="lb" id="lb"><img id="lbimg" src="" alt=""></div>
+<script>
+  var lb = document.getElementById('lb'), lbimg = document.getElementById('lbimg');
+  document.querySelectorAll('img[src$=".svg"]').forEach(function (im) {
+    im.addEventListener('click', function () { lbimg.src = im.src; lb.classList.add('show'); });
+  });
+  lb.addEventListener('click', function () { lb.classList.remove('show'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('show'); });
+  var b760 = document.getElementById('w760'), b340 = document.getElementById('w340');
+  b760.onclick = function () { document.body.classList.remove('narrow'); b760.classList.add('on'); b340.classList.remove('on'); };
+  b340.onclick = function () { document.body.classList.add('narrow'); b340.classList.add('on'); b760.classList.remove('on'); };
+</script>
+</body>
+</html>

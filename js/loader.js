@@ -13,7 +13,7 @@
   'use strict';
 
   var EZ = 'cubic-bezier(.16,1,.3,1)';
-  var BAR_SPLIT = [['gi', 1], ['ga', 3], ['gm', 4]];   /* 字母→条数 */
+  /* 整个名字逐字母冻结成条：I·a·l·n·t·m·e·d 八个字母 → 八根 Logo 条 */
 
   function skip(node) {
     if (node) node.remove();
@@ -54,17 +54,11 @@
     ov.className = 'morph-ov';
     document.body.appendChild(ov);
 
-    /* ── 源：把 I/a/m 的字框按条数切分 ── */
+    /* ── 源：每个字母一根条（八字母对八根 Logo 条） ── */
     var srcs = [];
-    BAR_SPLIT.forEach(function (def) {
-      var el = reveal.querySelector('.' + def[0]);
-      if (!el) return;
+    reveal.querySelectorAll('.lt').forEach(function (el) {
       var r = el.getBoundingClientRect();
-      var n = def[1];
-      var cw = r.width / n;
-      for (var i = 0; i < n; i++) {
-        srcs.push({ x: r.left + i * cw + cw * 0.15, y: r.top, w: cw * 0.7, h: r.height });
-      }
+      srcs.push({ x: r.left + r.width * 0.15, y: r.top, w: r.width * 0.7, h: r.height });
     });
     var sqEl = reveal.querySelector('.lsq');
     var sqR = sqEl ? sqEl.getBoundingClientRect() : null;

@@ -31,10 +31,11 @@
   color: var(--c-title); white-space: pre;
 }
 .loader .lreveal .g { display: inline-block; transition: opacity .32s ease; }
+.loader .lreveal .lt { display: inline-block; }
 .loader .lreveal .ins {
   display: inline-flex; overflow: hidden;
   max-width: 0; opacity: 0;
-  transition: max-width .9s var(--ez), opacity .6s ease .12s;
+  transition: max-width .9s var(--ez), opacity .6s ease .12s, opacity .32s ease;
 }
 .loader .lreveal.show .ins { max-width: 3.6em; opacity: 1; }
 .loader .lreveal .lsq {
@@ -42,7 +43,7 @@
   background: var(--bm-acc); margin-left: .12em; margin-bottom: .04em;
   transition: opacity .32s ease;
 }
-.loader .lreveal.gone .g, .loader .lreveal.gone .lsq { opacity: 0; }
+.loader .lreveal.gone > span { opacity: 0 !important; }
 
 /* ── 进度条 ── */
 .loader .lbar {

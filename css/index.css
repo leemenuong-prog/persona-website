@@ -69,30 +69,30 @@ main { position: relative; }
   position: absolute; left: 50%; transform: translateX(-50%);
   width: 24px; z-index: 0; pointer-events: none;
 }
-.spine-track {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  top: 0; bottom: 0; width: 2px;
+/* 小短横线阵列：基础长度循环 IAM 节奏；进度头附近波浪放大（transform 由 JS 写） */
+.spine-tick {
+  position: absolute; left: 50%;
+  width: 14px; height: 2px;
   background: var(--c-border);
+  transform-origin: center;
+  transition: background-color .35s;
+  will-change: transform;
 }
-.spine-fill {
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 3px; height: 0;
-  background: var(--c-title);
-}
-/* 端头：直角小方块（数据条语义的收笔，非圆珠） */
-.spine-fill::after {
-  content: ""; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
-  width: 5px; height: 5px; background: var(--c-title);
-}
-/* 节点分支：指向左侧标题列，到站展开 */
+.spine-tick.on { background: var(--c-title); }
+/* 节点分支：在标题高度，从中轴伸到标题右缘（宽度由 JS 写） */
 .spine-branch {
-  position: absolute; right: 50%; margin-right: 1px;
-  width: 64px; height: 2px;
+  position: absolute; right: 50%; margin-right: 2px;
+  height: 2px;
   background: var(--c-title);
   transform: scaleX(0); transform-origin: right center;
-  transition: transform .6s var(--ez);
+  transition: transform .7s var(--ez);
 }
 .spine-branch.on { transform: scaleX(1); }
+/* 分支尾端小方点（直角，落在标题一侧） */
+.spine-branch::after {
+  content: ""; position: absolute; left: -2px; top: -2px;
+  width: 6px; height: 6px; background: var(--c-title);
+}
 
 /* ── 主线大卡（照老师：文字恒左、列内居中；图恒右） ── */
 .projects-section {
