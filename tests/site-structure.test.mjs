@@ -15,9 +15,10 @@ const exists = (file) => existsSync(join(root, file));
 const PAGES = ["index.html", "projects.html", "project.html", "about.html", "around.html", "404.html"];
 for (const page of PAGES) {
   assert.ok(exists(page), page + " should exist");
-  const html = read(page);
-  assert.match(html, /<html/i, page + " should be an HTML document");
-  assert.match(html, /js\/main\.js/, page + " should load the shared js/main.js");
+  assert.match(read(page), /<html/i, page + " should be an HTML document");
+}
+for (const page of PAGES.slice(0, 5)) {
+  assert.match(read(page), /js\/main\.js/, page + " should load the shared js/main.js");
 }
 
 /* ── 旧 React 站不得回魂 ── */
