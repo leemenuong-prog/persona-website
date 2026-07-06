@@ -164,7 +164,7 @@
        行首「标签：内容」→ 标签加粗（照老师 How It Works 条目式，全半角冒号都认，
        标签限 12 字内防止误伤含冒号的普通句子）。 */
     function line(l) {
-      var m = l.match(/^([^：:]{1,12})([：:])\s*(.+)$/);
+      var m = l.match(/^([^：:]{1,10})([：:])\s*(.+)$/);
       if (m) return '<strong>' + esc(m[1]) + m[2] + '</strong> ' + esc(m[3]);
       return esc(l);
     }

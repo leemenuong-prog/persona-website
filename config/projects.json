@@ -1,5 +1,5 @@
 {
-  "_readme": "全站作品数据（单一事实源）。main:true=主线（首页大卡，sort_order 1-5），main:false=尾声（建筑网格，6-11）。双语字段 *_zh/*_en；sections 四段式缺任一段则详情页回退 full_description。正文文案为旧站搬运稿——STAR 规则稿落库时整体替换 sections 与 full_description。",
+  "_readme": "全站作品数据（单一事实源）。main:true=主线（sort_order 1-5），false=尾声建筑（6-11）。双语字段 *_zh/*_en。正文=七段规则：one_liner(产品第一人称一句话)+sections{tldr/why_built/key_contributions/how_it_works/why_it_matters}(各含 title_zh/en+body_zh/en，body 多行=—列表，行首「标签：」自动加粗)+tech_stack。缺核心段回退 full_description。规则全文见 CLAUDE.md。",
   "projects": [
     {
       "id": "pears",
@@ -18,23 +18,69 @@
       "award_en": "ADVENTURE-X Hackathon · 2nd runner-up",
       "keywords_zh": "浏览器插件 | PRD 蒸馏 | Workflow Agent",
       "keywords_en": "Browser extension | PRD distillation | Workflow agents",
-      "tags": ["AI Agent", "Browser Extension", "PRD", "Workflow"],
+      "tags": [
+        "AI Agent",
+        "Browser Extension",
+        "PRD",
+        "Workflow"
+      ],
       "url": "https://and-pear.netlify.app/login",
       "links": [
-        { "label_zh": "访问应用 ↗", "label_en": "Open the app ↗", "url": "https://and-pear.netlify.app/login" },
-        { "label_zh": "产品官网 ↗", "label_en": "Official site ↗", "url": "https://pear-web-leemenuong.netlify.app/" }
+        {
+          "label_zh": "访问应用 ↗",
+          "label_en": "Open the app ↗",
+          "url": "https://and-pear.netlify.app/login"
+        },
+        {
+          "label_zh": "产品官网 ↗",
+          "label_en": "Official site ↗",
+          "url": "https://pear-web-leemenuong.netlify.app/"
+        }
       ],
       "thumb": "assets/project/pears/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/pears/float/1.jpg" },
+      "float": {
+        "reveal": "assets/project/pears/float/1.jpg"
+      },
       "desc_zh": "看你把工作做一遍，把轨迹蒸馏成可编辑的 PRD，再生成你专属的 Workflow Agent——把门槛从「描述 AI」降到「做一遍」。",
       "desc_en": "Do it once — Pears watches, distills a PRD, and builds your own workflow agent.",
-      "one_liner_zh": "把门槛从「描述 AI」降到「做一遍」。",
-      "one_liner_en": "Do it once — Pears watches, distills a PRD, and builds your own workflow agent.",
+      "one_liner_zh": "你好，我是 Pears 🍐——你把工作做一遍给我看，我把它变成你专属的 Workflow Agent。",
+      "one_liner_en": "Hi, I'm Pears 🍐 — show me your work once, and I turn it into a workflow agent of your own.",
       "full_description_zh": "想法来自我在 XTOOL 的观察：一个开发团队，永远填不满全公司的 Agent 需求——那就把门槛从「描述 AI」降到「做一遍」。我做的浏览器插件看你把工作做一遍，把轨迹蒸馏成可编辑的 PRD，再由 AI 编码 Agent 生成你专属的 Workflow Agent。现场企业对接意向最多的项目之一。",
       "full_description_en": "",
       "tech_stack_zh": "浏览器插件 · PRD 蒸馏 · AI 编码 Agent",
       "tech_stack_en": "Browser extension · PRD distillation · AI coding agents",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "在 XTOOL 实习时我看到：一个开发团队，永远填不满全公司的 Agent 需求。\n我想把做 Agent 的门槛从「向 AI 描述工作」降到「把工作做一遍」。\n我独立构建了一个浏览器插件：看你操作、把轨迹蒸馏成可编辑的 PRD、再由 AI 编码 Agent 生成专属 Workflow Agent，从 0 做到上线。\n拿了 ADVENTURE-X 高校联盟黑客松季军，是现场企业对接意向最多的项目之一。",
+          "body_en": "Interning at XTOOL, I saw one dev team that could never keep up with the whole company's agent requests.\nI wanted to lower the bar from \"describe your work to an AI\" to \"just do it once.\"\nI built a browser extension solo, zero to launch: it watches you work, distills the trace into an editable PRD, and has an AI coding agent build your own workflow agent.\nIt took 2nd runner-up at the ADVENTURE-X hackathon and drew some of the most enterprise interest on site."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "公司里最懂业务的人，往往最不擅长「描述需求」——让他们写提示词、画流程图，本身就是一道新门槛。\n但每个人都会做自己的工作。把「做一遍」本身当作需求文档，门槛就消失了。",
+          "body_en": "The people who know the business best are usually the worst at \"describing requirements\" — asking them to write prompts is just a new barrier.\nBut everyone can do their own job. Treat \"doing it once\" as the requirements doc, and the barrier disappears."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "独立完成从产品定义到上线的全流程，没有团队分工兜底。\n设计了「观察→蒸馏→生成」三段管线：轨迹不直接变代码，中间落成一份人能读、能改的 PRD——自动化到哪一步由你拍板。\n隐私边界从第一天就定死：只在你开口时才记录，停止任务记录立即结束。\n现场路演拿下季军，企业对接意向最多的项目之一。",
+          "body_en": "Shipped the whole thing solo, from product definition to launch.\nDesigned a watch → distill → generate pipeline: the trace never turns straight into code — it lands as a human-readable, editable PRD first, and you decide how far the automation goes.\nPrivacy was fixed on day one: it only records when you say so, and stops the moment you stop the task.\n2nd runner-up at the live roadshow, among the most enterprise-courted projects there."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "示范：你在浏览器里正常把工作做一遍，插件记录点击、切换与输入的轨迹。\n蒸馏：轨迹被整理成一份可编辑的 PRD——哪些步骤值得自动化、判断条件是什么，先让你确认。\n生成：AI 编码 Agent 按确认后的 PRD，生成你专属的 Workflow Agent。\n边界：记录只在你明确开始任务后进行，停止即断；你的做法还能发布到 Agent App 生态供别人复用。",
+          "body_en": "Demonstrate: you do your work once in the browser; the extension records the clicks, switches and inputs.\nDistill: the trace becomes an editable PRD — which steps deserve automation, what the decision points are, confirmed by you first.\nGenerate: an AI coding agent builds your personal workflow agent from the confirmed PRD.\nBoundaries: recording runs only after you explicitly start a task and dies the moment you stop; your way of working can also be published to the agent app ecosystem."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "Vibe Coding 从你「说」的开始，Pears 从你「做」的开始——后者不需要你会表达需求。\n一个开发团队填不满的 Agent 需求，让每个业务同事自己就能填上。",
+          "body_en": "Vibe coding starts from what you say; Pears starts from what you do — and the latter never asks you to be good at describing requirements.\nThe agent backlog one dev team could never clear becomes something every colleague can clear for themselves."
+        }
+      },
       "media": [
         {
           "type": "video-local",
@@ -55,14 +101,54 @@
         "assets/project/pears/content/8.jpg"
       ],
       "annotations": {
-        "1": { "kick_zh": "看你做一遍", "kick_en": "Watch it once", "body_zh": "把重复工作交给 Pears。", "body_en": "Hand your repetitive work to Pears." },
-        "2": { "kick_zh": "产品洞察", "kick_en": "Product insight", "body_zh": "软件越来越容易生成，难的是把工作说清楚。", "body_en": "Software is easy to generate now — the hard part is stating the work clearly." },
-        "3": { "kick_zh": "产品差异", "kick_en": "The difference", "body_zh": "Vibe Coding 从你说的开始，Pears 从你做的开始。", "body_en": "Vibe coding starts from what you say. Pears starts from what you do." },
-        "4": { "kick_zh": "示范与学习", "kick_en": "Demonstrate & learn", "body_zh": "每一次点击与切换，都在告诉它什么值得自动化。", "body_en": "Every click and switch tells it what is worth automating." },
-        "5": { "kick_zh": "工作流拍板", "kick_en": "You call the line", "body_zh": "自动化到哪一步，由你拍板。", "body_en": "How far the automation goes is your call." },
-        "6": { "kick_zh": "隐私设计", "kick_en": "Privacy by design", "body_zh": "只在你开口时才记，停止任务记录立即结束。", "body_en": "It only records when you say so, and stops the moment you stop." },
-        "7": { "kick_zh": "Agent 构建", "kick_en": "Agent build", "body_zh": "拍板之后，工作流开始成为 Agent。", "body_en": "Once you sign off, the workflow becomes an agent." },
-        "8": { "kick_zh": "产品生态", "kick_en": "Ecosystem", "body_zh": "你的做法，不只为你工作 · Agent App 生态。", "body_en": "Your way of working works beyond you — an Agent App ecosystem." }
+        "1": {
+          "kick_zh": "看你做一遍",
+          "kick_en": "Watch it once",
+          "body_zh": "把重复工作交给 Pears。",
+          "body_en": "Hand your repetitive work to Pears."
+        },
+        "2": {
+          "kick_zh": "产品洞察",
+          "kick_en": "Product insight",
+          "body_zh": "软件越来越容易生成，难的是把工作说清楚。",
+          "body_en": "Software is easy to generate now — the hard part is stating the work clearly."
+        },
+        "3": {
+          "kick_zh": "产品差异",
+          "kick_en": "The difference",
+          "body_zh": "Vibe Coding 从你说的开始，Pears 从你做的开始。",
+          "body_en": "Vibe coding starts from what you say. Pears starts from what you do."
+        },
+        "4": {
+          "kick_zh": "示范与学习",
+          "kick_en": "Demonstrate & learn",
+          "body_zh": "每一次点击与切换，都在告诉它什么值得自动化。",
+          "body_en": "Every click and switch tells it what is worth automating."
+        },
+        "5": {
+          "kick_zh": "工作流拍板",
+          "kick_en": "You call the line",
+          "body_zh": "自动化到哪一步，由你拍板。",
+          "body_en": "How far the automation goes is your call."
+        },
+        "6": {
+          "kick_zh": "隐私设计",
+          "kick_en": "Privacy by design",
+          "body_zh": "只在你开口时才记，停止任务记录立即结束。",
+          "body_en": "It only records when you say so, and stops the moment you stop."
+        },
+        "7": {
+          "kick_zh": "Agent 构建",
+          "kick_en": "Agent build",
+          "body_zh": "拍板之后，工作流开始成为 Agent。",
+          "body_en": "Once you sign off, the workflow becomes an agent."
+        },
+        "8": {
+          "kick_zh": "产品生态",
+          "kick_en": "Ecosystem",
+          "body_zh": "你的做法，不只为你工作 · Agent App 生态。",
+          "body_en": "Your way of working works beyond you — an Agent App ecosystem."
+        }
       }
     },
     {
@@ -82,22 +168,64 @@
       "award_en": "",
       "keywords_zh": "部门 Agent 平台 | 飞书 | RAG | ROI 看板",
       "keywords_en": "Agent platform | Feishu | RAG | ROI dashboard",
-      "tags": ["Agent Platform", "RAG", "Analytics", "Internal Tools"],
+      "tags": [
+        "Agent Platform",
+        "RAG",
+        "Analytics",
+        "Internal Tools"
+      ],
       "url": "https://peersagent.netlify.app/",
       "links": [
-        { "label_zh": "访问平台 ↗", "label_en": "Open the platform ↗", "url": "https://peersagent.netlify.app/" }
+        {
+          "label_zh": "访问平台 ↗",
+          "label_en": "Open the platform ↗",
+          "url": "https://peersagent.netlify.app/"
+        }
       ],
       "thumb": "assets/project/cowork/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/cowork/float/1.jpg" },
+      "float": {
+        "reveal": "assets/project/cowork/float/1.jpg"
+      },
       "desc_zh": "在 XTOOL 单人把部门 Agent 平台从 0 做到 1：7 个生产工具铺满内容生产链，覆盖 4 部门 65 人，完成率 80%+。",
       "desc_en": "A one-person build of the department's agent OS — seven tools, four departments.",
-      "one_liner_zh": "单人从 0 到 1 的部门 Agent 平台。",
-      "one_liner_en": "A one-person build of the department's agent OS — seven tools, four departments.",
+      "one_liner_zh": "你好，我是 Co-work——部门的 Agent 工作台，七个工具共用同一套记忆、规则和数据。",
+      "one_liner_en": "Hi, I'm Co-work — the department's agent workbench: seven tools sharing one memory, one rulebook, one pool of data.",
       "full_description_zh": "我在 XTOOL 单人把部门 Agent 平台从 0 做到 1：7 个生产工具铺满内容生产链。埋点告诉我 Hook 段流失 52%，判断是高创意内容无法一次成型，于是合并生成阶段、三候选并出，推动三代迭代。现覆盖 4 部门 65 人，完成率 80%+；自建 ROI 看板——每投入 $1 省 0.39 工时。",
       "full_description_en": "",
       "tech_stack_zh": "飞书开放平台 · RAG · 埋点与 ROI 看板",
       "tech_stack_en": "Feishu platform · RAG · analytics & ROI dashboard",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "在 XTOOL 实习时，部门的生产力被大量重复工作和靠人跑的流程拖着走。\n我的任务是把这些人效工作升级成 Agent 工作流——而且这件事只有我一个人做。\n我逐个团队调研、拆解需求，从 0 到 1 搭起部门 Agent 平台：7 个生产工具铺满内容生产链，用埋点数据推动三代迭代。\n现在覆盖 4 个部门 65 人，任务完成率 80%+；自建 ROI 看板算得清——每投入 $1 节省 0.39 工时。",
+          "body_en": "At XTOOL, the department's output was dragged down by repetitive work and processes that ran on human legs.\nMy job was to turn that manual effort into agent workflows — and I was the only one on it.\nI interviewed each team, broke down their needs, and built the department's agent platform zero to one: seven production tools covering the content pipeline, iterated three generations on analytics.\nIt now serves 65 people across 4 departments at an 80%+ completion rate; my own ROI dashboard shows $1 in saves 0.39 work-hours."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "部门里很多团队卡在同样的地方：素材要人找、初稿要人攒、审核要人盯——全是重复劳动。\n单点工具解决不了这个问题：没有共享的记忆和规则，每个工具都得重新教一遍。要做的是一套系统，不是一堆工具。",
+          "body_en": "Teams kept getting stuck in the same places: hunting for assets, drafting from scratch, chasing reviews — all repetitive.\nPoint tools can't fix that: without shared memory and rules, every tool has to be re-taught. What was needed was a system, not a pile of tools."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "单人从 0 到 1：调研、需求拆解、产品定义、搭建、运营，全链路一个人跑。\n埋点发现 Hook 段流失 52%，判断是高创意内容无法一次成型——于是合并生成阶段、三候选并出，推动三代迭代。\n自建 ROI 看板，把「省了多少」变成可核算的数字，向上沟通不靠感觉。",
+          "body_en": "Zero to one, solo: research, requirement breakdown, product definition, build and operations in one pair of hands.\nAnalytics showed a 52% drop-off at the hook stage; my read was that high-creativity content can't be nailed in one shot — so I merged the generation stages and shipped three candidates side by side, driving three generations of iteration.\nBuilt the ROI dashboard myself, turning \"how much did we save\" into an auditable number."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "发起：同事在飞书里直接发需求，不用离开日常工具。\n生成：Agent 调用外部数据与 RAG 知识库生成内容；高创意环节三候选并出，由人挑选。\n回流：结果送回飞书完成闭环；七个工具共用同一套记忆、规则和数据。\n度量：每个环节都有埋点，完成率、耗时与节省工时进 ROI 看板。",
+          "body_en": "Kick off: colleagues file requests right inside Feishu, never leaving their daily tool.\nGenerate: agents pull external data and the RAG knowledge base; high-creativity steps ship three candidates for a human to pick.\nReturn: results flow back into Feishu, closing the loop; all seven tools share one memory, one rulebook, one pool of data.\nMeasure: every step is instrumented — completion rate, time cost and hours saved land in the ROI dashboard."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "覆盖 4 部门 65 人、完成率 80%+——平台没有停在演示，是真的在被用。\n每投入 $1 节省 0.39 工时，高于 2026 年企业均值（0.2–0.3）。",
+          "body_en": "Sixty-five people across four departments at 80%+ completion — this never stopped at the demo stage; it is genuinely in use.\nEvery $1 in saves 0.39 work-hours, above the 2026 enterprise average of 0.2–0.3."
+        }
+      },
       "media": [
         {
           "type": "iframe-lazy",
@@ -136,22 +264,63 @@
       "award_en": "CUHK Enterprise Agent Hackathon · Runner-up",
       "keywords_zh": "多角色 Agent | 四层共识 | 可追溯结论",
       "keywords_en": "Multi-agent | Four-layer consensus | Auditable verdicts",
-      "tags": ["Multi-agent", "Decision", "Consensus"],
+      "tags": [
+        "Multi-agent",
+        "Decision",
+        "Consensus"
+      ],
       "url": "https://yijian-demo4.netlify.app",
       "links": [
-        { "label_zh": "在线体验 ↗", "label_en": "Live demo ↗", "url": "https://yijian-demo4.netlify.app" }
+        {
+          "label_zh": "在线体验 ↗",
+          "label_en": "Live demo ↗",
+          "url": "https://yijian-demo4.netlify.app"
+        }
       ],
       "thumb": "assets/project/yijian/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/yijian/float/1.jpg" },
+      "float": {
+        "reveal": "assets/project/yijian/float/1.jpg"
+      },
       "desc_zh": "给企业团队做的「决策共识」Agent：多角色视角，在四层收敛分歧，给出可追溯的结论。",
       "desc_en": "A consensus engine for enterprise decisions — four layers, one auditable verdict.",
-      "one_liner_zh": "四层收敛分歧，一个可追溯的结论。",
-      "one_liner_en": "A consensus engine for enterprise decisions — four layers, one auditable verdict.",
+      "one_liner_zh": "你好，我是议见——把一件要决策的事交给我，我组织多角色视角，把分歧收敛成一个可追溯的结论。",
+      "one_liner_en": "Hi, I'm Yijian — hand me a decision, and I orchestrate the viewpoints until disagreement converges into one auditable verdict.",
       "full_description_zh": "给企业团队做的「决策共识」Agent。把一项待决策的事交给它——选方案、加预算、进不进一个市场——它组织多角色视角，在战略目标、事实证据、利益角色、权重权责四层收敛分歧，最后给出可追溯的结论：共识度评分、决策要满足的条件、仍待解决的分歧点。",
       "full_description_en": "",
       "tech_stack_zh": "多角色 Agent 编排 · 四层共识收敛",
       "tech_stack_en": "Multi-role agent orchestration · four-layer consensus",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "企业里的决策会经常开成表态会：分歧藏在没说出口的立场里，结论靠职级压。\n在香港中文大学的企业 Agent 黑客松上，我负责产品与开发，想把「达成共识」这件事结构化。\n它组织 7 个角色的视角，在战略目标、事实证据、利益角色、权重权责四层收敛分歧。\n拿了黑客松亚军；给出的结论不是一句话，而是共识度评分、要满足的条件、仍待解决的分歧点。",
+          "body_en": "Corporate decision meetings often devolve into position-taking: the real disagreements stay unspoken, and seniority settles the verdict.\nAt CUHK's enterprise agent hackathon, I owned product and build, trying to give \"reaching consensus\" an actual structure.\nIt orchestrates seven role perspectives and converges disagreement through four layers: strategic goals, factual evidence, stakeholders, and weighted accountability.\nWe took runner-up; the output isn't one sentence but a consensus score, the conditions the decision must satisfy, and the disagreements still open."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "决策难产的原因很少是缺信息，更多是分歧没有被摆上桌：谁受影响、谁担责、各自权重多少，全靠会场博弈。\n把这些隐性结构显性化，机器才有收敛的抓手。",
+          "body_en": "Decisions rarely stall for lack of information; they stall because the disagreements never make it onto the table — who's affected, who's accountable, how much each voice weighs.\nMake that implicit structure explicit, and a machine finally has something to converge on."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "设计了四层收敛框架：战略目标 → 事实证据 → 利益角色 → 权重权责，每层只解决一类分歧。\n用 7 个角色的多视角组织审议，避免单一视角把结论带偏。\n结论三件套：共识度评分、决策要满足的条件、仍待解决的分歧点——可追溯，不是黑箱裁决。\n黑客松现场从产品到 demo 完整落地，拿下亚军。",
+          "body_en": "Designed the four-layer convergence frame: strategic goals → factual evidence → stakeholders → weighted accountability, each layer resolving exactly one kind of disagreement.\nOrganized deliberation across seven role perspectives so no single view drags the verdict.\nThe verdict ships as a trio: consensus score, conditions to satisfy, disagreements still open — traceable, never a black-box ruling.\nProduct to demo fully shipped on-site; runner-up."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "输入：一件待决策的事——选方案、加预算、进不进一个市场。\n审议：多角色 Agent 各自从自己的立场给出主张与依据。\n收敛：四层框架逐层对齐——先对目标，再对事实，再摆利益，最后按权责定权重。\n输出：共识度评分 + 决策条件 + 分歧清单，每一步都能回看。",
+          "body_en": "Input: one pending decision — picking a plan, adding budget, entering a market or not.\nDeliberate: role agents argue their positions with evidence, each from its own seat.\nConverge: the four layers align in order — goals first, then facts, then interests on the table, then weights by accountability.\nOutput: consensus score + decision conditions + open disagreements, every step replayable."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "决策的质量不取决于会开多久，而取决于分歧有没有被看见——议见把看不见的分歧变成可处理的对象。\n对企业团队，可追溯意味着决策能被复盘、被审计，而不是「当时大家都同意了」。",
+          "body_en": "Decision quality isn't about how long the meeting runs; it's about whether the disagreements get seen — Yijian turns invisible friction into a workable object.\nFor enterprise teams, traceability means decisions can be reviewed and audited, instead of \"everyone agreed at the time\"."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/yijian/content/1.jpg",
@@ -176,17 +345,19 @@
       "role_en": "Solo build",
       "award_zh": "",
       "award_en": "",
-      "keywords_zh": "新的 AI 产品，正在成形",
-      "keywords_en": "A new AI product, taking shape",
-      "tags": ["AI Product"],
+      "keywords_zh": "个人管家 Agent · 正在成形",
+      "keywords_en": "Personal agent · taking shape",
+      "tags": [
+        "AI Product"
+      ],
       "url": "",
       "links": [],
       "thumb": "assets/project/meco/thumbnails/1.svg",
       "float": {},
-      "desc_zh": "一个正在做的 AI 产品。等它成形，我会把完整的故事放上来。",
+      "desc_zh": "一个正在做的个人管家 Agent。等它成形，我会把完整的故事放上来。",
       "desc_en": "In progress — a new AI product taking shape.",
-      "one_liner_zh": "",
-      "one_liner_en": "",
+      "one_liner_zh": "你好，我是 Meco 🍄‍🟫——一个正在长大的个人管家，单进程，先把一个人的事照看好。",
+      "one_liner_en": "Hi, I'm Meco 🍄‍🟫 — a personal agent still taking shape. One process, one person's life to look after.",
       "full_description_zh": "一个正在做的 AI 产品。等它成形，我会把完整的故事放上来。",
       "full_description_en": "In progress — a new AI product taking shape. The full story lands here once it does.",
       "tech_stack_zh": "",
@@ -214,20 +385,58 @@
       "award_en": "UABB 2025 · Sole student representative of the section",
       "keywords_zh": "ComfyUI | Gemini · Tripo | 3D 资产 SOP",
       "keywords_en": "ComfyUI | Gemini · Tripo | 3D asset SOP",
-      "tags": ["ComfyUI", "AIGC", "3D Pipeline", "Exhibition"],
+      "tags": [
+        "ComfyUI",
+        "AIGC",
+        "3D Pipeline",
+        "Exhibition"
+      ],
       "url": "",
       "links": [],
       "thumb": "assets/project/uabb/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/uabb/float/1.jpg" },
+      "float": {
+        "reveal": "assets/project/uabb/float/1.jpg"
+      },
       "desc_zh": "ComfyUI 外接 API 的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。",
       "desc_en": "A ComfyUI + API pipeline that cut 50+ exhibits' processing from 30 days to 5.",
-      "one_liner_zh": "50+ 非标展品，处理周期 30 天 → 5 天。",
-      "one_liner_en": "A ComfyUI + API pipeline that cut 50+ exhibits' processing from 30 days to 5.",
+      "one_liner_zh": "你好，我是 UABB 的多模态转译管线——把非标展品变成标准 3D 资产，是我每天的活。",
+      "one_liner_en": "Hi, I'm the multimodal pipeline behind UABB — turning one-off exhibits into standard 3D assets is my day job.",
       "full_description_zh": "我给双年展搭了一条 ComfyUI 外接 API（Gemini / Tripo）的自动化转译工作流，加一套标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。背后是 120+ 次草图与模型迭代，最后我带着这套管线在展会现场做了分享。",
       "full_description_en": "",
       "tech_stack_zh": "ComfyUI · Gemini · Tripo · 3D 资产 SOP",
       "tech_stack_en": "ComfyUI · Gemini · Tripo · 3D asset SOP",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "深港双年展的板块里有 50+ 件非标展品，逐件人工转译要 30 天起步。\n我负责多模态 AIGC，要在展期前把它们全部变成可用的 3D 资产。\n我用 ComfyUI 外接 Gemini / Tripo API 搭了自动化转译工作流，配一套标准化 3D 资产 SOP；背后是 120+ 次草图与模型迭代。\n处理周期从 30 天缩到 5 天；我作为板块唯一学生代表，带着这套管线在展会现场做了分享。",
+          "body_en": "The biennale section held 50+ one-off exhibits; translating them by hand runs 30 days minimum.\nI owned multimodal AIGC and had to turn all of them into usable 3D assets before opening.\nI orchestrated Gemini and Tripo through ComfyUI into an automated translation pipeline, backed by a standardized 3D-asset SOP — with 120+ sketch and model iterations behind it.\nProcessing fell from 30 days to 5; as the section's only student representative, I presented the pipeline on-site."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "展品「非标」意味着每一件的输入都不一样：手绘、照片、文本、实体扫描——传统流程只能逐件手工建。\n变化的是输入，不变的是输出标准。把输出端 SOP 化，输入端交给多模态模型，流程就能自动跑。",
+          "body_en": "One-off exhibits mean every input is different: sketches, photos, text, physical scans — the traditional route is modeling each by hand.\nWhat varies is the input; what never varies is the output standard. Fix the output with an SOP, hand the input to multimodal models, and the process runs itself."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "用 ComfyUI 把 Gemini（理解与转译）和 Tripo（3D 生成）编排成一条可复跑的流水线。\n制定标准化 3D 资产 SOP：命名、面数、贴图、坐标系一次定死，后续环节零沟通成本。\n120+ 次草图与模型迭代，把管线磨到能交付展览级质量。\n作为板块唯一学生代表在展会现场分享方法。",
+          "body_en": "Orchestrated Gemini (understanding & translation) and Tripo (3D generation) into a repeatable ComfyUI pipeline.\nWrote the 3D-asset SOP — naming, poly count, textures, coordinate system fixed once, zero negotiation downstream.\n120+ sketch and model iterations to reach exhibition-grade quality.\nPresented the method on-site as the section's only student representative."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "输入：任意形态的展品素材——图纸、照片、文字描述。\n理解：Gemini 做多模态解析，把素材转译成结构化的生成指令。\n生成：Tripo 产出 3D 模型，ComfyUI 把全流程串成自动执行。\n出厂：按 SOP 校验命名、面数与贴图，直接进入展陈管线。",
+          "body_en": "Input: exhibit material in any form — drawings, photos, text descriptions.\nUnderstand: Gemini parses the material into structured generation instructions.\nGenerate: Tripo produces the 3D model; ComfyUI chains the whole run automatically.\nShip: SOP checks on naming, poly count and textures, then straight into the exhibition pipeline."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "30 天到 5 天不是加班加出来的，是流程换出来的——策展团队第一次能在展期内容上做迭代。\n这条管线也是我从建筑走向 AI 产品的枢纽：它证明工作流思维能搬进任何生产场景。",
+          "body_en": "Thirty days to five wasn't overtime; it was a different process — for the first time the curatorial team could iterate on exhibition content.\nThis pipeline is also my hinge from architecture to AI product: proof that workflow thinking transfers to any production floor."
+        }
+      },
       "media": [
         {
           "type": "video-local",
@@ -264,20 +473,57 @@
       "award_en": "UABB Bi-city Biennale · Featured work of the section",
       "keywords_zh": "火星人居 | 混合现实展览 | UABB",
       "keywords_en": "Mars habitat | MR exhibition | UABB",
-      "tags": ["Mars Habitat", "MR Exhibition", "UABB"],
+      "tags": [
+        "Mars Habitat",
+        "MR Exhibition",
+        "UABB"
+      ],
       "url": "uploads/portfolio.pdf#page=3",
       "links": [],
       "thumb": "assets/project/after-silence/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/after-silence/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/after-silence/content/2.jpg"
+      },
       "desc_zh": "以首座火星基地「首航组团」为原型的「火星人居闭环」。",
       "desc_en": "When the engines fall silent, life begins — a closed habitat loop for the first Mars base.",
-      "one_liner_zh": "",
-      "one_liner_en": "When the engines fall silent, life begins — a closed habitat loop for the first Mars base.",
+      "one_liner_zh": "你好，我是 After_Silence——引擎沉寂之后，火星上真正的生活从我这里开始。",
+      "one_liner_en": "Hi, I'm After_Silence — when the engines fall silent, life on Mars begins with me.",
       "full_description_zh": "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」以首座火星基地「首航组团」为原型，把功能模块转化为生活场景，提出居住、能源、科研相互依存的「火星人居闭环」。作为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
       "full_description_en": "",
-      "tech_stack_zh": "",
-      "tech_stack_en": "",
-      "sections": {},
+      "tech_stack_zh": "MR 混合现实展陈 · 影片分镜叙事",
+      "tech_stack_en": "MR exhibition · storyboard narrative",
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "火星叙事大多停在登陆那一刻，「住下来之后怎么生活」很少被认真设计。\n我要把首座基地从功能模块清单，变成能承载日常的生活场景。\n以「首航组团」为原型，做了居住、能源、科研相互依存的「火星人居闭环」，并制作了 MR 影片分镜叙事。\n成为板块代表展品，以混合现实形式在深港双年展主展厅虚拟上线。",
+          "body_en": "Mars stories mostly end at touchdown; \"how you live afterwards\" rarely gets designed seriously.\nI wanted the first base to be daily life, not a checklist of functional modules.\nUsing the \"first-voyage cluster\" as prototype, I designed a closed habitat loop where living, energy and research depend on each other, plus an MR storyboard film.\nIt became the section's featured work, launched virtually in the biennale's main hall in mixed reality."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "「当震耳欲聋的引擎彻底沉寂，真正的生活才刚刚开始。」建筑要回答的不是能不能到火星，而是到了之后的每一天。\n极端环境把「互相依存」从美德变成生存条件——这正是闭环设计的意义。",
+          "body_en": "\"When the deafening engines finally fall silent, real life has only just begun.\" Architecture's question isn't whether we can reach Mars — it's every day after arrival.\nExtreme environments turn interdependence from a virtue into a survival condition; that is what the closed loop is for."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "把功能模块转译成生活场景：居住不是舱体清单，是一天的动线。\n居住、能源、科研三个系统互为输入输出，构成人居闭环。\n为展览制作 MR 叙事：从 PRELUDE 到 TERRAFORM 的影片分镜，观众在主展厅虚拟登陆。",
+          "body_en": "Translated functional modules into scenes of living: habitation as a day's routine, not a list of pods.\nLiving, energy and research feed each other as inputs and outputs, closing the habitat loop.\nBuilt the MR narrative for the exhibition: a storyboard from PRELUDE to TERRAFORM, letting visitors land virtually in the main hall."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "居住：舱体围绕公共穹顶展开，日常动线全部在受保护的内环完成。\n能源：能源系统同时供给居住与科研，废热回用于生活维持。\n科研：科研产出反哺基地扩建，形成「生存—研究—生长」的循环。\n叙事：MR 影片以时间轴分镜（01 PRELUDE → 09 TERRAFORM）讲述从抵达至改造的全过程。",
+          "body_en": "Living: pods unfold around the public dome; daily routines stay inside the protected inner ring.\nEnergy: one system feeds both living and research, with waste heat recycled into life support.\nResearch: research output feeds base expansion — a survive–study–grow cycle.\nNarrative: the MR film tells arrival-to-terraforming on a timeline storyboard (01 PRELUDE → 09 TERRAFORM)."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "板块代表展品 · 深港城市建筑双城双年展主展厅虚拟上线。\n对我来说，它是一次完整的「把叙事当系统设计」的练习——后来做 AI 产品的方法，在这里已经成形。",
+          "body_en": "Featured work of its section, launched virtually in the UABB main hall.\nFor me it was a full rehearsal of designing narrative as a system — the method I later brought to AI products took shape here."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/after-silence/content/1.jpg",
@@ -304,20 +550,56 @@
       "award_en": "Vitality Cup GBA Design Competition · First Prize",
       "keywords_zh": "桥上书房 | 城市更新 | 移动书柜",
       "keywords_en": "Bridge library | Urban renewal | Mobile bookshelves",
-      "tags": ["Bridge Library", "Urban Renewal"],
+      "tags": [
+        "Bridge Library",
+        "Urban Renewal"
+      ],
       "url": "uploads/portfolio.pdf#page=5",
       "links": [],
       "thumb": "assets/project/upper-via/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/upper-via/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/upper-via/content/2.jpg"
+      },
       "desc_zh": "把公共空间「上桥」外置水面：移动书柜让同一座桥在三种模式间切换。",
       "desc_en": "A bridge-library stitching Lychee Bay's two banks back together.",
-      "one_liner_zh": "",
-      "one_liner_en": "A bridge-library stitching Lychee Bay's two banks back together.",
+      "one_liner_zh": "你好，我是上桥——荔枝湾上的一座桥上书房，一天里换三副面孔。",
+      "one_liner_en": "Hi, I'm Upper-Via — a bridge library over Lychee Bay that changes faces three times a day.",
       "full_description_zh": "荔枝湾水系曾聚人，如今却隔开两岸。高密度老城无地可用，便把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。绣花针式的城市更新，并与拟落地项目对接实施。",
       "full_description_en": "",
       "tech_stack_zh": "",
       "tech_stack_en": "",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "荔枝湾的水系曾把人聚在一起，如今却隔开两岸；高密度老城里找不出一块新的公共空间用地。\n我们要在不占地的前提下，把两岸重新缝回去。\n我作为项目组长，把公共空间「上桥」外置水面：移动书柜让同一座桥在书屋、放学等候、社区活动三种模式间切换。\n拿了「活力杯」大湾区高校设计大赛一等奖，并与拟落地项目对接实施。",
+          "body_en": "Lychee Bay's waterways once gathered people; now they split the two banks — and the dense old town has no land left for new public space.\nWe had to stitch the banks back together without claiming a single plot.\nAs project lead, I pushed the public space \"onto the bridge\", out over the water: mobile bookshelves let one bridge switch between reading room, after-school waiting area and community event space.\nFirst prize at the Vitality Cup GBA design competition, and matched with a real project for implementation."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "老城更新最缺的不是想法，是用地。水面是唯一没被占满的「空地」。\n桥本来就是公共的——给它一套可变的家具系统，就能一物三用。",
+          "body_en": "What old-town renewal lacks isn't ideas — it's land. The water surface is the only \"vacant lot\" left.\nA bridge is public by nature; give it a reconfigurable furniture system and one structure serves three lives."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "「绣花针式」介入：不拆一栋房、不占一寸地，用一座桥补齐两岸的公共空间缺口。\n移动书柜系统：书柜沿滑轨重组空间，书屋、等候、活动三种模式按时段切换。\n方案与拟落地项目对接，不止于图纸。",
+          "body_en": "A needlepoint intervention: no demolition, no land take — one bridge closes the public-space gap between two banks.\nThe mobile bookshelf system reconfigures the deck on rails: reading room, waiting area, event space by time of day.\nMatched with a project slated for construction — it didn't stop at drawings."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "早晚：书柜靠边收拢，桥面是通勤走廊。\n放学：书柜围合出等候区，家长和孩子有处可坐。\n周末：书柜排成阅读舱，桥变成水上书屋；社区活动时整体收纳，腾出完整场地。",
+          "body_en": "Rush hours: shelves park at the edges; the deck is a commuting corridor.\nSchool's out: shelves enclose a waiting nook where parents and kids can sit.\nWeekends: shelves line up into reading bays and the bridge becomes a floating library; for community events they stow away entirely, freeing the whole deck."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "「活力杯」大湾区高校设计大赛 · 一等奖。\n它验证了我的一个信念：约束越硬，系统设计越值钱——这条信念后来贯穿我所有的作品。",
+          "body_en": "First prize, Vitality Cup GBA university design competition.\nIt proved a belief I've kept ever since: the harder the constraints, the more a systems design is worth."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/upper-via/content/1.jpg",
@@ -345,20 +627,57 @@
       "award_en": "2025 Excellent Graduation Design Exhibition · Distinction",
       "keywords_zh": "工业上楼 | 通风廊道 | 毕业设计",
       "keywords_en": "Industry-upstairs | Wind corridor | Graduation project",
-      "tags": ["Industry-Upstairs", "Wind Corridor", "Low Energy"],
+      "tags": [
+        "Industry-Upstairs",
+        "Wind Corridor",
+        "Low Energy"
+      ],
       "url": "uploads/portfolio.pdf#page=9",
       "links": [],
       "thumb": "assets/project/air-cube/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/air-cube/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/air-cube/content/2.jpg"
+      },
       "desc_zh": "「工业上楼」产城融合：二层整体架空为公共空间、兼作通风廊道。",
       "desc_en": "A factory-upstairs block whose public void doubles as its cooling wind corridor.",
-      "one_liner_zh": "",
-      "one_liner_en": "A factory-upstairs block whose public void doubles as its cooling wind corridor.",
+      "one_liner_zh": "你好，我是风贯·立方——一栋把厂房抬上楼、把风留在楼里的研发中心。",
+      "one_liner_en": "Hi, I'm Air Cube — a factory lifted upstairs, with the wind kept flowing through.",
       "full_description_zh": "为科力新能源大湾区 IDC 研发中心做的「工业上楼」产城融合：生产抬升至三层及以上，二层整体架空为公共空间、兼作通风廊道，热压通风自然降温；穿孔铝板幕墙与垂直绿化动态遮阳，冷巷架空层调节微气候，装配式钢结构、光伏与雨水循环压低能耗。",
       "full_description_en": "",
-      "tech_stack_zh": "",
-      "tech_stack_en": "",
-      "sections": {},
+      "tech_stack_zh": "装配式钢结构 · 光伏一体化 · 被动式通风",
+      "tech_stack_en": "Prefab steel · integrated PV · passive ventilation",
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "大湾区产业用地紧张，「工业上楼」成了趋势；但生产、办公、公共空间叠在一起，很容易闷成一个罐子。\n我的毕业设计要为科力新能源的 IDC 研发中心，做一栋会呼吸的产城融合体。\n我把生产抬升至三层以上，二层整体架空为公共空间兼通风廊道，热压通风自然降温；配穿孔铝板动态遮阳、装配式钢结构、光伏与雨水循环。\n拿了 2025 优秀毕业设计展卓越奖。",
+          "body_en": "Industrial land in the Greater Bay Area is scarce, so \"industry upstairs\" is the trend — but stacking production, offices and public space easily seals the block into a can.\nMy graduation project: a breathing industry-city hybrid for Keli New Energy's IDC research center.\nI lifted production above the third floor and voided the entire second floor as public space doubling as a wind corridor, cooled by stack-effect ventilation — with perforated aluminum dynamic shading, prefab steel, PV and rainwater recycling.\nDistinction at the 2025 Excellent Graduation Design Exhibition."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "工业上楼解决的是用地，制造的是新问题：叠起来的体量怎么散热、怎么让人愿意停留。\n与其用设备硬抗，不如让建筑形体自己组织气流——被动式优先，主动式兜底。",
+          "body_en": "Industry-upstairs solves land and creates new problems: how a stacked mass sheds heat, and why anyone would linger in it.\nRather than fighting with machinery, let the building's form organize the airflow itself — passive first, active as backup."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "二层整体架空：一个动作同时解决公共空间与通风廊道两个问题。\n热压通风与冷巷架空层调节微气候，穿孔铝板幕墙与垂直绿化做动态遮阳。\n装配式钢结构、光伏一体化与雨水循环，把能耗压到底。",
+          "body_en": "Voiding the whole second floor: one move that answers both public space and wind corridor.\nStack-effect ventilation and cool-alley voids temper the microclimate; perforated aluminum and vertical greening handle dynamic shading.\nPrefab steel, integrated PV and rainwater recycling push energy use to the floor."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "抬升：生产层上三楼，地面留给城市。\n架空：二层贯通的公共层就是风道，热压差驱动气流自然穿过。\n表皮：穿孔铝板按日照角度变化开孔率，垂直绿化参与降温。\n循环：光伏供电、雨水回用，能耗闭环。",
+          "body_en": "Lift: production moves above level three; the ground stays with the city.\nVoid: the through-running second floor is the duct — stack pressure drives the air across.\nSkin: perforation rates follow the sun's angle; vertical greening joins the cooling.\nLoop: PV powers, rainwater returns — the energy cycle closes."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "2025 优秀毕业设计展 · 卓越奖。\n「公共空间兼作基础设施」是我在这个作品里学会的杠杆：一个设计动作，要解决两个以上的问题。",
+          "body_en": "Distinction, 2025 Excellent Graduation Design Exhibition.\n\"Public space doubling as infrastructure\" is the lever I learned here: one design move should solve more than one problem."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/air-cube/content/1.jpg",
@@ -385,20 +704,57 @@
       "award_en": "Delta Cup International Solar Building Design Competition · Merit Award",
       "keywords_zh": "零碳科技馆 | 岭南园林 | 光伏一体化",
       "keywords_en": "Zero-carbon pavilion | Lingnan garden | PV integration",
-      "tags": ["Zero-carbon", "Lingnan Garden", "Solar"],
+      "tags": [
+        "Zero-carbon",
+        "Lingnan Garden",
+        "Solar"
+      ],
       "url": "",
       "links": [],
       "thumb": "assets/project/hidden-lingnan-garden/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/hidden-lingnan-garden/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/hidden-lingnan-garden/content/2.jpg"
+      },
       "desc_zh": "基于建筑能耗与文化回应的科技馆设计——以岭南庭园为原型，节能藏进园林。",
       "desc_en": "A science pavilion designed around energy use and cultural response, patterned on the Lingnan garden.",
-      "one_liner_zh": "",
-      "one_liner_en": "",
+      "one_liner_zh": "你好，我是绿光·隐园——一座把节能藏进岭南园林的零碳科技馆。",
+      "one_liner_en": "Hi, I'm Hidden–Lingnan Garden — a zero-carbon science pavilion that hides its engineering inside a Lingnan garden.",
       "full_description_zh": "基于建筑能耗与文化回应的科技馆设计。以岭南庭园为原型：天井与院廊组织气候适应性的游园动线，双层通风幕墙与光伏一体化把节能系统藏进园林语言。",
       "full_description_en": "",
-      "tech_stack_zh": "",
-      "tech_stack_en": "",
-      "sections": {},
+      "tech_stack_zh": "光伏一体化 · 双层通风幕墙",
+      "tech_stack_en": "Integrated PV · double-skin ventilated façade",
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "「台达杯」的命题是广州科教城的文化科技馆：既要展示零碳技术，又不能把建筑做成设备说明书。\n我想让节能系统隐形，让园林显形。\n以岭南庭园为原型：天井与院廊组织气候适应性的游园动线，双层通风幕墙与光伏一体化把设备融进建筑语言。\n拿了「台达杯」国际太阳能建筑设计竞赛优秀奖。",
+          "body_en": "The Delta Cup brief: a culture-and-science pavilion for Guangzhou's science city — one that demonstrates zero-carbon technology without reading like an equipment manual.\nI wanted the engineering invisible and the garden visible.\nPrototyped on the Lingnan garden: courtyards and cloisters organize a climate-adaptive visiting route, while the double-skin façade and integrated PV dissolve the systems into the architecture.\nMerit Award, Delta Cup International Solar Building Design Competition."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "岭南园林本来就是一套气候机器：天井拔风、院廊遮阳、水面降温——老手法就是被动式节能的原型。\n把现代设备接到这套原型上，技术就不需要被「展示」，它本身就是空间体验。",
+          "body_en": "The Lingnan garden was always a climate machine: courtyards draw the air, cloisters shade the sun, water cools the ground — the old craft is passive design's prototype.\nPlug modern systems into that prototype and the technology no longer needs \"exhibiting\"; it becomes the spatial experience itself."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "天井 × 院廊的游园动线同时是通风路径——观展路线与气流路线同构。\n双层通风幕墙与屋面光伏一体化，设备隐于形体。\n「绿光」与「隐园」互为表里：能源是显性的展项，园林是隐性的机器。",
+          "body_en": "The courtyard-and-cloister route doubles as the ventilation path — visitors and air travel the same line.\nDouble-skin ventilated façade and roof-integrated PV keep the machinery inside the form.\n\"Green light\" and \"hidden garden\" are two faces of one thing: energy as the visible exhibit, the garden as the invisible machine."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "拔风：天井串联的负压把热空气抽出屋面。\n遮阳：院廊与深挑檐把直射阳光挡在游线之外。\n发电：光伏板即屋面材料，双层幕墙的空腔预热、排热两用。\n游园：观众沿园林动线行走，路过的每一处「景」都是一个气候装置。",
+          "body_en": "Draft: chained courtyards create the negative pressure that pulls hot air out through the roof.\nShade: cloisters and deep eaves keep direct sun off the visiting route.\nGenerate: PV panels are the roofing material; the façade cavity preheats in winter and exhausts in summer.\nStroll: visitors walk the garden route, and every \"scene\" they pass is a working climate device."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "「台达杯」国际太阳能建筑设计竞赛 · 优秀奖。\n它让我确认：传统不是风格库，是被验证过几百年的技术方案。",
+          "body_en": "Merit Award, Delta Cup International Solar Building Design Competition.\nIt confirmed something for me: tradition isn't a style library — it's a technical solution proven over centuries."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/hidden-lingnan-garden/content/1.jpg",
@@ -425,20 +781,57 @@
       "award_en": "Milan Design Week China Universities Exhibition · First Prize",
       "keywords_zh": "山地旅宿 | 公共风廊 | 地景",
       "keywords_en": "Mountain hotel | Public air corridor | Landscape",
-      "tags": ["Mountain Hotel", "Wind Corridor", "Landscape"],
+      "tags": [
+        "Mountain Hotel",
+        "Wind Corridor",
+        "Landscape"
+      ],
       "url": "",
       "links": [],
       "thumb": "assets/project/vista-out/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/vista-out/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/vista-out/content/2.jpg"
+      },
       "desc_zh": "基于地景最大化与公共风道的山地旅馆设计——客房顺山势展开，与山景相眺。",
       "desc_en": "A mountain hotel designed around landscape maximisation and a public air duct.",
-      "one_liner_zh": "",
-      "one_liner_en": "",
+      "one_liner_zh": "你好，我是远山·眺——一座顺着山势展开、把夏季风当走廊用的山地旅宿。",
+      "one_liner_en": "Hi, I'm Vista–Out — a mountainside hotel that unfolds along the slope and uses the summer wind as its corridor.",
       "full_description_zh": "基于地景最大化与公共风道的山地旅馆设计。公共风廊贯穿体量、组织通风，客房顺山势展开，与山景相眺。课程设计评分 94/100。",
       "full_description_en": "",
       "tech_stack_zh": "",
       "tech_stack_en": "",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "从化的山地旅宿基地，最大的资源是山景和穿谷而过的夏季主导风，最大的约束是地形。\n课程要求地景最大化——建筑不能挡山，还要借山。\n我让公共风廊贯穿体量、组织自循环通风，客房顺山势层层展开、与山景相眺。\n课程评分 94/100，入选米兰设计周中国高校设计学科师生优秀作品展并拿下一等奖。",
+          "body_en": "On this Conghua mountain site, the biggest assets are the view and the summer wind through the valley; the biggest constraint is the terrain.\nThe studio brief demanded landscape maximization — the building must not block the mountain, and should borrow it.\nI ran a public air corridor through the volume for self-circulating ventilation, and unfolded the guest rooms along the slope, each gazing at the ridgeline.\nScored 94/100, selected for the Milan Design Week China universities exhibition, First Prize."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "山地建筑常见的错误，是把平地建筑搬上山再修挡土墙。地形不是障碍，是现成的剖面设计。\n风从谷里来——把主导风向变成空间组织逻辑，通风和取景可以是同一个动作。",
+          "body_en": "The usual mountain-building mistake is hauling a flatland building uphill and retaining-walling the difference. Terrain isn't an obstacle — it's a ready-made section.\nThe wind comes up the valley; make the prevailing wind the organizing logic, and ventilation and view-framing become one move."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "公共风廊：贯穿体量的开放走廊，既是交通、又是风道、又是观景台。\n客房沿等高线错层展开，每一间都有无遮挡的山景。\n剖面即设计：体量嵌入山体，屋面延续山势。",
+          "body_en": "The public air corridor: one open passage that is circulation, duct and belvedere at once.\nGuest rooms stagger along the contours, every one with an unblocked mountain view.\nThe section is the design: volumes set into the slope, roofs continuing the hillside."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "迎风：风廊开口对准夏季主导风向，穿堂风自循环。\n展开：客房沿山势退台，上一层的屋面是下一层的景观前庭。\n眺望：公共节点全部朝向远山取景——「眺」是动线的终点，也是奖励。",
+          "body_en": "Face the wind: corridor openings align with the prevailing summer wind for self-driven cross-ventilation.\nUnfold: rooms terrace down the slope; each roof is the next level's landscape forecourt.\nGaze: every public node frames the distant ridge — the \"vista\" is the route's destination and its reward."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "米兰设计周中国高校设计学科师生优秀作品展 · 一等奖；课程评分 94/100。\n这是我第一次把「一种自然力」当作整个方案的组织者——后来的风贯·立方，是它的城市版。",
+          "body_en": "First Prize at the Milan Design Week China universities exhibition; studio score 94/100.\nIt was the first time I let a single natural force organize an entire scheme — Air Cube, later, is its urban sequel."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/vista-out/content/1.jpg",
@@ -464,20 +857,56 @@
       "award_en": "NCDA National Digital Design Competition · First Prize",
       "keywords_zh": "上盖租赁社区 | 隔音幕墙 | 立体漫游环",
       "keywords_en": "Depot-top community | Acoustic façade | Roaming loop",
-      "tags": ["Acoustic Façade", "Vertical Public Realm"],
+      "tags": [
+        "Acoustic Façade",
+        "Vertical Public Realm"
+      ],
       "url": "uploads/portfolio.pdf#page=18",
       "links": [],
       "thumb": "assets/project/ring-world/thumbnails/1.jpg",
-      "float": { "reveal": "assets/project/ring-world/content/2.jpg" },
+      "float": {
+        "reveal": "assets/project/ring-world/content/2.jpg"
+      },
       "desc_zh": "把公共空间垂直翻转：双层立体漫游环 + 参数化动态隔音幕墙，释放 5000 ㎡ 共享场域。",
       "desc_en": "The public realm flipped vertical — a roaming loop and an acoustic façade trading view against silence.",
-      "one_liner_zh": "",
-      "one_liner_en": "The public realm flipped vertical — a roaming loop and an acoustic façade trading view against silence.",
+      "one_liner_zh": "你好，我是环·世界——车辆段上盖的租赁社区，用一条漫游环和一面会调节的隔音墙，换回安静与视野。",
+      "one_liner_en": "Hi, I'm The Ring-World — a depot-top rental community that wins back quiet and views with a roaming loop and an adaptive acoustic wall.",
       "full_description_zh": "车辆段上盖、昼间 72 分贝、公共空间仅为商品住宅 35% 的租赁社区。把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面以参数化动态隔音幕墙围合，依据 SoundPlan 噪声模拟实时权衡视野与隔音，释放出 5000 ㎡ 的共享场域。",
       "full_description_en": "",
       "tech_stack_zh": "SoundPlan 噪声模拟 · 参数化幕墙",
       "tech_stack_en": "SoundPlan simulation · parametric façade",
-      "sections": {},
+      "sections": {
+        "tldr": {
+          "title_zh": "先说结论",
+          "title_en": "The Short Version",
+          "body_zh": "基地在车辆段上盖：昼间 72 分贝，公共空间只有商品住宅的 35%。\n我们要在噪声和局促里，给租户造出像样的公共生活。\n我作为项目组长把公共空间垂直翻转：双层立体漫游环串联屋顶花园与共享客厅；临声面用参数化动态隔音幕墙，按 SoundPlan 噪声模拟实时权衡视野与隔音。\n净释放 5000 ㎡ 共享场域，拿下 NCDA 未来设计师全国数字设计大赛一等奖。",
+          "body_en": "The site sits on a metro depot: 72 dB by day, with public space at only 35% of a market-rate compound.\nInside that noise and tightness, we had to build renters a public life worth having.\nAs project lead I flipped the public realm vertical: a two-level roaming loop threads roof gardens and shared lounges, while the noise-facing façade runs a parametric acoustic skin tuned by SoundPlan simulation, trading view against silence point by point.\nIt freed up 5,000 ㎡ of shared ground and took First Prize at the NCDA national digital design competition."
+        },
+        "why_built": {
+          "title_zh": "为什么做这个",
+          "title_en": "Why",
+          "body_zh": "上盖社区的公共空间在平面上已经输了——地被轨道设施占满，只能向立体找。\n隔音和视野在传统幕墙里是零和的；参数化让它变成随噪声实时调节的连续谱。",
+          "body_en": "On a depot roof, the public realm has already lost the ground game — the tracks own the plan, so the section is the only way out.\nIn a conventional façade, silence and view are zero-sum; parametrics turn them into a continuous dial tuned to the noise."
+        },
+        "key_contributions": {
+          "title_zh": "核心贡献",
+          "title_en": "Key Contributions",
+          "body_zh": "公共空间垂直翻转：双层漫游环把屋顶花园、共享客厅串成连续的立体公共层。\n参数化动态隔音幕墙：以 SoundPlan 噪声模拟为输入，逐面板权衡视野与隔音。\n在 35% 的先天缺口下，净释放 5000 ㎡ 共享场域。",
+          "body_en": "Flipped the public realm vertical: the two-level roaming loop strings roof gardens and shared lounges into one continuous public layer.\nThe parametric acoustic façade takes SoundPlan simulation as input and tunes every panel between view and silence.\nAgainst a 35% built-in deficit, it nets 5,000 ㎡ of shared ground."
+        },
+        "how_it_works": {
+          "title_zh": "系统如何运作",
+          "title_en": "How It Works",
+          "body_zh": "模拟：SoundPlan 给出立面逐点的噪声压力图。\n响应：幕墙面板按噪声等级调整开合角度——吵处闭合隔音，静处打开看景。\n漫游：双层环廊把分散的公共节点，接成一条不落地的散步道。",
+          "body_en": "Simulate: SoundPlan maps noise pressure point by point across the façade.\nRespond: panels tilt by noise level — sealed where it's loud, open where it's quiet.\nRoam: the double loop links the scattered public nodes into one promenade that never touches the ground."
+        },
+        "why_it_matters": {
+          "title_zh": "影响与意义",
+          "title_en": "Impact",
+          "body_zh": "「NCDA」未来设计师全国数字设计大赛 · 一等奖。\n它是我第一次把「数据驱动设计」跑通全程：从噪声模拟到面板参数，每个判断都有依据。",
+          "body_en": "First Prize, NCDA national digital design competition.\nIt was my first end-to-end run of data-driven design: from noise simulation to panel parameters, every judgment had evidence behind it."
+        }
+      },
       "media": [],
       "contentImages": [
         "assets/project/ring-world/content/1.jpg",
