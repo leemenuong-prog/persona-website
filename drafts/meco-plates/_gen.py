@@ -612,6 +612,223 @@ def plate_flow():
     return '\n'.join('  ' + e for e in S.el)
 
 
+# ══════════════════════ 流程横图 · 通用件与四个项目 ══════════════════════
+NW, NH = 180, 92
+
+def f_node(S, x, y, label, w=NW):
+    S.raw(f'<rect x="{x}" y="{y}" width="{w}" height="{NH}" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<text x="{x + w/2}" y="{y + NH - 18}" text-anchor="middle" {SMALLCAP}>{label}</text>')
+
+def f_arrow(S, p, q, lv='L1', label=None):
+    S.line2(p, q, lv)
+    dx, dy = q[0]-p[0], q[1]-p[1]
+    n = math.hypot(dx, dy); dx, dy = dx/n, dy/n
+    s = 8
+    S.path2(f'M {fmt(q[0]-dx*s-dy*s*0.7)} {fmt(q[1]-dy*s+dx*s*0.7)} L {fmt(q[0])} {fmt(q[1])} '
+            f'L {fmt(q[0]-dx*s+dy*s*0.7)} {fmt(q[1]-dy*s-dx*s*0.7)}', 'L1')
+    if label:
+        S.raw(f'<text x="{fmt((p[0]+q[0])/2)}" y="{fmt((p[1]+q[1])/2 - 10)}" '
+              f'text-anchor="middle" {ITAL}>{label}</text>')
+
+def f_center(S, name, tagline, MX=470, MY=86, MW=260, MH=348):
+    S.raw(f'<rect x="{MX}" y="{MY}" width="{MW}" height="{MH}" {_a("L0", "#FFFFFF")}/>')
+    S.raw(f'<text x="{MX+MW/2}" y="{MY+34}" text-anchor="middle" {SMALLCAP}>{name}</text>')
+    S.raw(f'<text x="{MX+MW/2}" y="{MY+MH-20}" text-anchor="middle" {ITAL}>{tagline}</text>')
+
+def f_ital(S, x, y, text, size=15):
+    S.raw(f'<text x="{x}" y="{y}" text-anchor="middle" font-family="{SERIF}" font-style="italic" '
+          f'font-size="{size}" letter-spacing="1" {HALO} fill="#999999">{text}</text>')
+
+# ── 字形库（2D 屏幕坐标） ──
+def g_person(S, cx, cy):
+    S.raw(f'<circle cx="{cx}" cy="{cy-8}" r="7" {_a("L1", "#FFFFFF")}/>')
+    S.path2(f'M {cx-13} {cy+12} A 13 13 0 0 1 {cx+13} {cy+12}', 'L1')
+
+def g_doc(S, x, y, w=30, h=38, nlines=3, check=False):
+    S.raw(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" {_a("L1", "#FFFFFF")}/>')
+    for i in range(nlines):
+        S.line2((x+6, y+9+i*8), (x+w-6, y+9+i*8), 'L2')
+    if check:
+        S.path2(f'M {x+7} {y+h-11} L {x+12} {y+h-6} L {x+22} {y+h-16}', 'L1')
+
+def g_gear(S, cx, cy, r=15):
+    S.raw(f'<circle cx="{cx}" cy="{cy}" r="{r}" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<circle cx="{cx}" cy="{cy}" r="{r-9}" {_a("L2")}/>')
+    for i in range(8):
+        th = i*math.pi/4
+        S.line2((cx+r*math.cos(th), cy+r*math.sin(th)), (cx+(r+5)*math.cos(th), cy+(r+5)*math.sin(th)), 'L1')
+
+def g_trail(S, x, y):
+    S.path2(f'M {x} {y+16} Q {x+18} {y-12} {x+34} {y+6} Q {x+46} {y+18} {x+58} {y}',
+            'L3')
+    S.raw(f'<circle cx="{x}" cy="{y+16}" r="3" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<circle cx="{x+34}" cy="{y+6}" r="3" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<circle cx="{x+58}" cy="{y}" r="3" fill="#6F6F6F"/>')
+
+def g_minicube(S, cx, cy, s=11, solid=False):
+    c = Scene(cx, cy)
+    c.box(-s, -s, 0, 2*s, 2*s, 2*s, lv='L1', hidden='L3',
+          fill='#FFFFFF' if solid else None)
+    S.el.extend(c.el)
+
+def g_cards3(S, cx, cy):
+    for i in range(3):
+        S.raw(f'<rect x="{cx-24+i*10}" y="{cy-16+i*6}" width="34" height="26" {_a("L1", "#FFFFFF")}/>')
+    S.path2(f'M {cx-8} {cy+6} L {cx-3} {cy+11} L {cx+7} {cy+1}', 'L1')
+
+def g_squares(S, x, y, n, cols, cell=16, gap=8):
+    for i in range(n):
+        r, c = divmod(i, cols)
+        S.raw(f'<rect x="{x+c*(cell+gap)}" y="{y+r*(cell+gap)}" width="{cell}" height="{cell}" {_a("L2", "#FFFFFF")}/>')
+
+def g_ringbars(S, x, y):
+    S.path2(f'M {x+8} {y+10} A 9 9 0 1 1 {x+16} {y+1}', 'L1')
+    for i, hh in enumerate((8, 14, 11)):
+        S.raw(f'<rect x="{x+22+i*6}" y="{y+18-hh}" width="4" height="{hh}" {_a("L1", "#FFFFFF")}/>')
+
+def g_gauge(S, cx, cy, r=16):
+    S.path2(f'M {cx-r} {cy} A {r} {r} 0 0 1 {cx+r} {cy}', 'L1')
+    S.line2((cx, cy), (cx+r*0.55, cy-r*0.65), 'L1')
+    S.raw(f'<circle cx="{cx}" cy="{cy}" r="2" fill="#6F6F6F"/>')
+
+def g_funnel(S, cx, y, widths=(96, 70, 44, 18), step=22):
+    for i, w in enumerate(widths):
+        S.line2((cx-w/2, y+i*step), (cx+w/2, y+i*step), 'L1')
+        if i < len(widths)-1:
+            w2 = widths[i+1]
+            S.line2((cx-w/2, y+i*step), (cx-w2/2, y+(i+1)*step), 'L2')
+            S.line2((cx+w/2, y+i*step), (cx+w2/2, y+(i+1)*step), 'L2')
+
+def g_dotsarc(S, cx, cy, r=52, n=7):
+    for i in range(n):
+        th = math.pi + (math.pi * i / (n-1))
+        S.raw(f'<circle cx="{fmt(cx+r*math.cos(th))}" cy="{fmt(cy+r*math.sin(th)*0.55)}" r="4" {_a("L1", "#FFFFFF")}/>')
+
+def g_photo(S, x, y, w=34, h=26):
+    S.raw(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<circle cx="{x+10}" cy="{y+9}" r="3" {_a("L2")}/>')
+    S.path2(f'M {x+4} {y+h-4} L {x+14} {y+11} L {x+22} {y+19} L {x+27} {y+14} L {x+w-4} {y+h-4}', 'L2')
+
+def g_textlines(S, x, y, w=34):
+    for i, wl in enumerate((1.0, 0.8, 0.9, 0.55)):
+        S.line2((x, y+i*7), (x+w*wl, y+i*7), 'L1' if i == 0 else 'L2')
+
+def g_plinth(S, cx, cy):
+    S.raw(f'<rect x="{cx-22}" y="{cy-14}" width="44" height="6" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<rect x="{cx-14}" y="{cy-8}" width="28" height="26" {_a("L1", "#FFFFFF")}/>')
+
+def g_bubble(S, cx, cy):
+    S.raw(f'<rect x="{cx-13}" y="{cy-10}" width="26" height="19" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<polyline points="{cx-5},{cy+9} {cx-9},{cy+17} {cx+3},{cy+9}" {_a("L1", "#FFFFFF")}/>')
+    for i in (-7, 0, 7):
+        S.raw(f'<circle cx="{cx+i}" cy="{cy-0.5}" r="1.6" fill="#6F6F6F"/>')
+
+def g_slabs(S, cx, cy):
+    for i in range(3):
+        S.raw(f'<rect x="{cx-16+i*3}" y="{cy-11+i*7}" width="32" height="6" {_a("L1", "#FFFFFF")}/>')
+
+def f_mini_arrow(S, x0, x1, y):
+    f_arrow(S, (x0, y), (x1, y), 'L2')
+
+# ── Pears：看一遍 → 蒸馏成说明书 → 生成专属 Agent ──
+def flow_pears():
+    S = Scene(0, 0)
+    f_node(S, 70, 214, 'YOU')
+    g_person(S, 70+NW/2, 244)
+    f_center(S, 'PEARS', 'one extension.')
+    g_trail(S, 495, 190)
+    f_mini_arrow(S, 560, 578, 192)
+    g_doc(S, 586, 168, check=True)
+    f_mini_arrow(S, 624, 642, 192)
+    g_gear(S, 672, 190)
+    f_ital(S, 601, 246, 'you confirm.')
+    f_node(S, 950, 150, 'YOUR AGENT')
+    g_minicube(S, 950+NW/2, 190, solid=True)
+    f_node(S, 950, 342, 'AGENT APPS')
+    g_squares(S, 950+NW/2-25, 366, 4, 2, cell=13, gap=8)
+    f_arrow(S, (250, 260), (470, 260), label='works once.')
+    f_arrow(S, (730, 220), (950, 196), label='replays.')
+    f_arrow(S, (730, 300), (950, 388), label='shared.')
+    return '\n'.join('  ' + e for e in S.el)
+
+# ── Co-work：飞书进 → 七工具一套记忆 → 飞书回 + ROI ──
+def flow_cowork():
+    S = Scene(0, 0)
+    f_node(S, 70, 150, 'FEISHU')
+    g_bubble(S, 70+NW/2, 180)
+    f_node(S, 70, 342, 'SOURCES')
+    g_slabs(S, 70+NW/2, 372)
+    f_center(S, 'CO-WORK', 'one workbench.')
+    g_squares(S, 508, 150, 7, 4)
+    S.line2((508, 208), (652, 208), 'L2')
+    g_cards3(S, 600, 280)
+    f_ital(S, 600, 330, 'pick of three.')
+    f_node(S, 950, 150, 'FEISHU')
+    g_bubble(S, 950+NW/2, 180)
+    f_node(S, 950, 342, 'ROI BOARD')
+    g_ringbars(S, 950+NW/2-20, 366)
+    f_arrow(S, (250, 196), (470, 220), label='a request.')
+    f_arrow(S, (250, 388), (470, 340))
+    f_arrow(S, (730, 220), (950, 196), label='back in feishu.')
+    f_arrow(S, (730, 300), (950, 388), label='measured.')
+    return '\n'.join('  ' + e for e in S.el)
+
+# ── 议见：一件事上桌 → 七视角四层收敛 → 三件套结论 ──
+def flow_yijian():
+    S = Scene(0, 0)
+    f_node(S, 70, 214, 'A DECISION')
+    g_doc(S, 70+NW/2-15, 228, nlines=2)
+    f_center(S, 'YIJIAN', 'one table.')
+    g_dotsarc(S, 600, 178)
+    g_funnel(S, 600, 214)
+    f_ital(S, 600, 330, 'layer by layer.')
+    f_node(S, 950, 86, 'THE SCORE')
+    g_gauge(S, 950+NW/2, 122)
+    f_node(S, 950, 214, 'CONDITIONS')
+    g_doc(S, 950+NW/2-15, 228, nlines=2, check=True)
+    f_node(S, 950, 342, 'STILL OPEN')
+    S.raw(f'<circle cx="{950+NW/2}" cy="374" r="9" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<circle cx="{950+NW/2}" cy="374" r="3" {_a("L2")}/>')
+    f_arrow(S, (250, 260), (470, 260), label='on the table.')
+    f_arrow(S, (730, 200), (950, 132), label='traceable.')
+    f_arrow(S, (730, 260), (950, 260))
+    f_arrow(S, (730, 320), (950, 388))
+    return '\n'.join('  ' + e for e in S.el)
+
+# ── UABB：什么都能进 → 理解·生成·出厂 → 标准资产上展 ──
+def g_sketch(S, x, y, w=34, h=26):
+    S.raw(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" {_a("L1", "#FFFFFF")}/>')
+    S.path2(f'M {x+5} {y+17} Q {x+11} {y+5} {x+16} {y+13} Q {x+21} {y+21} {x+26} {y+9}', 'L2')
+    S.line2((x+5, y+21), (x+22, y+21), 'L2')
+
+def flow_uabb():
+    S = Scene(0, 0)
+    f_node(S, 70, 86, 'SKETCHES')
+    g_sketch(S, 70+NW/2-17, 108)
+    f_node(S, 70, 214, 'PHOTOS')
+    g_photo(S, 70+NW/2-17, 236)
+    f_node(S, 70, 342, 'WORDS')
+    g_textlines(S, 70+NW/2-17, 368)
+    f_center(S, 'THE PIPELINE', 'one pipeline.')
+    S.raw(f'<circle cx="522" cy="200" r="16" {_a("L1", "#FFFFFF")}/>')
+    S.path2('M 512 200 A 10 10 0 1 1 522 210', 'L2')
+    f_mini_arrow(S, 546, 566, 200)
+    g_minicube(S, 600, 208)
+    f_mini_arrow(S, 630, 650, 200)
+    g_doc(S, 664, 178, check=True)
+    f_ital(S, 678, 246, 'the gate.')
+    f_node(S, 950, 150, '3D ASSETS')
+    g_minicube(S, 950+NW/2, 190, solid=True)
+    f_node(S, 950, 342, 'THE SHOW')
+    g_plinth(S, 950+NW/2, 372)
+    f_arrow(S, (250, 132), (470, 180))
+    f_arrow(S, (250, 260), (470, 260), label='anything goes in.')
+    f_arrow(S, (250, 388), (470, 340))
+    f_arrow(S, (730, 220), (950, 196), label='to standard.')
+    f_arrow(S, (730, 300), (950, 388))
+    return '\n'.join('  ' + e for e in S.el)
+
+
 # ══════════════════════ ⑥ 封面网壳蘑菇 ══════════════════════
 def plate_cover():
     S = Scene(360, 520)
@@ -693,6 +910,14 @@ def main():
           plate_05, caption='in, through, out.')
     plate('flow-overview.svg', 1200, 520, 'Meco — 整体流程 / How it all connects',
           plate_flow, caption='everything, through one app.')
+    plate('flow-pears.svg', 1200, 520, 'Pears — 整体流程 / How it all connects',
+          flow_pears, caption='show it once — it does the rest.')
+    plate('flow-cowork.svg', 1200, 520, 'Co-work — 整体流程 / How it all connects',
+          flow_cowork, caption='seven tools, one memory.')
+    plate('flow-yijian.svg', 1200, 520, '议见 — 整体流程 / How it all connects',
+          flow_yijian, caption='many voices, one answer.')
+    plate('flow-uabb.svg', 1200, 520, 'UABB — 整体流程 / How it all connects',
+          flow_uabb, caption='odd things in, standard things out.')
     plate('cover.svg', 720, 720, 'Meco — 蘑菇管家 / A homegrown butler', plate_cover)
 
 if __name__ == '__main__':

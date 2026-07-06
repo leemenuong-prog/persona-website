@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img">
+  <title>Co-work — 整体流程 / How it all connects</title>
+  <style>line,rect,circle,ellipse,path,polyline,polygon{vector-effect:non-scaling-stroke}</style>
+  <rect x="0" y="0" width="1200" height="520" fill="#FFFFFF"/>
+  <rect x="70" y="150" width="180" height="92" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="160.0" y="224" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-size="17" letter-spacing="3" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F">FEISHU</text>
+  <rect x="147.0" y="170" width="26" height="19" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polyline points="155.0,189 151.0,197 163.0,189" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <circle cx="153.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <circle cx="160.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <circle cx="167.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <rect x="70" y="342" width="180" height="92" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="160.0" y="416" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-size="17" letter-spacing="3" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F">SOURCES</text>
+  <rect x="144.0" y="361" width="32" height="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="147.0" y="368" width="32" height="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="150.0" y="375" width="32" height="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="470" y="86" width="260" height="348" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <text x="600.0" y="120" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-size="17" letter-spacing="3" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F">CO-WORK</text>
+  <text x="600.0" y="414" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-style="italic" font-size="18" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#999999">one workbench.</text>
+  <rect x="508" y="150" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="532" y="150" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="556" y="150" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="580" y="150" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="508" y="174" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="532" y="174" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="556" y="174" width="16" height="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="508" y1="208" x2="652" y2="208" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="576" y="264" width="34" height="26" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="586" y="270" width="34" height="26" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="596" y="276" width="34" height="26" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 592 286 L 597 291 L 607 281" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="600" y="330" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="15" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">pick of three.</text>
+  <rect x="950" y="150" width="180" height="92" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="1040.0" y="224" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-size="17" letter-spacing="3" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F">FEISHU</text>
+  <rect x="1027.0" y="170" width="26" height="19" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polyline points="1035.0,189 1031.0,197 1043.0,189" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <circle cx="1033.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <circle cx="1040.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <circle cx="1047.0" cy="179.5" r="1.6" fill="#6F6F6F"/>
+  <rect x="950" y="342" width="180" height="92" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="1040.0" y="416" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-size="17" letter-spacing="3" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F">ROI BOARD</text>
+  <path d="M 1028.0 376 A 9 9 0 1 1 1036.0 367" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="1042.0" y="376" width="4" height="8" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="1048.0" y="370" width="4" height="14" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="1054.0" y="373" width="4" height="11" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="250" y1="196" x2="470" y2="220" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 461.4 224.7 L 470 220 L 462.7 213.6" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="360" y="198" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-style="italic" font-size="18" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#999999">a request.</text>
+  <line x1="250" y1="388" x2="470" y2="340" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 463.4 347.2 L 470 340 L 461 336.2" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="730" y1="220" x2="950" y2="196" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 942.7 202.4 L 950 196 L 941.4 191.3" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="840" y="198" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-style="italic" font-size="18" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#999999">back in feishu.</text>
+  <line x1="730" y1="300" x2="950" y2="388" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 940.5 390.2 L 950 388 L 944.7 379.8" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <text x="840" y="334" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, serif" font-style="italic" font-size="18" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#999999">measured.</text>
+  <text x="600" y="476" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">seven tools, one memory.</text>
+</svg>
