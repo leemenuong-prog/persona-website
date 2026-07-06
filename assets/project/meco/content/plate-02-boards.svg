@@ -1,101 +1,148 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
-  <title>Meco 图版 02 · 五域看板，图表优先 / Plate 02 · Five boards, charts first</title>
-  <style>
-    line, rect, circle, path, polyline { vector-effect: non-scaling-stroke; }
-    .mono { font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace; }
-    .serif { font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif; }
-  </style>
-
-  <rect x="0" y="0" width="1200" height="750" fill="#FFFBF0"/>
-  <rect x="40" y="40" width="1120" height="670" fill="none" stroke="#E0E0E0" stroke-width="1"/>
-
-  <text class="mono" x="80" y="102" font-size="22" letter-spacing="3" fill="#181818">PL. 02</text>
-  <text class="mono" x="1120" y="102" font-size="20" letter-spacing="2" fill="#999999" text-anchor="end">CHARTS FIRST · 图表优先</text>
-  <line x1="80" y1="126" x2="1120" y2="126" stroke="#E0E0E0" stroke-width="1"/>
-
-  <!-- 顶行：日历（大） + 目标进度环 -->
-  <rect x="180" y="166" width="560" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-  <text class="mono" x="200" y="198" font-size="18" letter-spacing="2" fill="#6F6F6F">CALENDAR · 日历</text>
-
-  <!-- 月历格 7×4 -->
-  <g>
-    <rect x="202" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="272" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="342" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="412" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="482" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="552" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="622" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="202" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="272" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="342" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="412" y="250" width="56" height="30" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-    <rect x="482" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="552" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="622" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="202" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="272" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="342" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="412" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="482" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="552" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="622" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="202" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="272" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="342" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="412" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="482" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="552" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <rect x="622" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <title>Meco — 五域看板 / Five boards</title>
+  <style>line,rect,circle,ellipse,path,polyline,polygon{vector-effect:non-scaling-stroke}</style>
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFFFF"/>
+  <line x1="366.2" y1="245" x2="244.9" y2="315" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="366.2" y1="245" x2="955.1" y2="585" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="366.2" y1="245" x2="366.2" y2="233" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="833.8" y1="655" x2="833.8" y2="643" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="955.1" y1="573" x2="833.8" y2="643" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="303" x2="833.8" y2="643" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="955.1" y1="585" x2="833.8" y2="655" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="315" x2="833.8" y2="655" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="366.2" y1="233" x2="955.1" y2="573" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="366.2" y1="233" x2="244.9" y2="303" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="955.1" y1="585" x2="955.1" y2="573" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="244.9" y1="315" x2="244.9" y2="303" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="292.6" y1="259.5" x2="292.6" y2="265.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="439.8" y1="344.5" x2="439.8" y2="350.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="405.1" y1="302.5" x2="405.1" y2="330.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="552.4" y1="387.5" x2="552.4" y2="415.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="517.7" y1="345.5" x2="517.7" y2="395.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="665" y1="430.5" x2="665" y2="480.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="630.3" y1="388.5" x2="630.3" y2="460.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="777.5" y1="473.5" x2="777.5" y2="545.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="742.9" y1="431.5" x2="742.9" y2="525.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <line x1="890.1" y1="516.5" x2="890.1" y2="610.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <polygon points="301.2,69.5 448.4,154.5 439.8,159.5 292.6,74.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="448.4,339.5 439.8,344.5 439.8,159.5 448.4,154.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="292.6,259.5 439.8,344.5 439.8,159.5 292.6,74.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="439.8" y1="344.5" x2="439.8" y2="159.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="448.4" y1="154.5" x2="439.8" y2="159.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="292.6" y1="74.5" x2="439.8" y2="159.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="448.4" y1="339.5" x2="439.8" y2="344.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="292.6" y1="259.5" x2="439.8" y2="344.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="301.2" y1="69.5" x2="448.4" y2="154.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="301.2" y1="69.5" x2="292.6" y2="74.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="448.4" y1="339.5" x2="448.4" y2="154.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="292.6" y1="259.5" x2="292.6" y2="74.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <g transform="matrix(0.8660,0.5000,0.0000,1.0000,303,92.5)">
+  <line x1="3" y1="14" x2="143" y2="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="40" x2="143" y2="40" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="66" x2="143" y2="66" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="92" x2="143" y2="92" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="118" x2="143" y2="118" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="144" x2="143" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="3" y1="14" x2="3" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="23" y1="14" x2="23" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="43" y1="14" x2="43" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="63" y1="14" x2="63" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="83" y1="14" x2="83" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="103" y1="14" x2="103" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="123" y1="14" x2="123" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="143" y1="14" x2="143" y2="144" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 49 23 L 57 31 M 49 31 L 57 23" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 109 49 L 117 57 M 109 57 L 117 49" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 29 75 L 37 83 M 29 83 L 37 75" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 89 101 L 97 109 M 89 109 L 97 101" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <!-- 事件点 + 今天（全图唯一钴蓝点） -->
-  <circle cx="300" cy="227" r="3" fill="#6F6F6F"/>
-  <circle cx="510" cy="227" r="3" fill="#6F6F6F"/>
-  <circle cx="370" cy="265" r="3" fill="#6F6F6F"/>
-  <rect x="434" y="259" width="12" height="12" fill="#0047AB"/>
-  <circle cx="580" cy="303" r="3" fill="#6F6F6F"/>
-  <circle cx="230" cy="341" r="3" fill="#6F6F6F"/>
-  <circle cx="650" cy="341" r="3" fill="#6F6F6F"/>
-
-  <!-- 目标进度环 -->
-  <rect x="762" y="166" width="258" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-  <text class="mono" x="782" y="198" font-size="18" letter-spacing="2" fill="#6F6F6F">GOALS · 目标</text>
-  <circle cx="891" cy="288" r="50" fill="none" stroke="#E0E0E0" stroke-width="9" style="vector-effect:none"/>
-  <circle cx="891" cy="288" r="50" fill="none" stroke="#6F6F6F" stroke-width="9" style="vector-effect:none"
-          stroke-dasharray="220 314" transform="rotate(-90 891 288)"/>
-  <text class="serif" x="891" y="299" font-size="30" fill="#181818" text-anchor="middle">70%</text>
-
-  <!-- 下行：学习 / 工作 / 生活 三域微型图表 -->
-  <rect x="180" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-  <text class="mono" x="192" y="434" font-size="16" fill="#BEBEBE">a</text>
-  <line x1="210" y1="548" x2="416" y2="548" stroke="#BEBEBE" stroke-width="1"/>
-  <rect x="215" y="508" width="28" height="40" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="257" y="484" width="28" height="64" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="299" y="496" width="28" height="52" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="341" y="460" width="28" height="88" fill="#6F6F6F" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="383" y="478" width="28" height="70" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
-  <text class="serif" x="313" y="588" font-size="24" fill="#181818" text-anchor="middle">学习</text>
-  <text class="mono" x="313" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">STUDY</text>
-
-  <rect x="467" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-  <text class="mono" x="479" y="434" font-size="16" fill="#BEBEBE">b</text>
-  <rect x="510" y="446" width="180" height="22" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="530" y="476" width="140" height="22" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="550" y="506" width="100" height="22" fill="#BEBEBE" stroke="#6F6F6F" stroke-width="1"/>
-  <rect x="570" y="536" width="60" height="22" fill="#6F6F6F" stroke="#6F6F6F" stroke-width="1"/>
-  <text class="serif" x="600" y="588" font-size="24" fill="#181818" text-anchor="middle">工作</text>
-  <text class="mono" x="600" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">JOBS FUNNEL</text>
-
-  <rect x="754" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
-  <text class="mono" x="766" y="434" font-size="16" fill="#BEBEBE">c</text>
-  <g>
-    <circle cx="815" cy="456" r="5" fill="#6F6F6F"/><circle cx="839" cy="456" r="5" fill="#BEBEBE"/><circle cx="863" cy="456" r="5" fill="#6F6F6F"/><circle cx="887" cy="456" r="5" fill="#E0E0E0"/><circle cx="911" cy="456" r="5" fill="#6F6F6F"/><circle cx="935" cy="456" r="5" fill="#BEBEBE"/><circle cx="959" cy="456" r="5" fill="#6F6F6F"/>
-    <circle cx="815" cy="480" r="5" fill="#BEBEBE"/><circle cx="839" cy="480" r="5" fill="#6F6F6F"/><circle cx="863" cy="480" r="5" fill="#E0E0E0"/><circle cx="887" cy="480" r="5" fill="#6F6F6F"/><circle cx="911" cy="480" r="5" fill="#6F6F6F"/><circle cx="935" cy="480" r="5" fill="#E0E0E0"/><circle cx="959" cy="480" r="5" fill="#BEBEBE"/>
-    <circle cx="815" cy="504" r="5" fill="#6F6F6F"/><circle cx="839" cy="504" r="5" fill="#E0E0E0"/><circle cx="863" cy="504" r="5" fill="#6F6F6F"/><circle cx="887" cy="504" r="5" fill="#BEBEBE"/><circle cx="911" cy="504" r="5" fill="#E0E0E0"/><circle cx="935" cy="504" r="5" fill="#6F6F6F"/><circle cx="959" cy="504" r="5" fill="#6F6F6F"/>
-    <circle cx="815" cy="528" r="5" fill="#E0E0E0"/><circle cx="839" cy="528" r="5" fill="#6F6F6F"/><circle cx="863" cy="528" r="5" fill="#BEBEBE"/><circle cx="887" cy="528" r="5" fill="#6F6F6F"/><circle cx="911" cy="528" r="5" fill="#BEBEBE"/><circle cx="935" cy="528" r="5" fill="#6F6F6F"/><circle cx="959" cy="528" r="5" fill="#E0E0E0"/>
+  <polygon points="413.8,112.5 561,197.5 552.4,202.5 405.1,117.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="561,382.5 552.4,387.5 552.4,202.5 561,197.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="405.1,302.5 552.4,387.5 552.4,202.5 405.1,117.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="552.4" y1="387.5" x2="552.4" y2="202.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="561" y1="197.5" x2="552.4" y2="202.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="405.1" y1="117.5" x2="552.4" y2="202.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="561" y1="382.5" x2="552.4" y2="387.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="405.1" y1="302.5" x2="552.4" y2="387.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="413.8" y1="112.5" x2="561" y2="197.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="413.8" y1="112.5" x2="405.1" y2="117.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="561" y1="382.5" x2="561" y2="197.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="405.1" y1="302.5" x2="405.1" y2="117.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <g transform="matrix(0.8660,0.5000,0.0000,1.0000,415.5,135.5)">
+  <path d="M 73.0 60.0 A 24 24 0 0 1 96.6 79.8" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 73.0 44.0 A 40 40 0 1 1 59.3 121.6" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 73.0 28.0 A 56 56 0 1 1 30.1 48.0" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text class="serif" x="887" y="588" font-size="24" fill="#181818" text-anchor="middle">生活</text>
-  <text class="mono" x="887" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">CHECK-IN HEAT</text>
-
-  <text class="mono" x="600" y="674" font-size="20" letter-spacing="2" fill="#999999" text-anchor="middle">02 · FIVE BOARDS, CHARTS FIRST / 五域看板，图表优先</text>
+  <polygon points="526.4,155.5 673.6,240.5 665,245.5 517.7,160.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="673.6,425.5 665,430.5 665,245.5 673.6,240.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="517.7,345.5 665,430.5 665,245.5 517.7,160.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="665" y1="430.5" x2="665" y2="245.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="673.6" y1="240.5" x2="665" y2="245.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="517.7" y1="160.5" x2="665" y2="245.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="673.6" y1="425.5" x2="665" y2="430.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="517.7" y1="345.5" x2="665" y2="430.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="526.4" y1="155.5" x2="673.6" y2="240.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="526.4" y1="155.5" x2="517.7" y2="160.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="673.6" y1="425.5" x2="673.6" y2="240.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="517.7" y1="345.5" x2="517.7" y2="160.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <g transform="matrix(0.8660,0.5000,0.0000,1.0000,528.1,178.5)">
+  <polyline points="0,132 28,122 56,99 84,104 112,69 146,49" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="28" cy="122" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="56" cy="99" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="84" cy="104" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="112" cy="69" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="146" cy="49" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  </g>
+  <polygon points="639,198.5 786.2,283.5 777.5,288.5 630.3,203.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="786.2,468.5 777.5,473.5 777.5,288.5 786.2,283.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="630.3,388.5 777.5,473.5 777.5,288.5 630.3,203.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="777.5" y1="473.5" x2="777.5" y2="288.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="786.2" y1="283.5" x2="777.5" y2="288.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="630.3" y1="203.5" x2="777.5" y2="288.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="786.2" y1="468.5" x2="777.5" y2="473.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="630.3" y1="388.5" x2="777.5" y2="473.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="639" y1="198.5" x2="786.2" y2="283.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="639" y1="198.5" x2="630.3" y2="203.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="786.2" y1="468.5" x2="786.2" y2="283.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="630.3" y1="388.5" x2="630.3" y2="203.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <g transform="matrix(0.8660,0.5000,0.0000,1.0000,640.7,221.5)">
+  <rect x="0" y="0" width="40" height="161" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="6" y="9" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="6" y="33" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="6" y="57" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="6" y="81" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="53" y="0" width="40" height="161" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="59" y="9" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="59" y="33" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="59" y="57" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="106" y="0" width="40" height="161" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="112" y="9" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="112" y="33" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="112" y="57" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="112" y="81" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="112" y="105" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  </g>
+  <polygon points="751.6,241.5 898.8,326.5 890.1,331.5 742.9,246.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="898.8,511.5 890.1,516.5 890.1,331.5 898.8,326.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="742.9,431.5 890.1,516.5 890.1,331.5 742.9,246.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="890.1" y1="516.5" x2="890.1" y2="331.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="898.8" y1="326.5" x2="890.1" y2="331.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="742.9" y1="246.5" x2="890.1" y2="331.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="898.8" y1="511.5" x2="890.1" y2="516.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="742.9" y1="431.5" x2="890.1" y2="516.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="751.6" y1="241.5" x2="898.8" y2="326.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="751.6" y1="241.5" x2="742.9" y2="246.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="898.8" y1="511.5" x2="898.8" y2="326.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="742.9" y1="431.5" x2="742.9" y2="246.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <g transform="matrix(0.8660,0.5000,0.0000,1.0000,753.3,264.5)">
+  <path d="M 0 90 L 0 90.0 L 4 82.3 L 8 75.2 L 12 69.0 L 16 64.2 L 20 61.2 L 24 60.0 L 28 60.8 L 32 63.6 L 36 68.1 L 40 74.1 L 44 81.1 L 48 88.7 L 52 96.4 L 56 103.7 L 60 110.0 L 64 115.1 L 68 118.5 L 72 119.9 L 76 119.4 L 80 117.0 L 84 112.7 L 88 107.0 L 92 100.1 L 96 92.6 L 100 84.9 L 104 77.5 L 108 70.9 L 112 65.7 L 116 62.0 L 120 60.2 L 124 60.3 L 128 62.5 L 132 66.4 L 136 72.0 L 140 78.7 L 144 86.1" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="20" cy="61.2" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="24" cy="60.0" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="28" cy="60.8" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="72" cy="119.9" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="76" cy="119.4" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="120" cy="60.2" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="124" cy="60.3" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  </g>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">five views of one life.</text>
 </svg>
