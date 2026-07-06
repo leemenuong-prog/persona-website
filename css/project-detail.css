@@ -18,9 +18,9 @@
 /* ── 头部 ── */
 .project-detail-header { padding-bottom: 2rem; border-bottom: 1px solid var(--c-border); }
 .detail-title {
-  font-family: Georgia, 'Songti SC', serif;
-  font-size: var(--fs-detail-title); font-weight: 400; line-height: 1.2;
-  color: var(--c-title); margin: 0 0 .75rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-detail-title); font-weight: 500; line-height: 1.2;
+  letter-spacing: .01em; color: var(--c-title); margin: 0 0 .75rem;
 }
 .detail-title a { border-bottom: 2px solid transparent; transition: border-color .25s; }
 .detail-title a:hover { border-color: var(--c-title); }
@@ -150,9 +150,59 @@
 .detail-notfound a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); }
 
 @media (max-width: 767px) {
-  .detail-container { padding-top: 18px; }
+  .detail-container { padding: 18px 0 64px; }
+
+  /* 返回按钮：触达 ≥44 */
+  .back-button { min-height: 44px; padding: 10px 16px; margin-bottom: 24px; }
+
+  /* ── 头部 ── */
+  .project-detail-header { padding-bottom: 1.6rem; }
   .detail-title { font-size: 1.9rem; }
-  .detail-meta { gap: 6px 22px; }
-  .detail-section p, .detail-section li { text-align: left; }
+  .detail-keywords { font-size: .85rem; margin-bottom: 1.1rem; }
+  /* 两等分列：原 minmax(180px,max-content) 在 327px 列宽下退化成五行竖排 */
+  .detail-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; margin-bottom: 1.2rem; }
+  .detail-tags .tag-pill { padding: 4px 12px; }
+
+  /* ── 媒体门面 ── */
+  .project-media-container { margin: 1.8rem 0; }
+  .media-facade .facade-btn { width: 64px; height: 64px; font-size: 22px; }
+  .media-facade .facade-label { bottom: 10px; font-size: 12px; }
+
+  /* ── 正文 ── */
+  .project-content-column { margin-top: 2rem; }
+  .detail-oneliner { font-size: 1.05rem; line-height: 1.7; padding-left: 1rem; margin-bottom: 2.2rem; }
+  .detail-section { margin-bottom: 2.4rem; }
+  .detail-section h2 { font-size: 1.3rem; margin-bottom: .9rem; }
+  .detail-section p, .detail-section li { font-size: 1rem; line-height: 1.7; text-align: left; }
+  .detail-section li { padding-left: 1.25rem; margin-bottom: .6rem; }
+  .detail-tech { font-size: .95rem; margin-bottom: 2.2rem; }
+  .section-figure { margin: 1.4rem 0 .3rem; }
+
+  /* ── 白卡图版 ── */
+  .project-content-images { margin-top: 2rem; padding: 14px; }
+  .content-figure { margin-bottom: 14px; }
   .text-ball { right: 12px; bottom: 12px; width: 14px; height: 14px; }
+}
+
+@media (max-width: 479px) {
+  .detail-title { font-size: 1.6rem; }
+  .detail-keywords { font-size: .8rem; }
+  .detail-tags { gap: 6px; }
+  .detail-tags .tag-pill { font-size: .75rem; padding: 3px 10px; }
+  .media-facade .facade-btn { width: 56px; height: 56px; font-size: 20px; }
+  .detail-oneliner { font-size: 1rem; margin-bottom: 2rem; }
+  .detail-section h2 { font-size: 1.2rem; }
+  /* 回收 .container 两侧各 12px 页边（依赖 main.css .container 的 100%-48px），
+     375 屏图幅 281→329px；卡与屏保留 12px 呼吸 */
+  .project-content-images { padding: 10px; margin-inline: -12px; }
+}
+
+/* ── 触屏热区（视觉尺寸不变，::after 扩到 ≥44） ── */
+@media (pointer: coarse), (max-width: 1023px) {
+  .media-cta a { position: relative; display: inline-block; }
+  .text-ball::after, .media-cta a::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: max(100%, 44px); height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
 }

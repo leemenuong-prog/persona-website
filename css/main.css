@@ -25,7 +25,11 @@
 
 /* ── 基底 ── */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth; -webkit-text-size-adjust: 100%;
+  /* 波点场等装饰层负 inset 不得撑出横向滚动（clip 不产生滚动容器；hidden 为旧浏览器回退） */
+  overflow-x: hidden; overflow-x: clip;
+}
 body {
   margin: 0; min-height: 100vh; min-height: 100svh;
   font-family: var(--font-serif);
@@ -184,7 +188,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 @media (max-width: 767px) {
   body { font-size: 16px; }
-  .site-header { padding: 0 10px; }
+  .site-header { padding: var(--safe-top) calc(10px + var(--safe-right)) 0 calc(10px + var(--safe-left)); }
   .site-header .nav-btn { min-width: 0; font-size: 15px; padding: 0 7px; letter-spacing: .02em; }
   .header-left { gap: 2px; }
   .header-right { gap: 6px; }
@@ -193,8 +197,38 @@ img, video { max-width: 100%; height: auto; display: block; }
   .lang-toggle { min-width: 44px; padding: 0 6px; }
   .gh-link { width: 28px; height: 28px; }
   .gh-link svg { width: 17px; height: 17px; }
-  .site-footer { flex-direction: column; padding: 20px 24px; }
+  .site-footer { flex-direction: column; padding: 20px calc(24px + var(--safe-right)) calc(20px + var(--safe-bottom)) calc(24px + var(--safe-left)); }
   .site-footer .foot-contact { text-align: left; }
+  .page-title { margin: 26px 0 22px; }
+
+  /* 模态：图注 + lightbox 小屏适配 */
+  .modal-overlay { padding: 16px; }
+  .modal-box {
+    max-width: 100%;
+    max-height: 82vh; max-height: 82svh;
+    padding: 24px 20px 20px;
+  }
+  .modal-box .modal-close { top: 4px; right: 4px; width: 44px; height: 44px; font-size: 24px; }
+  .modal-overlay.lightbox { padding: 12px; }
+  .modal-overlay.lightbox .modal-box { max-height: 88vh; max-height: 88svh; }
+  .modal-overlay.lightbox img { max-height: 88vh; max-height: 88svh; }
+  /* lightbox 关闭钮：白底图版上灰 × 不可见——加底是可用性必需 */
+  .modal-overlay.lightbox .modal-close {
+    background: var(--overlay); color: var(--c-white); border-radius: 50%;
+  }
+}
+@media (max-width: 479px) {
+  .page-title { font-size: 22px; margin: 20px 0 18px; }
+}
+
+/* ── 触屏热区（不可见、不占布局；宿主需非 static 定位） ── */
+@media (pointer: coarse), (max-width: 1023px) {
+  .modal-box .modal-close { position: absolute; }
+  .modal-box .modal-close::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: max(100%, 44px); height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

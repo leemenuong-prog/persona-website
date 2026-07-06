@@ -29,12 +29,14 @@
     'assets/cube/brand.svg'
   ];
 
-  function initCube() {
+  /* 面变换按当前 --cube-size 摆放；横竖屏/断点切换后重算（否则面会散架） */
+  var cubeHalf = 0;
+  function layoutFaces() {
     var cube = document.getElementById('cube');
-    if (!cube || cube.dataset.ready) return;
-    cube.dataset.ready = '1';
-
+    if (!cube || !cube.children.length) return;
     var half = (parseInt(getComputedStyle(cube).width, 10) || 320) / 2;
+    if (half === cubeHalf) return;
+    cubeHalf = half;
     var T = [
       'rotateY(0deg) translateZ(' + half + 'px)',
       'rotateY(90deg) translateZ(' + half + 'px)',
@@ -43,10 +45,19 @@
       'rotateX(90deg) translateZ(' + half + 'px)',
       'rotateX(-90deg) translateZ(' + half + 'px)'
     ];
-    CUBE_FACES.forEach(function (src, i) {
+    Array.prototype.forEach.call(cube.children, function (f, i) {
+      f.style.transform = T[i];
+    });
+  }
+
+  function initCube() {
+    var cube = document.getElementById('cube');
+    if (!cube || cube.dataset.ready) return;
+    cube.dataset.ready = '1';
+
+    CUBE_FACES.forEach(function (src) {
       var f = document.createElement('div');
       f.className = 'face';
-      f.style.transform = T[i];
       var img = document.createElement('img');
       img.src = src;
       img.alt = '';
@@ -56,6 +67,7 @@
       f.appendChild(img);
       cube.appendChild(f);
     });
+    layoutFaces();
 
     var rx = -20, ry = 35;
     cube.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
@@ -340,7 +352,7 @@
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { buildSpine(); });
+  window.addEventListener('resize', function () { buildSpine(); layoutFaces(); });
   /* Monterey 晚到会移动标题基线 — 字体就绪后重测分支位置 */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () { buildSpine(); });

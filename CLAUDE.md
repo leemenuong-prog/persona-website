@@ -22,13 +22,14 @@
 
 ## 版式基准（老师站实证规格）
 
-- intro：Monterey 24px/500 + `text-decoration: underline`，三档分词色（#6F6F6F / #000 / #BBB）
+- **大标题字体铁律（用户裁定 2026-07-07）**：所有页级大标题一律 Monterey（`var(--font-display)`）——首页英雄标题、projects 页标题、**详情页 `.detail-title`**、主线卡标题；中文按栈回退宋体。章节 h2 与正文保持衬线，不得把详情页大标题改回 Georgia。
+- intro（英雄区，2026-07-07 升级）：kick 线 `THE ART OF RATIONALITY`（12px/字距 .38em/#999）→ H1 Monterey `clamp(40px, 6.2vw, 84px)`/下划线 2px → 副行 `clamp(18px, 2.1vw, 26px)`；三档分词色（#6F6F6F / #000 / #BBB）不变、强调词 700；入场 heroRise 依次升起（respect reduced-motion）；桌面立方体 400px/台高 540
 - 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px；文字列**居中收拢**（justify-content:center + 30px 簇间距，禁 space-between 把标题/正文撑到两端）；作品间距 `--mainline-gap: 320px`（老师页实证的呼吸感）
 - 揭示层：`assets/project/{id}/float/1.jpg`，clip-path 圆随鼠标显影——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**；尾声（建筑）揭示层是横构图版面 → `object-fit: contain` 白底整页收进框，**禁 cover 拦腰裁半**
 - **尾声建筑卡 = 3:2 横构图**（建筑渲染都是横图，方图裁到看不见内容——用户裁定）：封面 = 母版首页主渲染 3:2 满幅裁（960×640，无白边无页面装饰）；主线 AI 卡保持 360 方图
 - **立方体面必须实底白**（var(--c-white)）——透明 PNG 封面（梨/拼图）会透出对面；六面=Pears/Co-work/议见/环世界/风贯立方/品牌 SVG（UABB 魔方图不上立方体，用户裁定）
 - 建筑翻页图（content/）一律取**母版完整版面（带页边白）**，不做去白边裁切——上桥曾因裁掉顶部白边与其他五作不一致（2026-07-06 已重导）
-- 详情页：大衬线标题+↗ → 斜体开场段（左对齐引线）→ 章节 h2+通栏细线 → 「—」列表（行首「标签：」≤10 字自动加粗）→ 小型大写技术栈 → 白卡图版容器+图注+文字球
+- 详情页：Monterey 大标题+↗ → 斜体开场段（左对齐引线）→ 章节 h2（衬线）+通栏细线 → 「—」列表（行首「标签：」≤10 字自动加粗）→ 小型大写技术栈 → 白卡图版容器+图注+文字球
 - 字体：MontereyFLF woff2×3（拉丁 unicode-range，中文落系统栈）+ Garamond/Georgia 衬线
 
 ## 数据与素材约定
