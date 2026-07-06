@@ -162,8 +162,14 @@ function IntroCowork({ jump }) {
         </div>
         <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Co-work / 内容生产 Agent OS</div>
         <h2 className="apx-title" data-rv data-ob="self" style={{ "--rd": ".1s" }}>Co-work<br />Agent Platform<i className="psq" aria-hidden="true"></i></h2>
+        <div className="apx-meta mono" data-rv data-ob="self" style={{ "--rd": ".14s" }}>
+          {aipmWk && aipmWk.role && <span>{aipmWk.role[0]}</span>}
+          {aipmWk && aipmWk.year && <span>{aipmWk.year}</span>}
+          <span>7 工具 · 4 部门 65 人</span>
+        </div>
+        {aipmWk && aipmWk.zh && <p className="apx-lead" data-rv data-ob="self" style={{ "--rd": ".2s" }}>{aipmWk.zh}</p>}
 
-        {/* ── P1 · 平台能力 — 左文右图，图版右出血 ── */}
+        {/* ── 01 · 平台背景 — 左文右图，图版右出血 ── */}
         <div className="apx-spread apx-p1" data-ob="self">
           <div className="apx-ghost" aria-hidden="true">01</div>
           <div className="apx-copy2">
@@ -762,15 +768,22 @@ function IntroPears({ jump }) {
         <div className="apx-kicker mono" data-rv data-ob="self">
           <span>03·A · PEARS</span><span>AGENT FACTORY · 路演现场</span>
         </div>
+        <div className="apx-cap mono" data-rv data-ob="self" style={{ "--rd": ".04s" }}>Pears / Agent Factory · 做一遍，交给它</div>
+        <h2 className="apx-title rv-soft" data-ob="self" style={{ "--rd": ".1s" }}>Pears<i className="psq" aria-hidden="true"></i></h2>
+        <div className="apx-meta mono" data-rv data-ob="self" style={{ "--rd": ".14s" }}>
+          {devWk && devWk.role && <span>{devWk.role[0]}</span>}
+          {devWk && devWk.year && <span>{devWk.year}</span>}
+          {devWk && devWk.award && <span className="apx-meta-award">{devWk.award}<i className="psq" aria-hidden="true"></i></span>}
+        </div>
+        {devWk && devWk.zh && <p className="apx-lead" data-rv data-ob="self" style={{ "--rd": ".2s" }}>{devWk.zh}</p>}
 
-        {/* ── P1 · 路演提案 — 左文右 deck，图版右出血 ── */}
+        {/* ── 01 · 路演提案 — 左文右 deck，图版右出血 ── */}
         <div className="apx-spread apx-p1" data-ob="self">
           <div className="apx-ghost" aria-hidden="true">01</div>
           <div className="apx-copy2">
             <div className="apx-kick2">01 · 路演提案</div>
-            <h3>Pears — AI Agent<i className="psq" aria-hidden="true"></i></h3>
-            <p className="reel-award2 mono">ADVENTURE-X 高校联盟黑客松 · 季军</p>
-            <p>八页提案讲清一件事：软件越来越容易生成，难的是把工作说清楚。Pears 不从你说的开始，从你做的开始。</p>
+            <h3>八页提案，从你做的开始<i className="psq" aria-hidden="true"></i></h3>
+            <p>软件越来越容易生成，难的是把工作说清楚——所以 Pears 从你「做一遍」开始，不从你「说」开始。</p>
           </div>
           <div className="apx-chipart apx-chipart-live">
             <div className="reel-deck" ref={deckRef}

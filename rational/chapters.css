@@ -91,15 +91,17 @@
    只剩 ~6px 字，用户: 展示图在手机上太小；≤600 换成按小屏重排的竖版） */
 .apx-art .apx-ph { display: none; }
 
-/* P1 · 左文右图，右出血 */
+/* P1 · 左文右图，右出血 — 2026-07-06:文与图同一行、垂直居中(旧「文上图下错行」
+   会在左下留大片空档,用户反馈);文案坐实左列,图版占右并出血。 */
+.apx-p1, .apx-p2 { align-items: center; }
 .apx-p1 .apx-ghost { left: -56px; top: -4%; }
-.apx-p1 .apx-copy2 { grid-column: 2 / 7; grid-row: 1; padding-top: clamp(40px, 5.5vw, 88px); }
-.apx-p1 .apx-chipart { grid-column: 5 / 13; grid-row: 2; margin-top: -64px; margin-right: -40px;
+.apx-p1 .apx-copy2 { grid-column: 2 / 6; grid-row: 1; }
+.apx-p1 .apx-chipart { grid-column: 6 / 13; grid-row: 1; margin-right: -40px;
   border-radius: 24px 0 0 24px; transform: translateX(28px) scaleX(.97); transform-origin: right center; }
 /* P2 · 镜像拉页，左出血 */
 .apx-p2 .apx-ghost { right: -56px; left: auto; top: -4%; text-align: right; }
-.apx-p2 .apx-copy2 { grid-column: 7 / 12; grid-row: 1; padding-top: clamp(40px, 5.5vw, 88px); }
-.apx-p2 .apx-chipart { grid-column: 1 / 9; grid-row: 2; margin-top: -56px; margin-left: -40px;
+.apx-p2 .apx-copy2 { grid-column: 8 / 12; grid-row: 1; }
+.apx-p2 .apx-chipart { grid-column: 1 / 8; grid-row: 1; margin-left: -40px;
   border-radius: 0 24px 24px 0; transform: translateX(-28px) scaleX(.97); transform-origin: left center; }
 /* P3 · 压轴：影片被 03 压角，刊末条收尾 */
 .apx-p3 .apx-ghost { left: -56px; bottom: -6%; top: auto; }
