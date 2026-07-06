@@ -490,6 +490,103 @@ def plate_05():
     return '\n'.join('  ' + e for e in S.el)
 
 
+# ══════════════════════ 整体流程横图（模板 · 必备） ══════════════════════
+SMALLCAP = ('font-family="Garamond, \'EB Garamond\', Georgia, serif" '
+            'font-size="17" letter-spacing="3" fill="#6F6F6F"')
+ITAL = ('font-family="Garamond, \'EB Garamond\', Georgia, serif" '
+        'font-style="italic" font-size="18" letter-spacing="1" fill="#999999"')
+
+def plate_flow():
+    S = Scene(0, 0)
+    NW, NH = 180, 92
+
+    def node(x, y, label, outline='L1'):
+        S.raw(f'<rect x="{x}" y="{y}" width="{NW}" height="{NH}" {_a(outline, "#FFFFFF")}/>')
+        S.raw(f'<text x="{x + NW/2}" y="{y + NH - 18}" text-anchor="middle" {SMALLCAP}>{label}</text>')
+        return (x, y)
+
+    def arrow(p, q, lv='L1', label=None, dashed_to_p=False):
+        S.line2(p, q, lv)
+        # chevron 指向 q
+        dx, dy = q[0]-p[0], q[1]-p[1]
+        n = math.hypot(dx, dy); dx, dy = dx/n, dy/n
+        s = 8
+        S.path2(f'M {fmt(q[0]-dx*s-dy*s*0.7)} {fmt(q[1]-dy*s+dx*s*0.7)} L {fmt(q[0])} {fmt(q[1])} '
+                f'L {fmt(q[0]-dx*s+dy*s*0.7)} {fmt(q[1]-dy*s-dx*s*0.7)}', 'L1')
+        if label:
+            mx, my = (p[0]+q[0])/2, (p[1]+q[1])/2 - 10
+            S.raw(f'<text x="{fmt(mx)}" y="{fmt(my)}" text-anchor="middle" {ITAL}>{label}</text>')
+
+    # ── 左：三个入口 ──
+    node(70, 86, 'FEISHU')
+    S.raw(f'<rect x="{70+NW/2-13}" y="112" width="26" height="19" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<polyline points="{70+NW/2-5},131 {70+NW/2-9},139 {70+NW/2+3},131" {_a("L1", "#FFFFFF")}/>')
+    for i in (-7, 0, 7):
+        S.raw(f'<circle cx="{70+NW/2+i}" cy="121.5" r="1.6" fill="#6F6F6F"/>')
+
+    node(70, 214, 'DESKTOP')
+    S.raw(f'<rect x="{70+NW/2-14}" y="240" width="28" height="21" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<line x1="{70+NW/2-14}" y1="246" x2="{70+NW/2+14}" y2="246" {_a("L1")}/>')
+    S.raw(f'<circle cx="{70+NW/2-10}" cy="243" r="1.3" fill="#6F6F6F"/>')
+    S.raw(f'<circle cx="{70+NW/2-6}" cy="243" r="1.3" fill="#6F6F6F"/>')
+
+    node(70, 342, 'CLAUDE CODE')
+    c = Scene(70+NW/2, 386)
+    c.box(-11, -11, 0, 22, 22, 22, lv='L1', hidden='L3')
+    S.el.extend(c.el)
+
+    # ── 中：MECO 单进程 ──
+    MX, MY, MW, MH = 470, 86, 260, 348
+    S.raw(f'<rect x="{MX}" y="{MY}" width="{MW}" height="{MH}" {_a("L0", "#FFFFFF")}/>')
+    S.raw(f'<text x="{MX+MW/2}" y="{MY+34}" text-anchor="middle" {SMALLCAP}>MECO</text>')
+    # 大脑：圆 + 回形刻线
+    bx, by = MX+MW/2, MY+118
+    S.raw(f'<circle cx="{bx}" cy="{by}" r="42" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<path d="M {bx-26} {by+6} A 26 26 0 1 1 {bx+8} {by+24}" {_a("L2")}/>')
+    S.raw(f'<path d="M {bx-13} {by+2} A 13 13 0 1 1 {bx+5} {by+11}" {_a("L2")}/>')
+    # 时钟（节拍）
+    cx2, cy2 = MX+72, MY+250
+    S.raw(f'<circle cx="{cx2}" cy="{cy2}" r="26" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<line x1="{cx2}" y1="{cy2}" x2="{cx2}" y2="{cy2-18}" {_a("L1")}/>')
+    S.raw(f'<line x1="{cx2}" y1="{cy2}" x2="{cx2+12}" y2="{cy2+7}" {_a("L1")}/>')
+    for i in range(12):
+        th = i*math.pi/6
+        S.raw(f'<line x1="{fmt(cx2+22*math.cos(th))}" y1="{fmt(cy2+22*math.sin(th))}" '
+              f'x2="{fmt(cx2+26*math.cos(th))}" y2="{fmt(cy2+26*math.sin(th))}" {_a("L2")}/>')
+    # 8 个工具（4×2 小方格，可数）
+    tx, ty = MX+150, MY+224
+    for r in range(2):
+        for cc in range(4):
+            S.raw(f'<rect x="{tx+cc*24}" y="{ty+r*24}" width="16" height="16" {_a("L2", "#FFFFFF")}/>')
+    S.raw(f'<text x="{MX+MW/2}" y="{MY+MH-20}" text-anchor="middle" {ITAL}>one process.</text>')
+
+    # ── 右：三个去处 ──
+    node(950, 86, 'OBSIDIAN')
+    for i in range(3):
+        S.raw(f'<rect x="{950+NW/2-16+i*3}" y="{112+i*7}" width="32" height="6" {_a("L1", "#FFFFFF")}/>')
+
+    node(950, 214, 'BOARDS')
+    gx, gy = 950+NW/2-16, 240
+    S.raw(f'<path d="M {gx+8} {gy+10} A 9 9 0 1 1 {gx+16} {gy+1}" {_a("L1")}/>')
+    for i, hh in enumerate((8, 14, 11)):
+        S.raw(f'<rect x="{gx+22+i*6}" y="{gy+18-hh}" width="4" height="{hh}" {_a("L1", "#FFFFFF")}/>')
+
+    node(950, 342, 'FEISHU')
+    bx2 = 950+NW/2
+    S.raw(f'<path d="M {bx2-9} 384 A 9 9 0 0 1 {bx2+9} 384 L {bx2+12} 390 L {bx2-12} 390 Z" {_a("L1", "#FFFFFF")}/>')
+    S.raw(f'<line x1="{bx2-3}" y1="393" x2="{bx2+3}" y2="393" {_a("L1")}/>')
+
+    # ── 连线 ──
+    arrow((250, 132), (470, 158))
+    arrow((250, 260), (470, 260))
+    arrow((250, 388), (470, 362))
+    arrow((950, 132), (730, 158), 'L3', label='read-only.')
+    arrow((730, 260), (950, 260))
+    arrow((730, 362), (950, 388), label='on time.')
+
+    return '\n'.join('  ' + e for e in S.el)
+
+
 # ══════════════════════ ⑥ 封面网壳蘑菇 ══════════════════════
 def plate_cover():
     S = Scene(360, 520)
@@ -569,6 +666,8 @@ def main():
           lambda: plate_04('b'), caption='never out of touch.')
     plate('plate-05-journey.svg', 1200, 640, 'Meco — 一条消息的旅程 / In, through, out',
           plate_05, caption='in, through, out.')
+    plate('flow-overview.svg', 1200, 520, 'Meco — 整体流程 / How it all connects',
+          plate_flow, caption='everything, through one process.')
     plate('cover.svg', 720, 720, 'Meco — 蘑菇管家 / A homegrown butler', plate_cover)
 
 if __name__ == '__main__':

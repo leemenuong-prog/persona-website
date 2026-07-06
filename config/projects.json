@@ -409,12 +409,7 @@
           "title_zh": "影响与意义",
           "title_en": "Impact",
           "body_zh": "每天近一小时的人肉搬信息降到几乎为零——早上打开窗口，今天该干嘛一目了然。\n四条自动化每天准点跑，我不用再惦记：变成工具主动找我，而不是我伺候工具。\n三代迭代、88 项测试兜底，从 v1.0 的「能用」做到 v3.2 的「敢每天用」。\n对我最实在的收获，是完整当了一次自己的产品经理和唯一用户——需求、取舍、边界，全在自己身上跑通了一遍。",
-          "body_en": "The hour of daily information-carrying is basically gone — I open the window and today is laid out in front of me.\nFour automations run on time, every day; the tools come to me now, not the other way around.\nThree generations and 88 tests later, it went from v1.0's \"it works\" to v3.2's \"I trust it daily\".\nThe realest takeaway: I got to be my own product manager and my only user — needs, trade-offs and boundaries, all tested on myself.",
-          "figure": {
-            "src": "assets/project/meco/content/plate-04-triad.svg",
-            "caption_zh": "随时找得到彼此",
-            "caption_en": "never out of touch"
-          }
+          "body_en": "The hour of daily information-carrying is basically gone — I open the window and today is laid out in front of me.\nFour automations run on time, every day; the tools come to me now, not the other way around.\nThree generations and 88 tests later, it went from v1.0's \"it works\" to v3.2's \"I trust it daily\".\nThe realest takeaway: I got to be my own product manager and my only user — needs, trade-offs and boundaries, all tested on myself."
         }
       },
       "media": [
@@ -428,14 +423,14 @@
         }
       ],
       "contentImages": [
-        "assets/project/meco/content/plate-05-journey.svg"
+        "assets/project/meco/content/flow-overview.svg"
       ],
       "annotations": {
         "1": {
-          "kick_zh": "一条消息的旅程",
-          "kick_en": "One message, end to end",
-          "body_zh": "消息从飞书进来，穿过唯一的那个进程：等一个节拍、经过工具、穿过窗口，最后化作一条回复送回给我。",
-          "body_en": "A message arrives from Feishu and crosses the single process — waits a beat, passes the tools, exits through the window — and comes back to me as a reply."
+          "kick_zh": "整体流程",
+          "kick_en": "How it all connects",
+          "body_zh": "三个入口进来——飞书、桌面、Claude Code；一个进程在中间调度大脑、节拍和 8 个工具；右边是三个去处：只读的笔记库、看板，和到点送达的飞书提醒。",
+          "body_en": "Three ways in — Feishu, the desktop, Claude Code. One process in the middle, with a brain, a beat and eight tools. Three ways out: the vault it only reads, the boards, and a Feishu ping right on time."
         }
       }
     },
