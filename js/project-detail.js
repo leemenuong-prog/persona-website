@@ -160,12 +160,19 @@
   var CORE_SECTIONS = ['tldr', 'key_contributions', 'how_it_works', 'why_it_matters'];
 
   function sectionBody(text) {
-    /* 以换行拆列表；单段落直接 p */
+    /* 以换行拆列表；单段落直接 p。
+       行首「标签：内容」→ 标签加粗（照老师 How It Works 条目式，全半角冒号都认，
+       标签限 12 字内防止误伤含冒号的普通句子）。 */
+    function line(l) {
+      var m = l.match(/^([^：:]{1,12})([：:])\s*(.+)$/);
+      if (m) return '<strong>' + esc(m[1]) + m[2] + '</strong> ' + esc(m[3]);
+      return esc(l);
+    }
     var lines = String(text).split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
     if (lines.length > 1) {
-      return '<ul>' + lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>';
+      return '<ul>' + lines.map(function (l) { return '<li>' + line(l) + '</li>'; }).join('') + '</ul>';
     }
-    return '<p>' + esc(lines[0] || '') + '</p>';
+    return '<p>' + line(lines[0] || '') + '</p>';
   }
 
   /* 段落配图：s.figure = { src, caption_zh, caption_en }，无则返回 null */

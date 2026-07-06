@@ -87,15 +87,17 @@
 .project-content-column { max-width: 760px; margin: 2.5rem auto 0; }
 .detail-oneliner {
   font-family: Georgia, 'Songti SC', serif; font-style: italic;
-  font-size: 1.15rem; line-height: 1.6; text-align: center;
-  color: var(--c-sub); margin: 0 0 3rem;
+  font-size: 1.15rem; line-height: 1.75; text-align: left;
+  color: var(--c-sub); margin: 0 0 3rem; padding-left: 1.2rem;
+  border-left: 2px solid var(--c-border);
 }
 .detail-section { margin-bottom: 3.2rem; }
 .detail-section h2 {
   font-family: Georgia, 'Songti SC', serif; font-size: 1.5rem; font-weight: 600;
   color: var(--c-title); padding-bottom: .45rem; margin-bottom: 1.1rem;
-  border-bottom: 2px solid var(--c-title); display: inline-block;
+  border-bottom: 1px solid var(--c-title); display: block;
 }
+.detail-section li strong { color: var(--c-title); font-weight: 600; }
 .detail-section p, .detail-section li {
   font-size: 1.05rem; line-height: 1.75; color: var(--c-body);
   text-align: justify; hyphens: auto;
@@ -121,10 +123,16 @@
   text-align: center; margin-top: .55rem;
 }
 
-/* ── 内容长图序列 + 文字球 ── */
-.project-content-images { max-width: 980px; margin: 2rem auto 0; }
-.content-figure { position: relative; margin: 0 0 6px; }
-.content-figure img { width: 100%; height: auto; display: block; cursor: zoom-in; border: 1px solid var(--c-border); }
+/* ── 内容长图序列 + 文字球（白底描边卡容器，照老师图版区） ── */
+.project-content-images {
+  max-width: 980px; margin: 2.6rem auto 0;
+  background: var(--c-white); border: 1px solid var(--c-border);
+  border-radius: 4px; padding: 22px;
+}
+.project-content-images:empty { display: none; }
+.content-figure { position: relative; margin: 0 0 18px; }
+.content-figure:last-child { margin-bottom: 0; }
+.content-figure img { width: 100%; height: auto; display: block; cursor: zoom-in; }
 .text-ball {
   position: absolute; right: 20px; bottom: 20px;
   width: 12px; height: 12px; border-radius: 50%;
