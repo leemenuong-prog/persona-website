@@ -386,8 +386,8 @@
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "一个进程：一个 Python 程序同时当飞书聊天机器人、44 个本地接口、每 15 秒巡检一次的日程闹钟，和一个双击就开的桌面窗口。\n能动手的大脑：给 AI 配了 8 个工具——记笔记、设提醒、健康打卡、看板速览、联网搜索，让它真能办事，而不只是陪聊。\n五域看板：把投递、健康、目标、学习全画成图——投递漏斗、打卡热力图、进度环，一屏看清，不用翻笔记。\n权限边界：没人看着的定时任务只准用只读工具，任何写入都得我亲自点头，免得它半夜把数据改坏。\n三端互联：Claude Code、Meco、飞书和 Obsidian 互相能调；后台长任务跑完，它会主动发条飞书告诉我。",
-          "body_en": "One process: a single Python program that is, at once, a Feishu chatbot, 44 local endpoints, a scheduler ticking every 15 seconds, and a desktop window that opens on a double click.\nA brain with hands: 8 tools — notes, reminders, health check-ins, board glances, web search — so it gets things done instead of just chatting.\nFive boards: applications, health, goals and learning, all drawn as charts — funnels, heatmaps, progress rings. One screen, no digging through notes.\nA hard boundary: unattended runs get read-only tools only; anything that writes waits for my explicit yes — it will never quietly rewrite my data at 3 a.m.\nWired together: Claude Code, Meco, Feishu and Obsidian can call each other; when a long job finishes, a Feishu message finds me.",
+          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口收进同一个 Python 进程——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，同时为无人值守的定时任务划出只读边界，任何写入都要经我确认。\n把投递、健康、目标、学习画成一屏图表看板，并打通 Claude Code 与飞书——后台长任务跑完，它会主动来报。",
+          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Python process — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and drew a read-only boundary around unattended runs — anything that writes waits for my explicit yes.\nTurned applications, health, goals and learning into one screen of charts, and wired Claude Code to Feishu — when a long job finishes, it reports back on its own.",
           "figure": {
             "src": "assets/project/meco/content/plate-02-boards.svg",
             "caption_zh": "五个视角，一种生活",
@@ -397,8 +397,8 @@
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "一个进程四个身份：Meco 是单个 Python 程序，同时扮演飞书机器人、后台接口、闹钟和桌面窗口——双击一下就能用，不用管一堆服务。\n聊天归聊天，干活归干活：对话交给大模型随机应变；定时任务走另一条更保守的路，只发只读工具。同一个大脑，两套权限。\n看板只读，绝不回写：所有看板数字都是实时从 Obsidian 笔记里现算的，Meco 一个字都不往里写——笔记库永远是我说了算的那一版。\n自动化就是排日程：晨报、AI 早报、每日一课、晚间复盘，本质都是排好的日程任务，到点自动触发，办完把结果推给我。\n对外只留一根线：只在本机开一个端口，不对公网暴露；飞书发消息、Claude Code 调接口，全走这一条线。",
-          "body_en": "One process, four jobs: Meco is one Python program acting as bot, backend, alarm clock and desktop app — double-click and it's on, no stack to manage.\nChat is chat, work is work: conversation goes to the model with room to improvise; unattended runs take a stricter lane with read-only tools. Same brain, two sets of keys.\nThe vault stays untouched: every number on the boards is computed live from my Obsidian notes, and Meco never writes a word back — the vault stays mine.\nAutomation is just scheduling: morning brief, AI digest, daily lesson, evening review — each is simply a scheduled task that fires on time and pushes me the result.\nOne port, one line: it listens only on my machine, never the open internet; Feishu messages and Claude Code calls all travel that single line.",
+          "body_zh": "我在飞书或桌面窗口说一句话，大脑理解意图后调用合适的工具去办——记笔记、设提醒、查看板、搜网页。\n看板上的每个数字都实时从 Obsidian 笔记库解析而来，Meco 只读不写，笔记库永远是唯一的原本。\n晨报、复盘这类自动化本质上是排好的日程，到点触发、办完把结果推回飞书，而这条无人值守的路上它只拿得到只读工具。",
+          "body_en": "I say something in Feishu or the desktop window; the brain reads the intent and picks the right tool — take a note, set a reminder, check the boards, search the web.\nEvery number on the boards is parsed live from the Obsidian vault; Meco reads and never writes, so the vault stays the only original.\nThe daily briefs and reviews are simply scheduled tasks — they fire on time and push their results back to Feishu, and on that unattended lane the tools are read-only.",
           "figure": {
             "src": "assets/project/meco/content/plate-03-brain-fence.svg",
             "caption_zh": "只可看，不可写",
@@ -408,8 +408,8 @@
         "why_it_matters": {
           "title_zh": "影响与意义",
           "title_en": "Impact",
-          "body_zh": "每天近一小时的人肉搬信息降到几乎为零——早上打开窗口，今天该干嘛一目了然。\n四条自动化每天准点跑，我不用再惦记：变成工具主动找我，而不是我伺候工具。\n三代迭代、88 项测试兜底，从 v1.0 的「能用」做到 v3.2 的「敢每天用」。\n对我最实在的收获，是完整当了一次自己的产品经理和唯一用户——需求、取舍、边界，全在自己身上跑通了一遍。",
-          "body_en": "The hour of daily information-carrying is basically gone — I open the window and today is laid out in front of me.\nFour automations run on time, every day; the tools come to me now, not the other way around.\nThree generations and 88 tests later, it went from v1.0's \"it works\" to v3.2's \"I trust it daily\".\nThe realest takeaway: I got to be my own product manager and my only user — needs, trade-offs and boundaries, all tested on myself."
+          "body_zh": "每天近一小时的人肉搬信息降到几乎为零——早上打开窗口，今天该干嘛一目了然。\n四条自动化每天准点跑，变成工具主动找我，而不是我伺候工具。\n三代迭代、88 项测试，从 v1.0 的「能用」走到 v3.2 的「敢每天用」——也完整当了一次自己的产品经理和唯一用户。",
+          "body_en": "The hour a day of moving information around is basically gone — I open the window and today is laid out in front of me.\nFour automations run on time, every day; the tools come to me now, not the other way around.\nThree generations and 88 tests took it from v1.0's \"it works\" to v3.2's \"I trust it daily\" — and I got to be my own product manager and only user, end to end."
         }
       },
       "media": [
