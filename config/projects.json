@@ -37,7 +37,7 @@
           "url": "https://pear-web-leemenuong.netlify.app/"
         }
       ],
-      "thumb": "assets/project/pears/thumbnails/1.jpg",
+      "thumb": "assets/project/pears/thumbnails/1.png",
       "float": {
         "reveal": "assets/project/pears/float/1.jpg"
       },
@@ -378,7 +378,7 @@
       ],
       "url": "",
       "links": [],
-      "thumb": "assets/project/meco/thumbnails/1.svg",
+      "thumb": "assets/project/meco/thumbnails/1.png",
       "float": {},
       "desc_zh": "我给自己造的 AI 生活管家：一个 Python 程序，替我打理求职冲刺期的日常。",
       "desc_en": "The AI butler I built for myself — one Python program that runs my daily life.",

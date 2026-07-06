@@ -21,7 +21,7 @@
 
   /* ── 1. 立方体 ── */
   var CUBE_FACES = [
-    'assets/project/pears/thumbnails/1.jpg',
+    'assets/project/pears/thumbnails/1.png',
     'assets/project/cowork/thumbnails/1.jpg',
     'assets/project/yijian/thumbnails/1.jpg',
     'assets/project/uabb/thumbnails/1.jpg',
