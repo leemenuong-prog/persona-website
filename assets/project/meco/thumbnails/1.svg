@@ -1,25 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720" role="img" aria-label="Meco — in progress">
-  <defs>
-    <radialGradient id="bg" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#FFFBF0"/>
-      <stop offset="60%" stop-color="#EDEDEB"/>
-      <stop offset="100%" stop-color="#E2E2E0"/>
-    </radialGradient>
-  </defs>
-  <rect width="720" height="720" fill="url(#bg)"/>
-  <!-- 数据条天际线（IAM 节奏 · 灰阶） -->
-  <g transform="translate(232,300)">
-    <rect x="0"   y="150" width="14" height="14" fill="#000000"/>
-    <rect x="26"  y="14"  width="16" height="150" fill="#9c9c9c"/>
-    <rect x="52"  y="77"  width="16" height="87"  fill="#a8a8a8"/>
-    <rect x="78"  y="9"   width="16" height="155" fill="#8f8f8f"/>
-    <rect x="104" y="63"  width="16" height="101" fill="#a8a8a8"/>
-    <rect x="130" y="25"  width="16" height="139" fill="#989898"/>
-    <rect x="156" y="86"  width="16" height="78"  fill="#b0b0b0"/>
-    <rect x="182" y="50"  width="16" height="114" fill="#9c9c9c"/>
-    <rect x="208" y="9"   width="16" height="155" fill="#909090"/>
-    <rect x="234" y="150" width="14" height="14" fill="#000000"/>
-  </g>
-  <text x="360" y="530" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" letter-spacing="14" fill="#5F5F5F">MECO</text>
-  <text x="360" y="576" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="19" letter-spacing="3" fill="#BEBEBE">in progress</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720" role="img" aria-label="Meco — 蘑菇管家 · Personal Agent">
+  <style>
+    line, rect, circle, path, polyline { vector-effect: non-scaling-stroke; }
+    .mono { font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace; }
+    .serif { font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif; }
+  </style>
+
+  <rect x="0" y="0" width="720" height="720" fill="#FFFBF0"/>
+  <rect x="30" y="30" width="660" height="660" fill="none" stroke="#E0E0E0" stroke-width="1"/>
+
+  <text class="mono" x="62" y="90" font-size="18" letter-spacing="3" fill="#181818">PL. 00</text>
+  <text class="mono" x="658" y="90" font-size="15" letter-spacing="2" fill="#999999" text-anchor="end">MECO · 蘑菇管家</text>
+  <line x1="62" y1="112" x2="658" y2="112" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 蘑菇：伞盖（发丝线穹顶）罩住单进程（菌柄即进程） -->
+  <path d="M 180 372 A 180 148 0 0 1 540 372 Z" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <path d="M 232 306 A 152 118 0 0 1 360 254" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="286" cy="322" r="9" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="368" cy="284" r="7" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <circle cx="446" cy="326" r="8" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+
+  <rect x="318" y="372" width="84" height="102" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="360" y="416" font-size="15" letter-spacing="1" fill="#6F6F6F" text-anchor="middle">meco.py</text>
+  <text class="mono" x="360" y="440" font-size="12" letter-spacing="1" fill="#999999" text-anchor="middle">1 PROCESS</text>
+  <line x1="240" y1="474" x2="480" y2="474" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 字标：钴蓝方块句点（全图唯一跳色） -->
+  <text class="serif" x="348" y="566" font-size="76" letter-spacing="10" fill="#181818" text-anchor="middle">MECO</text>
+  <rect x="506" y="550" width="14" height="14" fill="#0047AB"/>
+  <text class="mono" x="360" y="612" font-size="17" letter-spacing="3" fill="#999999" text-anchor="middle">PERSONAL AGENT · 个人管家</text>
 </svg>

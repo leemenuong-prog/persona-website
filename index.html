@@ -25,9 +25,24 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/barmorph.css">
+  <link rel="stylesheet" href="css/loader.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body data-page="index">
+  <!-- 启动页：每会话播一次（重播过则下方内联脚本立即拆除，零闪烁） -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="lkick">理性的艺术 · THE ART OF RATIONALITY</div>
+    <div class="lreveal">
+      <span class="g gi">I</span><span class="g">&nbsp;</span><span class="g ga">a</span><span class="ins">lnt</span><span class="g">&nbsp;</span><span class="g gm">m</span><span class="ins">ed</span><span class="lsq"></span>
+    </div>
+    <div class="lbar"><i></i></div>
+  </div>
+  <script>
+    try { if (sessionStorage.getItem('loaderPlayed') === '1' ||
+              (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.getElementById('loader').remove();
+    } } catch (e) {}
+  </script>
   <main>
     <!-- 两行 intro：灰底色字 + 黑强调词 -->
     <section class="intro-container" data-reveal>
@@ -43,7 +58,7 @@
         <span class="b" data-zh="AIGC 工作流" data-en="AIGC WORKFLOWS">AIGC 工作流</span>
         <span class="g" data-zh="；" data-en="; ">；</span>
         <span class="b" data-zh="建筑设计" data-en="ARCHITECTURE">建筑设计</span>
-        <span class="g" data-zh=" 是我的来处。" data-en=" is where I came from.">是我的来处。</span>
+        <span class="l" data-zh=" 是我的来处。" data-en=" is where I came from.">是我的来处。</span>
       </p>
     </section>
 
@@ -63,11 +78,21 @@
       </h2>
       <div id="gallery" class="gallery-grid"></div>
     </section>
+
+    <!-- 收尾：I am ___ 轮换 → 波点带 → Logo 落底槽 -->
+    <section class="finale" id="finale">
+      <div class="iamf" data-reveal aria-live="polite">
+        <span class="iamf-fixed">I am&nbsp;</span><span class="who" id="iamf-who">Alnt Med</span><i class="caret" aria-hidden="true"></i>
+      </div>
+      <div class="fdots" aria-hidden="true"></div>
+      <div class="fband-slot" id="fband-slot" aria-hidden="true"></div>
+    </section>
   </main>
 
   <script src="js/language-toggle.js" defer></script>
   <script src="js/barmorph.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/loader.js" defer></script>
   <script src="js/index-fx.js" defer></script>
   <script src="js/index.js" defer></script>
 </body>

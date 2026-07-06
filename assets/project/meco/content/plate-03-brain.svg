@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Meco 图版 03 · 一个大脑，两套权限 / Plate 03 · One brain, two permission lanes</title>
+  <style>
+    line, rect, circle, path, polyline { vector-effect: non-scaling-stroke; }
+    .mono { font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace; }
+    .serif { font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFBF0"/>
+  <rect x="40" y="40" width="1120" height="670" fill="none" stroke="#E0E0E0" stroke-width="1"/>
+
+  <text class="mono" x="80" y="102" font-size="22" letter-spacing="3" fill="#181818">PL. 03</text>
+  <text class="mono" x="1120" y="102" font-size="20" letter-spacing="2" fill="#999999" text-anchor="end">BRAIN &amp; WHITELIST · 大脑与白名单</text>
+  <line x1="80" y1="126" x2="1120" y2="126" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 对话入口 -->
+  <text class="mono" x="600" y="182" font-size="18" letter-spacing="2" fill="#999999" text-anchor="middle">CHAT · 对话入口</text>
+  <line x1="600" y1="196" x2="600" y2="308" stroke="#6F6F6F" stroke-width="1.5"/>
+
+  <!-- 大脑（全图唯一钴蓝点在圆心） -->
+  <circle cx="600" cy="396" r="86" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <rect x="594" y="352" width="12" height="12" fill="#0047AB"/>
+  <text class="serif" x="600" y="408" font-size="30" fill="#181818" text-anchor="middle">大脑</text>
+  <text class="mono" x="600" y="436" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">8 TOOLS</text>
+
+  <!-- 左列：会话全量工具（写入要点头） -->
+  <text class="mono" x="235" y="222" font-size="18" letter-spacing="2" fill="#999999" text-anchor="middle">FULL TOOLSET · 会话全量</text>
+  <rect x="140" y="244" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="235" y="268" font-size="20" fill="#181818" text-anchor="middle">记笔记</text>
+  <text class="mono" x="235" y="288" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">SAVE NOTE</text>
+  <rect x="140" y="324" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="235" y="348" font-size="20" fill="#181818" text-anchor="middle">设提醒</text>
+  <text class="mono" x="235" y="368" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">SET REMINDER</text>
+  <rect x="140" y="404" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="235" y="428" font-size="20" fill="#181818" text-anchor="middle">查提醒</text>
+  <text class="mono" x="235" y="448" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">LIST REMINDERS</text>
+  <rect x="140" y="484" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="235" y="508" font-size="20" fill="#181818" text-anchor="middle">健康打卡</text>
+  <text class="mono" x="235" y="528" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">CHECK-IN</text>
+  <text class="mono" x="235" y="574" font-size="16" letter-spacing="1" fill="#999999" text-anchor="middle">writes need a nod · 写入要点头</text>
+
+  <!-- 左列连线 -->
+  <line x1="330" y1="270" x2="524" y2="360" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="330" y1="350" x2="516" y2="382" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="330" y1="430" x2="516" y2="412" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="330" y1="510" x2="524" y2="434" stroke="#BEBEBE" stroke-width="1"/>
+
+  <!-- 右列：只读白名单（虚线围栏） -->
+  <text class="mono" x="972" y="222" font-size="18" letter-spacing="2" fill="#999999" text-anchor="middle">READ-ONLY WHITELIST</text>
+  <rect x="858" y="234" width="228" height="318" fill="none" stroke="#999999" stroke-width="1" stroke-dasharray="6 6"/>
+  <rect x="877" y="252" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="972" y="276" font-size="20" fill="#181818" text-anchor="middle">联网搜索</text>
+  <text class="mono" x="972" y="296" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">WEB SEARCH</text>
+  <rect x="877" y="326" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="972" y="350" font-size="20" fill="#181818" text-anchor="middle">看板速览</text>
+  <text class="mono" x="972" y="370" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">BOARDS SNAPSHOT</text>
+  <rect x="877" y="400" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="972" y="424" font-size="20" fill="#181818" text-anchor="middle">搜笔记</text>
+  <text class="mono" x="972" y="444" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">SEARCH NOTES</text>
+  <rect x="877" y="474" width="190" height="52" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="972" y="498" font-size="20" fill="#181818" text-anchor="middle">读笔记</text>
+  <text class="mono" x="972" y="518" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">READ NOTE</text>
+  <text class="mono" x="972" y="584" font-size="16" letter-spacing="1" fill="#999999" text-anchor="middle">定时任务只从这里进 · CRON ONLY</text>
+
+  <!-- 右列连线 -->
+  <line x1="877" y1="278" x2="678" y2="364" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="877" y1="352" x2="685" y2="384" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="877" y1="426" x2="685" y2="410" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="877" y1="500" x2="678" y2="432" stroke="#BEBEBE" stroke-width="1"/>
+
+  <text class="mono" x="600" y="674" font-size="20" letter-spacing="2" fill="#999999" text-anchor="middle">03 · ONE BRAIN, TWO PERMISSION LANES / 一个大脑，两套权限</text>
+</svg>

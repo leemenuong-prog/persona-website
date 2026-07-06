@@ -38,10 +38,8 @@
     frag.appendChild(band);
     el.appendChild(frag);
 
-    /* 挂载后下一帧触发升起（双 rAF 保证初始态已绘制） */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { band.classList.add('in'); });
-    });
+    /* 挂载后下一拍触发升起（setTimeout 兜底后台标签页 rAF 不执行的情况） */
+    setTimeout(function () { band.classList.add('in'); }, 40);
     return band;
   }
 

@@ -100,6 +100,22 @@
     return block;
   }
 
+  function mediaImage(m) {
+    var block = el('div', 'media-block');
+    var frame = el('div', 'media-frame media-image');
+    var img = document.createElement('img');
+    img.src = m.src;
+    img.alt = window.I18N.locale === 'zh' ? (m.alt_zh || '') : (m.alt_en || m.alt_zh || '');
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('click', function () { window.Site.openLightbox(m.src, img.alt); });
+    frame.appendChild(img);
+    block.appendChild(frame);
+    var label = window.I18N.locale === 'zh' ? m.label_zh : (m.label_en || m.label_zh);
+    if (label) block.appendChild(el('p', 'media-caption', esc(label)));
+    return block;
+  }
+
   function mediaIframeLazy(m) {
     var block = el('div', 'media-block');
     var frame = el('div', 'media-frame media-facade');
@@ -133,11 +149,15 @@
     (p.media || []).forEach(function (m) {
       if (m.type === 'video-local') host.appendChild(mediaVideoLocal(m));
       else if (m.type === 'iframe-lazy') host.appendChild(mediaIframeLazy(m));
+      else if (m.type === 'image') host.appendChild(mediaImage(m));
     });
   }
 
-  /* ── 正文：四段式（缺任一段回退 full_description） ── */
-  var SECTION_ORDER = ['tldr', 'key_contributions', 'how_it_works', 'why_it_matters'];
+  /* ── 正文：四段式（缺任一核心段回退 full_description）。
+     why_built 是可选第五段，有则按 SECTION_ORDER 的位置插入，
+     不参与 complete 判定（老项目无此段不受影响）。 ── */
+  var SECTION_ORDER = ['tldr', 'why_built', 'key_contributions', 'how_it_works', 'why_it_matters'];
+  var CORE_SECTIONS = ['tldr', 'key_contributions', 'how_it_works', 'why_it_matters'];
 
   function sectionBody(text) {
     /* 以换行拆列表；单段落直接 p */
@@ -148,6 +168,23 @@
     return '<p>' + esc(lines[0] || '') + '</p>';
   }
 
+  /* 段落配图：s.figure = { src, caption_zh, caption_en }，无则返回 null */
+  function sectionFigure(s, p) {
+    var f = s && s.figure;
+    if (!f || !f.src) return null;
+    var fig = el('figure', 'section-figure');
+    var img = document.createElement('img');
+    img.src = f.src;
+    img.alt = t(f, 'caption') || t(p, 'title');
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('click', function () { window.Site.openLightbox(f.src, img.alt); });
+    fig.appendChild(img);
+    var cap = t(f, 'caption');
+    if (cap) fig.appendChild(el('figcaption', null, esc(cap)));
+    return fig;
+  }
+
   function renderContent(p) {
     var host = document.getElementById('content-column');
     host.textContent = '';
@@ -156,14 +193,17 @@
     if (oneliner) host.appendChild(el('p', 'detail-oneliner', esc(oneliner)));
 
     var sections = p.sections || {};
-    var complete = SECTION_ORDER.every(function (k) { return t(sections[k] || {}, 'body'); });
+    var complete = CORE_SECTIONS.every(function (k) { return t(sections[k] || {}, 'body'); });
 
     if (complete) {
       SECTION_ORDER.forEach(function (k) {
         var s = sections[k];
+        if (!s || !t(s, 'body')) return;
         var sec = el('section', 'detail-section');
         sec.appendChild(el('h2', null, esc(t(s, 'title'))));
         sec.insertAdjacentHTML('beforeend', sectionBody(t(s, 'body')));
+        var fg = sectionFigure(s, p);
+        if (fg) sec.appendChild(fg);
         host.appendChild(sec);
       });
     } else {

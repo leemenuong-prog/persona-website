@@ -1,10 +1,12 @@
 /* ════════════════════════════════════════════════════════════
-   index-fx.js — 首页三大交互：
-   1) 3D 立方体：rAF 自转 0.15°/帧 + Pointer 拖拽，离屏暂停
-   2) 中轴滚动线 + 珠：SVG path + getPointAtLength（直线也走
-      path，日后可弯），滚动进度取点
-   3) clip-path 鼠标揭示：circle(60px at 光标)，每帧直写无过渡
-   IndexFx.refresh() 由 index.js 渲染完成后调用（含语言切换重渲染）。
+   index-fx.js — 首页动效层：
+   1) 3D 立方体：rAF 自转 + Pointer 拖拽，离屏暂停
+   2) 中轴数据条进度指示（用户原创，取代老师站的波浪线+圆珠）：
+      竖向轨道 + 随滚动生长的墨色填充；到达作品节点时
+      延伸一根指向标题列的水平分支，同侧标题提亮。克制。
+   3) clip-path 鼠标揭示
+   4) 页脚 finale：「I am ___」轮换 + Logo 从 header 下坠落底
+   IndexFx.refresh() 由 index.js 渲染完成后调用。
    ════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -12,6 +14,10 @@
   var REDUCE = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var DESKTOP = window.matchMedia('(min-width: 1024px)');
+  var IAM_BARS = (window.Barmorph && window.Barmorph.IAM_BARS) || [0.97, 0.58, 1, 0.66, 0.9, 0.52, 0.74, 1];
+
+  function smoothstep(t) { return t * t * (3 - 2 * t); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 1. 立方体 ── */
   var CUBE_FACES = [
@@ -53,10 +59,9 @@
 
     var rx = -20, ry = 35;
     cube.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
-    if (REDUCE) return;   /* 静止在 3/4 视角 */
+    if (REDUCE) return;
 
     var dragging = false, px = 0, py = 0, visible = true, raf = null;
-
     function frame() {
       raf = null;
       if (!dragging) ry += 0.15;
@@ -73,7 +78,7 @@
     vp.addEventListener('pointermove', function (e) {
       if (!dragging) return;
       ry += (e.clientX - px) * 0.4;
-      rx = Math.max(-70, Math.min(70, rx - (e.clientY - py) * 0.4));
+      rx = clamp(rx - (e.clientY - py) * 0.4, -70, 70);
       px = e.clientX; py = e.clientY;
     });
     ['pointerup', 'pointercancel'].forEach(function (ev) {
@@ -89,44 +94,50 @@
     ensure();
   }
 
-  /* ── 2. 中轴滚动线 + 珠 ── */
-  var spine = { svg: null, path: null, bead: null, ok: false };
+  /* ── 2. 中轴数据条进度指示 ── */
+  var spine = { host: null, fill: null, branches: [], ok: false, topAbs: 0, h: 0 };
 
   function buildSpine() {
-    var host = document.getElementById('line-container');
-    if (!host) return;
-    if (!spine.svg) {
-      host.innerHTML = '';
-      var NS = 'http://www.w3.org/2000/svg';
-      spine.svg = document.createElementNS(NS, 'svg');
-      spine.path = document.createElementNS(NS, 'path');
-      spine.path.setAttribute('class', 'spine-path');
-      spine.svg.appendChild(spine.path);
-      host.appendChild(spine.svg);
-      spine.bead = document.createElement('div');
-      spine.bead.className = 'scroll-bead';
-      spine.bead.style.opacity = '0';
-      document.body.appendChild(spine.bead);
-    }
-    measureSpine();
-  }
-
-  function measureSpine() {
-    if (!spine.svg) return;
     var host = document.getElementById('line-container');
     var gallery = document.getElementById('gallery');
     var polygon = document.querySelector('.polygon-container');
     var main = document.querySelector('main');
     if (!host || !gallery || !polygon || !main) return;
-    /* 相对 main 计算：线从立方体台下缘垂到尾声网格上缘（绝对定位，不回馈文档高度） */
+
+    host.innerHTML = '';
+    var track = document.createElement('div');
+    track.className = 'spine-track';
+    var fill = document.createElement('div');
+    fill.className = 'spine-fill';
+    track.appendChild(fill);
+    host.appendChild(track);
+
+    /* 相对 main 定位：从立方体台下缘垂到尾声网格上缘 */
     var mainTop = main.getBoundingClientRect().top;
-    var top = polygon.getBoundingClientRect().bottom - mainTop + 24;
-    var end = gallery.getBoundingClientRect().top - mainTop - 40;
+    var top = polygon.getBoundingClientRect().bottom - mainTop + 32;
+    var end = gallery.getBoundingClientRect().top - mainTop - 48;
     var h = Math.max(200, end - top);
     host.style.top = top + 'px';
-    spine.svg.setAttribute('width', '24');
-    spine.svg.setAttribute('height', String(h));
-    spine.path.setAttribute('d', 'M 12 0 L 12 ' + h);
+    host.style.height = h + 'px';
+
+    spine.host = host;
+    spine.fill = fill;
+    spine.h = h;
+    spine.topAbs = top + mainTop + window.scrollY;
+
+    /* 每个主线作品：节点分支（指向左侧标题列） */
+    spine.branches = [];
+    document.querySelectorAll('#mainline .project-item').forEach(function (item, i) {
+      var r = item.getBoundingClientRect();
+      var cy = r.top + r.height / 2 - mainTop - top;   /* 相对 line-container */
+      if (cy < 0 || cy > h) return;
+      var br = document.createElement('div');
+      br.className = 'spine-branch';
+      br.style.top = cy.toFixed(0) + 'px';
+      br.style.transitionDelay = (i * 0.04).toFixed(2) + 's';
+      host.appendChild(br);
+      spine.branches.push({ el: br, item: item });
+    });
     spine.ok = true;
     onScroll();
   }
@@ -134,29 +145,26 @@
   var scrollRaf = null;
   function onScroll() {
     if (scrollRaf) return;
-    scrollRaf = requestAnimationFrame(function () {
-      scrollRaf = null;
-      if (!spine.ok || !DESKTOP.matches) return;
-      var rect = spine.svg.getBoundingClientRect();
-      var total = spine.path.getTotalLength();
-      var progress = (window.innerHeight * 0.5 - rect.top) / rect.height;
-      progress = Math.max(0, Math.min(1, progress));
-      var pt = spine.path.getPointAtLength(progress * total);
-      var x = rect.left + pt.x;
-      var y = rect.top + pt.y;
-      var onScreen = y > -30 && y < window.innerHeight + 30 && progress > 0 && progress < 1;
-      spine.bead.style.opacity = onScreen ? '1' : '0';
-      spine.bead.style.left = x + 'px';
-      spine.bead.style.top = y + 'px';
+    var run = function () { scrollRaf = null; tickSpine(); tickFinale(); };
+    /* 后台标签页 rAF 不执行 — 退 setTimeout，回前台时状态已就位 */
+    if (document.hidden) { scrollRaf = 1; setTimeout(run, 0); }
+    else scrollRaf = requestAnimationFrame(run);
+  }
 
-      /* 滚到主线项附近时点亮 */
-      var glow = false;
-      document.querySelectorAll('.project-item').forEach(function (item) {
-        var r = item.getBoundingClientRect();
-        var c = r.top + r.height / 2;
-        if (Math.abs(c - window.innerHeight / 2) < r.height / 2) glow = true;
-      });
-      spine.bead.classList.toggle('glow', glow);
+  function tickSpine() {
+    if (!spine.ok || !DESKTOP.matches) return;
+    var rect = spine.host.getBoundingClientRect();
+    var p = clamp((window.innerHeight * 0.5 - rect.top) / rect.height, 0, 1);
+    /* 进度生长；端头位置按 IAM 节奏做 ±3px 微调制，避免死直 */
+    var mod = (IAM_BARS[Math.floor(p * 16) % IAM_BARS.length] - 0.75) * 12;
+    spine.fill.style.height = clamp(p * rect.height + mod, 0, rect.height).toFixed(1) + 'px';
+
+    var mid = window.innerHeight / 2;
+    spine.branches.forEach(function (b) {
+      var r = b.item.getBoundingClientRect();
+      var on = Math.abs(r.top + r.height / 2 - mid) < r.height * 0.55;
+      b.el.classList.toggle('on', on);
+      b.item.classList.toggle('spine-on', on);
     });
   }
 
@@ -187,18 +195,105 @@
     });
   }
 
+  /* ── 4. 页脚 finale ── */
+  var IDS = ['Alnt Med', 'an AIPM', 'an Architect', 'a Builder', 'anything.'];
+  var finale = { flyband: null, headerBand: null, slot: null, started: false };
+
+  function initFinale() {
+    if (finale.started) return;
+    var who = document.getElementById('iamf-who');
+    var slot = document.getElementById('fband-slot');
+    if (!who || !slot) return;
+    finale.started = true;
+    finale.slot = slot;
+    finale.headerBand = document.querySelector('.site-header .brandband');
+
+    /* I am ___ 轮换（2.2s，whoIn 动画靠换 key 重放） */
+    var i = 0;
+    setInterval(function () {
+      i = (i + 1) % IDS.length;
+      var next = who.cloneNode(false);
+      next.textContent = IDS[i];
+      who.parentNode.replaceChild(next, who);
+      who = next;
+    }, 2200);
+
+    if (REDUCE || !DESKTOP.matches) {
+      /* 静态落底：槽内直接放一条放大的品牌带 */
+      var stat = document.createElement('div');
+      stat.className = 'fband-static';
+      window.Barmorph.mountBrandBand(stat);
+      slot.appendChild(stat);
+      return;
+    }
+
+    /* 下坠飞行体：fixed 单元素，每帧在 header 槽位与 footer 槽位间插值 */
+    var fb = document.createElement('div');
+    fb.className = 'fly-band';
+    window.Barmorph.mountBrandBand(fb);
+    fb.style.display = 'none';
+    document.body.appendChild(fb);
+    finale.flyband = fb;
+  }
+
+  function tickFinale() {
+    if (!finale.flyband || !DESKTOP.matches) return;
+    var fin = document.getElementById('finale');
+    if (!fin) return;
+    var fr = fin.getBoundingClientRect();
+    var vh = window.innerHeight;
+    /* 进入 finale 区一屏内开始下坠，到 finale 底部完成 */
+    var span = Math.max(fr.height + vh * 0.4, 1);
+    var q = clamp((vh * 0.85 - fr.top) / span, 0, 1);
+    var e3 = smoothstep(q);
+
+    var headerSlot = document.querySelector('.site-header .logoslot');
+    if (!headerSlot || !finale.slot) return;
+    var a = headerSlot.getBoundingClientRect();
+    var b = finale.slot.getBoundingClientRect();
+
+    if (e3 <= 0.001) {
+      finale.flyband.style.display = 'none';
+      if (finale.headerBand) finale.headerBand.style.opacity = '';
+      return;
+    }
+    finale.flyband.style.display = '';
+    if (finale.headerBand) finale.headerBand.style.opacity = '0';
+
+    /* 目标：槽内居中，高约槽高 55%（保持带宽高比 69:22） */
+    var natW = 69, natH = 22;
+    var sB = Math.min((b.height * 0.55) / natH, (b.width * 0.5) / natW);
+    var bx = b.left + (b.width - natW * sB) / 2;
+    var by = b.top + (b.height - natH * sB) / 2;
+    var sA = a.height / natH;
+    var ax = a.left, ay = a.top;
+
+    var x = ax + (bx - ax) * e3;
+    var y = ay + (by - ay) * e3;
+    var s = sA + (sB - sA) * e3;
+    finale.flyband.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + s.toFixed(3) + ')';
+  }
+
   function refresh() {
     initCube();
     buildSpine();
     bindReveal();
+    initFinale();
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', measureSpine);
+  window.addEventListener('resize', function () { buildSpine(); });
   if ('ResizeObserver' in window) {
-    /* 图片陆续加载会改变 gallery 位置 — 随 body 高度变化重新丈量 */
-    new ResizeObserver(function () { measureSpine(); }).observe(document.documentElement);
+    var t = null;
+    new ResizeObserver(function () {
+      if (t) clearTimeout(t);
+      t = setTimeout(buildSpine, 120);   /* 防抖：图片陆续加载会移动网格 */
+    }).observe(document.documentElement);
   }
 
-  window.IndexFx = { refresh: refresh };
+  window.IndexFx = {
+    refresh: refresh,
+    /* 手动驱动一帧（调试/隐藏标签页环境验证用） */
+    tick: function () { tickSpine(); tickFinale(); }
+  };
 })();

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Meco 图版 04 · 三端互联，88 项测试兜底 / Plate 04 · Wired together, backed by 88 tests</title>
+  <style>
+    line, rect, circle, path, polyline { vector-effect: non-scaling-stroke; }
+    .mono { font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace; }
+    .serif { font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFBF0"/>
+  <rect x="40" y="40" width="1120" height="670" fill="none" stroke="#E0E0E0" stroke-width="1"/>
+
+  <text class="mono" x="80" y="102" font-size="22" letter-spacing="3" fill="#181818">PL. 04</text>
+  <text class="mono" x="1120" y="102" font-size="20" letter-spacing="2" fill="#999999" text-anchor="end">LINKS &amp; MILESTONES · 互联与刻度</text>
+  <line x1="80" y1="126" x2="1120" y2="126" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 上半：三端拓扑 -->
+  <rect x="510" y="222" width="180" height="76" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="serif" x="600" y="256" font-size="28" letter-spacing="2" fill="#181818" text-anchor="middle">MECO</text>
+  <text class="mono" x="600" y="282" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">HUB · 枢纽</text>
+
+  <rect x="160" y="228" width="200" height="64" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="260" y="256" font-size="22" fill="#181818" text-anchor="middle">Claude Code</text>
+  <text class="mono" x="260" y="278" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">DEV AGENT</text>
+
+  <rect x="840" y="228" width="200" height="64" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="940" y="256" font-size="22" fill="#181818" text-anchor="middle">飞书</text>
+  <text class="mono" x="940" y="278" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">FEISHU · LONG LINK</text>
+
+  <rect x="500" y="368" width="200" height="64" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="600" y="396" font-size="22" fill="#181818" text-anchor="middle">Obsidian</text>
+  <text class="mono" x="600" y="418" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">VAULT · SSOT</text>
+
+  <!-- 连线：双向 / 双向 / 单向只读 -->
+  <line x1="360" y1="260" x2="510" y2="260" stroke="#6F6F6F" stroke-width="1.5"/>
+  <polyline points="370,254 360,260 370,266" fill="none" stroke="#6F6F6F" stroke-width="1.5"/>
+  <polyline points="500,254 510,260 500,266" fill="none" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="435" y="246" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">HTTP · 本机</text>
+
+  <line x1="690" y1="260" x2="840" y2="260" stroke="#6F6F6F" stroke-width="1.5"/>
+  <polyline points="700,254 690,260 700,266" fill="none" stroke="#6F6F6F" stroke-width="1.5"/>
+  <polyline points="830,254 840,260 830,266" fill="none" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="765" y="246" font-size="15" letter-spacing="1" fill="#999999" text-anchor="middle">随时对话 · 24/7</text>
+
+  <line x1="600" y1="368" x2="600" y2="298" stroke="#6F6F6F" stroke-width="1.5"/>
+  <polyline points="594,308 600,298 606,308" fill="none" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="616" y="340" font-size="15" letter-spacing="1" fill="#999999">READ-ONLY · 只读解析</text>
+
+  <!-- 分隔线 -->
+  <line x1="80" y1="472" x2="1120" y2="472" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 下半左：版本时间轴（钴蓝点标当前版本） -->
+  <line x1="180" y1="566" x2="760" y2="566" stroke="#6F6F6F" stroke-width="1.5"/>
+  <circle cx="180" cy="566" r="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <circle cx="373" cy="566" r="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <circle cx="566" cy="566" r="6" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <rect x="754" y="560" width="12" height="12" fill="#0047AB"/>
+  <text class="serif" x="180" y="536" font-size="20" fill="#181818" text-anchor="middle">跑通</text>
+  <text class="serif" x="373" y="536" font-size="20" fill="#181818" text-anchor="middle">设计系统</text>
+  <text class="serif" x="566" y="536" font-size="20" fill="#181818" text-anchor="middle">五域看板</text>
+  <text class="serif" x="760" y="536" font-size="20" fill="#181818" text-anchor="middle">三端互联</text>
+  <text class="mono" x="180" y="600" font-size="17" letter-spacing="1" fill="#999999" text-anchor="middle">v1.0</text>
+  <text class="mono" x="373" y="600" font-size="17" letter-spacing="1" fill="#999999" text-anchor="middle">v2.0</text>
+  <text class="mono" x="566" y="600" font-size="17" letter-spacing="1" fill="#999999" text-anchor="middle">v3.0</text>
+  <text class="mono" x="760" y="600" font-size="17" letter-spacing="1" fill="#999999" text-anchor="middle">v3.2</text>
+
+  <!-- 下半右：工程刻度 -->
+  <text class="serif" x="950" y="592" font-size="92" fill="#181818" text-anchor="middle">88</text>
+  <text class="mono" x="950" y="622" font-size="18" letter-spacing="2" fill="#999999" text-anchor="middle">TESTS · 项测试兜底</text>
+
+  <text class="mono" x="600" y="674" font-size="20" letter-spacing="2" fill="#999999" text-anchor="middle">04 · WIRED TOGETHER, BACKED BY TESTS / 三端互联，测试兜底</text>
+</svg>

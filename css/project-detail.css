@@ -72,6 +72,13 @@
   font-family: var(--font-sans); font-size: 13px; color: rgba(255, 255, 255, .9);
   text-shadow: 0 1px 4px rgba(0, 0, 0, .5); pointer-events: none;
 }
+.media-frame.media-image { aspect-ratio: auto; background: #fff; cursor: zoom-in; }
+.media-frame.media-image img { display: block; width: 100%; height: auto; }
+.media-caption {
+  margin-top: .55rem; text-align: center;
+  font-family: var(--font-sans); font-size: .8rem;
+  letter-spacing: .04em; color: var(--c-kw);
+}
 .media-cta { margin-top: .8rem; font-family: var(--font-sans); font-size: .9rem; }
 .media-cta a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); transition: color .2s, border-color .2s; }
 .media-cta a:hover { color: var(--c-emph); border-color: var(--c-emph); }
@@ -101,6 +108,18 @@
   font-size: 1rem; color: var(--c-sub); margin: 0 0 3rem;
 }
 .detail-tech .label { color: var(--c-kw); margin-right: .8em; }
+
+/* ── 段落配图（sections.*.figure，印刷图版） ── */
+.section-figure { margin: 1.8rem 0 .4rem; }
+.section-figure img {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--c-border); cursor: zoom-in;
+}
+.section-figure figcaption {
+  font-family: var(--font-sans); font-size: .8rem;
+  letter-spacing: .04em; color: var(--c-kw);
+  text-align: center; margin-top: .55rem;
+}
 
 /* ── 内容长图序列 + 文字球 ── */
 .project-content-images { max-width: 980px; margin: 2rem auto 0; }

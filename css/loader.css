@@ -1,0 +1,72 @@
+/* ════════════════════════════════════════════════════════════
+   loader.css — 启动页（仅 index.html）。
+   编舞：「I am」→「I alnt med」展开 → 字母冻结成条 →
+   条飞入右上角 header Logo 槽 → loader 上滑退场。
+   每会话播一次（sessionStorage.loaderPlayed，见 loader.js）。
+   配色：暖纸底 + 墨字（旧站墨底方案弃）。
+   ════════════════════════════════════════════════════════════ */
+
+.loader {
+  position: fixed; inset: 0; z-index: 8000;
+  background: #FFFBF0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: transform .9s var(--ez-io);
+}
+.loader.off { transform: translateY(-100.5%); }
+
+.loader .lkick {
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  letter-spacing: .34em; color: var(--c-kw);
+  margin-bottom: 34px;
+}
+
+/* ── 「I alnt med」拆字 ──
+   结构：I ␣ a(lnt) ␣ m(ed) + 方块句点
+   .ins 是展开插入的字母组（初始 0 宽） */
+.loader .lreveal {
+  display: flex; align-items: flex-end;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(56px, 9vw, 128px); line-height: 1;
+  color: var(--c-title); white-space: pre;
+}
+.loader .lreveal .g { display: inline-block; transition: opacity .32s ease; }
+.loader .lreveal .ins {
+  display: inline-flex; overflow: hidden;
+  max-width: 0; opacity: 0;
+  transition: max-width .9s var(--ez), opacity .6s ease .12s;
+}
+.loader .lreveal.show .ins { max-width: 3.6em; opacity: 1; }
+.loader .lreveal .lsq {
+  display: inline-block; width: .13em; height: .13em;
+  background: var(--bm-acc); margin-left: .12em; margin-bottom: .04em;
+  transition: opacity .32s ease;
+}
+.loader .lreveal.gone .g, .loader .lreveal.gone .lsq { opacity: 0; }
+
+/* ── 进度条 ── */
+.loader .lbar {
+  width: min(280px, 46vw); height: 2px;
+  background: var(--c-border); margin-top: 44px;
+  overflow: hidden;
+}
+.loader .lbar i {
+  display: block; width: 0; height: 100%;
+  background: var(--c-title);
+}
+.loader.run .lbar i { width: 100%; transition: width 1.9s var(--ez); }
+
+/* ── morph overlay：字母冻结成的条（clone），fly() 逐条飞向 header ── */
+.morph-ov { position: fixed; inset: 0; z-index: 8300; pointer-events: none; }
+.morph-ov .mbar { position: fixed; background: var(--c-title); }
+.morph-ov .mbar.msq { background: var(--bm-acc); }
+
+/* header 真身在 loader 期间隐身/免动画，落位时揭幕 */
+.brandband.veil { opacity: 0; }
+.brandband.preset i, .brandband.preset .bsq, .brandband.preset .bdot {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader { display: none; }
+}

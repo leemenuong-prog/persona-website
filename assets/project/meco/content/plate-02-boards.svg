@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Meco 图版 02 · 五域看板，图表优先 / Plate 02 · Five boards, charts first</title>
+  <style>
+    line, rect, circle, path, polyline { vector-effect: non-scaling-stroke; }
+    .mono { font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace; }
+    .serif { font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFBF0"/>
+  <rect x="40" y="40" width="1120" height="670" fill="none" stroke="#E0E0E0" stroke-width="1"/>
+
+  <text class="mono" x="80" y="102" font-size="22" letter-spacing="3" fill="#181818">PL. 02</text>
+  <text class="mono" x="1120" y="102" font-size="20" letter-spacing="2" fill="#999999" text-anchor="end">CHARTS FIRST · 图表优先</text>
+  <line x1="80" y1="126" x2="1120" y2="126" stroke="#E0E0E0" stroke-width="1"/>
+
+  <!-- 顶行：日历（大） + 目标进度环 -->
+  <rect x="180" y="166" width="560" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="200" y="198" font-size="18" letter-spacing="2" fill="#6F6F6F">CALENDAR · 日历</text>
+
+  <!-- 月历格 7×4 -->
+  <g>
+    <rect x="202" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="272" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="342" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="412" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="482" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="552" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="622" y="212" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="202" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="272" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="342" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="412" y="250" width="56" height="30" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+    <rect x="482" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="552" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="622" y="250" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="202" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="272" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="342" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="412" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="482" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="552" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="622" y="288" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="202" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="272" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="342" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="412" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="482" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="552" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="622" y="326" width="56" height="30" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+  </g>
+  <!-- 事件点 + 今天（全图唯一钴蓝点） -->
+  <circle cx="300" cy="227" r="3" fill="#6F6F6F"/>
+  <circle cx="510" cy="227" r="3" fill="#6F6F6F"/>
+  <circle cx="370" cy="265" r="3" fill="#6F6F6F"/>
+  <rect x="434" y="259" width="12" height="12" fill="#0047AB"/>
+  <circle cx="580" cy="303" r="3" fill="#6F6F6F"/>
+  <circle cx="230" cy="341" r="3" fill="#6F6F6F"/>
+  <circle cx="650" cy="341" r="3" fill="#6F6F6F"/>
+
+  <!-- 目标进度环 -->
+  <rect x="762" y="166" width="258" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="782" y="198" font-size="18" letter-spacing="2" fill="#6F6F6F">GOALS · 目标</text>
+  <circle cx="891" cy="288" r="50" fill="none" stroke="#E0E0E0" stroke-width="9" style="vector-effect:none"/>
+  <circle cx="891" cy="288" r="50" fill="none" stroke="#6F6F6F" stroke-width="9" style="vector-effect:none"
+          stroke-dasharray="220 314" transform="rotate(-90 891 288)"/>
+  <text class="serif" x="891" y="299" font-size="30" fill="#181818" text-anchor="middle">70%</text>
+
+  <!-- 下行：学习 / 工作 / 生活 三域微型图表 -->
+  <rect x="180" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="192" y="434" font-size="16" fill="#BEBEBE">a</text>
+  <line x1="210" y1="548" x2="416" y2="548" stroke="#BEBEBE" stroke-width="1"/>
+  <rect x="215" y="508" width="28" height="40" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="257" y="484" width="28" height="64" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="299" y="496" width="28" height="52" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="341" y="460" width="28" height="88" fill="#6F6F6F" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="383" y="478" width="28" height="70" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="313" y="588" font-size="24" fill="#181818" text-anchor="middle">学习</text>
+  <text class="mono" x="313" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">STUDY</text>
+
+  <rect x="467" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="479" y="434" font-size="16" fill="#BEBEBE">b</text>
+  <rect x="510" y="446" width="180" height="22" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="530" y="476" width="140" height="22" fill="#E0E0E0" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="550" y="506" width="100" height="22" fill="#BEBEBE" stroke="#6F6F6F" stroke-width="1"/>
+  <rect x="570" y="536" width="60" height="22" fill="#6F6F6F" stroke="#6F6F6F" stroke-width="1"/>
+  <text class="serif" x="600" y="588" font-size="24" fill="#181818" text-anchor="middle">工作</text>
+  <text class="mono" x="600" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">JOBS FUNNEL</text>
+
+  <rect x="754" y="410" width="266" height="212" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1.5"/>
+  <text class="mono" x="766" y="434" font-size="16" fill="#BEBEBE">c</text>
+  <g>
+    <circle cx="815" cy="456" r="5" fill="#6F6F6F"/><circle cx="839" cy="456" r="5" fill="#BEBEBE"/><circle cx="863" cy="456" r="5" fill="#6F6F6F"/><circle cx="887" cy="456" r="5" fill="#E0E0E0"/><circle cx="911" cy="456" r="5" fill="#6F6F6F"/><circle cx="935" cy="456" r="5" fill="#BEBEBE"/><circle cx="959" cy="456" r="5" fill="#6F6F6F"/>
+    <circle cx="815" cy="480" r="5" fill="#BEBEBE"/><circle cx="839" cy="480" r="5" fill="#6F6F6F"/><circle cx="863" cy="480" r="5" fill="#E0E0E0"/><circle cx="887" cy="480" r="5" fill="#6F6F6F"/><circle cx="911" cy="480" r="5" fill="#6F6F6F"/><circle cx="935" cy="480" r="5" fill="#E0E0E0"/><circle cx="959" cy="480" r="5" fill="#BEBEBE"/>
+    <circle cx="815" cy="504" r="5" fill="#6F6F6F"/><circle cx="839" cy="504" r="5" fill="#E0E0E0"/><circle cx="863" cy="504" r="5" fill="#6F6F6F"/><circle cx="887" cy="504" r="5" fill="#BEBEBE"/><circle cx="911" cy="504" r="5" fill="#E0E0E0"/><circle cx="935" cy="504" r="5" fill="#6F6F6F"/><circle cx="959" cy="504" r="5" fill="#6F6F6F"/>
+    <circle cx="815" cy="528" r="5" fill="#E0E0E0"/><circle cx="839" cy="528" r="5" fill="#6F6F6F"/><circle cx="863" cy="528" r="5" fill="#BEBEBE"/><circle cx="887" cy="528" r="5" fill="#6F6F6F"/><circle cx="911" cy="528" r="5" fill="#BEBEBE"/><circle cx="935" cy="528" r="5" fill="#6F6F6F"/><circle cx="959" cy="528" r="5" fill="#E0E0E0"/>
+  </g>
+  <text class="serif" x="887" y="588" font-size="24" fill="#181818" text-anchor="middle">生活</text>
+  <text class="mono" x="887" y="610" font-size="18" letter-spacing="1" fill="#999999" text-anchor="middle">CHECK-IN HEAT</text>
+
+  <text class="mono" x="600" y="674" font-size="20" letter-spacing="2" fill="#999999" text-anchor="middle">02 · FIVE BOARDS, CHARTS FIRST / 五域看板，图表优先</text>
+</svg>
