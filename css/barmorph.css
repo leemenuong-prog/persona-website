@@ -1,0 +1,82 @@
+/* ════════════════════════════════════════════════════════════
+   barmorph.css — 「字⇄条」设计语言的灰阶移植版。
+   条 = 编码态（Logo 的天际线节奏，--bm-bar 灰）
+   字 = 解码态（--bm-fg 墨）
+   方块 = 句点「自我」——唯一跳色，灰阶下由色相跳改明度跳（--bm-acc 黑）
+   触发：祖先获得 .in（main.js 的 [data-reveal] IntersectionObserver）。
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 品牌带 .IAM. — header 常驻小型天际线 ───────────────── */
+.brandband {
+  display: inline-flex; align-items: flex-end; gap: 3px;
+  height: 22px; width: auto;
+}
+.brandband .bsq, .brandband .bdot {
+  flex: 0 0 5px; width: 5px; height: 5px; background: var(--bm-acc);
+  transform: scale(0); transform-origin: bottom left;
+}
+.brandband i {
+  flex: 0 0 4px; width: 4px; height: 100%; background: var(--bm-bar);
+  transform: scaleY(calc(var(--h, .8) * 0)); transform-origin: bottom;
+  transition: transform .9s var(--ez), background-color .35s;
+  transition-delay: var(--d, 0s), 0s;
+}
+.brandband.in i    { transform: scaleY(var(--h, .8)); }
+.brandband.in .bsq { transform: scale(1); transition: transform .5s var(--ez) .1s; }
+.brandband.in .bdot{ transform: scale(1); transition: transform .5s var(--ez) .95s; }
+a:hover .brandband i, a:focus-visible .brandband i { background: var(--bm-fg); }
+
+/* ── BarWord — 词从条中解码升起（about 页标题用） ────────── */
+.bmw { display: block; line-height: 1; font-family: var(--font-display); font-weight: 700; color: var(--bm-fg); }
+.bmw .bmw-in { display: flex; align-items: flex-end; gap: .12em; }
+.bmw .bsp { width: .3em; }
+.bmw .bg { position: relative; display: block; }
+.bmw .glc { display: block; overflow: hidden; }
+.bmw .gl { display: block; transform: translateY(115%); }
+.bmw .bars {
+  position: absolute; left: 3%; right: 3%; bottom: .18em; height: var(--bz, .72em);
+  display: flex; justify-content: center; align-items: flex-end; pointer-events: none;
+}
+.bmw .bars i { flex: 0 0 auto; width: var(--bw, .3em); height: 100%; background: var(--bm-bar);
+  transform: scaleY(0); transform-origin: bottom; }
+
+/* 句点方块 — 永远直角，落在词尾 */
+.bmw .bmp { flex: 0 0 auto; width: .13em; height: .13em; background: var(--bm-acc);
+  margin-bottom: .19em; margin-left: .1em;
+  transform: scale(0); transform-origin: bottom left; }
+
+/* 出生编舞：条起 → 天际线停留 → 满编码 → 染字色 → 沉入基线，字升起 */
+.in .bmw .bars i { animation: bmBar 1.7s both;
+  animation-delay: calc(var(--gd, 0s) + var(--bd, 0s)); }
+.in .bmw .gl { animation: bmGl .85s var(--ez) both;
+  animation-delay: calc(var(--gd, 0s) + .98s); }
+.in .bmw .bmp { animation: bmSq .7s var(--ez) both;
+  animation-delay: calc(var(--gd, 0s) + 1.55s); }
+
+@keyframes bmBar {
+  0%   { transform: scaleY(0); background-color: var(--bm-bar); opacity: 1; animation-timing-function: var(--ez); }
+  22%  { transform: scaleY(var(--h, .8)); animation-timing-function: linear; }
+  46%  { transform: scaleY(var(--h, .8)); animation-timing-function: var(--ez-io); }
+  60%  { transform: scaleY(1); background-color: var(--bm-bar); animation-timing-function: linear; }
+  72%  { transform: scaleY(1); background-color: var(--bm-fg); opacity: 1; animation-timing-function: var(--ez-io); }
+  100% { transform: scaleY(0); background-color: var(--bm-fg); opacity: 0; }
+}
+@keyframes bmGl { from { transform: translateY(115%); } to { transform: none; } }
+@keyframes bmSq { 0% { transform: scale(0); } 62% { transform: scale(1.16); } 100% { transform: scale(1); } }
+
+/* 定格：出生播完一次后永久可读 */
+.bmw.set .gl { animation: none; transform: none; }
+.bmw.set .bars i { animation: none; transform: scaleY(0); opacity: 1; }
+.bmw.set .bmp { animation: none; transform: none; }
+
+/* ── .psq — 行内方块句点（正文标题末尾，唯一带入新站的正文母题） ── */
+.psq { display: inline-block; width: .12em; height: .12em; background: var(--bm-acc); margin-left: .12em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .brandband i, .brandband.in i { transition: none; transform: scaleY(var(--h, .8)); }
+  .brandband .bsq, .brandband .bdot,
+  .brandband.in .bsq, .brandband.in .bdot { transition: none; transform: scale(1); }
+  .bmw .gl, .in .bmw .gl { animation: none !important; transform: none !important; }
+  .bmw .bars { display: none; }
+  .bmw .bmp, .in .bmw .bmp { animation: none !important; transform: none !important; }
+}

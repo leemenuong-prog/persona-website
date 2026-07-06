@@ -1,0 +1,35 @@
+/* ════════════════════════════════════════════════════════════
+   about.css — 关于页：BarWord 标题 · 画像 · 双语简介。
+   ════════════════════════════════════════════════════════════ */
+
+.about-container { padding: 56px 0 110px; }
+
+.about-title { margin-bottom: 46px; font-size: clamp(40px, 6vw, 68px); }
+.about-title .bmw { letter-spacing: .01em; }
+
+.about-grid {
+  display: grid; grid-template-columns: minmax(260px, 380px) 1fr;
+  gap: 54px; align-items: start;
+}
+.about-portrait { margin: 0; }
+.about-portrait img {
+  width: 100%; height: auto; border: 1px solid var(--c-border);
+  filter: grayscale(24%);
+}
+.about-bio { font-size: 1.05rem; line-height: 1.85; color: var(--c-body); }
+.about-bio h2 {
+  font-size: 1.05rem; font-weight: 600; letter-spacing: .14em;
+  color: var(--c-title); margin: 2.2em 0 .8em;
+}
+.about-bio h2:first-child { margin-top: 0; }
+.about-bio a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); transition: color .2s, border-color .2s; }
+.about-bio a:hover { color: var(--c-emph); border-color: var(--c-emph); }
+.about-bio ul { list-style: none; padding: 0; margin: 0; }
+.about-bio li { padding-left: 1.4rem; position: relative; margin-bottom: .55rem; }
+.about-bio li::before { content: "—"; position: absolute; left: 0; color: var(--c-kw); }
+
+@media (max-width: 767px) {
+  .about-container { padding-top: 26px; }
+  .about-grid { grid-template-columns: 1fr; gap: 30px; }
+  .about-portrait { max-width: 300px; }
+}

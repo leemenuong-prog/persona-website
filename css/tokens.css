@@ -1,0 +1,55 @@
+/* ════════════════════════════════════════════════════════════
+   tokens.css — 全站设计令牌（wenxin.design 灰阶体系）
+   规则：页面颜色一律引用令牌；禁止出现旧三色
+   (#0047AB / #0b0b0e / #efece6)；body[data-tone] 换肤体系已退役。
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 色板：暖白径向渐变 + 11 级灰阶 ── */
+  --bg-gradient: radial-gradient(ellipse at center, #FFFBF0 0%, #EAEAEA 53%, #FFFFFF 100%);
+  --c-cream:  #FFFBF0;
+  --c-white:  #FFFFFF;
+  --c-border: #E0E0E0;   /* 边框 · 分割线 · pill 描边 */
+  --c-footer: #D7D7D7;   /* 页脚底 */
+  --c-muted:  #BEBEBE;   /* 滚动珠 · 次要文字 · intro 底色字 */
+  --c-kw:     #999999;   /* 关键词 · 弱注释 */
+  --c-body:   #6F6F6F;   /* 正文 */
+  --c-header: #5F5F5F;   /* header 文字 */
+  --c-sub:    #333333;   /* 次强调 */
+  --c-title:  #181818;   /* 标题 */
+  --c-emph:   #000000;   /* 强调词（仅标题内） */
+  --header-bg: rgba(255, 255, 255, .95);
+  --hover-bg:  rgba(239, 232, 233, .8);
+  --overlay:   rgba(0, 0, 0, .7);
+
+  /* ── barmorph 灰阶映射：条=编码态灰 · 字=解码态墨 · 方点=明度跳 ── */
+  --bm-bar: #999999;
+  --bm-fg:  #181818;
+  --bm-acc: #000000;
+
+  /* ── 缓动（沿用旧站曲线，设计语言遗产） ── */
+  --ez:    cubic-bezier(.16, 1, .3, 1);
+  --ez-io: cubic-bezier(.65, .05, .36, 1);
+
+  /* ── 字体 ── */
+  --font-display: 'Monterey', Georgia, 'Songti SC', 'STSong', serif;
+  --font-serif:   Garamond, 'EB Garamond', Georgia, 'Songti SC', 'Noto Serif SC', serif;
+  --font-sans:    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+
+  /* ── 尺度 ── */
+  --page-width:    1280px;
+  --content-width: 1020px;
+  --header-h:      70px;
+  --cube-size:     320px;
+  --card-size:     360px;
+  --spine-gap:     96px;    /* 主线卡中轴让位 */
+  --mainline-gap:  180px;   /* 主线项间距 */
+  --grid-min:      200px;   /* 尾声网格最小列宽 */
+  --grid-gap:      40px;
+  --bead-size:     20px;
+  --reveal-r:      60px;    /* clip-path 揭示圆半径 */
+  --fs-intro:      24px;
+  --fs-detail-title: 2.75rem;
+
+  /* 断点备忘（媒体查询写死）：479 / 767 / 1023 */
+}

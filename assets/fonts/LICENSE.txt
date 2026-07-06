@@ -1,0 +1,4 @@
+MontereyFLF — Fluent Laser Fonts (Casady & Greene / Richard Ware)
+以 freeware（个人使用）形式流通；下载自 font.download/font/montereyflf（2026-07-06）。
+本站为个人作品集（非商用）。若日后商用需替换字体或取得授权。
+原始 TTF 母版留存于 源文件/ 之外的 scratchpad，仓库只入 woff2 子集。

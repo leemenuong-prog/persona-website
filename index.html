@@ -1,43 +1,74 @@
-<!doctype html>
-<html lang="zh">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alnt Med 个人网页</title>
-<meta name="description" content="Alnt Med — AIPM · Developer · Architect. The Art of Rationality · 理性的艺术">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="rational/base.css">
-<link rel="stylesheet" href="rational/barmorph.css">
-<link rel="stylesheet" href="rational/sections.css">
-<link rel="stylesheet" href="rational/chapters.css">
-<link rel="preload" as="image" href="works/pears-deck/02.svg">
-
-<template id="__bundler_thumbnail">
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100" height="100" fill="#0047AB"></rect>
-    <rect x="30" y="34" width="6" height="32" fill="#0b0b0e"></rect>
-    <rect x="40" y="26" width="6" height="40" fill="#0b0b0e"></rect>
-    <rect x="50" y="40" width="6" height="26" fill="#0b0b0e"></rect>
-    <rect x="60" y="30" width="6" height="36" fill="#0b0b0e"></rect>
-    <rect x="70" y="58" width="8" height="8" fill="#efece6"></rect>
-  </svg>
-</template>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>李文苑 Alnt Med — AI 产品 × 建筑 · Portfolio</title>
+  <meta name="description" content="李文苑（Alnt Med）个人作品集：主线是 AI 产品与 AIGC 工作流（Pears · Co-work · 议见 · Meco · UABB 多模态），尾声是六个建筑作品。">
+  <meta property="og:title" content="李文苑 Alnt Med — AI 产品 × 建筑 · Portfolio">
+  <meta property="og:description" content="AI 产品与 AIGC 工作流为主线，建筑作品集为尾声。">
+  <meta property="og:image" content="assets/brand/favicon-512.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon-180.png">
+  <script>
+    /* 防闪烁：提前落 locale（正式逻辑在 language-toggle.js） */
+    try {
+      var __l = localStorage.getItem('preferredLocale');
+      if (__l !== 'zh' && __l !== 'en') __l = (navigator.language || 'zh').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+      document.documentElement.setAttribute('data-locale', __l);
+      document.documentElement.lang = __l === 'zh' ? 'zh-CN' : 'en';
+    } catch (e) {}
+  </script>
+  <link rel="preload" href="assets/fonts/monterey-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/barmorph.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
-<body data-tone="ink">
-<div id="root"></div>
+<body data-page="index">
+  <main>
+    <!-- 两行 intro：灰底色字 + 黑强调词 -->
+    <section class="intro-container" data-reveal>
+      <h1 class="intro-line">
+        <span class="g" data-zh="你好，我是 " data-en="HI, I AM ">你好，我是 </span>
+        <span class="b" data-zh="李文苑" data-en="WENYUAN LI">李文苑</span>
+        <span class="g" data-zh="。" data-en=".">。</span>
+      </h1>
+      <p class="intro-line">
+        <span class="g" data-zh="我在做 " data-en="I make ">我在做 </span>
+        <span class="b" data-zh="AI 产品" data-en="AI PRODUCTS">AI 产品</span>
+        <span class="g" data-zh=" 与 " data-en=" and ">与</span>
+        <span class="b" data-zh="AIGC 工作流" data-en="AIGC WORKFLOWS">AIGC 工作流</span>
+        <span class="g" data-zh="；" data-en="; ">；</span>
+        <span class="b" data-zh="建筑设计" data-en="ARCHITECTURE">建筑设计</span>
+        <span class="g" data-zh=" 是我的来处。" data-en=" is where I came from.">是我的来处。</span>
+      </p>
+    </section>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    <!-- 3D 立方体（M2 接交互） -->
+    <section class="polygon-container" aria-hidden="true">
+      <div class="cube-vp"><div class="cube" id="cube"></div></div>
+    </section>
 
-<script type="text/babel" src="rational/tweaks-panel.jsx"></script>
-<script type="text/babel" src="rational/art.jsx"></script>
-<script type="text/babel" src="rational/identity-art.jsx"></script>
-<script type="text/babel" src="rational/barmorph.jsx"></script>
-<script type="text/babel" src="rational/sections.jsx"></script>
-<script type="text/babel" src="rational/chapters.jsx"></script>
-<script type="text/babel" src="rational/app.jsx"></script>
+    <!-- 中轴滚动线 + 珠（M2） -->
+    <div class="line-container" id="line-container" aria-hidden="true"></div>
+
+    <!-- 主线大卡 + 尾声网格（index.js 从 projects.json 渲染） -->
+    <section class="projects-section">
+      <div id="mainline" class="mainline"></div>
+      <h2 class="epilogue-title" data-reveal>
+        <span data-zh="尾声 — 建筑作品" data-en="EPILOGUE — ARCHITECTURE">尾声 — 建筑作品</span><span class="psq"></span>
+      </h2>
+      <div id="gallery" class="gallery-grid"></div>
+    </section>
+  </main>
+
+  <script src="js/language-toggle.js" defer></script>
+  <script src="js/barmorph.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/index-fx.js" defer></script>
+  <script src="js/index.js" defer></script>
 </body>
 </html>

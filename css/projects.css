@@ -1,0 +1,44 @@
+/* ════════════════════════════════════════════════════════════
+   projects.css — 全部作品索引页。
+   ════════════════════════════════════════════════════════════ */
+
+.page-title {
+  margin: 48px 0 40px; font-size: 26px; font-weight: 500;
+  letter-spacing: .18em; color: var(--c-title);
+}
+
+.projects-list { display: flex; flex-direction: column; padding-bottom: 110px; }
+
+.projects-group-label {
+  margin: 38px 0 18px; font-family: var(--font-display);
+  font-size: 14px; font-weight: 500; letter-spacing: .3em; color: var(--c-kw);
+}
+
+.list-item {
+  display: grid; grid-template-columns: 132px 1fr auto;
+  gap: 26px; align-items: center;
+  padding: 18px 6px; border-bottom: 1px solid var(--c-border);
+  transition: background-color .2s;
+}
+.list-item:hover { background: var(--hover-bg); }
+.list-item .li-thumb {
+  width: 132px; aspect-ratio: 1 / 1; object-fit: cover;
+  border: 1px solid var(--c-border); background: #f0efec;
+}
+.list-item .li-title {
+  font-family: var(--font-display); font-size: 21px; font-weight: 500;
+  color: var(--c-title); margin: 0 0 4px;
+}
+.list-item .li-kw { font-size: 13px; color: var(--c-kw); margin: 0; }
+.list-item .li-meta {
+  text-align: right; font-family: var(--font-sans);
+  font-size: 13px; color: var(--c-body); white-space: nowrap;
+}
+.list-item .li-meta .year { display: block; color: var(--c-sub); }
+
+@media (max-width: 767px) {
+  .page-title { margin: 26px 0 22px; }
+  .list-item { grid-template-columns: 84px 1fr; gap: 16px; }
+  .list-item .li-thumb { width: 84px; }
+  .list-item .li-meta { display: none; }
+}
