@@ -68,6 +68,10 @@
 
 **组件标注**：允许给图版加少量英文组件名（斜体小字 19px、#999999、可配 L5 发丝引线），
 只命名部件、不写句子（"the bot." / "calendar." / "read-only."）；用人话词，不用系统黑话。
+
+**防遮挡（硬规则）**：标注文字不允许被任何线穿过——位置优先落空白区；所有图内文字一律带白色光环
+`paint-order="stroke" stroke="#FFFFFF" stroke-width="7-8" stroke-linejoin="round"`（制图挖空惯例），
+引线先画、文字后画，保证文字永远压在最上层。
 页面层 figcaption **不再使用**——图版自带说明，projects.json 的 figure 只留 src。
 中文直译的比喻词（"器官""五域"这类）不进任何面向读者的中文文案。
 

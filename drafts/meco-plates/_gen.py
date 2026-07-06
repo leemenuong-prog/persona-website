@@ -150,18 +150,20 @@ class Scene:
 
 SERIF = "Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif"
 
+HALO = 'paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round"'
+
 def note(S, x, y, text, anchor='start', leader=None, size=19):
-    """克制的英文组件标注：斜体小字 + 可选发丝引线。"""
-    S.raw(f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{SERIF}" '
-          f'font-style="italic" font-size="{size}" letter-spacing="1" fill="#999999">{text}</text>')
+    """克制的英文组件标注：斜体小字 + 白色光环（挖空底线，不被遮挡）+ 可选发丝引线。"""
     if leader:
         S.line2(leader[0], leader[1], 'L5')
+    S.raw(f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{SERIF}" '
+          f'font-style="italic" font-size="{size}" letter-spacing="1" {HALO} fill="#999999">{text}</text>')
 
 def caption_el(text, w, h):
     """极简英文一行：主站衬线斜体气质，小写、轻字距、弱灰。"""
     return (f'<text x="{w // 2}" y="{h - 44}" text-anchor="middle" '
             f'font-family="{SERIF}" font-style="italic" font-size="26" '
-            f'letter-spacing="1.5" fill="#999999">{text}</text>')
+            f'letter-spacing="1.5" {HALO} fill="#999999">{text}</text>')
 
 def plate(name, w, h, title, body_fn, caption=None):
     body = body_fn()
@@ -231,11 +233,11 @@ def plate_01():
     for cx, cy in ((HX0, HY0), (HX1, HY0), (HX0, HY1), (HX1, HY1)):
         S.line3((cx, cy, 236), (cx, cy, HZ), 'L5t')
 
-    # 组件标注
+    # 组件标注（位置优先落空白区，白色光环兜底防遮挡）
     note(S, 588, 172, 'the bot.', leader=((584, 177), (556, 188)))
-    note(S, 872, 418, 'the doors.', leader=((868, 423), (850, 432)))
+    note(S, 930, 432, 'the doors.', leader=((926, 428), (854, 431)))
     note(S, 356, 552, 'the clock.', anchor='end', leader=((362, 546), (426, 500)))
-    note(S, 734, 622, 'the window.', leader=((730, 616), (676, 580)))
+    note(S, 790, 588, 'the window.', leader=((786, 584), (702, 560)))
 
     return '\n'.join('  ' + e for e in S.el)
 
@@ -513,9 +515,11 @@ def plate_05():
 
 # ══════════════════════ 整体流程横图（模板 · 必备） ══════════════════════
 SMALLCAP = ('font-family="Garamond, \'EB Garamond\', Georgia, serif" '
-            'font-size="17" letter-spacing="3" fill="#6F6F6F"')
+            'font-size="17" letter-spacing="3" '
+            'paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#6F6F6F"')
 ITAL = ('font-family="Garamond, \'EB Garamond\', Georgia, serif" '
-        'font-style="italic" font-size="18" letter-spacing="1" fill="#999999"')
+        'font-style="italic" font-size="18" letter-spacing="1" '
+        'paint-order="stroke" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round" fill="#999999"')
 
 def plate_flow():
     S = Scene(0, 0)

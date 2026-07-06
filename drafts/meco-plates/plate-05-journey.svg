@@ -219,5 +219,5 @@
   <path d="M 880.1 476.5 Q 980.1 293.2 1080 230" fill="none" stroke="#181818" stroke-width="1.5"/>
   <rect x="1079" y="225" width="10" height="10" fill="#181818"/>
   <line x1="100" y1="585" x2="1100" y2="585" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
-  <text x="600" y="596" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">in, through, out.</text>
+  <text x="600" y="596" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">in, through, out.</text>
 </svg>

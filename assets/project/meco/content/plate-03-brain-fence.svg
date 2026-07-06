@@ -153,7 +153,7 @@
   <line x1="150.3" y1="398.1" x2="145.5" y2="397.3" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   <line x1="144.9" y1="415.5" x2="191.7" y2="388.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
   <line x1="191.7" y1="388.5" x2="221.2" y2="371.5" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
-  <text x="610" y="526" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">the brain.</text>
-  <text x="200" y="298" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">read-only.</text>
-  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">look, don&#8217;t touch.</text>
+  <text x="610" y="526" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the brain.</text>
+  <text x="200" y="298" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">read-only.</text>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">look, don&#8217;t touch.</text>
 </svg>

@@ -56,7 +56,7 @@
   <path d="M 29 75 L 37 83 M 29 83 L 37 75" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   <path d="M 89 101 L 97 109 M 89 109 L 97 101" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text x="302.89111" y="386.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">calendar.</text>
+  <text x="302.89111" y="386.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">calendar.</text>
   <polygon points="413.8,112.5 561,197.5 552.4,202.5 405.1,117.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="561,382.5 552.4,387.5 552.4,202.5 561,197.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="405.1,302.5 552.4,387.5 552.4,202.5 405.1,117.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
@@ -74,7 +74,7 @@
   <path d="M 73.0 44.0 A 40 40 0 1 1 59.3 121.6" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   <path d="M 73.0 28.0 A 56 56 0 1 1 30.1 48.0" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text x="415.47441200000003" y="451.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">goals.</text>
+  <text x="415.47441200000003" y="451.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">goals.</text>
   <polygon points="526.4,155.5 673.6,240.5 665,245.5 517.7,160.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="673.6,425.5 665,430.5 665,245.5 673.6,240.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="517.7,345.5 665,430.5 665,245.5 517.7,160.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
@@ -95,7 +95,7 @@
   <circle cx="112" cy="69" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
   <circle cx="146" cy="49" r="3.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text x="528.057714" y="516.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">learning.</text>
+  <text x="528.057714" y="516.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">learning.</text>
   <polygon points="639,198.5 786.2,283.5 777.5,288.5 630.3,203.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="786.2,468.5 777.5,473.5 777.5,288.5 786.2,283.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="630.3,388.5 777.5,473.5 777.5,288.5 630.3,203.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
@@ -125,7 +125,7 @@
   <rect x="112" y="81" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   <rect x="112" y="105" width="28" height="14" fill="none" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text x="640.641016" y="581.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">work.</text>
+  <text x="640.641016" y="581.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">work.</text>
   <polygon points="751.6,241.5 898.8,326.5 890.1,331.5 742.9,246.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="898.8,511.5 890.1,516.5 890.1,331.5 898.8,326.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
   <polygon points="742.9,431.5 890.1,516.5 890.1,331.5 742.9,246.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
@@ -148,6 +148,6 @@
   <circle cx="120" cy="60.2" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
   <circle cx="124" cy="60.3" r="4" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
   </g>
-  <text x="753.224318" y="646.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" fill="#999999">life.</text>
-  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">five views of one life.</text>
+  <text x="753.224318" y="646.0" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">life.</text>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">five views of one life.</text>
 </svg>

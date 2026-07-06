@@ -124,5 +124,5 @@
   <path d="M 701.6 341.5 Q 847.8 397.5 994 341.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
   <path d="M 283.9 394.5 Q 397.1 423.3 510.3 400.2" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
   <path d="M 470.6 413.1 L 478.6 405.7 L 468.8 400.7" fill="none" stroke="#6F6F6F" stroke-width="1"/>
-  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" fill="#999999">never out of touch.</text>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">never out of touch.</text>
 </svg>
