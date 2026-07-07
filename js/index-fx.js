@@ -19,9 +19,11 @@
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 1. 立方体（重量感体系：dt 归一 + 惯性 + Lambert 光照 + 接触影呼吸 + bob + 视差） ── */
+  /* 立方体六面「悬浮前」默认封面。cowork 面 = 交互影片视频封面（用户裁定：悬浮前就要显视频封面，
+     不能只在悬浮后才出现）；其余面用各自缩略图。品牌面 = 品牌 SVG。 */
   var CUBE_FACES = [
     'assets/project/pears/thumbnails/1.png',
-    'assets/project/cowork/thumbnails/1.jpg',
+    'xtool/screenshots/poster-team-time.png',
     'assets/project/yijian/thumbnails/1.jpg',
     'assets/project/ring-world/thumbnails/1.jpg',
     'assets/project/air-cube/thumbnails/1.jpg',
