@@ -8,6 +8,7 @@
 - 背景：暖白径向渐变 `radial-gradient(ellipse, #FFFBF0 0%, #EAEAEA 53%, #FFFFFF 100%)`（body::before 固定层）
 - 灰阶：`#E0E0E0` 边框 › `#D7D7D7` 页脚 › `#BEBEBE` 次要 › `#999` 关键词 › `#6F6F6F` 正文 › `#5F5F5F` header › `#333` 次强调 › `#181818` 标题 › `#000` 仅强调词与方点
 - **跳色只落在「点」上，由旧站的色相跳改为明度跳**（灰条黑点）；标题字母永不跳色
+- **全站唯一色相跳例外：`--c-accent: #C0392B`**（2026-07-07 英雄区改版引入），只允许落在英雄立方体顶面那枚红方点上（参考图「石上红花」语义），其他任何地方不得使用
 - 全部颜色引用 `css/tokens.css` 令牌；插图（SVG 字卡等）同口径
 
 ## 品牌编舞（「.IAM. 数据条」语言的延续）
@@ -25,7 +26,8 @@
 ## 版式基准（老师站实证规格）
 
 - **大标题字体铁律（用户裁定 2026-07-07）**：所有页级大标题一律 Monterey（`var(--font-display)`）——首页英雄标题、projects 页标题、**详情页 `.detail-title`**、主线卡标题；中文按栈回退宋体。章节 h2 与正文保持衬线，不得把详情页大标题改回 Georgia。
-- intro（英雄区，2026-07-07 升级）：kick 线 `THE ART OF RATIONALITY`（12px/字距 .38em/#999）→ H1 Monterey `clamp(40px, 6.2vw, 84px)`/下划线 2px → 副行 `clamp(18px, 2.1vw, 26px)`；三档分词色（#6F6F6F / #000 / #BBB）不变、强调词 700；入场 heroRise 依次升起（respect reduced-motion）；桌面立方体 400px/台高 540
+- hero（英雄区，2026-07-07 motionsites eco-intelligence 式改版）：近全视口舞台三层——巨大 `LI WENYUAN` 垫底 z1 → 立方体台 z2 压字 → 贴底行 z3（左 intro 两行小字+kick 11px；右精选面板 <1024 隐藏）。大字规格：h1 内层 `.hero-name-text` Monterey 400、`calc(clamp(64px,13vw,264px) × --hero-fit)`（`fitHeroName()` JS 拟合到 ≈92vw，挂 refresh/resize/fonts.ready/RO 防抖四处）、#D7D7D7、全断点一行 nowrap；**不加下划线**（Monterey 下划线规则只管行级标题，不适用品牌图形层）；**双语均拉丁**不参与翻译（同 loader/header 先例），中文身份由 aria-label + intro 首行承载。入场编舞挂 `html.loading` 冻结第 0 帧、条落 Logo 后梯次起跑（大字 heroNameIn → 立方体 +.35s → intro +.55s → aside +.7s）；**transform 分层铁律**：入场动画在 h1/.polygon-container、视差在 .hero-name-text/.cube-rig、bob 在 .cube-bob、拖拽在 #cube，互不抢
+- 立方体重量感体系（index-fx.js 单一 render 循环，dt 归一保 60/120Hz 同速）：自转 3°/s（一圈≈2min）· 拖拽增益 .22 + 松手惯性（vel≤3°/帧、摩擦 .95/帧 ≈1.2s 归稳）· bob 7s/7px（手机 8s/3px）与接触影**同相呼吸**（升→影淡+散、降→影浓+紧，JS 同驱勿改 CSS 动画）· 六面 Lambert 光照遮罩 `.face-shade`（光源左上前 norm(-.35,-.75,.55)、上限 .16、顶面恒最亮）· 面棱线 `rgba(24,24,24,.22)` + inset 上高光/下暗角 · 缩略图统一 `saturate(.85) contrast(1.03)` · 鼠标视差（hover+fine 才启用：rig ±14/10px、大字反向 ±8/5px、拖拽期间冻结目标）；尺寸：桌面 `--cube-size: min(500px,36vw,52svh)`、平板 `min(360px,44vw)`、≤767 260px、≤479 230px，台高一律 `calc(--cube-size × 1.35)`；红方点 `.cube-dot` 贴顶面随体转（3D 定位在本体由 layoutFaces 重算防飘位，生长动画只动 ::before）；reduced-motion 保静态光照/定格影/红点/材质，砍全部运动
 - 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px；文字列**居中收拢**（justify-content:center + 30px 簇间距，禁 space-between 把标题/正文撑到两端）；作品间距 `--mainline-gap: 320px`（老师页实证的呼吸感）
 - 揭示层：`assets/project/{id}/float/1.jpg`，clip-path 圆随鼠标显影——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**；尾声（建筑）揭示层是横构图版面 → `object-fit: contain` 白底整页收进框，**禁 cover 拦腰裁半**
 - **尾声建筑卡 = 3:2 横构图**（建筑渲染都是横图，方图裁到看不见内容——用户裁定）：封面 = 母版首页主渲染 3:2 满幅裁（960×640，无白边无页面装饰）；主线 AI 卡保持 360 方图

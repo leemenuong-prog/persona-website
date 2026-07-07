@@ -44,28 +44,48 @@
     } } catch (e) {}
   </script>
   <main>
-    <!-- 两行 intro：灰底色字 + 黑强调词 -->
-    <section class="intro-container" data-reveal>
-      <p class="intro-kick">THE ART OF RATIONALITY</p>
-      <h1 class="intro-line">
-        <span class="g" data-zh="你好，我是 " data-en="HI, I AM ">你好，我是 </span>
-        <span class="b" data-zh="李文苑" data-en="WENYUAN LI">李文苑</span>
-        <span class="g" data-zh="。" data-en=".">。</span>
+    <!-- 英雄区：巨大名字垫底 · 重量感立方体压前 · 左下 intro · 右下精选 -->
+    <section class="hero" id="hero">
+      <!-- 巨大名字：品牌图形，双语均显拉丁（中文身份由 aria-label + 左下 intro 承载） -->
+      <h1 class="hero-name" aria-label="李文苑 · Wenyuan Li">
+        <span class="hero-name-text">LI WENYUAN</span>
       </h1>
-      <p class="intro-line">
-        <span class="g" data-zh="我在做 " data-en="I make ">我在做 </span>
-        <span class="b" data-zh="AI 产品" data-en="AI PRODUCTS">AI 产品</span>
-        <span class="g" data-zh=" 与 " data-en=" and ">与</span>
-        <span class="b" data-zh="AIGC 工作流" data-en="AIGC WORKFLOWS">AIGC 工作流</span>
-        <span class="g" data-zh="；" data-en="; ">；</span>
-        <span class="b" data-zh="建筑设计" data-en="ARCHITECTURE">建筑设计</span>
-        <span class="l" data-zh=" 是我的来处。" data-en=" is where I came from.">是我的来处。</span>
-      </p>
-    </section>
 
-    <!-- 3D 立方体（M2 接交互） -->
-    <section class="polygon-container" aria-hidden="true">
-      <div class="cube-vp"><div class="cube" id="cube"></div></div>
+      <!-- 3D 立方体台（buildSpine 锚此下缘；rig=视差 · shadow=接触影 · bob=浮动，transform 各管一层） -->
+      <div class="polygon-container" aria-hidden="true">
+        <div class="cube-rig">
+          <div class="cube-shadow"></div>
+          <div class="cube-bob">
+            <div class="cube-vp"><div class="cube" id="cube"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 贴底行：左 intro + 右精选 -->
+      <div class="hero-foot">
+        <div class="hero-intro">
+          <p class="intro-kick">THE ART OF RATIONALITY</p>
+          <p class="intro-line">
+            <span class="g" data-zh="你好，我是 " data-en="HI, I AM ">你好，我是 </span>
+            <span class="b" data-zh="李文苑" data-en="WENYUAN LI">李文苑</span>
+            <span class="g" data-zh="。" data-en=".">。</span>
+          </p>
+          <p class="intro-line">
+            <span class="g" data-zh="我在做 " data-en="I make ">我在做 </span>
+            <span class="b" data-zh="AI 产品" data-en="AI PRODUCTS">AI 产品</span>
+            <span class="g" data-zh=" 与 " data-en=" and ">与</span>
+            <span class="b" data-zh="AIGC 工作流" data-en="AIGC WORKFLOWS">AIGC 工作流</span>
+            <span class="g" data-zh="；" data-en="; ">；</span>
+            <span class="b" data-zh="建筑设计" data-en="ARCHITECTURE">建筑设计</span>
+            <span class="l" data-zh=" 是我的来处。" data-en=" is where I came from.">是我的来处。</span>
+          </p>
+        </div>
+        <aside class="hero-aside">
+          <p class="aside-kick" data-zh="精选 — SELECTED" data-en="SELECTED WORK">精选 — SELECTED</p>
+          <a class="aside-item" href="project.html?id=pears"><span data-zh="Pears · AI 产品" data-en="Pears · AI Product">Pears · AI 产品</span><i class="asq"></i></a>
+          <a class="aside-item" href="project.html?id=cowork"><span data-zh="Co-work · AIGC 工作流" data-en="Co-work · AIGC Workflow">Co-work · AIGC 工作流</span><i class="asq"></i></a>
+        </aside>
+      </div>
     </section>
 
     <!-- 中轴滚动线 + 珠（M2） -->
