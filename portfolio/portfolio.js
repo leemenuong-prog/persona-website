@@ -391,6 +391,19 @@
 
     if (prod.cover) {
       var shot = h('div', 'work-cover-shot');
+      /* 落地页说明头（定式）：小标签点明「这是落地页」+ 一句有人味的话术，
+         填补上方文字与大图之间的空腔（cover.label/lede，用户可随时改词） */
+      if (prod.cover.label_en || prod.cover.lede_zh) {
+        var head = h('div', 'shot-head');
+        var label = h('div', 'shot-label');
+        label.appendChild(psq());
+        if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
+        label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
+        head.appendChild(label);
+        var lede = t(prod.cover, 'lede');
+        if (lede) head.appendChild(h('p', 'shot-lede', lede));
+        shot.appendChild(head);
+      }
       shot.appendChild(win(prod.cover.shot, prod.cover.ratio, { frame: prod.cover.frame, url: joined.url, alt: prod.display }));
       main.appendChild(shot);
     } else {
@@ -407,18 +420,14 @@
     return s.holder;
   }
 
-  /* ════════ 线稿页（左窄柱介绍 + 右大幅线稿） ════════ */
-  function sheetLineart(prod, joined, idx, num) {
-    var s = sheet('p-work p-la');
-    s.sheet.appendChild(rail(prod.ref, true));
-    var main = h('div', 'work-main work-main--wide');
-    main.appendChild(h('div', 'kicker',
-      'PROJECT ' + pad2(idx + 1) + ' · ' + (prod.display || '').toUpperCase() + ' · SYSTEM LINEART'));
-
-    /* 线稿页文字侧定式（2026-07-08 用户裁定，后续所有线稿页照此）：
-       大标题 = 线稿核心语句（lineart.motto，拉丁 Monterey + 中文小注）
-       斜体   = one_liner（产品第一人称，全册唯一一处——封面不再重复）
-       keywords/STACK 不上本页（各归封面/尾页，文字零重复） */
+  /* ════════ 线稿块定式（2026-07-08 用户裁定，后续所有线稿照此） ════════
+     一侧文字（大标题 = 线稿核心语句 lineart.motto，拉丁 Monterey + 中文小注；
+     斜体 = one_liner，全册唯一一处——封面不再重复）｜一侧线稿图。
+     keywords/STACK 不上线稿块（各归封面/尾页，文字零重复）。 */
+  function lineartBlock(prod, joined) {
+    var frag2 = document.createDocumentFragment();
+    frag2.appendChild(h('div', 'kicker',
+      'PROJECT ' + pad2(prodIndex(prod) + 1) + ' · ' + (prod.display || '').toUpperCase() + ' · SYSTEM LINEART'));
     var grid = h('div', 'la-grid');
     var side = h('div', 'la-side');
     var motto = h('h2', 'la-motto');
@@ -429,12 +438,23 @@
     var one = t(joined, 'one_liner');
     if (one) side.appendChild(h('p', 'oneliner', one));
     grid.appendChild(side);
-
     var fig = h('figure', 'la-fig');
     fig.appendChild(img(prod.lineart.src, prod.display + ' — system lineart'));
     grid.appendChild(fig);
-    main.appendChild(grid);
+    frag2.appendChild(grid);
+    return frag2;
+  }
+  function prodIndex(prod) {
+    return pf.products.indexOf(prod);
+  }
 
+  /* 独立线稿页（作品有线稿但无场景页时的后备形态；有场景页时线稿块
+     并入首场景页——正文排满规则，2026-07-08 用户裁定） */
+  function sheetLineart(prod, joined, idx, num) {
+    var s = sheet('p-work p-la');
+    s.sheet.appendChild(rail(prod.ref, true));
+    var main = h('div', 'work-main work-main--wide');
+    main.appendChild(lineartBlock(prod, joined));
     s.sheet.appendChild(main);
     s.sheet.appendChild(foot(num));
     return s.holder;
@@ -443,10 +463,13 @@
   /* ════════ 场景页（极简 rail + 横向行模块语法，2026-07-08 用户裁定） ════════
      每一行 = 横向满宽模块，纵向依次码放，正文禁左右双栏。行只有五种：
      {text:true}=一文 ｜ {text:true,img:i}=一文一图 ｜ {imgs:[...]}=一图/两图/三图等高行 */
-  function sheetWorkScene(prod, joined, sc, idx, sceneNo, num, isLast) {
+  function sheetWorkScene(prod, joined, sc, idx, sceneNo, num, isLast, prepend) {
     var s = sheet('p-work');
     s.sheet.appendChild(rail(prod.ref, true));
     var main = h('div', 'work-main work-main--wide');
+
+    /* 正文排满规则：线稿块并入首场景页顶部（prepend） */
+    if (prepend) main.appendChild(prepend);
 
     /* 页头：场景 kicker（场景名并入）+ 章节 h2 */
     var kick = h('div', 'kicker');
@@ -615,9 +638,13 @@
       var joined = byId.get(prod.ref);
       if (!joined) { console.warn('[portfolio] ref not found in projects.json:', prod.ref); return; }
       sheets.push(sheetWorkCover(prod, joined, idx, num++));
-      if (prod.lineart) sheets.push(sheetLineart(prod, joined, idx, num++));
-      (prod.scenes || []).forEach(function (sc, si) {
-        sheets.push(sheetWorkScene(prod, joined, sc, idx, si + 1, num++, si === prod.scenes.length - 1));
+      var scenes = prod.scenes || [];
+      /* 正文排满规则（2026-07-08 用户裁定）：有场景页时线稿块并入首场景页，
+         不再单独成页；仅无场景页的作品保留独立线稿页 */
+      if (prod.lineart && !scenes.length) sheets.push(sheetLineart(prod, joined, idx, num++));
+      scenes.forEach(function (sc, si) {
+        var pre = (si === 0 && prod.lineart) ? lineartBlock(prod, joined) : null;
+        sheets.push(sheetWorkScene(prod, joined, sc, idx, si + 1, num++, si === scenes.length - 1, pre));
       });
     });
 

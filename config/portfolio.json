@@ -71,7 +71,12 @@
         "url": "https://alnt-med.netlify.app/project.html?id=cowork",
         "label_zh": "观看交互影片", "label_en": "Watch the interactive film"
       },
-      "cover": { "shot": "assets/portfolio/cowork/landing-01.jpg", "ratio": 1.854, "frame": "browser" },
+      "cover": {
+        "shot": "assets/portfolio/cowork/landing-01.jpg", "ratio": 1.854, "frame": "browser",
+        "label_zh": "落地页", "label_en": "THE LANDING PAGE",
+        "lede_zh": "点击，然后让 Agent 替你干活。",
+        "lede_en": "Click once — the agents do the rest."
+      },
       "lineart": {
         "src": "assets/project/cowork/content/plate-core.svg",
         "ratio": 1.6,

@@ -385,6 +385,21 @@ a.work-ext:hover { color: var(--c-title); }
 .p-work .work-sec { margin-top: 5.5mm; }
 .p-work .sec-body { max-width: 128mm; }
 .p-work .work-cover-shot { margin-top: auto; padding-top: 5mm; }
+/* 封面落地页说明头（2026-07-08 用户裁定定式）：小标签点明「这是落地页」+
+   一句有人味的话术填补文字与大图之间的空腔。数据在 cover.label/lede。 */
+.p-work .shot-head { margin-bottom: 3.5mm; }
+.p-work .shot-label {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 2.2mm;
+  font-family: var(--font-sans); font-size: 10px; letter-spacing: .18em;
+}
+.p-work .shot-label .psq { width: 4px; height: 4px; margin: 0; }
+.p-work .shot-label .zh-note { font-weight: 600; color: var(--c-sub); }
+.p-work .shot-label .sl-en { text-transform: uppercase; color: var(--c-kw); }
+.p-work .shot-label::after { content: ''; flex: 1; height: 1px; background: var(--c-border); }
+.p-work .shot-lede {
+  margin: 0; font-family: var(--font-serif); font-weight: 600;
+  font-size: 17px; line-height: 1.5; color: var(--c-title);
+}
 .p-work .work-award { font: 9.5px/1.7 var(--font-sans); letter-spacing: .08em; color: var(--c-sub); margin-top: 2mm; }
 .p-work .work-award .psq { width: 3px; height: 3px; }
 
@@ -398,22 +413,24 @@ a.work-ext:hover { color: var(--c-title); }
 .p-work .ph-more a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); }
 .p-work .ph-more a:hover { color: var(--c-title); border-color: var(--c-title); }
 
-/* ════════ 线稿页定式（2026-07-08 用户裁定，后续线稿页一律照此） ════════
+/* ════════ 线稿块定式（2026-07-08 用户裁定，后续线稿一律照此） ════════
    一侧文字（大标题=线稿核心语句 Monterey + 中文小注；斜体=one_liner，
-   全册唯一一处）｜一侧线稿图。keywords/STACK 不上本页（文字零重复）。 */
-.p-la .la-grid { display: grid; grid-template-columns: 56mm 1fr; gap: 8mm; align-items: center; margin: auto 0; }
-.p-la .la-side { min-width: 0; }
-.p-la .la-motto {
+   全册唯一一处）｜一侧线稿图。keywords/STACK 不上线稿块（文字零重复）。
+   正文排满规则：有场景页时线稿块并入首场景页顶部，不再单独成页。 */
+.la-grid { display: grid; grid-template-columns: 56mm 1fr; gap: 8mm; align-items: center; margin: 2mm 0 7mm; }
+.la-side { min-width: 0; }
+.la-motto {
   margin: 0 0 6mm; border: none; padding: 0; display: block;
   font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.25;
   letter-spacing: .01em; color: var(--c-title);
 }
-.p-la .la-motto .psq { width: 5px; height: 5px; }
-.p-la .la-motto .zh-note { display: block; margin-top: 2.5mm; font: 400 10px/1 var(--font-sans); letter-spacing: .3em; color: var(--c-kw); }
-html[data-locale="en"] .p-la .la-motto .zh-note { display: none; }
-.p-la .la-side .oneliner { font-size: 14px; line-height: 1.9; max-width: none; }
-.p-la .la-fig { margin: 0; min-width: 0; }
-.p-la .la-fig img { width: 100%; height: auto; display: block; background: var(--c-white); }
+.la-motto .psq { width: 5px; height: 5px; }
+.la-motto .zh-note { display: block; margin-top: 2.5mm; font: 400 10px/1 var(--font-sans); letter-spacing: .3em; color: var(--c-kw); }
+.la-side .oneliner { font-size: 14px; line-height: 1.9; max-width: none; }
+.la-fig { margin: 0; min-width: 0; }
+.la-fig img { width: 100%; height: auto; display: block; background: var(--c-white); }
+/* 独立线稿页（作品无场景页时的后备形态）：整簇垂直居中 */
+.p-la .la-grid { margin: auto 0; }
 
 /* ════════ P13 建筑压轴 ════════ */
 .p-arch .arch-inner {
