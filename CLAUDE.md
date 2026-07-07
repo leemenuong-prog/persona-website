@@ -73,7 +73,8 @@
 - **视频/交互影片**：作品集页绝不内嵌 video/iframe（与门面点击约定互斥、打印会空框）——一律 poster + 播放角标 + 外链 `<a>`（PDF 里自动成可点注记）。
 - **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**15**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
 - **双语**：`?lang=zh|en` 显式覆盖（无头打印必带）；中文版=英文大标题+中文正文（`.zh-note` 在 EN 版 CSS 隐藏）。
-- Co-work 线稿页引用站内 `assets/project/cowork/content/plate-core.svg`（不复制文件=天然同步）；主站入口：header/foot-nav 的 PORTFOLIO（main.js 注入，≤1023/≤479 断点已为三钮收纳）+ about 作品集区。
+- **线稿页定式（2026-07-08 用户裁定，后续所有作品的线稿页照此）**：一侧文字｜一侧线稿图，文字侧 = 大标题（**线稿核心语句** `lineart.motto`，拉丁 Monterey + `motto_zh` 中文小注）+ 斜体 one_liner。**文字零重复铁律**：每段文案全册只出现一次——one_liner 归线稿页（有线稿页的作品封面不再渲染 one_liner），keywords 归封面，STACK 归尾场景页；线稿图注烧在 SVG 内不重复排版。Co-work 线稿引用站内 `assets/project/cowork/content/plate-core.svg`（不复制文件=天然同步）。
+- 主站入口：header/foot-nav 的 PORTFOLIO（main.js 注入，≤1023/≤479 断点已为三钮收纳）+ about 作品集区。
 - 旧 `/ai-portfolio/*` 302 兜底保留在 `_redirects`，新页面路径是 `/portfolio/`，勿混用。
 
 ## 作品集文案规则（用户定稿 2026-07-06，中英通用，写任何项目介绍必须遵守）

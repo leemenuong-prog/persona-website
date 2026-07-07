@@ -351,8 +351,12 @@
     var main = h('div', 'work-main');
     main.appendChild(workHead(prod, joined, idx));
 
-    var one = t(joined, 'one_liner');
-    if (one) main.appendChild(h('p', 'oneliner work-oneliner', one));
+    /* 去重规则（2026-07-08 用户裁定：每段文字全册只出现一次）：
+       one_liner 归线稿页；只有无线稿页的作品才在封面开场 */
+    if (!prod.lineart) {
+      var one = t(joined, 'one_liner');
+      if (one) main.appendChild(h('p', 'oneliner work-oneliner', one));
+    }
 
     /* 双栏带：左 = 先说结论列表；右 = 封面艺术方图 + 奖项注 */
     var cols = h('div', 'cover-cols' + (prod.placeholder ? ' ph' : ''));
@@ -411,23 +415,19 @@
     main.appendChild(h('div', 'kicker',
       'PROJECT ' + pad2(idx + 1) + ' · ' + (prod.display || '').toUpperCase() + ' · SYSTEM LINEART'));
 
+    /* 线稿页文字侧定式（2026-07-08 用户裁定，后续所有线稿页照此）：
+       大标题 = 线稿核心语句（lineart.motto，拉丁 Monterey + 中文小注）
+       斜体   = one_liner（产品第一人称，全册唯一一处——封面不再重复）
+       keywords/STACK 不上本页（各归封面/尾页，文字零重复） */
     var grid = h('div', 'la-grid');
     var side = h('div', 'la-side');
-    var name = h('div', 'la-name');
-    name.appendChild(document.createTextNode(prod.display || prod.ref));
-    name.appendChild(psq());
-    side.appendChild(name);
+    var motto = h('h2', 'la-motto');
+    motto.appendChild(document.createTextNode(prod.lineart.motto || (prod.display || prod.ref)));
+    motto.appendChild(psq());
+    if (prod.lineart.motto_zh) motto.appendChild(h('span', 'zh-note', prod.lineart.motto_zh));
+    side.appendChild(motto);
     var one = t(joined, 'one_liner');
     if (one) side.appendChild(h('p', 'oneliner', one));
-    var kw = t(joined, 'keywords');
-    if (kw) side.appendChild(h('p', 'la-kw', kw.split(/\s*\|\s*/).join(' · ')));
-    var stack = t(joined, 'tech_stack');
-    if (stack) {
-      var line = h('p', 'stack-line la-stack');
-      line.appendChild(h('span', 'stack-label', 'STACK'));
-      line.appendChild(document.createTextNode(stack));
-      side.appendChild(line);
-    }
     grid.appendChild(side);
 
     var fig = h('figure', 'la-fig');

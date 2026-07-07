@@ -398,14 +398,20 @@ a.work-ext:hover { color: var(--c-title); }
 .p-work .ph-more a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); }
 .p-work .ph-more a:hover { color: var(--c-title); border-color: var(--c-title); }
 
-/* ════════ 线稿页（左窄柱介绍 + 右大幅线稿，整簇垂直居中） ════════ */
-.p-la .la-grid { display: grid; grid-template-columns: 46mm 1fr; gap: 6mm; align-items: center; margin: auto 0; }
+/* ════════ 线稿页定式（2026-07-08 用户裁定，后续线稿页一律照此） ════════
+   一侧文字（大标题=线稿核心语句 Monterey + 中文小注；斜体=one_liner，
+   全册唯一一处）｜一侧线稿图。keywords/STACK 不上本页（文字零重复）。 */
+.p-la .la-grid { display: grid; grid-template-columns: 56mm 1fr; gap: 8mm; align-items: center; margin: auto 0; }
 .p-la .la-side { min-width: 0; }
-.p-la .la-name { margin: 0 0 4mm; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; color: var(--c-title); }
-.p-la .la-name .psq { width: 4px; height: 4px; }
-.p-la .la-side .oneliner { font-size: 13px; max-width: none; }
-.p-la .la-kw { margin: 5mm 0 0; font-style: italic; font-size: 11px; line-height: 1.7; color: var(--c-kw); }
-.p-la .la-stack { margin: 4mm 0 0; }
+.p-la .la-motto {
+  margin: 0 0 6mm; border: none; padding: 0; display: block;
+  font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.25;
+  letter-spacing: .01em; color: var(--c-title);
+}
+.p-la .la-motto .psq { width: 5px; height: 5px; }
+.p-la .la-motto .zh-note { display: block; margin-top: 2.5mm; font: 400 10px/1 var(--font-sans); letter-spacing: .3em; color: var(--c-kw); }
+html[data-locale="en"] .p-la .la-motto .zh-note { display: none; }
+.p-la .la-side .oneliner { font-size: 14px; line-height: 1.9; max-width: none; }
 .p-la .la-fig { margin: 0; min-width: 0; }
 .p-la .la-fig img { width: 100%; height: auto; display: block; background: var(--c-white); }
 
