@@ -309,8 +309,8 @@ main { position: relative; }
 }
 .gallery-item:hover .gallery-title { color: var(--c-title); }
 
-/* ── 页脚 finale：I am ___ → 波点带 → Logo 落底槽 ── */
-.finale { margin-top: 120px; }
+/* ── 页脚 finale：I am ___ 轮换，直接接页脚（波点带/Logo 下坠已删） ── */
+.finale { margin-top: 120px; padding-bottom: clamp(72px, 12vh, 140px); }
 .iamf {
   text-align: center;
   font-family: var(--font-display); font-weight: 700;
@@ -332,30 +332,6 @@ main { position: relative; }
   animation: caretBlink 1.05s steps(1) infinite;
 }
 @keyframes caretBlink { 50% { opacity: 0; } }
-
-/* 波点带：灰阶半调，顶部渐隐、底部最浓接住 Logo（旧站 .fdots 灰阶版） */
-.fdots {
-  height: clamp(120px, 18vh, 220px);
-  margin-top: 7vh;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle, rgba(24, 24, 24, .20) 2.4px, transparent 2.9px),
-    radial-gradient(circle, rgba(24, 24, 24, .11) 1.5px, transparent 1.9px);
-  background-size: 22px 22px, 22px 22px;
-  background-position: 0 0, 11px 11px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 62%, #000 100%);
-  mask-image: linear-gradient(180deg, transparent 0, #000 62%, #000 100%);
-}
-.fband-slot {
-  height: 30vh; height: 30svh; min-height: 180px;
-  display: flex; align-items: center; justify-content: center;
-}
-/* fband-static 尺寸由 .brandband--footer 令牌档决定（原生渲染，勿 scale 放大） */
-.fly-band {
-  position: fixed; left: 0; top: 0; z-index: 900;
-  transform-origin: top left; pointer-events: none;
-  will-change: transform;
-}
 
 /* ── 响应式 ── */
 @media (max-width: 1023px) {
@@ -395,12 +371,6 @@ main { position: relative; }
   .epilogue-title { margin: 110px 0 36px; }
   .gallery-grid { gap: 28px 20px; grid-template-columns: repeat(2, 1fr); }
   .finale { margin-top: 80px; }
-  .fdots {
-    height: clamp(72px, 12vh, 120px);
-    background-size: 16px 16px, 16px 16px;
-    background-position: 0 0, 8px 8px;
-  }
-  .fband-slot { height: 18vh; height: 18svh; min-height: 108px; }
   .project-desc { font-size: 15.5px; }
 }
 @media (max-width: 479px) {

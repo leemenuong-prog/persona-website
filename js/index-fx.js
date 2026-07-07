@@ -16,7 +16,6 @@
   var DESKTOP = window.matchMedia('(min-width: 1024px)');
   var IAM_BARS = (window.Barmorph && window.Barmorph.IAM_BARS) || [0.97, 0.58, 1, 0.66, 0.9, 0.52, 0.74, 1];
 
-  function smoothstep(t) { return t * t * (3 - 2 * t); }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 1. 立方体（重量感体系：dt 归一 + 惯性 + Lambert 光照 + 接触影呼吸 + bob + 视差） ── */
@@ -179,9 +178,9 @@
       return;
     }
 
-    var dragging = false, px = 0, py = 0, visible = true, raf = null;
+    var dragging = false, hovering = false, px = 0, py = 0, visible = true, raf = null;
     var BASE = 0.05, FRICTION = 0.95, GAIN = 0.22;   /* 重物：低基速 · 高阻尼 · 缓释惯性 */
-    var vel = BASE, lastDx = 0, lastT = 0;
+    var vel = BASE, lastDx = 0, lastT = 0, bobT = 0;
     var BOB_T = DESKTOP.matches ? 7000 : 8000;
     var BOB_A = DESKTOP.matches ? 7 : 3;
     var HOVERFINE = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -195,6 +194,8 @@
 
       if (dragging) {
         lastDx *= Math.pow(0.8, dt);              /* 按住不动 → 松手速度衰到 0，不误甩 */
+      } else if (hovering) {
+        vel = BASE;   /* 悬浮=手按住：停转。否则面从光标下扫过，揭示 enter/leave 高频循环=闪屏 */
       } else {
         vel = BASE + (vel - BASE) * Math.pow(FRICTION, dt);
         ry += vel * dt;
@@ -203,8 +204,10 @@
       cube.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
       applyLighting(rx, ry);
 
-      /* bob 与接触影同相呼吸（JS 同驱不脱相）：升→影淡+散，降→影浓+紧 */
-      var lift = 0.5 + 0.5 * Math.sin(now / BOB_T * 2 * Math.PI);
+      /* bob 与接触影同相呼吸（JS 同驱不脱相）：升→影淡+散，降→影浓+紧。
+         悬浮/拖拽时 bob 相位冻结（面不在光标下漂移，同为闪屏修复的一部分） */
+      if (!hovering && !dragging) bobT += dt * 16.7;
+      var lift = 0.5 + 0.5 * Math.sin(bobT / BOB_T * 2 * Math.PI);
       if (bob) bob.style.transform = 'translate3d(0,' + (-BOB_A * lift).toFixed(2) + 'px,0)';
       if (shadow) {
         var footprint = (Math.abs(Math.cos(ry * D2R)) + Math.abs(Math.sin(ry * D2R)) - 1) / 0.414;
@@ -246,13 +249,15 @@
       });
     });
 
-    /* 视差目标：拖拽期间冻结（lerp 自然停驻），松手后缓缓恢复 */
+    /* 视差目标：拖拽/悬浮立方体期间冻结（lerp 自然停驻），离开后缓缓恢复 */
     if (HOVERFINE.matches) {
       window.addEventListener('pointermove', function (e) {
-        if (dragging) return;
+        if (dragging || hovering) return;
         par.tx = e.clientX / window.innerWidth * 2 - 1;
         par.ty = e.clientY / window.innerHeight * 2 - 1;
       }, { passive: true });
+      vp.addEventListener('pointerenter', function () { hovering = true; });
+      vp.addEventListener('pointerleave', function () { hovering = false; });
     }
 
     if ('IntersectionObserver' in window) {
@@ -350,7 +355,7 @@
   var scrollRaf = null;
   function onScroll() {
     if (scrollRaf) return;
-    var run = function () { scrollRaf = null; tickSpine(); tickFinale(); };
+    var run = function () { scrollRaf = null; tickSpine(); };
     /* 后台标签页 rAF 不执行 — 退 setTimeout，回前台时状态已就位 */
     if (document.hidden) { scrollRaf = 1; setTimeout(run, 0); }
     else scrollRaf = requestAnimationFrame(run);
@@ -415,18 +420,15 @@
     });
   }
 
-  /* ── 4. 页脚 finale ── */
+  /* ── 4. 页脚 finale：I am ___ 轮换（波点带/Logo 下坠已删，直接接页脚） ── */
   var IDS = ['Alnt Med', 'an AIPM', 'an Architect', 'a Builder', 'anything.'];
-  var finale = { flyband: null, band: null, headerBand: null, slot: null, started: false };
+  var finaleStarted = false;
 
   function initFinale() {
-    if (finale.started) return;
+    if (finaleStarted) return;
     var who = document.getElementById('iamf-who');
-    var slot = document.getElementById('fband-slot');
-    if (!who || !slot) return;
-    finale.started = true;
-    finale.slot = slot;
-    finale.headerBand = document.querySelector('.site-header .brandband');
+    if (!who) return;
+    finaleStarted = true;
 
     /* I am ___ 轮换（2.2s，whoIn 动画靠换 key 重放） */
     var i = 0;
@@ -437,68 +439,6 @@
       who.parentNode.replaceChild(next, who);
       who = next;
     }, 2200);
-
-    if (REDUCE || !DESKTOP.matches) {
-      /* 静态落底：footer 档原生大尺寸渲染（勿 transform scale 放大——会糊） */
-      var stat = document.createElement('div');
-      stat.className = 'fband-static';
-      window.Barmorph.mountBrandBand(stat).classList.add('brandband--footer');
-      slot.appendChild(stat);
-      return;
-    }
-
-    /* 下坠飞行体：footer 档原生大条，飞行全程只缩小（header 端）→ 落底 scale=1 像素完美 */
-    var fb = document.createElement('div');
-    fb.className = 'fly-band';
-    finale.band = window.Barmorph.mountBrandBand(fb);
-    finale.band.classList.add('brandband--footer');
-    fb.style.display = 'none';
-    document.body.appendChild(fb);
-    finale.flyband = fb;
-  }
-
-  function tickFinale() {
-    if (!finale.flyband || !DESKTOP.matches) return;
-    var fin = document.getElementById('finale');
-    if (!fin) return;
-    var fr = fin.getBoundingClientRect();
-    var vh = window.innerHeight;
-    /* 进入 finale 即开始下坠，滚到页面底部时恰好完成落槽
-       （旧算法用固定 span，页底永远到不了 1，Logo 悬在半空） */
-    var sy = window.scrollY || window.pageYOffset || 0;
-    var fTopAbs = fr.top + sy;
-    var doc = document.documentElement;
-    var maxScroll = Math.max(doc.scrollHeight - vh, 1);
-    var start = Math.max(fTopAbs - vh, 0);           /* finale 顶进入视口那一刻 */
-    var q = clamp((sy - start) / Math.max(maxScroll - start, 1), 0, 1);
-    var e3 = smoothstep(q);
-
-    var headerSlot = document.querySelector('.site-header .logoslot');
-    if (!headerSlot || !finale.slot) return;
-    var a = headerSlot.getBoundingClientRect();
-    var b = finale.slot.getBoundingClientRect();
-
-    if (e3 <= 0.001) {
-      finale.flyband.style.display = 'none';
-      if (finale.headerBand) finale.headerBand.style.opacity = '';
-      return;
-    }
-    finale.flyband.style.display = '';
-    if (finale.headerBand) finale.headerBand.style.opacity = '0';
-
-    /* 原生尺寸实测（offsetWidth/Height 不受 transform 影响，媒体查询换档自动跟随）；
-       落底 scale=1 原生渲染，槽装不下才等比缩小 */
-    var natW = finale.band.offsetWidth || 360, natH = finale.band.offsetHeight || 96;
-    var sB = Math.min(1, (b.height * 0.8) / natH, (b.width * 0.9) / natW);
-    var bx = b.left + (b.width - natW * sB) / 2;
-    var by = b.top + (b.height - natH * sB) / 2;
-    var sA = a.height / natH;
-    var ax = a.left, ay = a.top;
-
-    var x = ax + (bx - ax) * e3;
-    var y = ay + (by - ay) * e3;
-    var s = sA + (sB - sA) * e3;
-    finale.flyband.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + s.toFixed(3) + ')';
   }
 
   function refresh() {
@@ -527,6 +467,6 @@
   window.IndexFx = {
     refresh: refresh,
     /* 手动驱动一帧（调试/隐藏标签页环境验证用） */
-    tick: function () { tickSpine(); tickFinale(); }
+    tick: function () { tickSpine(); }
   };
 })();
