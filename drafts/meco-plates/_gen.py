@@ -82,6 +82,25 @@ class Scene:
             self.line3(V[a], V[b], outline or lv)
         return V
 
+    def glass(self, x0, y0, z0, w, d, h, phase, sil='L1', hidden='L3', outline='L0'):
+        """线框（玻璃）容器分层绘制，解决"内部实体盖住容器近边、看起来漏到壳外"。
+        用法：glass(...,'back') → 画内部实体 → glass(...,'front')。
+        back = 远底角 3 虚棱 + 侧/顶远 4 棱（先画，落在内部件之后）；
+        front = 近顶角 3 棱 + 前两条底沿（后画，压在内部件之上）。"""
+        x1, y1, z1 = x0 + w, y0 + d, z0 + h
+        V = {(i, j, k): (x0 if i == 0 else x1, y0 if j == 0 else y1, z0 if k == 0 else z1)
+             for i in (0, 1) for j in (0, 1) for k in (0, 1)}
+        if phase == 'back':
+            for a, b in (((0,0,0),(1,0,0)), ((0,0,0),(0,1,0)), ((0,0,0),(0,0,1))):
+                self.line3(V[a], V[b], hidden)
+            for a, b in (((1,0,0),(1,0,1)), ((0,1,0),(0,1,1)), ((0,0,1),(1,0,1)), ((0,0,1),(0,1,1))):
+                self.line3(V[a], V[b], sil)
+        else:
+            for a, b in (((1,0,1),(1,1,1)), ((0,1,1),(1,1,1)), ((1,1,0),(1,1,1)),
+                         ((1,0,0),(1,1,0)), ((0,1,0),(1,1,0))):
+                self.line3(V[a], V[b], outline)
+        return V
+
     def cylinder(self, cx, cy, z0, r, h, lv='L1', fill='#FFFFFF'):
         sx, syb = self.P(cx, cy, z0)
         _, syt = self.P(cx, cy, z0 + h)
@@ -1100,33 +1119,38 @@ def plate_cover():
 
 # ══════════════════════ 核心点图版（Meco 级体块，每项目一台"机器"） ══════════════════════
 def core_pears():
-    """Pears 核心点：一次示范被浇铸成许多个一模一样的 Agent。"""
+    """Pears 核心点：一次示范被浇铸成许多个一模一样的 Agent。
+       玻璃壳三段绘制（back→内部件→front），内部机构严格关在壳内；
+       成品经右墙料口，落到壳外分离的地面上（点线表示分发），内外分明。"""
     S = Scene(600, 500)
-    S.box(-240, -140, 0, 480, 280, 8, fill='#FFFFFF')                 # 底板
-    # 玻璃机壳
-    S.box(-240, -140, 8, 480, 280, 180, lv='L1', hidden='L3', outline='L0')
-    # 压铸鼓（带刻齿）
-    S.cylinder(-90, 0, 8, 56, 110)
-    S.tick_ring(-90, 0, 118, 51, n=60, major_every=15, lmin=6, lmaj=13)
-    # 示范轨迹：从壳外左侧进入，卷入鼓顶（主角虚线）
-    t0 = S.P(-350, -50, 148)
-    t1 = S.P(-90, 0, 126)
-    S.path2(f'M {fmt(t0[0])} {fmt(t0[1])} C {fmt(t0[0]+90)} {fmt(t0[1]-46)} '
-            f'{fmt(t1[0]-110)} {fmt(t1[1]-52)} {fmt(t1[0])} {fmt(t1[1])}', 'L3k')
-    # 出料皮带（实体，穿墙而出）
-    S.box(-30, -26, 8, 270, 56, 12, fill='#FFFFFF')
-    S.box(70, -12, 20, 20, 20, 20, fill='#FFFFFF')                    # 带上一件
-    S.box(170, -12, 20, 20, 20, 20, fill='#FFFFFF')
-    # 右墙出料口（x+ 面蚀刻，对准皮带）
-    g0, g1 = S.face_group((240, -28, 52), (0, 1, 0), (0, 0, -1))
-    S.raw(g0); S.raw(f'<rect x="0" y="0" width="60" height="34" {_a("L2")}/>'); S.raw(g1)
-    # 壳外皮带延伸 + 一排成品
-    S.box(240, -26, 8, 96, 56, 12, fill='#FFFFFF')
-    S.box(268, -12, 20, 20, 20, 20, fill='#FFFFFF')
-    S.box(356, 6, 0, 20, 20, 20, fill='#FFFFFF')
-    S.box(396, -52, 0, 20, 20, 20, fill='#FFFFFF')
-    note(S, 244, 168, 'the run-through.', leader=((246, 174), (270, 188)))
-    note(S, 1010, 494, 'cast, one per person.', anchor='middle')
+    SX0, SY0, SW, SD, SH = -240, -140, 460, 250, 176
+    S.box(SX0, SY0, 0, SW, SD, 8, fill='#FFFFFF')                     # 底板
+    S.glass(SX0, SY0, 8, SW, SD, SH, 'back')                         # ① 壳远侧棱（先画）
+
+    # ── 壳内机构 ──
+    S.cylinder(-96, -6, 8, 54, 108)                                  # 压铸鼓
+    S.tick_ring(-96, -6, 116, 49, n=60, major_every=15, lmin=6, lmaj=13)
+    t0 = S.P(-330, -60, 146)                                          # 示范轨迹卷入鼓顶
+    t1 = S.P(-96, -6, 124)
+    S.path2(f'M {fmt(t0[0])} {fmt(t0[1])} C {fmt(t0[0]+86)} {fmt(t0[1]-44)} '
+            f'{fmt(t1[0]-104)} {fmt(t1[1]-50)} {fmt(t1[0])} {fmt(t1[1])}', 'L3k')
+    S.box(-24, -20, 8, 220, 40, 12, fill='#FFFFFF')                  # 壳内出料槽（到右墙内侧止）
+    S.box(120, -10, 20, 20, 20, 20, fill='#FFFFFF')                  # 槽上一件成品
+
+    S.glass(SX0, SY0, 8, SW, SD, SH, 'front')                        # ② 壳近侧棱（压住内部件）
+
+    # ── 右墙料口（x+ 面蚀刻，内外界面）──
+    g0, g1 = S.face_group((SX0 + SW, -24, 52), (0, 1, 0), (0, 0, -1))
+    S.raw(g0); S.raw(f'<rect x="0" y="0" width="52" height="32" {_a("L2")}/>'); S.raw(g1)
+
+    # ── 壳外：与盒分离的成品，点线表示分发 ──
+    outs = ((312, 40), (360, -30), (408, 34))
+    mouth = S.P(SX0 + SW, -4, 22)
+    for gx, gy in outs:
+        S.box(gx, gy, 0, 22, 22, 22, fill='#FFFFFF')
+        S.cable(mouth, S.P(gx + 11, gy + 11, 0), -20, 'L5t')
+    note(S, 236, 150, 'the run-through.', leader=((238, 156), (262, 176)))
+    note(S, 1016, 498, 'cast, one per person.', anchor='middle')
     return chr(10).join('  ' + e for e in S.el)
 
 
