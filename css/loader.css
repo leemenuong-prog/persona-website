@@ -21,23 +21,33 @@
   margin-bottom: 34px;
 }
 
-/* ── 「I alnt med」拆字 ──
-   结构：I ␣ a(lnt) ␣ m(ed) + 方块句点
-   .ins 是展开插入的字母组（初始 0 宽） */
+/* ── 「I alnt med」拆字（transform 版展开，全程合成器线程，主线程建页也不卡） ──
+   结构：I ␣ a (ins1:lnt) [t1: ␣ m (ins2:ed) [t2: ⬛] ]
+   展开机理：ins 用 clip-path 从右往左揭示（不改布局、不失真），tail 用
+   translateX 把后续内容"推开"让位；三者同 .7s 同曲线锁相，视觉上=字母把后文顶开。
+   初始位移量含字体度量，由 loader.js 量 ins 宽后写内联（CSS 只定义过渡与终态）。 */
 .loader .lreveal {
   display: flex; align-items: flex-end;
   font-family: var(--font-display); font-weight: 700;
   font-size: clamp(56px, 9vw, 128px); line-height: 1;
   color: var(--c-title); white-space: pre;
+  transition: transform .7s var(--ez);   /* 整体回中：抵消 tail 收拢造成的左偏 */
+  will-change: transform;
 }
 .loader .lreveal .g { display: inline-block; transition: opacity .32s ease; }
 .loader .lreveal .lt { display: inline-block; }
-.loader .lreveal .ins {
-  display: inline-flex; overflow: hidden;
-  max-width: 0; opacity: 0;
-  transition: max-width .9s var(--ez), opacity .6s ease .12s, opacity .32s ease;
+.loader .lreveal .tail {
+  display: inline-flex; align-items: flex-end;
+  transition: transform .7s var(--ez); will-change: transform;
 }
-.loader .lreveal.show .ins { max-width: 3.6em; opacity: 1; }
+.loader .lreveal .ins {
+  display: inline-flex;
+  clip-path: inset(0 100% 0 0);           /* 初始全裁（右→左），布局宽度不变 */
+  -webkit-clip-path: inset(0 100% 0 0);
+  transition: clip-path .7s var(--ez), -webkit-clip-path .7s var(--ez);
+  will-change: clip-path;
+}
+.loader .lreveal.show .ins { clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
 .loader .lreveal .lsq {
   display: inline-block; width: .13em; height: .13em;
   background: var(--bm-acc); margin-left: .12em; margin-bottom: .04em;

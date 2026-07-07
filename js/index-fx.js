@@ -48,41 +48,45 @@
     null
   ];
 
-  /* 软边揭示共用驱动（卡片 + 立方体面）：进入时半径 rAF 从小缓动扩散（easeOutCubic），
-     移动更新 mask 圆心（跟手不缓动），离开收拢回 0。
-     useOffset=true 用 offsetX/Y（3D 变换面需要逆映射后的局部坐标）；
-     getR 返回目标半径 px。REDUCE 下瞬时显隐（不动画）。 */
+  /* 软边揭示共用驱动（卡片 + 立方体面）。
+     防闪要点：单一 rAF 帧内**原子写** --rv-x/--rv-y/--rv-r 三元组（此前 xy 在
+     pointermove 同步写、r 在另一个 rAF 写 → mask 某些帧取到不一致三元组而闪）；
+     悬浮期给 reveal 挂 will-change 隔离合成层，避免 mask 重绘牵连兄弟层闪烁。
+     半径 easeOutCubic 从 0 扩散到目标；圆心跟手；离开收拢回 0。
+     useOffset=true 用 offsetX/Y（3D 变换面的局部坐标）；REDUCE 瞬时显隐。 */
   var REVEAL_DUR = 450;
   function attachReveal(box, reveal, useOffset, getR) {
-    var r = 0, from = 0, target = 0, t0 = 0, raf = null;
-    function tick(now) {
+    var cx = 0, cy = 0, r = 0, from = 0, target = 0, t0 = 0, raf = null, hovering = false;
+    var st = reveal.style;
+    function frame(now) {
       raf = null;
-      var p = Math.min((now - t0) / REVEAL_DUR, 1);
-      var e = 1 - Math.pow(1 - p, 3);
-      r = from + (target - from) * e;
-      reveal.style.setProperty('--rv-r', r.toFixed(1) + 'px');
-      if (p < 1) raf = requestAnimationFrame(tick);
+      var dur = REDUCE ? 0 : REVEAL_DUR;
+      var p = dur ? Math.min((now - t0) / dur, 1) : 1;
+      r = from + (target - from) * (1 - Math.pow(1 - p, 3));
+      /* 同一帧写全三元组 → mask 永远一致，无跨回调错帧闪 */
+      st.setProperty('--rv-x', cx.toFixed(1) + 'px');
+      st.setProperty('--rv-y', cy.toFixed(1) + 'px');
+      st.setProperty('--rv-r', r.toFixed(1) + 'px');
+      if (p < 1 || hovering) raf = requestAnimationFrame(frame);   /* 悬浮期续跑以跟手 */
+      else st.willChange = '';                                     /* 收拢完毕：释放图层 */
     }
-    function go(t) {
-      target = t;
-      if (REDUCE) {
-        r = t;
-        reveal.style.setProperty('--rv-r', t + 'px');
-        return;
-      }
-      from = r; t0 = performance.now();
-      if (!raf) raf = requestAnimationFrame(tick);
+    function kick() { if (raf == null) raf = requestAnimationFrame(frame); }
+    function readXY(e) {
+      if (useOffset) { cx = e.offsetX; cy = e.offsetY; }
+      else { var b = box.getBoundingClientRect(); cx = e.clientX - b.left; cy = e.clientY - b.top; }
     }
-    var setXY = function (e) {
-      var x, y;
-      if (useOffset) { x = e.offsetX; y = e.offsetY; }
-      else { var b = box.getBoundingClientRect(); x = e.clientX - b.left; y = e.clientY - b.top; }
-      reveal.style.setProperty('--rv-x', x.toFixed(1) + 'px');
-      reveal.style.setProperty('--rv-y', y.toFixed(1) + 'px');
-    };
-    box.addEventListener('pointerenter', function (e) { setXY(e); go(getR()); });
-    box.addEventListener('pointermove', setXY);
-    box.addEventListener('pointerleave', function () { go(0); });
+    box.addEventListener('pointerenter', function (e) {
+      hovering = true; readXY(e);
+      st.willChange = '-webkit-mask-image, mask-image';
+      from = r; target = getR(); t0 = performance.now(); kick();
+    });
+    box.addEventListener('pointermove', function (e) {
+      if (!hovering) return;
+      readXY(e); kick();
+    });
+    box.addEventListener('pointerleave', function () {
+      hovering = false; from = r; target = 0; t0 = performance.now(); kick();
+    });
   }
 
   /* 每帧按面法线 n' = Rx(rx)·Ry(ry)·n 的 Lambert 受光量写遮罩 opacity；值未变跳过写入 */
