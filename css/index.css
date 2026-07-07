@@ -270,7 +270,16 @@ main { position: relative; }
     justify-items: center; row-gap: 22px;
   }
   .project-item .rail-gap { display: none; }
-  .project-item .image-container { order: 1; }
+  /* 图上文下：order 必须加在真正的 grid 子项 .image-link 上（.image-container 是它的孙节点，加了没用）。
+     图是 position:absolute 无内容撑宽 + justify-items:center → .image-link 会塌成 0（手机封面消失的根因）；
+     显式 width:100% + aspect-ratio 方图（同尾声网格已验证方案），高度不再写死。 */
+  .project-item .image-link {
+    order: 1; display: block;
+    width: 100%; max-width: var(--card-size);
+  }
+  .project-item .image-container {
+    width: 100%; height: auto; aspect-ratio: 1 / 1;
+  }
   .project-item .text-container { order: 2; min-height: 0; gap: 18px; }
   .line-container { display: none; }
 }
