@@ -49,9 +49,11 @@
   ];
 
   /* 软边揭示共用驱动（卡片 + 立方体面）。
-     防闪要点：单一 rAF 帧内**原子写** --rv-x/--rv-y/--rv-r 三元组（此前 xy 在
-     pointermove 同步写、r 在另一个 rAF 写 → mask 某些帧取到不一致三元组而闪）；
-     悬浮期给 reveal 挂 will-change 隔离合成层，避免 mask 重绘牵连兄弟层闪烁。
+     防闪要点：① 单一 rAF 帧内**原子写** --rv-x/--rv-y/--rv-r 三元组（此前 xy 在
+     pointermove 同步写、r 在另一个 rAF 写 → mask 某些帧取到不一致三元组而连续闪）；
+     ② **不**在悬浮时动态挂 will-change——动态提升合成层会在提升那一帧漏掉 mask、
+     整图闪现一下（用户报的"闪一下"）；改由 CSS 给 reveal 常驻 translateZ(0) 静态
+     提层，从加载起就隔离、悬浮零提升零闪。
      半径 easeOutCubic 从 0 扩散到目标；圆心跟手；离开收拢回 0。
      useOffset=true 用 offsetX/Y（3D 变换面的局部坐标）；REDUCE 瞬时显隐。 */
   var REVEAL_DUR = 450;
@@ -68,7 +70,6 @@
       st.setProperty('--rv-y', cy.toFixed(1) + 'px');
       st.setProperty('--rv-r', r.toFixed(1) + 'px');
       if (p < 1 || hovering) raf = requestAnimationFrame(frame);   /* 悬浮期续跑以跟手 */
-      else st.willChange = '';                                     /* 收拢完毕：释放图层 */
     }
     function kick() { if (raf == null) raf = requestAnimationFrame(frame); }
     function readXY(e) {
@@ -77,7 +78,6 @@
     }
     box.addEventListener('pointerenter', function (e) {
       hovering = true; readXY(e);
-      st.willChange = '-webkit-mask-image, mask-image';
       from = r; target = getR(); t0 = performance.now(); kick();
     });
     box.addEventListener('pointermove', function (e) {

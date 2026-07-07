@@ -268,6 +268,8 @@ main { position: relative; }
 .layer-reveal, .face-reveal {
   --rv-r: 0px; --rv-x: 50%; --rv-y: 50%;
   pointer-events: none;
+  transform: translateZ(0);   /* 常驻静态提层：从加载起就独立合成，隔离 mask 重绘，
+                                 悬浮时无需动态提层 → 无"提升瞬间整图闪一下" */
   -webkit-mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
     #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
   mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
@@ -360,11 +362,15 @@ main { position: relative; }
   .hero {
     min-height: max(560px, calc(100vh - var(--header-h)));
     min-height: max(560px, calc(100svh - var(--header-h)));
+    justify-content: center;   /* 立方体（唯一流内元素）真正垂直居中 */
   }
-  .hero-foot { padding: 0 24px 32px; }
+  /* 大字留在顶部（大字在上、立方体在中、贴底行沉底 三段式）；base 的 top:clamp 生效 */
+  /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把立方体顶到上方 */
+  .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
   .intro-sub { font-size: 13px; }
-  .polygon-container { --cube-size: 260px; margin-top: clamp(16px, 6vh, 48px); }
+  /* margin-top 归零：否则会叠加在 justify-center 上把立方体推离正中 */
+  .polygon-container { --cube-size: 260px; margin-top: 0; }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
   .projects-section { margin-top: 96px; }
   .mainline { gap: 90px; }
