@@ -192,9 +192,9 @@
           "url": "https://peersagent.netlify.app/"
         }
       ],
-      "thumb": "xtool/screenshots/poster-team-time.png",
+      "thumb": "assets/project/cowork/thumbnails/1.jpg",
       "float": {
-        "reveal": "assets/project/cowork/float/1.jpg"
+        "reveal": "xtool/screenshots/poster-team-time.png"
       },
       "desc_zh": "在 XTOOL 单人把部门 Agent 平台从 0 做到 1：7 个生产工具铺满内容生产链，覆盖 4 部门 65 人，完成率 80%+。",
       "desc_en": "A one-person build of the department's agent OS — seven tools, four departments.",

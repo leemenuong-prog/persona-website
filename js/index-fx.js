@@ -19,11 +19,12 @@
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 1. 立方体（重量感体系：dt 归一 + 惯性 + Lambert 光照 + 接触影呼吸 + bob + 视差） ── */
-  /* 立方体六面「悬浮前」默认封面。cowork 面 = 交互影片视频封面（用户裁定：悬浮前就要显视频封面，
-     不能只在悬浮后才出现）；其余面用各自缩略图。品牌面 = 品牌 SVG。 */
+  /* 立方体六面「悬浮前」默认封面 = 各作品封面缩略图。cowork = 作品封面海报
+     （Co-Work 文件盒，assets/project/cowork/thumbnails/1.jpg，源 Website 封面页/正图/cowork01.png）；
+     悬浮后揭示才切成视频封面（见 REVEAL_FACES，用户裁定：封面是文件盒海报，视频封面是次要的悬浮态）。 */
   var CUBE_FACES = [
     'assets/project/pears/thumbnails/1.png',
-    'xtool/screenshots/poster-team-time.png',
+    'assets/project/cowork/thumbnails/1.jpg',
     'assets/project/yijian/thumbnails/1.jpg',
     'assets/project/ring-world/thumbnails/1.jpg',
     'assets/project/air-cube/thumbnails/1.jpg',
@@ -40,8 +41,8 @@
   var SHADE_MAX = 0.16;
   var shades = [];
 
-  /* 各面悬浮揭示的"招牌图"——每个面清晰揭示该面作品的代表画面（用户裁定 2026-07-07）：
-     cowork = 交互影片视频封面（把团队的时间还给团队），议见 = 产品落地页截图；
+  /* 各面悬浮揭示图（次要的悬浮态，默认封面见 CUBE_FACES）：cowork = 交互影片视频封面
+     （把团队的时间还给团队，用户明确定为「鼠标悬浮的次要封面」）；议见 = 产品落地页截图；
      其余用各自 float/content 招牌图。品牌面无揭示。
      清晰度：.face-reveal 已在 CSS 里去掉六面材料统一的 saturate/opacity 收敛（招牌要看清）。 */
   var REVEAL_FACES = [
