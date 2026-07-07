@@ -13,3 +13,6 @@ PeersWork-路演视频.mp4
 # AI 作品集:母版与原始截图不入库(母版在 ../源文件/AI作品集/)
 portfolio-ai-master.pdf
 ai-portfolio/raw/
+
+# 本地工具配置
+.claude/

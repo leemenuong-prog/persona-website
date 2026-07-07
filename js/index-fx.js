@@ -4,7 +4,7 @@
    2) 中轴数据条进度指示（用户原创，取代老师站的波浪线+圆珠）：
       竖向轨道 + 随滚动生长的墨色填充；到达作品节点时
       延伸一根指向标题列的水平分支，同侧标题提亮。克制。
-   3) clip-path 鼠标揭示
+   3) 软边 mask 鼠标揭示（卡片 + 立方体面）
    4) 页脚 finale：「I am ___」轮换 + Logo 从 header 下坠落底
    IndexFx.refresh() 由 index.js 渲染完成后调用。
    ════════════════════════════════════════════════════════════ */
@@ -37,7 +37,54 @@
   })();
   var NORMALS = [[0, 0, 1], [1, 0, 0], [0, 0, -1], [-1, 0, 0], [0, -1, 0], [0, 1, 0]];
   var SHADE_MAX = 0.16;
-  var shades = [], dotEl = null;
+  var shades = [];
+
+  /* 各面悬浮揭示的"另一张图"（= projects.json 的 float.reveal 口径）；品牌面无 */
+  var REVEAL_FACES = [
+    'assets/project/pears/float/1.jpg',
+    'assets/project/cowork/float/1.jpg',
+    'assets/project/yijian/float/1.jpg',
+    'assets/project/ring-world/content/2.jpg',
+    'assets/project/air-cube/content/2.jpg',
+    null
+  ];
+
+  /* 软边揭示共用驱动（卡片 + 立方体面）：进入时半径 rAF 从小缓动扩散（easeOutCubic），
+     移动更新 mask 圆心（跟手不缓动），离开收拢回 0。
+     useOffset=true 用 offsetX/Y（3D 变换面需要逆映射后的局部坐标）；
+     getR 返回目标半径 px。REDUCE 下瞬时显隐（不动画）。 */
+  var REVEAL_DUR = 450;
+  function attachReveal(box, reveal, useOffset, getR) {
+    var r = 0, from = 0, target = 0, t0 = 0, raf = null;
+    function tick(now) {
+      raf = null;
+      var p = Math.min((now - t0) / REVEAL_DUR, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      r = from + (target - from) * e;
+      reveal.style.setProperty('--rv-r', r.toFixed(1) + 'px');
+      if (p < 1) raf = requestAnimationFrame(tick);
+    }
+    function go(t) {
+      target = t;
+      if (REDUCE) {
+        r = t;
+        reveal.style.setProperty('--rv-r', t + 'px');
+        return;
+      }
+      from = r; t0 = performance.now();
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+    var setXY = function (e) {
+      var x, y;
+      if (useOffset) { x = e.offsetX; y = e.offsetY; }
+      else { var b = box.getBoundingClientRect(); x = e.clientX - b.left; y = e.clientY - b.top; }
+      reveal.style.setProperty('--rv-x', x.toFixed(1) + 'px');
+      reveal.style.setProperty('--rv-y', y.toFixed(1) + 'px');
+    };
+    box.addEventListener('pointerenter', function (e) { setXY(e); go(getR()); });
+    box.addEventListener('pointermove', setXY);
+    box.addEventListener('pointerleave', function () { go(0); });
+  }
 
   /* 每帧按面法线 n' = Rx(rx)·Ry(ry)·n 的 Lambert 受光量写遮罩 opacity；值未变跳过写入 */
   function applyLighting(rx, ry) {
@@ -55,7 +102,7 @@
     }
   }
 
-  /* 面变换按当前 --cube-size 摆放；横竖屏/断点切换后重算（否则面会散架、红点飘位） */
+  /* 面变换按当前 --cube-size 摆放；横竖屏/断点切换后重算（否则面会散架） */
   var cubeHalf = 0;
   function layoutFaces() {
     var cube = document.getElementById('cube');
@@ -76,12 +123,6 @@
     Array.prototype.forEach.call(faces, function (f, i) {
       f.style.transform = T[i];
     });
-    /* 红点贴顶面（rotateX(90) 进顶面平面 → 推到面外 1px 防 z-fighting → 面内偏右前） */
-    if (dotEl) {
-      dotEl.style.transform =
-        'translate(-50%,-50%) rotateX(90deg) translateZ(' + (half + 1) + 'px)' +
-        ' translate(' + (half * 0.38).toFixed(1) + 'px, ' + (half * 0.30).toFixed(1) + 'px)';
-    }
   }
 
   function initCube() {
@@ -89,8 +130,9 @@
     if (!cube || cube.dataset.ready) return;
     cube.dataset.ready = '1';
 
+    var canHover = window.matchMedia('(hover: hover)').matches;
     shades = [];
-    CUBE_FACES.forEach(function (src) {
+    CUBE_FACES.forEach(function (src, i) {
       var f = document.createElement('div');
       f.className = 'face';
       var img = document.createElement('img');
@@ -105,12 +147,21 @@
       sh._o = 0;
       f.appendChild(sh);
       shades.push(sh);
+      /* 悬浮揭示另一张图（放在 face-shade 之上=光斑感）；拖拽时 vp 捕获指针，面收到
+         pointerleave 自动收拢，无需专门处理 */
+      if (canHover && REVEAL_FACES[i]) {
+        var rev = document.createElement('img');
+        rev.src = REVEAL_FACES[i];
+        rev.alt = '';
+        rev.loading = 'lazy';
+        rev.decoding = 'async';
+        rev.draggable = false;
+        rev.className = 'face-reveal';
+        f.appendChild(rev);
+        attachReveal(f, rev, true, function () { return cubeHalf * 0.72; });   /* 0.36×面宽 */
+      }
       cube.appendChild(f);
     });
-    /* 红色方点（参考图红花语义）：顶面直角方点，随体转动 */
-    dotEl = document.createElement('i');
-    dotEl.className = 'cube-dot';
-    cube.appendChild(dotEl);
     layoutFaces();
 
     var rx = -20, ry = 35;
@@ -350,30 +401,17 @@
     });
   }
 
-  /* ── 3. clip-path 鼠标揭示 ── */
+  /* ── 3. 卡片鼠标揭示（软边 mask，与立方体面共用 attachReveal；半径走 --reveal-r 令牌） ── */
   function bindReveal() {
     if (!window.matchMedia('(hover: hover)').matches) return;
+    var cardR = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--reveal-r')) || 110;
     document.querySelectorAll('.image-container').forEach(function (box) {
       if (box.dataset.fx) return;
       box.dataset.fx = '1';
       var reveal = box.querySelector('.layer-reveal');
       if (!reveal) return;
-      box.addEventListener('pointermove', function (e) {
-        var r = box.getBoundingClientRect();
-        var x = e.clientX - r.left, y = e.clientY - r.top;
-        box.classList.remove('off');
-        var v = 'circle(var(--reveal-r) at ' + x + 'px ' + y + 'px)';
-        reveal.style.clipPath = v;
-        reveal.style.webkitClipPath = v;
-      });
-      box.addEventListener('pointerleave', function (e) {
-        var r = box.getBoundingClientRect();
-        var x = e.clientX - r.left, y = e.clientY - r.top;
-        box.classList.add('off');
-        var v = 'circle(0px at ' + x + 'px ' + y + 'px)';
-        reveal.style.clipPath = v;
-        reveal.style.webkitClipPath = v;
-      });
+      attachReveal(box, reveal, false, function () { return cardR; });
     });
   }
 

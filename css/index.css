@@ -11,13 +11,12 @@
   min-height: calc(100svh - var(--header-h));
   display: flex; flex-direction: column;
 }
-/* 巨大名字：绝对定位垫底，带内垂直居中（与立方体带同心，参考 TERRA NOVA 量级） */
+/* 巨大名字：偏上方（参考图 TERRA NOVA 位），立方体只遮字的下半段 */
 .hero-name {
-  position: absolute; left: 0; right: 0; top: 0;
-  height: min(72vh, 680px);
-  height: min(72svh, 680px);
+  position: absolute; left: 0; right: 0;
+  top: clamp(12px, 6vh, 56px);
   margin: 0;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; justify-content: center;
   z-index: 1; pointer-events: none;
 }
 /* 内层 span：字号拟合量 offsetWidth（transform-free）、视差 transform 由 JS 写——
@@ -30,9 +29,15 @@
   font-size: calc(clamp(64px, 13vw, 264px) * var(--hero-fit));
   line-height: .9;
   letter-spacing: .04em;
-  color: var(--c-footer);
   white-space: nowrap;
   -webkit-user-select: none; user-select: none;
+  /* 距离立方体越远越清晰：两端深灰、中段淡出（全部取自灰阶令牌梯，勿引编外灰） */
+  background: linear-gradient(90deg,
+    #6F6F6F 0%, #999999 26%, #BEBEBE 42%,
+    #D7D7D7 50%,
+    #BEBEBE 58%, #999999 74%, #6F6F6F 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
 }
 
 /* ── 贴底行：左 intro（原两行降级）+ 右精选 ── */
@@ -42,35 +47,39 @@
   display: flex; justify-content: space-between; align-items: flex-end;
   gap: 32px; padding: 0 48px 44px;
 }
-.hero-intro { max-width: 520px; text-align: left; }
+/* 排版三级：kick 最轻（小/疏/浅）→ 标题行最重（大/墨/700 强调）→ 副行轻（小/灰） */
+.hero-intro { max-width: 560px; text-align: left; }
 .intro-kick {
-  margin: 0 0 10px; font-family: var(--font-display);
-  font-size: 11px; font-weight: 500; letter-spacing: .38em;
+  margin: 0 0 12px; font-family: var(--font-display);
+  font-size: 10px; font-weight: 500; letter-spacing: .42em;
   text-transform: uppercase; color: var(--c-kw);
 }
-.intro-line {
-  margin: 0 0 4px; font-family: var(--font-display);
-  font-weight: 500; font-size: clamp(15px, 1.3vw, 18px); line-height: 1.7;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: .32em;
+.intro-title {
+  margin: 0 0 8px; font-family: var(--font-display);
+  font-size: clamp(20px, 1.9vw, 27px); font-weight: 500; line-height: 1.35;
+  color: var(--c-title);
 }
-.intro-line .g { color: var(--c-body); }
-.intro-line .b { color: var(--c-emph); font-weight: 700; }
-.intro-line .l { color: #BBBBBB; }
-.hero-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.intro-title .b { color: var(--c-emph); font-weight: 700; }
+.intro-sub {
+  margin: 0; font-family: var(--font-display);
+  font-size: clamp(13px, 1.05vw, 15px); font-weight: 400; line-height: 1.75;
+  color: var(--c-kw);
+}
+.intro-sub .k { color: var(--c-sub); font-weight: 500; }
+.intro-sub .l { color: var(--c-muted); }
+.hero-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
 .aside-kick {
-  margin: 0 0 6px; font-family: var(--font-display);
-  font-size: 11px; font-weight: 500; letter-spacing: .3em;
+  margin: 0 0 5px; font-family: var(--font-display);
+  font-size: 10px; font-weight: 500; letter-spacing: .42em;
   text-transform: uppercase; color: var(--c-kw);
 }
 .aside-item {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-display); font-size: 14px; font-weight: 500;
-  color: var(--c-sub); transition: color .25s;
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  color: var(--c-header); transition: color .25s;
 }
 .aside-item:hover { color: var(--c-emph); }
-.aside-item .asq { width: 5px; height: 5px; background: var(--c-emph); }
+.aside-item .asq { width: 5px; height: 5px; background: var(--c-title); }
 
 /* 入场编舞：loader 场次冻结第 0 帧，条落 Logo（html.loading 摘除）后统一起跑 */
 @media (prefers-reduced-motion: no-preference) {
@@ -79,8 +88,7 @@
   .hero-intro        { animation: heroRise .85s var(--ez) both .55s; }
   .hero-aside        { animation: heroRise .85s var(--ez) both .7s; }
   html.loading .hero-name, html.loading .polygon-container,
-  html.loading .hero-intro, html.loading .hero-aside,
-  html.loading .cube-dot::before { animation-play-state: paused; }
+  html.loading .hero-intro, html.loading .hero-aside { animation-play-state: paused; }
 }
 @keyframes heroNameIn {
   from { opacity: 0; transform: translateY(18px) scaleX(1.03); }
@@ -95,14 +103,13 @@
 .polygon-container {
   position: relative; z-index: 2;
   height: calc(var(--cube-size) * 1.35);   /* 投影包围盒实测比（rx-20/ry35 姿态） */
-  margin-top: clamp(8px, 6vh, 64px);
-  margin-top: clamp(8px, 6svh, 64px);
+  margin-top: clamp(32px, 11vh, 110px);   /* 下沉：立方体只遮大字下段 ~40%，字的上半清晰可读 */
   display: flex; align-items: center; justify-content: center;
 }
 @media (min-width: 1024px) {
   /* 注意：自定义属性不吃 vh/svh 双写回退（后声明恒胜出），svh 在旧 Safari 会让
      var() 代入端整条失效 → 立方体塌没。桌面档 vh 与 svh 无实义差别，用 vh。 */
-  .polygon-container { --cube-size: min(500px, 36vw, 52vh); }
+  .polygon-container { --cube-size: min(460px, 34vw, 50vh); }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .polygon-container { --cube-size: min(360px, 44vw); }
@@ -170,21 +177,10 @@
   background: #181818;
   opacity: 0; pointer-events: none;
 }
-/* 红色方点（= 参考图红花）：全站唯一红，长在顶面随体转动。
-   3D 定位 transform 由 layoutFaces() 写在本体，生长动画只动 ::before */
-.cube-dot {
-  position: absolute; left: 50%; top: 50%;
-  width: 26px; height: 26px;
-  pointer-events: none;
+/* 面揭示层：悬浮看到"另一张图"（各项目 float 图），软边 mask + 从小扩散（同卡片揭示 UX） */
+.cube .face-reveal {
+  position: absolute; inset: 0;
 }
-.cube-dot::before {
-  content: ""; position: absolute; inset: 0;
-  background: var(--c-accent);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .cube-dot::before { animation: dotGrow .6s var(--ez) 1.2s both; }
-}
-@keyframes dotGrow { from { transform: scale(0); } }
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
 main { position: relative; }
@@ -265,15 +261,19 @@ main { position: relative; }
 }
 .image-container .layer-base { transition: transform .3s ease; }
 .image-container:hover .layer-base { transform: scale(1.05); }
-.image-container .layer-reveal {
-  clip-path: circle(0px at 50% 50%);
-  -webkit-clip-path: circle(0px at 50% 50%);
+
+/* ── 软边揭示（卡片 + 立方体面共用）：径向渐变 mask 羽化边缘。
+      --rv-r 由 JS rAF 从 0 缓动到目标半径（不依赖 @property 注册过渡，
+      兼容面更广；驱动在 index-fx.js attachReveal） ── */
+.layer-reveal, .face-reveal {
+  --rv-r: 0px; --rv-x: 50%; --rv-y: 50%;
   pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
+    #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
+  mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
+    #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
 }
-.image-container.off .layer-reveal {
-  transition: clip-path .3s ease, -webkit-clip-path .3s ease;
-}
-@media (hover: none) { .image-container .layer-reveal { display: none; } }
+@media (hover: none) { .layer-reveal, .face-reveal { display: none; } }
 
 /* 缩略图缺席时的灰阶字卡兜底 */
 .thumb-fallback {
@@ -385,12 +385,11 @@ main { position: relative; }
     min-height: max(560px, calc(100vh - var(--header-h)));
     min-height: max(560px, calc(100svh - var(--header-h)));
   }
-  .hero-name { height: min(60vh, 420px); height: min(60svh, 420px); }
   .hero-foot { padding: 0 24px 32px; }
-  .intro-line { font-size: 15px; }
-  .polygon-container { --cube-size: 260px; margin-top: clamp(8px, 4vh, 40px); margin-top: clamp(8px, 4svh, 40px); }
+  .intro-title { font-size: 18px; }
+  .intro-sub { font-size: 13px; }
+  .polygon-container { --cube-size: 260px; margin-top: clamp(16px, 6vh, 48px); }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
-  .cube-dot { width: 14px; height: 14px; }
   .projects-section { margin-top: 96px; }
   .mainline { gap: 90px; }
   .epilogue-title { margin: 110px 0 36px; }
@@ -406,7 +405,8 @@ main { position: relative; }
 }
 @media (max-width: 479px) {
   .hero-foot { padding: 0 20px 28px; }
-  .intro-line { font-size: 14px; }
+  .intro-title { font-size: 17px; }
+  .intro-sub { font-size: 12.5px; }
   .polygon-container { --cube-size: 230px; }
   .projects-section { margin-top: 76px; }
   .mainline { gap: 72px; }
