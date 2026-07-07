@@ -1,0 +1,134 @@
+{
+  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景分组、截图清单（ratio=宽高比，排版用）、窗框类型、指标带（策展数据，数字须与 projects.json 文案一致）、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。",
+
+  "meta": {
+    "doc_title_zh": "AI 产品作品集",
+    "doc_title_en": "AI Product Portfolio",
+    "edition": "2026 · Vol.2",
+    "site_url": "https://alnt-med.netlify.app/",
+    "pdf": { "zh": "uploads/portfolio-ai.pdf", "en": "uploads/portfolio-ai-en.pdf" }
+  },
+
+  "profile": {
+    "display_name": "LI WENYUAN",
+    "hello": "Hello, I'm Wenyuan",
+    "role_zh": "AI 产品经理 · 建筑学出身",
+    "role_en": "AI Product Manager, trained as an architect",
+    "portrait": "uploads/whoami-portrait.jpg",
+    "intro_zh": "我是李文苑（Alnt Med）。建筑学出身，现在做 AI 产品——在 XTOOL 负责部门 Agent 平台，也做自己的产品。建筑教我把零散的需求搭成稳定的体系；AI 产品让我把这套方法用在真实场景，从想法到落地。",
+    "intro_en": "I'm Wenyuan Li (Alnt Med). Trained as an architect, now building AI products — I run a department agent platform at XTOOL and build my own. Architecture taught me to turn scattered needs into a stable system; AI product work is where that method meets real scenarios.",
+    "qr": {
+      "svg": "assets/portfolio/qr-site.svg",
+      "url": "https://alnt-med.netlify.app/",
+      "caption_zh": "扫码或点击访问主站",
+      "caption_en": "Scan or click for the live site"
+    },
+    "contacts": [
+      { "label": "EMAIL",  "text": "lee.menuong@gmail.com",      "url": "mailto:lee.menuong@gmail.com" },
+      { "label": "GITHUB", "text": "github.com/leemenuong-prog", "url": "https://github.com/leemenuong-prog" },
+      { "label": "SITE",   "text": "alnt-med.netlify.app",       "url": "https://alnt-med.netlify.app/" }
+    ],
+    "education": [
+      { "period": "2025 —",    "text_zh": "深圳大学 · 建筑学（复合 AI 方向）硕士 · 转向 AI 产品", "text_en": "Shenzhen University · M.Arch, architecture × AI — the pivot to AI product" },
+      { "period": "2020–2025", "text_zh": "广州大学 · 建筑学学士", "text_en": "Guangzhou University · B.Arch" }
+    ],
+    "experience": [
+      { "period": "2026", "text_zh": "XTOOL · AIPM 实习 · Co-work Agent 平台 0→1（4 部门 65 人，完成率 80%+）", "text_en": "XTOOL · AIPM intern · Co-work agent platform, zero to one (65 people across 4 departments, 80%+ completion)" },
+      { "period": "2025", "text_zh": "菩苇科技 · AI 产品实习（垂直领域 RAG Agent）", "text_en": "Puwei Tech · AI product intern (vertical RAG agents)" },
+      { "period": "2025", "text_zh": "UABB 深港双年展 · 多模态 AIGC 负责人 · 板块唯一学生代表", "text_en": "UABB Bi-city Biennale · multimodal AIGC lead · sole student representative" },
+      { "period": "2025", "text_zh": "《建筑学报》T1 期刊 · 第二作者（AIGC 三维空间优化）", "text_en": "Architectural Journal (T1) · second author, AIGC spatial optimisation" }
+    ],
+    "awards": [
+      { "text_zh": "「挑战杯」大学生创新创业大赛 · 特等奖", "text_en": "Challenge Cup · Grand Prize", "note": "TOP 1%" },
+      { "text_zh": "「蓝桥杯」软件和信息技术专业人才大赛 · 国赛一等奖", "text_en": "Lanqiao Cup, national software competition · National First Prize", "note": "TOP 1%" },
+      { "text_zh": "深圳清华 AI Agent 黑客松 · 季军", "text_en": "Shenzhen–Tsinghua AI Agent Hackathon · 2nd runner-up", "note": "TOP 3%" },
+      { "text_zh": "香港中文大学企业 Agent 黑客松 · 亚军", "text_en": "CUHK Enterprise Agent Hackathon · Runner-up", "note": "TOP 5%" },
+      { "text_zh": "「NCDA」未来设计师全国数字设计大赛 · 一等奖", "text_en": "NCDA National Digital Design Award · First Prize", "note": "" }
+    ],
+    "skills": [
+      { "group_zh": "产品",       "group_en": "PRODUCT",       "items_zh": "AI Coding（Claude Code / Cursor）· 原型（Figma / Axure / ClaudeDesign）· PRD", "items_en": "AI coding (Claude Code / Cursor) · prototyping (Figma / Axure / ClaudeDesign) · PRD" },
+      { "group_zh": "数据",       "group_en": "DATA",          "items_zh": "SQL · Python · A/B 测试 · AI 评测集 · Apify · Excel 透视", "items_en": "SQL · Python · A/B testing · AI eval sets · Apify · Excel pivots" },
+      { "group_zh": "Agent 编排", "group_en": "ORCHESTRATION", "items_zh": "Coze · n8n", "items_en": "Coze · n8n" },
+      { "group_zh": "多模态",     "group_en": "MULTIMODAL",    "items_zh": "Tripo 3D · ComfyUI · 即梦 · Midjourney · UE5", "items_en": "Tripo 3D · ComfyUI · Jimeng · Midjourney · UE5" }
+    ]
+  },
+
+  "products": [
+    { "ref": "pears", "display": "Pears", "placeholder": true },
+    {
+      "ref": "cowork",
+      "display": "Co-work",
+      "placeholder": false,
+      "metrics": [
+        { "value": "65",    "label_zh": "覆盖 4 部门", "label_en": "PEOPLE · 4 DEPTS" },
+        { "value": "7",     "label_zh": "生产工具",    "label_en": "PRODUCTION TOOLS" },
+        { "value": "80%+",  "label_zh": "任务完成率",  "label_en": "COMPLETION RATE" },
+        { "value": "0.39h", "label_zh": "每 $1 节省工时", "label_en": "SAVED PER $1" }
+      ],
+      "video": {
+        "poster": "assets/portfolio/cowork/video-poster.jpg",
+        "poster_ratio": 1.7778,
+        "url": "https://alnt-med.netlify.app/project.html?id=cowork",
+        "label_zh": "观看交互影片", "label_en": "Watch the interactive film"
+      },
+      "cover": { "shot": "assets/portfolio/cowork/landing-01.jpg", "ratio": 1.854, "frame": "browser" },
+      "scenes": [
+        {
+          "id": "research",
+          "name_zh": "调研工具", "name_en": "RESEARCH AGENT",
+          "copy_ref": "why_built",
+          "density": "loose",
+          "images": [
+            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac" },
+            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac" },
+            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac" }
+          ]
+        },
+        {
+          "id": "script",
+          "name_zh": "脚本工具 · 三候选并出", "name_en": "SCRIPT TOOL",
+          "copy_ref": "key_contributions",
+          "density": "compact",
+          "images": [
+            { "src": "assets/portfolio/cowork/script-01.jpg", "ratio": 1.7279, "frame": "mac", "caption_zh": "① 准备 · 输入核心内容", "caption_en": "① Brief" },
+            { "src": "assets/portfolio/cowork/script-02.jpg", "ratio": 1.7316, "frame": "mac", "caption_zh": "② 趋势 · 接入近期热点", "caption_en": "② Trends" },
+            { "src": "assets/portfolio/cowork/script-03.jpg", "ratio": 1.7817, "frame": "mac", "caption_zh": "③ 脚本 · 三候选并出", "caption_en": "③ Three candidates" }
+          ]
+        },
+        {
+          "id": "landing",
+          "name_zh": "平台门户", "name_en": "THE PLATFORM",
+          "copy_ref": "how_it_works",
+          "density": "loose",
+          "images": [
+            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser" },
+            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser" },
+            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac" }
+          ]
+        },
+        {
+          "id": "admin",
+          "name_zh": "ROI 看板", "name_en": "THE ROI DASHBOARD",
+          "copy_ref": "why_it_matters",
+          "density": "loose",
+          "images": [
+            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac" },
+            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac" }
+          ]
+        }
+      ]
+    },
+    { "ref": "yijian", "display": "Yijian", "placeholder": true },
+    { "ref": "meco", "display": "Meco", "placeholder": true },
+    { "ref": "uabb", "display": "UABB", "placeholder": true }
+  ],
+
+  "architecture": {
+    "title_zh": "尾声 · 建筑作品", "title_en": "CODA · ARCHITECTURE",
+    "lede_zh": "六个建筑作品——体系化训练的来处。完整版另册。",
+    "lede_en": "Six works of architecture — where the systems training comes from. Full volume available separately.",
+    "pdf": "https://alnt-med.netlify.app/uploads/portfolio.pdf",
+    "pdf_label_zh": "建筑作品集（22 页）", "pdf_label_en": "Architecture portfolio (22 pp.)",
+    "items": ["after-silence", "upper-via", "air-cube", "hidden-lingnan-garden", "vista-out", "ring-world"]
+  }
+}

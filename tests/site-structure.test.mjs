@@ -54,7 +54,11 @@ for (const p of projects) {
   for (const field of REQUIRED) {
     assert.ok(field in p, p.id + " should carry the " + field + " field");
   }
-  assert.ok(Array.isArray(p.contentImages) && p.contentImages.length > 0, p.id + " should list its content page images");
+  assert.ok(Array.isArray(p.contentImages), p.id + " contentImages should be an array");
+  /* 主线作品的正文可以是交互影片(media)而无翻页图;建筑尾声作品必须有翻页图 */
+  if (p.main !== true) {
+    assert.ok(p.contentImages.length > 0, p.id + " should list its content page images");
+  }
 }
 
 /* ── 素材落盘:封面缩略图 + json 里引用的每个本地文件都真实存在 ── */

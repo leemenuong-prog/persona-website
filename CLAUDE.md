@@ -62,6 +62,16 @@
 - 媒体：`video-local` / `iframe-lazy` 一律门面点击才加载；视频 ffmpeg H.264 crf26 `+faststart` <30MB，原片留 `../源文件/`
 - 资产文件名全小写（GH Pages 大小写敏感）；`annotations` 图注内联 JSON（图右下 12px 文字球）
 
+## AI 产品作品集 `portfolio/`（2026-07-07 新增，A4 定版信息流 + 双语 PDF）
+
+- **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景分组 scenes、截图清单+ratio、窗框 frame、指标带 metrics、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
+- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 14 页；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。
+- **Mac 窗框三灯 = 灰阶明度跳**（--c-footer/--c-muted/--c-kw）——用户裁定纯灰阶，勿「修复」成红黄绿；截图素材本身的颜色不受限。
+- **视频/交互影片**：作品集页绝不内嵌 video/iframe（与门面点击约定互斥、打印会空框）——一律 poster + 播放角标 + 外链 `<a>`（PDF 里自动成可点注记）。
+- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=14；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
+- **双语**：`?lang=zh|en` 显式覆盖（无头打印必带）；中文版=英文大标题+中文正文（`.zh-note` 在 EN 版 CSS 隐藏）。
+- 旧 `/ai-portfolio/*` 302 兜底保留在 `_redirects`，新页面路径是 `/portfolio/`，勿混用。
+
 ## 作品集文案规则（用户定稿 2026-07-06，中英通用，写任何项目介绍必须遵守）
 
 **结构（固定章节，顺序不变）**：产品自我介绍（一句话）→ 先说结论 · The Short Version → 为什么做这个 · Why → 核心贡献 · Key Contributions → 系统如何运作 · How It Works → 影响与意义 · Impact → 技术栈 · Stack。

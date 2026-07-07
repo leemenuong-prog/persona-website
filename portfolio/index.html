@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Portfolio · Alnt_med</title>
+  <meta name="description" content="李文苑（Alnt Med）AI 产品作品集：Pears · Co-work · 议见 · Meco · UABB。">
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="AI Product Portfolio · Alnt_med">
+  <meta property="og:image" content="../assets/brand/favicon-512.png">
+  <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon-180.png">
+  <script>
+    /* 无头打印用 ?lang=zh|en 显式覆盖（headless Chrome 全新 profile，navigator.language 不可控）；
+       正常访问沿用 preferredLocale / 浏览器语言。language-toggle.js:23 会尊重这里预设的 data-locale。 */
+    try {
+      var __q = new URLSearchParams(location.search).get('lang');
+      var __l = (__q === 'zh' || __q === 'en') ? __q : localStorage.getItem('preferredLocale');
+      if (__l !== 'zh' && __l !== 'en') __l = (navigator.language || 'zh').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+      document.documentElement.setAttribute('data-locale', __l);
+      document.documentElement.lang = __l === 'zh' ? 'zh-CN' : 'en';
+    } catch (e) {}
+  </script>
+  <link rel="preload" href="../assets/fonts/monterey-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/monterey-medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/barmorph.css">
+  <link rel="stylesheet" href="portfolio.css">
+</head>
+<body data-page="portfolio">
+
+  <header class="pf-topbar screen-only" aria-label="portfolio chrome">
+    <a class="pf-back" href="../" data-zh="← Alnt_med" data-en="← Alnt_med">← Alnt_med</a>
+    <span class="pf-topbar-title" data-zh="AI 产品作品集" data-en="AI Product Portfolio">AI 产品作品集</span>
+    <span class="pf-topbar-actions">
+      <a class="pf-pdf" href="../uploads/portfolio-ai.pdf" target="_blank" rel="noopener" data-zh="PDF 版" data-en="PDF">PDF 版</a>
+      <button class="lang-toggle" type="button">EN</button>
+    </span>
+  </header>
+
+  <main class="deck" id="deck" aria-live="polite"></main>
+
+  <script src="../js/language-toggle.js" defer></script>
+  <script src="../js/barmorph.js" defer></script>
+  <script src="portfolio.js" defer></script>
+</body>
+</html>
