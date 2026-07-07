@@ -28,7 +28,8 @@
 /* ── 页面级令牌 ── */
 :root {
   --sh-pad-t: 18mm; --sh-pad-b: 16mm; --sh-pad-x: 16mm;
-  --sh-rail: 26mm; --sh-gutter: 8mm;          /* 作品页左索引柱 */
+  --sh-rail: 26mm; --sh-gutter: 8mm;           /* 作品封面页完整索引柱 */
+  --sh-rail-mini: 6mm; --sh-gutter-mini: 5mm;  /* 场景/正文页极简索引（主区加宽到 167mm） */
   --sh-gap: 4mm;                               /* 同场景图间沟 */
   --sheet-scale: 1;
   --c-well: #F6F6F6;                           /* 窗框标题栏底（white 与 border 之间） */
@@ -135,7 +136,7 @@ html[data-locale="en"] .zh-note { display: none; }
 
 /* 指标带：上下细线夹四格 */
 .metrics {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sh-gap);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--sh-gap);
   border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border);
   padding: 3mm 0; margin: 4mm 0;
 }
@@ -169,9 +170,23 @@ html[data-locale="en"] .zh-note { display: none; }
   background: var(--c-title);
 }
 
+/* ── 极简索引（场景/正文页）：竖排编号贴左缘，释放主区到 167mm ── */
+.rail--mini { width: var(--sh-rail-mini); }
+.rail--mini .rail-cap { display: none; }
+.rail--mini li { font-size: 8.5px; line-height: 1.4; margin-bottom: 2.2mm; }
+.rail--mini li .rail-name { display: none; }
+.rail--mini li.active { font-size: 12px; font-weight: 700; margin: 2.6mm 0; }
+.rail--mini li.active .rail-name {
+  display: block; writing-mode: vertical-rl; text-orientation: mixed;
+  font-size: 7px; letter-spacing: .12em; margin: 1.5mm 0 0 1px; max-height: 30mm;
+  color: var(--c-sub);
+}
+.rail--mini li.active .psq { width: 3px; height: 3px; margin-left: 3px; }
+.rail--mini li.active::before { width: 14mm; }
+
 /* ════════ Mac 窗框 .win ════════
-   三灯灰阶明度跳（浅→深）——用户裁定全站纯灰阶，窗框是自绘组件
-   必须守灰阶；截图素材本身的颜色不受限。勿「修复」成红黄绿。 */
+   三灯 = macOS 原色（2026-07-07 二轮用户裁定：三灯与截图素材是灰阶
+   体系仅有的两处色彩例外——窗框伪件要「像真的」）。hex 圈死在此作用域。 */
 .win {
   border: 1px solid var(--c-border); border-radius: 6px; overflow: hidden;
   background: var(--c-white);
@@ -182,9 +197,9 @@ html[data-locale="en"] .zh-note { display: none; }
   background: var(--c-well); border-bottom: 1px solid var(--c-border);
 }
 .win-dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto; }
-.win-dot:nth-child(1) { background: var(--c-footer); }
-.win-dot:nth-child(2) { background: var(--c-muted); }
-.win-dot:nth-child(3) { background: var(--c-kw); }
+.win-dot:nth-child(1) { background: #FF5F57; }
+.win-dot:nth-child(2) { background: #FEBC2E; }
+.win-dot:nth-child(3) { background: #28C840; }
 .win-url {
   margin: 0 auto; height: 14px; padding: 0 10px; border-radius: 7px;
   background: var(--c-white); border: 1px solid var(--c-border);
@@ -201,16 +216,17 @@ html[data-locale="en"] .zh-note { display: none; }
 .shot-plain { position: relative; aspect-ratio: var(--r, 1.6); border: 1px solid var(--c-border); }
 .shot-plain img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ════════ 场景组块 ════════ */
+/* ════════ 场景组块（二迭代：左右排版引擎） ════════
+   split      = 左文字柱(+left 槽图竖叠) ｜ 右图列竖叠
+   split-band = 同 split，尾部再接一条通栏带图
+   top        = 首图通栏 hero + 其余等高行（保留旧模式备用） */
 .scene { margin-top: 5mm; }
-.scene-label {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 3mm;
-  font-family: var(--font-sans);
-}
-.scene-label .psq { width: 4px; height: 4px; margin: 0; }
-.scene-label .sl-zh { font-size: 10px; font-weight: 600; letter-spacing: .18em; color: var(--c-sub); }
-.scene-label .sl-en { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--c-kw); }
-.scene-label::after { content: ''; flex: 1; height: 1px; background: var(--c-border); }
+.scene-grid { display: grid; grid-template-columns: var(--tcol, 63mm) 1fr; gap: 5mm var(--sh-gap); align-items: start; }
+.scene-grid .sg-text { min-width: 0; }
+.scene-grid .sg-text .plist li { margin-bottom: 2.2mm; }
+.scene-grid .sg-col { min-width: 0; display: flex; flex-direction: column; gap: var(--sh-gap); }
+.scene-grid .sg-text .cell { margin-top: 5mm; }
+.scene-band { margin-top: var(--sh-gap); }
 
 .scene-hero { margin-bottom: var(--sh-gap); }
 .scene-row { display: flex; gap: var(--sh-gap); align-items: flex-start; }
@@ -219,7 +235,6 @@ html[data-locale="en"] .zh-note { display: none; }
   font: 9.5px/1.5 var(--font-sans); letter-spacing: .04em; color: var(--c-kw);
   margin-top: 1.5mm; text-align: center;
 }
-.scene.compact { --sh-gap: 3mm; }
 
 /* ════════ 视频门面卡 .film ════════ */
 .film { display: block; margin-top: 5mm; }
@@ -236,17 +251,18 @@ html[data-locale="en"] .zh-note { display: none; }
   border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent var(--c-title);
 }
 .film-cta {
-  display: flex; align-items: baseline; gap: 8px; margin-top: 2.5mm;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-top: 2.5mm;
   font: 10px/1.6 var(--font-sans); letter-spacing: .1em; color: var(--c-sub);
 }
+.film-cta .zh-note { white-space: nowrap; }
 .film-cta .cta-link { border-bottom: 1px solid var(--c-kw); }
 .film-cta .zh-note { color: var(--c-kw); }
 a.film:hover .cta-link { color: var(--c-title); border-color: var(--c-title); }
 
-/* ════════ 目录矩阵（AI 五作） ════════ */
-.matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sh-gap); }
+/* ════════ 目录矩阵（六作 3×2） ════════ */
+.matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sh-gap); }
 .matrix-card {
-  display: flex; flex-direction: column; height: 88mm; padding: 3mm;
+  display: flex; flex-direction: column; height: 68mm; padding: 3mm;
   background: var(--c-white); border: 1px solid var(--c-border); border-radius: 4px;
 }
 .matrix-card .mc-top { display: flex; justify-content: space-between; align-items: baseline; }
@@ -314,7 +330,8 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 }
 .p-profile .profile-left { display: flex; flex-direction: column; }
 .p-profile .portrait { margin: 0; width: 54mm; aspect-ratio: 3 / 4; overflow: hidden; }
-.p-profile .portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.03); }
+/* 人像保持彩色（2026-07-07 二轮用户裁定：勿加黑白滤镜） */
+.p-profile .portrait img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.03); }
 .p-profile .hello { margin: 7mm 0 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.25; color: var(--c-title); }
 .p-profile .role { margin: 2mm 0 0; font: 10px/1.7 var(--font-sans); letter-spacing: .1em; color: var(--c-kw); }
 .p-profile .intro { margin: 5mm 0 0; font-size: 12px; line-height: 1.8; color: var(--c-body); }
@@ -350,10 +367,14 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 }
 .p-index .index-coda::before { content: ''; flex: 0 0 13mm; height: 1px; background: var(--c-border); align-self: center; }
 
-/* ════════ 作品页（封面/正文/占位共用骨架） ════════ */
+/* ════════ 作品页（封面/正文共用骨架） ════════ */
 .p-work .work-main {
   padding: var(--sh-pad-t) var(--sh-pad-x) var(--sh-pad-b) calc(var(--sh-pad-x) + var(--sh-rail) + var(--sh-gutter));
   height: 100%; display: flex; flex-direction: column;
+}
+/* 极简 rail 档：主区加宽到 167mm（场景/线稿/建筑内容页） */
+.p-work .work-main--wide {
+  padding-left: calc(var(--sh-pad-x) + var(--sh-rail-mini) + var(--sh-gutter-mini));
 }
 .p-work .work-title-row { display: flex; align-items: baseline; gap: 4mm; margin-top: 1.5mm; }
 .p-work .work-title { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 40px; line-height: 1.12; color: var(--c-title); }
@@ -368,16 +389,33 @@ a.work-ext:hover { color: var(--c-title); }
 .p-work .work-award { font: 9.5px/1.7 var(--font-sans); letter-spacing: .08em; color: var(--c-sub); margin-top: 2mm; }
 .p-work .work-award .psq { width: 3px; height: 3px; }
 
-/* 占位作品页：文字 + 右浮方图 */
-.p-work .ph-figure { float: right; width: 52mm; margin: 0 0 4mm 7mm; }
-.p-work .ph-figure .ph-thumb { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-border); }
-.p-work .ph-figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85) contrast(1.03); }
+/* 封面双栏带：左 tldr 列表 ｜ 右封面艺术方图（+奖项注）——统一模板 */
+.p-work .cover-cols { display: grid; grid-template-columns: 1fr 54mm; gap: 4mm 6mm; align-items: start; margin-top: 5.5mm; }
+.p-work .cover-cols.ph { grid-template-columns: 1fr 60mm; }
+.p-work .cover-art { margin: 0; }
+.p-work .cover-art .ca-thumb { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-border); }
+.p-work .cover-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85) contrast(1.03); }
 .p-work .ph-more { margin-top: auto; padding-top: 6mm; font: 10px/1.7 var(--font-sans); letter-spacing: .1em; color: var(--c-kw); }
 .p-work .ph-more a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); }
 .p-work .ph-more a:hover { color: var(--c-title); border-color: var(--c-title); }
 
+/* ════════ 线稿页（左窄柱介绍 + 右大幅线稿，整簇垂直居中） ════════ */
+.p-la .la-grid { display: grid; grid-template-columns: 46mm 1fr; gap: 6mm; align-items: center; margin: auto 0; }
+.p-la .la-side { min-width: 0; }
+.p-la .la-name { margin: 0 0 4mm; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; color: var(--c-title); }
+.p-la .la-name .psq { width: 4px; height: 4px; }
+.p-la .la-side .oneliner { font-size: 13px; max-width: none; }
+.p-la .la-kw { margin: 5mm 0 0; font-style: italic; font-size: 11px; line-height: 1.7; color: var(--c-kw); }
+.p-la .la-stack { margin: 4mm 0 0; }
+.p-la .la-fig { margin: 0; min-width: 0; }
+.p-la .la-fig img { width: 100%; height: auto; display: block; background: var(--c-white); }
+
 /* ════════ P13 建筑压轴 ════════ */
-.p-arch .arch-inner { padding: var(--sh-pad-t) var(--sh-pad-x) var(--sh-pad-b); height: 100%; display: flex; flex-direction: column; }
+.p-arch .arch-inner {
+  padding: var(--sh-pad-t) var(--sh-pad-x) var(--sh-pad-b) calc(var(--sh-pad-x) + var(--sh-rail-mini) + var(--sh-gutter-mini));
+  height: 100%; display: flex; flex-direction: column;
+}
+.p-arch .kicker { margin-bottom: 2mm; }
 .p-arch .arch-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 30px; letter-spacing: .1em; color: var(--c-title); }
 .p-arch .arch-title .zh-note { font: 400 10px/1 var(--font-sans); letter-spacing: .16em; color: var(--c-kw); margin-left: 4mm; }
 .p-arch .arch-lede { margin: 2.5mm 0 0; font-size: 12px; color: var(--c-body); max-width: 120mm; }
@@ -436,6 +474,10 @@ a.work-ext:hover { color: var(--c-title); }
   .brandband i, .brandband.in i { transition: none; transform: scaleY(var(--h, .8)); }
   .brandband .bsq, .brandband .bdot,
   .brandband.in .bsq, .brandband.in .bdot { transition: none; transform: scale(1); }
+  /* ⚠️ 体积铁律：打印态一律去 CSS filter——filter 会迫使 Chrome 把 JPEG
+     重栅格成无损位图（实测建筑页 6 图从 ~150KB/张膨胀到 ~1MB/张）。
+     屏显保留 saturate 调色，打印用原图直通。 */
+  .mc-thumb img, .cover-art img, .arch-item .arch-shot img, .p-profile .portrait img { filter: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

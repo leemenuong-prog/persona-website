@@ -62,14 +62,17 @@
 - 媒体：`video-local` / `iframe-lazy` 一律门面点击才加载；视频 ffmpeg H.264 crf26 `+faststart` <30MB，原片留 `../源文件/`
 - 资产文件名全小写（GH Pages 大小写敏感）；`annotations` 图注内联 JSON（图右下 12px 文字球）
 
-## AI 产品作品集 `portfolio/`（2026-07-07 新增，A4 定版信息流 + 双语 PDF）
+## AI 产品作品集 `portfolio/`（2026-07-07 新增 + 当日二迭代，A4 定版信息流 + 双语 PDF）
 
-- **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景分组 scenes、截图清单+ratio、窗框 frame、指标带 metrics、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
-- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 14 页；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。
-- **Mac 窗框三灯 = 灰阶明度跳**（--c-footer/--c-muted/--c-kw）——用户裁定纯灰阶，勿「修复」成红黄绿；截图素材本身的颜色不受限。
+- **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景 scenes[layout: split|split-band|top + images[].slot: left|right|band]、截图清单+ratio、窗框 frame、指标带 metrics、lineart、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
+- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **15 页**；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm 做左右排版）。
+- **作品封面统一紧凑模板**：kicker→标题→keywords→one_liner→双栏（左 tldr｜右封面方图+奖项）→指标带→底部主要落地页大图；metrics/cover **有字段才渲染**——占位作品日后补字段即自动升级，零代码。
+- **Mac 窗框三灯 = macOS 原色**（#FF5F57/#FEBC2E/#28C840，2026-07-07 二轮用户裁定）：三灯与截图/封面素材是灰阶体系仅有的色彩例外；个人页人像也保持彩色（勿加黑白滤镜）。
+- **⚠️ 体积铁律：打印态禁 CSS filter**——filter 迫使 Chrome 把 JPEG 重栅格成无损位图（实测建筑页 6 图 150KB/张→1MB/张，全册 16MB）。屏显 saturate 调色保留，`@media print` 一律 `filter:none`（portfolio.css 打印块）。
 - **视频/交互影片**：作品集页绝不内嵌 video/iframe（与门面点击约定互斥、打印会空框）——一律 poster + 播放角标 + 外链 `<a>`（PDF 里自动成可点注记）。
-- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=14；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
+- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**15**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
 - **双语**：`?lang=zh|en` 显式覆盖（无头打印必带）；中文版=英文大标题+中文正文（`.zh-note` 在 EN 版 CSS 隐藏）。
+- Co-work 线稿页引用站内 `assets/project/cowork/content/plate-core.svg`（不复制文件=天然同步）；主站入口：header/foot-nav 的 PORTFOLIO（main.js 注入，≤1023/≤479 断点已为三钮收纳）+ about 作品集区。
 - 旧 `/ai-portfolio/*` 302 兜底保留在 `_redirects`，新页面路径是 `/portfolio/`，勿混用。
 
 ## 作品集文案规则（用户定稿 2026-07-06，中英通用，写任何项目介绍必须遵守）

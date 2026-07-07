@@ -1,7 +1,8 @@
 /* ════════════════════════════════════════════════════════════
-   portfolio.js — AI 产品作品集渲染器。
+   portfolio.js — AI 产品作品集渲染器（二迭代 2026-07-07）。
    同步规则：产品文案一律 join ../config/projects.json（单一事实源），
    ../config/portfolio.json 只提供页序/场景/截图清单/个人页/建筑矩阵。
+   六作体系：products 5 项 + architecture 合成第 06 项（rail/INDEX）。
    打印：无头 Chrome 带 ?lang=zh|en 打两版（head 内联已预设 data-locale）。
    ════════════════════════════════════════════════════════════ */
 (function () {
@@ -36,6 +37,16 @@
   }
   function ext(url) { return /^https?:/.test(url || ''); }
   function host(url) { try { return new URL(url).hostname; } catch (e) { return ''; } }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  /* 六作索引条目：五个 AI 产品 + 建筑合集（第 06 项由 architecture 合成） */
+  function railEntries() {
+    var items = pf.products.map(function (prod) {
+      return { key: prod.ref, name: prod.display || prod.ref };
+    });
+    items.push({ key: 'architecture', name: pf.architecture.display || 'Architecture' });
+    return items;
+  }
 
   /* body 按 \n 拆「—」列表；行首「标签：」（≤10 字）加粗，
      否则加粗首个逗号前的短语（先说结论四条的 STAR 头） */
@@ -71,7 +82,7 @@
     return el;
   }
 
-  /* Mac 窗框（三灯灰阶明度跳——设计决定，勿改回红黄绿） */
+  /* Mac 窗框（三灯 = macOS 原色，2026-07-07 二轮用户裁定的色彩例外） */
   function win(src, ratio, opts) {
     opts = opts || {};
     var w = h('div', 'win' + (opts.small ? ' win-sm' : ''));
@@ -98,40 +109,14 @@
     return w;
   }
 
-  /* 场景组块：≥3 图 = 首图通栏 hero + 其余等高行；≤2 图 = 单等高行 */
-  function scene(sc, prodUrl, prodTitle) {
-    var wrap = h('section', 'scene' + (sc.density === 'compact' ? ' compact' : ''));
-    var label = h('div', 'scene-label');
-    label.appendChild(psq());
-    if (sc.name_zh) label.appendChild(h('span', 'sl-zh zh-note', sc.name_zh));
-    label.appendChild(h('span', 'sl-en', sc.name_en || ''));
-    wrap.appendChild(label);
-
-    function cell(im, small) {
-      var c = h('div', 'cell');
-      c.style.setProperty('--r', im.ratio);
-      c.appendChild(win(im.src, im.ratio, { frame: im.frame, url: prodUrl, small: small, alt: prodTitle + ' — ' + (sc.name_en || sc.id) }));
-      var cap = t(im, 'caption');
-      if (cap) c.appendChild(h('div', 'cell-cap', cap));
-      return c;
-    }
-
-    var imgs = sc.images || [];
-    var rowImgs = imgs;
-    if (imgs.length >= 3) {
-      var hero = h('div', 'scene-hero');
-      hero.appendChild(win(imgs[0].src, imgs[0].ratio, { frame: imgs[0].frame, url: prodUrl, alt: prodTitle + ' — ' + (sc.name_en || sc.id) }));
-      var hcap = t(imgs[0], 'caption');
-      if (hcap) hero.appendChild(h('div', 'cell-cap', hcap));
-      wrap.appendChild(hero);
-      rowImgs = imgs.slice(1);
-    }
-    if (rowImgs.length) {
-      var row = h('div', 'scene-row');
-      rowImgs.forEach(function (im) { row.appendChild(cell(im, true)); });
-      wrap.appendChild(row);
-    }
-    return wrap;
+  /* 图格（窗框 + 可选图注） */
+  function cell(im, prodUrl, alt, small) {
+    var c = h('div', 'cell');
+    c.style.setProperty('--r', im.ratio);
+    c.appendChild(win(im.src, im.ratio, { frame: im.frame, url: prodUrl, small: small !== false, alt: alt }));
+    var cap = t(im, 'caption');
+    if (cap) c.appendChild(h('div', 'cell-cap', cap));
+    return c;
   }
 
   /* 视频门面：poster + 播放钮 + 外链（web/PDF 同 DOM，链接即注记） */
@@ -150,7 +135,7 @@
     return a;
   }
 
-  function qrBlock(qr, big) {
+  function qrBlock(qr) {
     var a = h('a', 'qr');
     a.href = qr.url; a.target = '_blank'; a.rel = 'noopener';
     var box = h('span', 'qr-img');
@@ -163,16 +148,16 @@
     return a;
   }
 
-  /* 左侧项目索引 rail */
-  function rail(activeRef) {
-    var nav = h('nav', 'rail');
+  /* 索引 rail 双档：mini=false 完整档（仅产品封面页）；mini=true 极简档 */
+  function rail(activeKey, mini) {
+    var nav = h('nav', 'rail' + (mini ? ' rail--mini' : ''));
     nav.appendChild(h('div', 'rail-cap', 'Project'));
     var ol = h('ol');
-    pf.products.forEach(function (prod, i) {
-      var li = h('li', prod.ref === activeRef ? 'active' : '');
-      li.appendChild(document.createTextNode(String(i + 1).padStart(2, '0')));
-      li.appendChild(h('span', 'rail-name', prod.display || prod.ref));
-      if (prod.ref === activeRef) li.appendChild(psq());
+    railEntries().forEach(function (entry, i) {
+      var li = h('li', entry.key === activeKey ? 'active' : '');
+      li.appendChild(document.createTextNode(pad2(i + 1)));
+      li.appendChild(h('span', 'rail-name', entry.name));
+      if (entry.key === activeKey) li.appendChild(psq());
       ol.appendChild(li);
     });
     nav.appendChild(ol);
@@ -182,7 +167,7 @@
   function foot(num) {
     var f = h('footer', 'sheet-foot');
     f.appendChild(h('span', 'f-runner', 'LI WENYUAN — AI PRODUCT PORTFOLIO'));
-    var n = h('span', 'f-num', String(num).padStart(2, '0'));
+    var n = h('span', 'f-num', pad2(num));
     n.appendChild(psq());
     f.appendChild(n);
     return f;
@@ -296,7 +281,7 @@
     return s.holder;
   }
 
-  /* ════════ P3 目录 ════════ */
+  /* ════════ P3 目录（六卡 3×2） ════════ */
   function sheetIndex(num) {
     var s = sheet('p-index', 'p3');
     var inner = h('div', 'index-inner');
@@ -304,27 +289,34 @@
     title.appendChild(document.createTextNode('INDEX'));
     title.appendChild(psq());
     inner.appendChild(title);
-    inner.appendChild(h('p', 'index-sub', L('AI 产品 · 五个作品', 'FIVE AI PRODUCT WORKS')));
+    inner.appendChild(h('p', 'index-sub', L('AI 产品 × 建筑 · 六个作品', 'SIX WORKS · AI PRODUCT × ARCHITECTURE')));
 
     var grid = h('div', 'matrix');
+    function card(href, name, numStr, meta, thumbSrc, alt) {
+      var el = h('a', 'matrix-card');
+      el.href = href;
+      var top = h('div', 'mc-top');
+      top.appendChild(h('span', 'mc-name', name));
+      top.appendChild(h('span', 'mc-num', numStr));
+      el.appendChild(top);
+      el.appendChild(h('div', 'mc-meta', meta));
+      var th = h('div', 'mc-thumb');
+      th.appendChild(img(thumbSrc, alt));
+      el.appendChild(th);
+      return el;
+    }
     pf.products.forEach(function (prod, i) {
       var joined = byId.get(prod.ref);
-      var card = h('a', 'matrix-card');
-      card.href = '#work-' + prod.ref;
-      var top = h('div', 'mc-top');
-      top.appendChild(h('span', 'mc-name', prod.display || prod.ref));
-      top.appendChild(h('span', 'mc-num', String(i + 1).padStart(2, '0')));
-      card.appendChild(top);
-      card.appendChild(h('div', 'mc-meta', t(joined, 'category') + ' · ' + (joined.year || '')));
-      var th = h('div', 'mc-thumb');
-      th.appendChild(img(joined.thumb, t(joined, 'title')));
-      card.appendChild(th);
-      grid.appendChild(card);
+      grid.appendChild(card('#work-' + prod.ref, prod.display || prod.ref, pad2(i + 1),
+        t(joined, 'category') + ' · ' + (joined.year || ''), joined.thumb, t(joined, 'title')));
     });
+    var arch = pf.architecture;
+    var years = arch.items.map(function (id) { return parseInt(byId.get(id).year, 10); }).filter(Boolean);
+    var range = years.length ? Math.min.apply(null, years) + '–' + Math.max.apply(null, years) : '';
+    grid.appendChild(card('#p-arch', arch.display || 'Architecture', pad2(pf.products.length + 1),
+      t(arch, 'index_meta') + (range ? ' · ' + range : ''), arch.index_cover, arch.display));
     inner.appendChild(grid);
 
-    inner.appendChild(h('p', 'index-coda',
-      L('尾声 · 建筑作品（六件）见卷末', 'CODA · SIX WORKS OF ARCHITECTURE AT THE END OF THE VOLUME')));
     s.sheet.appendChild(inner);
     s.sheet.appendChild(foot(num));
     return s.holder;
@@ -334,7 +326,7 @@
   function workHead(prod, joined, idx) {
     var head = h('div', 'work-head');
     head.appendChild(h('div', 'kicker',
-      'PROJECT ' + String(idx + 1).padStart(2, '0') + ' · ' + (joined.category || '').toUpperCase() + ' · ' + (joined.year || '')));
+      'PROJECT ' + pad2(idx + 1) + ' · ' + (joined.category || '').toUpperCase() + ' · ' + (joined.year || '')));
     var row = h('div', 'work-title-row');
     var title = h('h1', 'work-title');
     title.appendChild(document.createTextNode(prod.display || prod.ref));
@@ -352,30 +344,43 @@
     return head;
   }
 
-  /* ════════ 作品封面页（Co-work 做透版） ════════ */
+  /* ════════ 作品封面页（统一紧凑模板：占位与做透同构，字段有则显） ════════ */
   function sheetWorkCover(prod, joined, idx, num) {
     var s = sheet('p-work', 'work-' + prod.ref);
-    s.sheet.appendChild(rail(prod.ref));
+    s.sheet.appendChild(rail(prod.ref, false));
     var main = h('div', 'work-main');
     main.appendChild(workHead(prod, joined, idx));
 
     var one = t(joined, 'one_liner');
     if (one) main.appendChild(h('p', 'oneliner work-oneliner', one));
 
-    var sec = h('section', 'work-sec');
-    sec.appendChild(secH(joined.sections.tldr));
-    var body = h('div', 'sec-body');
-    body.appendChild(plist(t(joined.sections.tldr, 'body')));
-    sec.appendChild(body);
-    main.appendChild(sec);
+    /* 双栏带：左 = 先说结论列表；右 = 封面艺术方图 + 奖项注 */
+    var cols = h('div', 'cover-cols' + (prod.placeholder ? ' ph' : ''));
+    var lc = h('section', 'cc-left');
+    lc.appendChild(secH(joined.sections.tldr));
+    lc.appendChild(plist(t(joined.sections.tldr, 'body')));
+    cols.appendChild(lc);
+    var art = h('figure', 'cover-art');
+    var th = h('div', 'ca-thumb');
+    th.appendChild(img(joined.thumb, t(joined, 'title')));
+    art.appendChild(th);
+    var award = t(joined, 'award');
+    if (award) {
+      var ac = h('figcaption', 'work-award');
+      ac.appendChild(psq());
+      ac.appendChild(document.createTextNode(' ' + award));
+      art.appendChild(ac);
+    }
+    cols.appendChild(art);
+    main.appendChild(cols);
 
     if (prod.metrics) {
       var mb = h('div', 'metrics');
       prod.metrics.forEach(function (m) {
-        var cell = h('div');
-        cell.appendChild(h('div', 'm-val', m.value));
-        cell.appendChild(h('div', 'm-label', t(m, 'label')));
-        mb.appendChild(cell);
+        var c = h('div');
+        c.appendChild(h('div', 'm-val', m.value));
+        c.appendChild(h('div', 'm-label', t(m, 'label')));
+        mb.appendChild(c);
       });
       main.appendChild(mb);
     }
@@ -384,6 +389,13 @@
       var shot = h('div', 'work-cover-shot');
       shot.appendChild(win(prod.cover.shot, prod.cover.ratio, { frame: prod.cover.frame, url: joined.url, alt: prod.display }));
       main.appendChild(shot);
+    } else {
+      var more = h('p', 'ph-more');
+      var a = h('a', null, L('完整案例在主站', 'FULL CASE ON THE SITE') + ' ↗');
+      a.href = pf.meta.site_url + 'project.html?id=' + prod.ref;
+      a.target = '_blank'; a.rel = 'noopener';
+      more.appendChild(a);
+      main.appendChild(more);
     }
 
     s.sheet.appendChild(main);
@@ -391,31 +403,125 @@
     return s.holder;
   }
 
-  /* ════════ 作品正文页（一页一场景；末场景页附影片+技术栈） ════════ */
-  function sheetWorkScene(prod, joined, sc, idx, num, isLast) {
+  /* ════════ 线稿页（左窄柱介绍 + 右大幅线稿） ════════ */
+  function sheetLineart(prod, joined, idx, num) {
+    var s = sheet('p-work p-la');
+    s.sheet.appendChild(rail(prod.ref, true));
+    var main = h('div', 'work-main work-main--wide');
+    main.appendChild(h('div', 'kicker',
+      'PROJECT ' + pad2(idx + 1) + ' · ' + (prod.display || '').toUpperCase() + ' · SYSTEM LINEART'));
+
+    var grid = h('div', 'la-grid');
+    var side = h('div', 'la-side');
+    var name = h('div', 'la-name');
+    name.appendChild(document.createTextNode(prod.display || prod.ref));
+    name.appendChild(psq());
+    side.appendChild(name);
+    var one = t(joined, 'one_liner');
+    if (one) side.appendChild(h('p', 'oneliner', one));
+    var kw = t(joined, 'keywords');
+    if (kw) side.appendChild(h('p', 'la-kw', kw.split(/\s*\|\s*/).join(' · ')));
+    var stack = t(joined, 'tech_stack');
+    if (stack) {
+      var line = h('p', 'stack-line la-stack');
+      line.appendChild(h('span', 'stack-label', 'STACK'));
+      line.appendChild(document.createTextNode(stack));
+      side.appendChild(line);
+    }
+    grid.appendChild(side);
+
+    var fig = h('figure', 'la-fig');
+    fig.appendChild(img(prod.lineart.src, prod.display + ' — system lineart'));
+    grid.appendChild(fig);
+    main.appendChild(grid);
+
+    s.sheet.appendChild(main);
+    s.sheet.appendChild(foot(num));
+    return s.holder;
+  }
+
+  /* ════════ 场景页（极简 rail + 左右排版引擎） ════════
+     split      : 左文字柱(+slot:left 图竖叠) ｜ 右列(slot:right 图竖叠)
+     split-band : 同上，尾接 slot:band 通栏图
+     top        : 首图通栏 hero + 其余等高行（后备） */
+  function sheetWorkScene(prod, joined, sc, idx, sceneNo, num, isLast) {
     var s = sheet('p-work');
-    s.sheet.appendChild(rail(prod.ref));
-    var main = h('div', 'work-main');
+    s.sheet.appendChild(rail(prod.ref, true));
+    var main = h('div', 'work-main work-main--wide');
+
+    /* 页头：场景 kicker（场景名并入）+ 章节 h2 */
+    var kick = h('div', 'kicker');
+    kick.appendChild(document.createTextNode('SCENE ' + pad2(sceneNo) + ' · ' + (sc.name_en || sc.id)));
+    if (sc.name_zh) kick.appendChild(h('span', 'zh-note', '　' + sc.name_zh));
+    main.appendChild(kick);
 
     var section = joined.sections[sc.copy_ref];
-    var sec = h('section', 'work-sec');
-    sec.appendChild(secH(section));
-    var body = h('div', 'sec-body');
-    body.appendChild(plist(t(section, 'body')));
-    sec.appendChild(body);
-    main.appendChild(sec);
+    main.appendChild(secH(section));
 
-    main.appendChild(scene(sc, joined.url, prod.display || prod.ref));
+    var alt = (prod.display || prod.ref) + ' — ' + (sc.name_en || sc.id);
+    var layout = sc.layout || {};
+    var type = layout.type || 'top';
+    var imgs = sc.images || [];
 
-    if (isLast) {
-      if (prod.video) main.appendChild(film(prod.video));
-      var stack = t(joined, 'tech_stack');
-      if (stack) {
-        var line = h('p', 'stack-line');
-        line.style.marginTop = '5mm';
-        line.appendChild(h('span', 'stack-label', 'STACK'));
-        line.appendChild(document.createTextNode(stack));
-        main.appendChild(line);
+    if (type === 'split' || type === 'split-band') {
+      var grid = h('div', 'scene-grid');
+      if (layout.text) grid.style.setProperty('--tcol', layout.text + 'mm');
+      var sgText = h('div', 'sg-text');
+      sgText.appendChild(plist(t(section, 'body')));
+      imgs.filter(function (im) { return im.slot === 'left'; }).forEach(function (im) {
+        sgText.appendChild(cell(im, joined.url, alt));
+      });
+      if (isLast) {
+        if (prod.video) sgText.appendChild(film(prod.video));
+        var stack = t(joined, 'tech_stack');
+        if (stack) {
+          var line = h('p', 'stack-line');
+          line.style.marginTop = '5mm';
+          line.appendChild(h('span', 'stack-label', 'STACK'));
+          line.appendChild(document.createTextNode(stack));
+          sgText.appendChild(line);
+        }
+      }
+      grid.appendChild(sgText);
+      var sgCol = h('div', 'sg-col');
+      imgs.filter(function (im) { return !im.slot || im.slot === 'right'; }).forEach(function (im) {
+        sgCol.appendChild(cell(im, joined.url, alt));
+      });
+      grid.appendChild(sgCol);
+      main.appendChild(grid);
+      imgs.filter(function (im) { return im.slot === 'band'; }).forEach(function (im) {
+        var band = h('div', 'scene-band');
+        band.appendChild(win(im.src, im.ratio, { frame: im.frame, url: joined.url, alt: alt }));
+        var cap = t(im, 'caption');
+        if (cap) band.appendChild(h('div', 'cell-cap', cap));
+        main.appendChild(band);
+      });
+    } else {
+      /* top 后备：首图通栏 hero + 其余等高行 */
+      var wrap = h('section', 'scene');
+      var rowImgs = imgs;
+      if (imgs.length >= 3) {
+        var hero = h('div', 'scene-hero');
+        hero.appendChild(win(imgs[0].src, imgs[0].ratio, { frame: imgs[0].frame, url: joined.url, alt: alt }));
+        wrap.appendChild(hero);
+        rowImgs = imgs.slice(1);
+      }
+      if (rowImgs.length) {
+        var row = h('div', 'scene-row');
+        rowImgs.forEach(function (im) { row.appendChild(cell(im, joined.url, alt)); });
+        wrap.appendChild(row);
+      }
+      main.appendChild(wrap);
+      if (isLast) {
+        if (prod.video) main.appendChild(film(prod.video));
+        var stack2 = t(joined, 'tech_stack');
+        if (stack2) {
+          var line2 = h('p', 'stack-line');
+          line2.style.marginTop = '5mm';
+          line2.appendChild(h('span', 'stack-label', 'STACK'));
+          line2.appendChild(document.createTextNode(stack2));
+          main.appendChild(line2);
+        }
       }
     }
 
@@ -424,53 +530,17 @@
     return s.holder;
   }
 
-  /* ════════ 占位作品页（简封面：标题 + 先说结论 + 站内封面图） ════════ */
-  function sheetWorkPlaceholder(prod, joined, idx, num) {
-    var s = sheet('p-work', 'work-' + prod.ref);
-    s.sheet.appendChild(rail(prod.ref));
-    var main = h('div', 'work-main');
-    main.appendChild(workHead(prod, joined, idx));
-
-    var fig = h('figure', 'ph-figure');
-    var th = h('div', 'ph-thumb');
-    th.appendChild(img(joined.thumb, t(joined, 'title')));
-    fig.appendChild(th);
-    var award = t(joined, 'award');
-    if (award) {
-      var ac = h('figcaption', 'work-award');
-      ac.appendChild(psq());
-      ac.appendChild(document.createTextNode(' ' + award));
-      fig.appendChild(ac);
-    }
-
-    var one = t(joined, 'one_liner');
-    if (one) main.appendChild(h('p', 'oneliner work-oneliner', one));
-
-    var sec = h('section', 'work-sec');
-    sec.appendChild(secH(joined.sections.tldr));
-    var body = h('div', 'sec-body');
-    body.appendChild(fig); /* 浮动图与列表同流 */
-    body.appendChild(plist(t(joined.sections.tldr, 'body')));
-    sec.appendChild(body);
-    main.appendChild(sec);
-
-    var more = h('p', 'ph-more');
-    var a = h('a', null, L('完整案例在主站', 'FULL CASE ON THE SITE') + ' ↗');
-    a.href = pf.meta.site_url + 'project.html?id=' + prod.ref;
-    a.target = '_blank'; a.rel = 'noopener';
-    more.appendChild(a);
-    main.appendChild(more);
-
-    s.sheet.appendChild(main);
-    s.sheet.appendChild(foot(num));
-    return s.holder;
-  }
-
-  /* ════════ 建筑压轴 ════════ */
+  /* ════════ 建筑压轴 = PROJECT 06 内容页 ════════ */
   function sheetArch(num) {
     var arch = pf.architecture;
     var s = sheet('p-arch', 'p-arch');
+    s.sheet.appendChild(rail('architecture', true));
     var inner = h('div', 'arch-inner');
+
+    var years = arch.items.map(function (id) { return parseInt(byId.get(id).year, 10); }).filter(Boolean);
+    var range = years.length ? Math.min.apply(null, years) + '–' + Math.max.apply(null, years) : '';
+    inner.appendChild(h('div', 'kicker', 'PROJECT ' + pad2(pf.products.length + 1) + ' · ARCHITECTURE' + (range ? ' · ' + range : '')));
+
     var title = h('h1', 'arch-title');
     title.appendChild(document.createTextNode(arch.title_en));
     title.appendChild(h('span', 'zh-note', arch.title_zh));
@@ -562,21 +632,18 @@
     pf.products.forEach(function (prod, idx) {
       var joined = byId.get(prod.ref);
       if (!joined) { console.warn('[portfolio] ref not found in projects.json:', prod.ref); return; }
-      if (prod.placeholder) {
-        sheets.push(sheetWorkPlaceholder(prod, joined, idx, num++));
-      } else {
-        sheets.push(sheetWorkCover(prod, joined, idx, num++));
-        (prod.scenes || []).forEach(function (sc, si) {
-          sheets.push(sheetWorkScene(prod, joined, sc, idx, num++, si === prod.scenes.length - 1));
-        });
-      }
+      sheets.push(sheetWorkCover(prod, joined, idx, num++));
+      if (prod.lineart) sheets.push(sheetLineart(prod, joined, idx, num++));
+      (prod.scenes || []).forEach(function (sc, si) {
+        sheets.push(sheetWorkScene(prod, joined, sc, idx, si + 1, num++, si === prod.scenes.length - 1));
+      });
     });
 
     sheets.push(sheetArch(num++));
     sheets.push(sheetBack());
     deck.appendChild(frag.apply(null, sheets));
 
-    document.title = (locale() === 'zh' ? 'Portfolio · Alnt_med' : 'Portfolio · Alnt_med');
+    document.title = 'Portfolio · Alnt_med';
     var pdfLink = document.querySelector('.pf-pdf');
     if (pdfLink && pf.meta.pdf) pdfLink.href = '../' + (pf.meta.pdf[locale()] || pf.meta.pdf.zh);
 

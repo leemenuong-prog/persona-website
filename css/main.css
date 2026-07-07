@@ -186,6 +186,11 @@ img, video { max-width: 100%; height: auto; display: block; }
 /* ── 响应式 ── */
 @media (max-width: 1023px) {
   .side-btn { display: none; }
+  /* header 三钮（含 PORTFOLIO）+ 名字在平板档收纳，防左右两组相撞（768 是最紧点） */
+  .site-header { padding-left: calc(16px + var(--safe-left)); padding-right: calc(16px + var(--safe-right)); }
+  .site-header .nav-btn { min-width: 0; padding: 0 10px; font-size: 17px; }
+  .header-left { gap: 4px; }
+  .header-right { gap: 10px; }
 }
 @media (max-width: 767px) {
   body { font-size: 16px; }
@@ -220,13 +225,18 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 @media (max-width: 479px) {
   .page-title { font-size: 22px; margin: 20px 0 18px; }
-}
-/* 极窄屏（320 级）：header 一排收进 320——nav 缩字号、品牌条切小档 */
-@media (max-width: 374px) {
+  /* 三钮（含 PORTFOLIO）手机档收纳：品牌条切小档、GitHub 图标收进页脚（foot-contact 本有），
+     否则 375 宽下右组被顶出屏 */
   .site-header { padding-left: calc(8px + var(--safe-left)); padding-right: calc(8px + var(--safe-right)); }
   .site-header .nav-btn { font-size: 13px; padding: 0 5px; }
   .header-right { gap: 4px; }
+  .site-header .gh-link { display: none; }
+  .wordmark { padding: 6px 4px; }
   .site-header .brandband { --bb-h: 18px; --bb-bar: 3px; --bb-gap: 2.5px; --bb-dot: 4px; }
+}
+/* 极窄屏（320 级）：header 一排收进 320 */
+@media (max-width: 374px) {
+  .site-header .nav-btn { font-size: 11px; padding: 0 4px; }
 }
 
 /* ── 触屏热区（不可见、不占布局；宿主需非 static 定位） ── */

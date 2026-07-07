@@ -72,48 +72,49 @@
         "label_zh": "观看交互影片", "label_en": "Watch the interactive film"
       },
       "cover": { "shot": "assets/portfolio/cowork/landing-01.jpg", "ratio": 1.854, "frame": "browser" },
+      "lineart": { "src": "assets/project/cowork/content/plate-core.svg", "ratio": 1.6 },
       "scenes": [
         {
           "id": "research",
           "name_zh": "调研工具", "name_en": "RESEARCH AGENT",
           "copy_ref": "why_built",
-          "density": "loose",
+          "layout": { "type": "split", "text": 63, "col": 100 },
           "images": [
-            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac" },
-            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac" },
-            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac" }
+            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac", "slot": "right" },
+            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac", "slot": "right" },
+            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac", "slot": "left" }
           ]
         },
         {
           "id": "script",
           "name_zh": "脚本工具 · 三候选并出", "name_en": "SCRIPT TOOL",
           "copy_ref": "key_contributions",
-          "density": "compact",
+          "layout": { "type": "split", "text": 63, "col": 100 },
           "images": [
-            { "src": "assets/portfolio/cowork/script-01.jpg", "ratio": 1.7279, "frame": "mac", "caption_zh": "① 准备 · 输入核心内容", "caption_en": "① Brief" },
-            { "src": "assets/portfolio/cowork/script-02.jpg", "ratio": 1.7316, "frame": "mac", "caption_zh": "② 趋势 · 接入近期热点", "caption_en": "② Trends" },
-            { "src": "assets/portfolio/cowork/script-03.jpg", "ratio": 1.7817, "frame": "mac", "caption_zh": "③ 脚本 · 三候选并出", "caption_en": "③ Three candidates" }
+            { "src": "assets/portfolio/cowork/script-01.jpg", "ratio": 1.7279, "frame": "mac", "slot": "right", "caption_zh": "① 准备 · 输入核心内容", "caption_en": "① Brief" },
+            { "src": "assets/portfolio/cowork/script-02.jpg", "ratio": 1.7316, "frame": "mac", "slot": "right", "caption_zh": "② 趋势 · 接入近期热点", "caption_en": "② Trends" },
+            { "src": "assets/portfolio/cowork/script-03.jpg", "ratio": 1.7817, "frame": "mac", "slot": "right", "caption_zh": "③ 脚本 · 三候选并出", "caption_en": "③ Three candidates" }
           ]
         },
         {
           "id": "landing",
           "name_zh": "平台门户", "name_en": "THE PLATFORM",
           "copy_ref": "how_it_works",
-          "density": "loose",
+          "layout": { "type": "split-band", "text": 76, "col": 87 },
           "images": [
-            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser" },
-            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser" },
-            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac" }
+            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser", "slot": "right" },
+            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac",     "slot": "left" },
+            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser", "slot": "band" }
           ]
         },
         {
           "id": "admin",
           "name_zh": "ROI 看板", "name_en": "THE ROI DASHBOARD",
           "copy_ref": "why_it_matters",
-          "density": "loose",
+          "layout": { "type": "split-band", "text": 63, "col": 100 },
           "images": [
-            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac" },
-            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac" }
+            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac", "slot": "right" },
+            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac", "slot": "band" }
           ]
         }
       ]
@@ -124,6 +125,9 @@
   ],
 
   "architecture": {
+    "display": "Architecture",
+    "index_cover": "assets/portfolio/architecture/cover.jpg",
+    "index_meta_zh": "建筑合集 · 六件", "index_meta_en": "SIX WORKS OF ARCHITECTURE",
     "title_zh": "尾声 · 建筑作品", "title_en": "CODA · ARCHITECTURE",
     "lede_zh": "六个建筑作品——体系化训练的来处。完整版另册。",
     "lede_en": "Six works of architecture — where the systems training comes from. Full volume available separately.",

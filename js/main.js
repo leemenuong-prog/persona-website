@@ -23,6 +23,7 @@
         '<a class="nav-btn" href="around.html"' +
           (PAGE === 'around' ? ' aria-current="page"' : '') +
           ' data-zh="AROUND" data-en="AROUND">AROUND</a>' +
+        '<a class="nav-btn" href="portfolio/" data-zh="PORTFOLIO" data-en="PORTFOLIO">PORTFOLIO</a>' +
       '</div>' +
       '<div class="header-right">' +
         '<span class="header-name">李文苑<i class="sep">·</i><span class="name-en">ALNT MED</span></span>' +
@@ -44,6 +45,7 @@
       '<nav class="foot-nav" aria-label="站内导航 · Site">' +
         '<a href="projects.html"' + (PAGE === 'projects' ? ' aria-current="page"' : '') + '>PROJECTS</a>' +
         '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
+        '<a href="portfolio/">PORTFOLIO</a>' +
         '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUTME</a>' +
       '</nav>' +
       '<div class="foot-contact">' +

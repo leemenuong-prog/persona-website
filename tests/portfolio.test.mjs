@@ -33,8 +33,13 @@ for (const prod of pf.products) {
     for (const scene of prod.scenes) {
       assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
         prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
+      if (scene.layout) {
+        assert.ok(["split", "split-band", "top"].includes(scene.layout.type),
+          scene.id + " layout.type must be split|split-band|top");
+      }
       for (const img of scene.images) {
         assert.ok(["mac", "browser", "none"].includes(img.frame), scene.id + " image frame must be mac|browser|none");
+        if (img.slot) assert.ok(["left", "right", "band"].includes(img.slot), scene.id + " image slot must be left|right|band");
       }
     }
   }
@@ -59,10 +64,11 @@ const walkBan = (node, path) => {
 pf.products.forEach((p, i) => walkBan(p, "[" + i + "]"));
 
 /* ── 素材落盘 ── */
-const files = [pf.profile.portrait, pf.profile.qr.svg];
+const files = [pf.profile.portrait, pf.profile.qr.svg, pf.architecture.index_cover];
 for (const prod of pf.products) {
   if (prod.placeholder) continue;
   files.push(prod.cover.shot, prod.video.poster);
+  if (prod.lineart) files.push(prod.lineart.src);
   for (const scene of prod.scenes) for (const img of scene.images) files.push(img.src);
 }
 for (const f of files) {
