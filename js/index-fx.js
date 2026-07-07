@@ -19,9 +19,8 @@
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 1. 立方体（重量感体系：dt 归一 + 惯性 + Lambert 光照 + 接触影呼吸 + bob + 视差） ── */
-  /* 立方体六面「悬浮前」默认封面 = 各作品封面缩略图。cowork = 作品封面海报
-     （Co-Work 文件盒，assets/project/cowork/thumbnails/1.jpg，源 Website 封面页/正图/cowork01.png）；
-     悬浮后揭示才切成视频封面（见 REVEAL_FACES，用户裁定：封面是文件盒海报，视频封面是次要的悬浮态）。 */
+  /* 立方体六面封面 = 各作品封面缩略图（无悬浮揭示，2026-07-07 已移除）。cowork = 作品封面海报
+     （Co-Work 文件盒，assets/project/cowork/thumbnails/1.jpg，源 Website 封面页/正图/cowork01.png）。 */
   var CUBE_FACES = [
     'assets/project/pears/thumbnails/1.png',
     'assets/project/cowork/thumbnails/1.jpg',
@@ -41,18 +40,9 @@
   var SHADE_MAX = 0.16;
   var shades = [];
 
-  /* 各面悬浮揭示图（次要的悬浮态，默认封面见 CUBE_FACES）：cowork = 交互影片视频封面
-     （把团队的时间还给团队，用户明确定为「鼠标悬浮的次要封面」）；议见 = 产品落地页截图；
-     其余用各自 float/content 招牌图。品牌面无揭示。
-     清晰度：.face-reveal 已在 CSS 里去掉六面材料统一的 saturate/opacity 收敛（招牌要看清）。 */
-  var REVEAL_FACES = [
-    'assets/project/pears/float/1.jpg',
-    'xtool/screenshots/poster-team-time.png',
-    'assets/project/yijian/float/landing.jpg',
-    'assets/project/ring-world/content/2.jpg',
-    'assets/project/air-cube/content/2.jpg',
-    null
-  ];
+  /* 立方体面悬浮揭示已移除（2026-07-07 用户裁定冗余）：六面只显默认封面 CUBE_FACES，
+     不再逐面挂第二张揭示图、不再有 cube 级 --rv-r 中心绽放。cowork 的视频封面/议见落地页
+     等"悬浮态"改由主线卡（.layer-reveal，projects.json 的 float.reveal）承载。 */
 
   /* 每帧按面法线 n' = Rx(rx)·Ry(ry)·n 的 Lambert 受光量写遮罩 opacity；值未变跳过写入 */
   function applyLighting(rx, ry) {
@@ -98,7 +88,6 @@
     if (!cube || cube.dataset.ready) return;
     cube.dataset.ready = '1';
 
-    var canHover = window.matchMedia('(hover: hover)').matches;
     shades = [];
     CUBE_FACES.forEach(function (src, i) {
       var f = document.createElement('div');
@@ -115,20 +104,6 @@
       sh._o = 0;
       f.appendChild(sh);
       shades.push(sh);
-      /* 悬浮揭示另一张图（放在 face-shade 之上=光斑感）。
-         关键：揭示**不逐面绑指针**——旋转的 3D 面在光标下会高频切换命中，
-         逐面 enter/leave 让半径反复开合=闪。改由 cube 级 --rv-r（居中 mask，
-         见 CSS）统一驱动，全体面共用一个单调半径，构造上不振荡。 */
-      if (canHover && REVEAL_FACES[i]) {
-        var rev = document.createElement('img');
-        rev.src = REVEAL_FACES[i];
-        rev.alt = '';
-        rev.loading = 'lazy';
-        rev.decoding = 'async';
-        rev.draggable = false;
-        rev.className = 'face-reveal';
-        f.appendChild(rev);
-      }
       cube.appendChild(f);
     });
     layoutFaces();
@@ -155,10 +130,6 @@
     var BOB_A = DESKTOP.matches ? 7 : 3;
     var HOVERFINE = window.matchMedia('(hover: hover) and (pointer: fine)');
     var par = { tx: 0, ty: 0, x: 0, y: 0 };
-    /* cube 级中心绽放揭示：悬浮 vp（稳定不旋转的 perspective 容器）→ 目标半径升；
-       离开 → 0。单一 --rv-r 写在 #cube 上继承给所有 .face-reveal（居中 mask）。
-       悬浮**不影响**立方体运动（旋转/bob/视差照跑），仅驱动这个半径。 */
-    var revR = 0, revTarget = 0;
 
     function render(now) {
       raf = null;
@@ -175,14 +146,6 @@
       }
       cube.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
       applyLighting(rx, ry);
-
-      /* 揭示半径缓动（0↔目标，单调无振荡）→ 写 #cube 的 --rv-r，居中 mask 各面绽放。
-         仅在未到位时缓动+写，到位即停写（idle 零开销） */
-      if (revR !== revTarget) {
-        revR += (revTarget - revR) * (1 - Math.pow(0.82, dt));
-        if (Math.abs(revR - revTarget) < 0.5) revR = revTarget;
-        cube.style.setProperty('--rv-r', revR.toFixed(1) + 'px');
-      }
 
       /* bob 与接触影同相呼吸（JS 同驱不脱相）：升→影淡+散，降→影浓+紧。
          悬浮不再冻结（用户要「悬浮不影响立方体状态」）——仅拖拽时暂停 bob 相位推进 */
@@ -237,12 +200,6 @@
         par.tx = e.clientX / window.innerWidth * 2 - 1;
         par.ty = e.clientY / window.innerHeight * 2 - 1;
       }, { passive: true });
-    }
-
-    /* cube 级中心绽放：稳定 vp 只 enter/leave 一次（无逐面切换）→ 半径单调 → 不闪 */
-    if (window.matchMedia('(hover: hover)').matches) {
-      vp.addEventListener('pointerenter', function () { revTarget = cubeHalf * 1.04; });
-      vp.addEventListener('pointerleave', function () { revTarget = 0; });
     }
 
     if ('IntersectionObserver' in window) {

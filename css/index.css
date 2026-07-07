@@ -177,15 +177,8 @@
   background: #181818;
   opacity: 0; pointer-events: none;
 }
-/* 面揭示层：悬浮看到"招牌图"，软边 mask + 从小扩散（同卡片揭示 UX） */
-.cube .face-reveal {
-  position: absolute; inset: 0;
-}
-/* 招牌要看清：揭示图不参与六面材料统一的 saturate/opacity 收敛（比 .cube .face img 更高特指度覆盖） */
-.cube .face img.face-reveal {
-  opacity: 1;
-  filter: none;
-}
+/* 立方体面悬浮揭示已移除（2026-07-07 用户裁定冗余）——六面只显默认封面，无第二层揭示图。
+   卡片揭示 .layer-reveal 仍保留（见下方）。 */
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
 main { position: relative; }
@@ -282,17 +275,8 @@ main { position: relative; }
   mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 56%, transparent 100%);
 }
 .image-container:hover .layer-reveal { opacity: 1; transform: scale(1); }
-/* ── 软边揭示 · 立方体面（旋转 3D）：**居中**绽放，半径读继承自 #cube 的单一 --rv-r
-      （cube 级 hover 驱动，无逐面命中切换 → 半径单调 → 不闪）。
-      **禁 translateZ(0)**：3D 面上会引入合成/背面剔除闪烁；居中 mask 随面旋转不失真。 */
-.face-reveal {
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
-    #000 64%, rgba(0, 0, 0, .45) 84%, transparent 100%);
-  mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
-    #000 64%, rgba(0, 0, 0, .45) 84%, transparent 100%);
-}
-@media (hover: none) { .layer-reveal, .face-reveal { display: none; } }
+/* 立方体面揭示（.face-reveal / --rv-r 中心绽放）已移除——见上文，2026-07-07 用户裁定冗余。 */
+@media (hover: none) { .layer-reveal { display: none; } }
 
 /* 缩略图缺席时的灰阶字卡兜底 */
 .thumb-fallback {
