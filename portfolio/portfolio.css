@@ -216,19 +216,18 @@ html[data-locale="en"] .zh-note { display: none; }
 .shot-plain { position: relative; aspect-ratio: var(--r, 1.6); border: 1px solid var(--c-border); }
 .shot-plain img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ════════ 场景组块（二迭代：左右排版引擎） ════════
-   split      = 左文字柱(+left 槽图竖叠) ｜ 右图列竖叠
-   split-band = 同 split，尾部再接一条通栏带图
-   top        = 首图通栏 hero + 其余等高行（保留旧模式备用） */
+/* ════════ 场景组块（三迭代：横向行模块语法，2026-07-08 用户裁定） ════════
+   每一行 = 一个横向满宽模块，纵向依次码进 A4，正文禁左右双栏。
+   行只有五种：一文 .row-text ｜ 一文一图 .row-ti ｜ 一图/两图/三图 .scene-row（等高对齐） */
 .scene { margin-top: 5mm; }
-.scene-grid { display: grid; grid-template-columns: var(--tcol, 63mm) 1fr; gap: 5mm var(--sh-gap); align-items: start; }
-.scene-grid .sg-text { min-width: 0; }
-.scene-grid .sg-text .plist li { margin-bottom: 2.2mm; }
-.scene-grid .sg-col { min-width: 0; display: flex; flex-direction: column; gap: var(--sh-gap); }
-.scene-grid .sg-text .cell { margin-top: 5mm; }
-.scene-band { margin-top: var(--sh-gap); }
+.scene > * + * { margin-top: 5mm; }
+.row-text { max-width: 150mm; }
+.row-text .plist li { margin-bottom: 2.2mm; }
+.row-ti { display: flex; gap: 6mm; align-items: center; }
+.row-ti .row-ti-text { flex: 1; min-width: 0; }
+.row-ti .row-ti-text .plist li { margin-bottom: 2.2mm; }
+.row-ti .cell { flex: 0 0 var(--w, 70mm); }
 
-.scene-hero { margin-bottom: var(--sh-gap); }
 .scene-row { display: flex; gap: var(--sh-gap); align-items: flex-start; }
 .scene-row .cell { flex: var(--r, 1) 1 0; min-width: 0; }
 .scene figcaption, .cell-cap {

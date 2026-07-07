@@ -1,5 +1,5 @@
 {
-  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景分组、截图清单（ratio=宽高比，排版用）、窗框类型、指标带（策展数据，数字须与 projects.json 文案一致）、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。",
+  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。",
 
   "meta": {
     "doc_title_zh": "AI 产品作品集",
@@ -78,43 +78,57 @@
           "id": "research",
           "name_zh": "调研工具", "name_en": "RESEARCH AGENT",
           "copy_ref": "why_built",
-          "layout": { "type": "split", "text": 63, "col": 100 },
+          "rows": [
+            { "text": true, "img": 2, "img_mm": 70 },
+            { "imgs": [0, 1] }
+          ],
           "images": [
-            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac", "slot": "right" },
-            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac", "slot": "right" },
-            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac", "slot": "left" }
+            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac" },
+            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac" },
+            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac" }
           ]
         },
         {
           "id": "script",
           "name_zh": "脚本工具 · 三候选并出", "name_en": "SCRIPT TOOL",
           "copy_ref": "key_contributions",
-          "layout": { "type": "split", "text": 63, "col": 100 },
+          "rows": [
+            { "text": true },
+            { "imgs": [0] },
+            { "imgs": [1, 2] }
+          ],
           "images": [
-            { "src": "assets/portfolio/cowork/script-01.jpg", "ratio": 1.7279, "frame": "mac", "slot": "right", "caption_zh": "① 准备 · 输入核心内容", "caption_en": "① Brief" },
-            { "src": "assets/portfolio/cowork/script-02.jpg", "ratio": 1.7316, "frame": "mac", "slot": "right", "caption_zh": "② 趋势 · 接入近期热点", "caption_en": "② Trends" },
-            { "src": "assets/portfolio/cowork/script-03.jpg", "ratio": 1.7817, "frame": "mac", "slot": "right", "caption_zh": "③ 脚本 · 三候选并出", "caption_en": "③ Three candidates" }
+            { "src": "assets/portfolio/cowork/script-01.jpg", "ratio": 1.7279, "frame": "mac", "caption_zh": "① 准备 · 输入核心内容", "caption_en": "① Brief" },
+            { "src": "assets/portfolio/cowork/script-02.jpg", "ratio": 1.7316, "frame": "mac", "caption_zh": "② 趋势 · 接入近期热点", "caption_en": "② Trends" },
+            { "src": "assets/portfolio/cowork/script-03.jpg", "ratio": 1.7817, "frame": "mac", "caption_zh": "③ 脚本 · 三候选并出", "caption_en": "③ Three candidates" }
           ]
         },
         {
           "id": "landing",
           "name_zh": "平台门户", "name_en": "THE PLATFORM",
           "copy_ref": "how_it_works",
-          "layout": { "type": "split-band", "text": 76, "col": 87 },
+          "rows": [
+            { "text": true },
+            { "imgs": [0] },
+            { "imgs": [2, 1] }
+          ],
           "images": [
-            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser", "slot": "right" },
-            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac",     "slot": "left" },
-            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser", "slot": "band" }
+            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser" },
+            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac" },
+            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser" }
           ]
         },
         {
           "id": "admin",
           "name_zh": "ROI 看板", "name_en": "THE ROI DASHBOARD",
           "copy_ref": "why_it_matters",
-          "layout": { "type": "split-band", "text": 63, "col": 100 },
+          "rows": [
+            { "text": true },
+            { "imgs": [1, 0] }
+          ],
           "images": [
-            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac", "slot": "right" },
-            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac", "slot": "band" }
+            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac" },
+            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac" }
           ]
         }
       ]

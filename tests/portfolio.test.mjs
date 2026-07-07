@@ -33,13 +33,23 @@ for (const prod of pf.products) {
     for (const scene of prod.scenes) {
       assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
         prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
-      if (scene.layout) {
-        assert.ok(["split", "split-band", "top"].includes(scene.layout.type),
-          scene.id + " layout.type must be split|split-band|top");
-      }
       for (const img of scene.images) {
         assert.ok(["mac", "browser", "none"].includes(img.frame), scene.id + " image frame must be mac|browser|none");
-        if (img.slot) assert.ok(["left", "right", "band"].includes(img.slot), scene.id + " image slot must be left|right|band");
+      }
+      /* 横向行模块语法(2026-07-08 用户裁定):rows 引用下标必须命中,且每张图恰好被引用一次 */
+      if (scene.rows) {
+        const used = new Map();
+        for (const row of scene.rows) {
+          const refs = row.imgs ? row.imgs : (row.img != null ? [row.img] : []);
+          for (const i of refs) {
+            assert.ok(Number.isInteger(i) && i >= 0 && i < scene.images.length,
+              scene.id + " rows references image index " + i + " out of range");
+            used.set(i, (used.get(i) || 0) + 1);
+          }
+        }
+        scene.images.forEach((_, i) => {
+          assert.equal(used.get(i) || 0, 1, scene.id + " image " + i + " must be referenced exactly once by rows");
+        });
       }
     }
   }

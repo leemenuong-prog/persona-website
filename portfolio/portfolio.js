@@ -440,10 +440,9 @@
     return s.holder;
   }
 
-  /* ════════ 场景页（极简 rail + 左右排版引擎） ════════
-     split      : 左文字柱(+slot:left 图竖叠) ｜ 右列(slot:right 图竖叠)
-     split-band : 同上，尾接 slot:band 通栏图
-     top        : 首图通栏 hero + 其余等高行（后备） */
+  /* ════════ 场景页（极简 rail + 横向行模块语法，2026-07-08 用户裁定） ════════
+     每一行 = 横向满宽模块，纵向依次码放，正文禁左右双栏。行只有五种：
+     {text:true}=一文 ｜ {text:true,img:i}=一文一图 ｜ {imgs:[...]}=一图/两图/三图等高行 */
   function sheetWorkScene(prod, joined, sc, idx, sceneNo, num, isLast) {
     var s = sheet('p-work');
     s.sheet.appendChild(rail(prod.ref, true));
@@ -459,69 +458,52 @@
     main.appendChild(secH(section));
 
     var alt = (prod.display || prod.ref) + ' — ' + (sc.name_en || sc.id);
-    var layout = sc.layout || {};
-    var type = layout.type || 'top';
     var imgs = sc.images || [];
+    var rows = sc.rows || [{ text: true }, { imgs: imgs.map(function (_, i) { return i; }) }];
 
-    if (type === 'split' || type === 'split-band') {
-      var grid = h('div', 'scene-grid');
-      if (layout.text) grid.style.setProperty('--tcol', layout.text + 'mm');
-      var sgText = h('div', 'sg-text');
-      sgText.appendChild(plist(t(section, 'body')));
-      imgs.filter(function (im) { return im.slot === 'left'; }).forEach(function (im) {
-        sgText.appendChild(cell(im, joined.url, alt));
-      });
-      if (isLast) {
-        if (prod.video) sgText.appendChild(film(prod.video));
-        var stack = t(joined, 'tech_stack');
-        if (stack) {
-          var line = h('p', 'stack-line');
-          line.style.marginTop = '5mm';
-          line.appendChild(h('span', 'stack-label', 'STACK'));
-          line.appendChild(document.createTextNode(stack));
-          sgText.appendChild(line);
-        }
-      }
-      grid.appendChild(sgText);
-      var sgCol = h('div', 'sg-col');
-      imgs.filter(function (im) { return !im.slot || im.slot === 'right'; }).forEach(function (im) {
-        sgCol.appendChild(cell(im, joined.url, alt));
-      });
-      grid.appendChild(sgCol);
-      main.appendChild(grid);
-      imgs.filter(function (im) { return im.slot === 'band'; }).forEach(function (im) {
-        var band = h('div', 'scene-band');
-        band.appendChild(win(im.src, im.ratio, { frame: im.frame, url: joined.url, alt: alt }));
-        var cap = t(im, 'caption');
-        if (cap) band.appendChild(h('div', 'cell-cap', cap));
-        main.appendChild(band);
-      });
-    } else {
-      /* top 后备：首图通栏 hero + 其余等高行 */
-      var wrap = h('section', 'scene');
-      var rowImgs = imgs;
-      if (imgs.length >= 3) {
-        var hero = h('div', 'scene-hero');
-        hero.appendChild(win(imgs[0].src, imgs[0].ratio, { frame: imgs[0].frame, url: joined.url, alt: alt }));
-        wrap.appendChild(hero);
-        rowImgs = imgs.slice(1);
-      }
-      if (rowImgs.length) {
+    /* rows 里没有 text 行时自动前置一行满宽正文 */
+    var hasText = rows.some(function (r) { return r.text; });
+    if (!hasText) rows = [{ text: true }].concat(rows);
+
+    var wrap = h('section', 'scene');
+    rows.forEach(function (r) {
+      if (r.text && r.img != null) {
+        /* 一文一图：文左 + 定宽小图右（少数行） */
+        var ti = h('div', 'row-ti');
+        var txt = h('div', 'row-ti-text');
+        txt.appendChild(plist(t(section, 'body')));
+        ti.appendChild(txt);
+        var c = cell(imgs[r.img], joined.url, alt);
+        if (r.img_mm) c.style.setProperty('--w', r.img_mm + 'mm');
+        ti.appendChild(c);
+        wrap.appendChild(ti);
+      } else if (r.text) {
+        /* 一文：满宽正文行 */
+        var rt = h('div', 'row-text');
+        rt.appendChild(plist(t(section, 'body')));
+        wrap.appendChild(rt);
+      } else if (r.imgs && r.imgs.length) {
+        /* 一图/两图/三图：等高对齐行（单图=满宽） */
         var row = h('div', 'scene-row');
-        rowImgs.forEach(function (im) { row.appendChild(cell(im, joined.url, alt)); });
+        r.imgs.forEach(function (i) {
+          var im = imgs[i];
+          if (!im) { console.warn('[portfolio] rows 引用越界:', sc.id, i); return; }
+          row.appendChild(cell(im, joined.url, alt, r.imgs.length > 1));
+        });
         wrap.appendChild(row);
       }
-      main.appendChild(wrap);
-      if (isLast) {
-        if (prod.video) main.appendChild(film(prod.video));
-        var stack2 = t(joined, 'tech_stack');
-        if (stack2) {
-          var line2 = h('p', 'stack-line');
-          line2.style.marginTop = '5mm';
-          line2.appendChild(h('span', 'stack-label', 'STACK'));
-          line2.appendChild(document.createTextNode(stack2));
-          main.appendChild(line2);
-        }
+    });
+    main.appendChild(wrap);
+
+    if (isLast) {
+      if (prod.video) main.appendChild(film(prod.video));
+      var stack = t(joined, 'tech_stack');
+      if (stack) {
+        var line = h('p', 'stack-line');
+        line.style.marginTop = '5mm';
+        line.appendChild(h('span', 'stack-label', 'STACK'));
+        line.appendChild(document.createTextNode(stack));
+        main.appendChild(line);
       }
     }
 

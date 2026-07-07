@@ -64,8 +64,9 @@
 
 ## AI 产品作品集 `portfolio/`（2026-07-07 新增 + 当日二迭代，A4 定版信息流 + 双语 PDF）
 
-- **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景 scenes[layout: split|split-band|top + images[].slot: left|right|band]、截图清单+ratio、窗框 frame、指标带 metrics、lineart、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
-- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **15 页**；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm 做左右排版）。
+- **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景 rows、截图清单+ratio、窗框 frame、指标带 metrics、lineart、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
+- **正文页横向行模块铁律（2026-07-08 三轮用户裁定，勿再做左右双栏正文）**：场景页 = 页头（kicker+sec-h）+ 行模块纵向依次码放，每行横向满宽，行只有五种——`{text:true}` 一文 / `{text:true,img:i,img_mm}` 一文一图（少数）/ `{imgs:[i]}` 一图 / 两图 / 三图（等高对齐 flex-grow=ratio）。配置在 `scenes[].rows`（下标引用 images，每图恰好引用一次，tests 守卫）。二迭代的 split/split-band 双栏被用户整体推翻，勿恢复。
+- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **15 页**；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm）。
 - **作品封面统一紧凑模板**：kicker→标题→keywords→one_liner→双栏（左 tldr｜右封面方图+奖项）→指标带→底部主要落地页大图；metrics/cover **有字段才渲染**——占位作品日后补字段即自动升级，零代码。
 - **Mac 窗框三灯 = macOS 原色**（#FF5F57/#FEBC2E/#28C840，2026-07-07 二轮用户裁定）：三灯与截图/封面素材是灰阶体系仅有的色彩例外；个人页人像也保持彩色（勿加黑白滤镜）。
 - **⚠️ 体积铁律：打印态禁 CSS filter**——filter 迫使 Chrome 把 JPEG 重栅格成无损位图（实测建筑页 6 图 150KB/张→1MB/张，全册 16MB）。屏显 saturate 调色保留，`@media print` 一律 `filter:none`（portfolio.css 打印块）。
