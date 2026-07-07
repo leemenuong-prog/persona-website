@@ -262,18 +262,26 @@ main { position: relative; }
 .image-container .layer-base { transition: transform .3s ease; }
 .image-container:hover .layer-base { transform: scale(1.05); }
 
-/* ── 软边揭示（卡片 + 立方体面共用）：径向渐变 mask 羽化边缘。
-      --rv-r 由 JS rAF 从 0 缓动到目标半径（不依赖 @property 注册过渡，
-      兼容面更广；驱动在 index-fx.js attachReveal） ── */
-.layer-reveal, .face-reveal {
+/* ── 软边揭示 · 画廊卡（平面 2D）：光标跟随聚光，径向渐变 mask 羽化边缘。
+      --rv-x/y/r 由 index-fx.js attachReveal 单帧原子写；translateZ(0) 常驻静态提层。 */
+.layer-reveal {
   --rv-r: 0px; --rv-x: 50%; --rv-y: 50%;
   pointer-events: none;
-  transform: translateZ(0);   /* 常驻静态提层：从加载起就独立合成，隔离 mask 重绘，
-                                 悬浮时无需动态提层 → 无"提升瞬间整图闪一下" */
+  transform: translateZ(0);
   -webkit-mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
     #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
   mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
     #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
+}
+/* ── 软边揭示 · 立方体面（旋转 3D）：**居中**绽放，半径读继承自 #cube 的单一 --rv-r
+      （cube 级 hover 驱动，无逐面命中切换 → 半径单调 → 不闪）。
+      **禁 translateZ(0)**：3D 面上会引入合成/背面剔除闪烁；居中 mask 随面旋转不失真。 */
+.face-reveal {
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
+    #000 52%, rgba(0, 0, 0, .4) 78%, transparent 100%);
+  mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
+    #000 52%, rgba(0, 0, 0, .4) 78%, transparent 100%);
 }
 @media (hover: none) { .layer-reveal, .face-reveal { display: none; } }
 

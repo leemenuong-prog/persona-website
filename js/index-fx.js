@@ -150,8 +150,10 @@
       sh._o = 0;
       f.appendChild(sh);
       shades.push(sh);
-      /* 悬浮揭示另一张图（放在 face-shade 之上=光斑感）；拖拽时 vp 捕获指针，面收到
-         pointerleave 自动收拢，无需专门处理 */
+      /* 悬浮揭示另一张图（放在 face-shade 之上=光斑感）。
+         关键：揭示**不逐面绑指针**——旋转的 3D 面在光标下会高频切换命中，
+         逐面 enter/leave 让半径反复开合=闪。改由 cube 级 --rv-r（居中 mask，
+         见 CSS）统一驱动，全体面共用一个单调半径，构造上不振荡。 */
       if (canHover && REVEAL_FACES[i]) {
         var rev = document.createElement('img');
         rev.src = REVEAL_FACES[i];
@@ -161,7 +163,6 @@
         rev.draggable = false;
         rev.className = 'face-reveal';
         f.appendChild(rev);
-        attachReveal(f, rev, true, function () { return cubeHalf * 0.72; });   /* 0.36×面宽 */
       }
       cube.appendChild(f);
     });
@@ -182,13 +183,17 @@
       return;
     }
 
-    var dragging = false, hovering = false, px = 0, py = 0, visible = true, raf = null;
+    var dragging = false, px = 0, py = 0, visible = true, raf = null;
     var BASE = 0.05, FRICTION = 0.95, GAIN = 0.22;   /* 重物：低基速 · 高阻尼 · 缓释惯性 */
     var vel = BASE, lastDx = 0, lastT = 0, bobT = 0;
     var BOB_T = DESKTOP.matches ? 7000 : 8000;
     var BOB_A = DESKTOP.matches ? 7 : 3;
     var HOVERFINE = window.matchMedia('(hover: hover) and (pointer: fine)');
     var par = { tx: 0, ty: 0, x: 0, y: 0 };
+    /* cube 级中心绽放揭示：悬浮 vp（稳定不旋转的 perspective 容器）→ 目标半径升；
+       离开 → 0。单一 --rv-r 写在 #cube 上继承给所有 .face-reveal（居中 mask）。
+       悬浮**不影响**立方体运动（旋转/bob/视差照跑），仅驱动这个半径。 */
+    var revR = 0, revTarget = 0;
 
     function render(now) {
       raf = null;
@@ -198,8 +203,6 @@
 
       if (dragging) {
         lastDx *= Math.pow(0.8, dt);              /* 按住不动 → 松手速度衰到 0，不误甩 */
-      } else if (hovering) {
-        vel = BASE;   /* 悬浮=手按住：停转。否则面从光标下扫过，揭示 enter/leave 高频循环=闪屏 */
       } else {
         vel = BASE + (vel - BASE) * Math.pow(FRICTION, dt);
         ry += vel * dt;
@@ -208,9 +211,17 @@
       cube.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
       applyLighting(rx, ry);
 
+      /* 揭示半径缓动（0↔目标，单调无振荡）→ 写 #cube 的 --rv-r，居中 mask 各面绽放。
+         仅在未到位时缓动+写，到位即停写（idle 零开销） */
+      if (revR !== revTarget) {
+        revR += (revTarget - revR) * (1 - Math.pow(0.82, dt));
+        if (Math.abs(revR - revTarget) < 0.5) revR = revTarget;
+        cube.style.setProperty('--rv-r', revR.toFixed(1) + 'px');
+      }
+
       /* bob 与接触影同相呼吸（JS 同驱不脱相）：升→影淡+散，降→影浓+紧。
-         悬浮/拖拽时 bob 相位冻结（面不在光标下漂移，同为闪屏修复的一部分） */
-      if (!hovering && !dragging) bobT += dt * 16.7;
+         悬浮不再冻结（用户要「悬浮不影响立方体状态」）——仅拖拽时暂停 bob 相位推进 */
+      if (!dragging) bobT += dt * 16.7;
       var lift = 0.5 + 0.5 * Math.sin(bobT / BOB_T * 2 * Math.PI);
       if (bob) bob.style.transform = 'translate3d(0,' + (-BOB_A * lift).toFixed(2) + 'px,0)';
       if (shadow) {
@@ -220,7 +231,8 @@
         shadow.style.transform = 'translateX(-50%) scale(' + sxS.toFixed(3) + ',' + (1 + 0.05 * lift).toFixed(3) + ')';
       }
 
-      /* 视差：lerp 滞后跟随（重物跟不上鼠标）；大字反向低速 → 三层纵深（波点场静止） */
+      /* 视差：lerp 滞后跟随（重物跟不上鼠标）；大字反向低速 → 三层纵深（波点场静止）。
+         悬浮不冻结视差（只在拖拽时冻结，见下方 pointermove 的 dragging 判断） */
       if (HOVERFINE.matches) {
         var k = 1 - Math.pow(0.94, dt);
         par.x += (par.tx - par.x) * k;
@@ -253,15 +265,19 @@
       });
     });
 
-    /* 视差目标：拖拽/悬浮立方体期间冻结（lerp 自然停驻），离开后缓缓恢复 */
+    /* 视差目标（仅拖拽时冻结，不因悬浮而停） */
     if (HOVERFINE.matches) {
       window.addEventListener('pointermove', function (e) {
-        if (dragging || hovering) return;
+        if (dragging) return;
         par.tx = e.clientX / window.innerWidth * 2 - 1;
         par.ty = e.clientY / window.innerHeight * 2 - 1;
       }, { passive: true });
-      vp.addEventListener('pointerenter', function () { hovering = true; });
-      vp.addEventListener('pointerleave', function () { hovering = false; });
+    }
+
+    /* cube 级中心绽放：稳定 vp 只 enter/leave 一次（无逐面切换）→ 半径单调 → 不闪 */
+    if (window.matchMedia('(hover: hover)').matches) {
+      vp.addEventListener('pointerenter', function () { revTarget = cubeHalf * 0.92; });
+      vp.addEventListener('pointerleave', function () { revTarget = 0; });
     }
 
     if ('IntersectionObserver' in window) {
