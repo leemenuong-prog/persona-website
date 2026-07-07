@@ -177,9 +177,14 @@
   background: #181818;
   opacity: 0; pointer-events: none;
 }
-/* 面揭示层：悬浮看到"另一张图"（各项目 float 图），软边 mask + 从小扩散（同卡片揭示 UX） */
+/* 面揭示层：悬浮看到"招牌图"，软边 mask + 从小扩散（同卡片揭示 UX） */
 .cube .face-reveal {
   position: absolute; inset: 0;
+}
+/* 招牌要看清：揭示图不参与六面材料统一的 saturate/opacity 收敛（比 .cube .face img 更高特指度覆盖） */
+.cube .face img.face-reveal {
+  opacity: 1;
+  filter: none;
 }
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
@@ -283,9 +288,9 @@ main { position: relative; }
 .face-reveal {
   pointer-events: none;
   -webkit-mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
-    #000 52%, rgba(0, 0, 0, .4) 78%, transparent 100%);
+    #000 64%, rgba(0, 0, 0, .45) 84%, transparent 100%);
   mask-image: radial-gradient(circle var(--rv-r, 0px) at 50% 50%,
-    #000 52%, rgba(0, 0, 0, .4) 78%, transparent 100%);
+    #000 64%, rgba(0, 0, 0, .45) 84%, transparent 100%);
 }
 @media (hover: none) { .layer-reveal, .face-reveal { display: none; } }
 

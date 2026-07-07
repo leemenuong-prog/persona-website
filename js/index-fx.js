@@ -38,11 +38,14 @@
   var SHADE_MAX = 0.16;
   var shades = [];
 
-  /* 各面悬浮揭示的"另一张图"（= projects.json 的 float.reveal 口径）；品牌面无 */
+  /* 各面悬浮揭示的"招牌图"——每个面清晰揭示该面作品的代表画面（用户裁定 2026-07-07）：
+     cowork = 交互影片视频封面（把团队的时间还给团队），议见 = 产品落地页截图；
+     其余用各自 float/content 招牌图。品牌面无揭示。
+     清晰度：.face-reveal 已在 CSS 里去掉六面材料统一的 saturate/opacity 收敛（招牌要看清）。 */
   var REVEAL_FACES = [
     'assets/project/pears/float/1.jpg',
-    'assets/project/cowork/float/1.jpg',
-    'assets/project/yijian/float/1.jpg',
+    'xtool/screenshots/poster-team-time.png',
+    'assets/project/yijian/float/landing.jpg',
     'assets/project/ring-world/content/2.jpg',
     'assets/project/air-cube/content/2.jpg',
     null
@@ -235,7 +238,7 @@
 
     /* cube 级中心绽放：稳定 vp 只 enter/leave 一次（无逐面切换）→ 半径单调 → 不闪 */
     if (window.matchMedia('(hover: hover)').matches) {
-      vp.addEventListener('pointerenter', function () { revTarget = cubeHalf * 0.92; });
+      vp.addEventListener('pointerenter', function () { revTarget = cubeHalf * 1.04; });
       vp.addEventListener('pointerleave', function () { revTarget = 0; });
     }
 
