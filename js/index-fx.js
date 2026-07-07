@@ -48,47 +48,6 @@
     null
   ];
 
-  /* 软边揭示共用驱动（卡片 + 立方体面）。
-     防闪要点：① 单一 rAF 帧内**原子写** --rv-x/--rv-y/--rv-r 三元组（此前 xy 在
-     pointermove 同步写、r 在另一个 rAF 写 → mask 某些帧取到不一致三元组而连续闪）；
-     ② **不**在悬浮时动态挂 will-change——动态提升合成层会在提升那一帧漏掉 mask、
-     整图闪现一下（用户报的"闪一下"）；改由 CSS 给 reveal 常驻 translateZ(0) 静态
-     提层，从加载起就隔离、悬浮零提升零闪。
-     半径 easeOutCubic 从 0 扩散到目标；圆心跟手；离开收拢回 0。
-     useOffset=true 用 offsetX/Y（3D 变换面的局部坐标）；REDUCE 瞬时显隐。 */
-  var REVEAL_DUR = 450;
-  function attachReveal(box, reveal, useOffset, getR) {
-    var cx = 0, cy = 0, r = 0, from = 0, target = 0, t0 = 0, raf = null, hovering = false;
-    var st = reveal.style;
-    function frame(now) {
-      raf = null;
-      var dur = REDUCE ? 0 : REVEAL_DUR;
-      var p = dur ? Math.min((now - t0) / dur, 1) : 1;
-      r = from + (target - from) * (1 - Math.pow(1 - p, 3));
-      /* 同一帧写全三元组 → mask 永远一致，无跨回调错帧闪 */
-      st.setProperty('--rv-x', cx.toFixed(1) + 'px');
-      st.setProperty('--rv-y', cy.toFixed(1) + 'px');
-      st.setProperty('--rv-r', r.toFixed(1) + 'px');
-      if (p < 1 || hovering) raf = requestAnimationFrame(frame);   /* 悬浮期续跑以跟手 */
-    }
-    function kick() { if (raf == null) raf = requestAnimationFrame(frame); }
-    function readXY(e) {
-      if (useOffset) { cx = e.offsetX; cy = e.offsetY; }
-      else { var b = box.getBoundingClientRect(); cx = e.clientX - b.left; cy = e.clientY - b.top; }
-    }
-    box.addEventListener('pointerenter', function (e) {
-      hovering = true; readXY(e);
-      from = r; target = getR(); t0 = performance.now(); kick();
-    });
-    box.addEventListener('pointermove', function (e) {
-      if (!hovering) return;
-      readXY(e); kick();
-    });
-    box.addEventListener('pointerleave', function () {
-      hovering = false; from = r; target = 0; t0 = performance.now(); kick();
-    });
-  }
-
   /* 每帧按面法线 n' = Rx(rx)·Ry(ry)·n 的 Lambert 受光量写遮罩 opacity；值未变跳过写入 */
   function applyLighting(rx, ry) {
     if (!shades.length) return;
@@ -426,19 +385,8 @@
     });
   }
 
-  /* ── 3. 卡片鼠标揭示（软边 mask，与立方体面共用 attachReveal；半径走 --reveal-r 令牌） ── */
-  function bindReveal() {
-    if (!window.matchMedia('(hover: hover)').matches) return;
-    var cardR = parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue('--reveal-r')) || 110;
-    document.querySelectorAll('.image-container').forEach(function (box) {
-      if (box.dataset.fx) return;
-      box.dataset.fx = '1';
-      var reveal = box.querySelector('.layer-reveal');
-      if (!reveal) return;
-      attachReveal(box, reveal, false, function () { return cardR; });
-    });
-  }
+  /* ── 3. 卡片揭示已移到纯 CSS（.layer-reveal 的 opacity/transform :hover 交叉淡入，
+        见 index.css）——不再需要 JS：逐帧动画 mask 会在移动端 webview 连续重绘而闪。 ── */
 
   /* ── 4. 页脚 finale：I am ___ 轮换（波点带/Logo 下坠已删，直接接页脚） ── */
   var IDS = ['Alnt Med', 'an AIPM', 'an Architect', 'a Builder', 'anything.'];
@@ -465,7 +413,6 @@
     fitHeroName();
     initCube();
     buildSpine();
-    bindReveal();
     initFinale();
   }
 

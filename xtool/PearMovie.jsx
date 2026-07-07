@@ -776,17 +776,6 @@ function SectionTag({index, label, color=PEAR}){
   </div>;
 }
 
-// ── ambient floating pears (always on, subtle) ─────────────────────────────────
-function FloatingPears(){
-  const t = useTime();
-  const specs=[{x:7,y:16,s:56,hz:0.5,amp:30,ph:0},{x:87,y:11,s:42,hz:0.42,amp:26,ph:1.5},{x:82,y:72,s:66,hz:0.36,amp:34,ph:3},{x:12,y:76,s:46,hz:0.46,amp:24,ph:2},{x:49,y:6,s:34,hz:0.5,amp:20,ph:4},{x:34,y:88,s:40,hz:0.4,amp:22,ph:5}];
-  return <Full style={{pointerEvents:'none', overflow:'hidden', zIndex:0}}>
-    {specs.map((p,i)=>(
-      <div key={i} style={{position:'absolute', left:p.x+'%', top:p.y+'%', fontSize:p.s, opacity:0.06, transform:'translateY('+(Math.sin(t*p.hz+p.ph)*p.amp)+'px) rotate('+(Math.sin(t*p.hz*0.7+p.ph)*12)+'deg)', willChange:'transform'}}>🍐</div>
-    ))}
-  </Full>;
-}
-
 function Background(){
   const t = useTime();
   const darkOp = interpolate([0,8.0,9.5,70.2,71.7],[1,1,0,0,1],Easing.easeInOutQuad)(t);
@@ -1496,7 +1485,6 @@ function Closing(){
 function PearMovie(){
   return <Stage width={W} height={H} duration={DUR} background={NIGHT} persistKey="pearmovie">
     <Background/>
-    <FloatingPears/>
     <Act1/>
     <Act2/>
     <WorkspaceMock/>

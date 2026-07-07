@@ -251,22 +251,8 @@
           "cta_en": "Open the live platform ↗"
         }
       ],
-      "contentImages": [
-        "assets/project/cowork/content/flow-overview.svg",
-        "assets/project/cowork/content/1.jpg",
-        "assets/project/cowork/content/2.jpg",
-        "assets/project/cowork/content/3.jpg",
-        "assets/project/cowork/content/4.jpg",
-        "assets/project/cowork/content/5.jpg"
-      ],
-      "annotations": {
-        "1": {
-          "kick_zh": "台子跑流程，人做判断",
-          "kick_en": "The bench runs; people decide",
-          "body_zh": "重复的活在台子上自动流转，七个工位共用一套记忆和规则；人只站在一个位置上——三张候选里挑一张。其余的人，被从流水线上解放出来。",
-          "body_en": "The routine runs itself along the bench — seven stations, one shared memory and rulebook. People stand at exactly one spot: picking one of three drafts. Everyone else walks away from the line."
-        }
-      }
+      "contentImages": [],
+      "annotations": {}
     },
     {
       "id": "yijian",

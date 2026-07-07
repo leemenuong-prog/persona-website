@@ -262,17 +262,21 @@ main { position: relative; }
 .image-container .layer-base { transition: transform .3s ease; }
 .image-container:hover .layer-base { transform: scale(1.05); }
 
-/* ── 软边揭示 · 画廊卡（平面 2D）：光标跟随聚光，径向渐变 mask 羽化边缘。
-      --rv-x/y/r 由 index-fx.js attachReveal 单帧原子写；translateZ(0) 常驻静态提层。 */
+/* ── 软边揭示 · 卡片（画廊 + 主线，平面 2D）：纯 CSS opacity+transform 交叉淡入。
+      揭示图默认透明+略缩，hover 时淡入并放大到位；边缘柔和由**静态** mask 一次成型。
+      防闪铁律：只动 opacity/transform（合成器线程），mask 恒定不逐帧重绘——
+      逐帧动画 mask-image 的圆心/半径会在移动端/微信 webview 连续主线程重绘而闪。
+      纯 CSS :hover 驱动，无 JS、无 rAF、无光标跟随。 */
 .layer-reveal {
-  --rv-r: 0px; --rv-x: 50%; --rv-y: 50%;
   pointer-events: none;
-  transform: translateZ(0);
-  -webkit-mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
-    #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
-  mask-image: radial-gradient(circle var(--rv-r) at var(--rv-x) var(--rv-y),
-    #000 52%, rgba(0, 0, 0, .4) 76%, transparent 98%);
+  opacity: 0;
+  transform: scale(.9);            /* 从小 → hover scale(1) 长大（用户要"从小扩散变大"） */
+  transition: opacity .5s ease, transform .6s var(--ez);
+  will-change: opacity, transform;
+  -webkit-mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 56%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 56%, transparent 100%);
 }
+.image-container:hover .layer-reveal { opacity: 1; transform: scale(1); }
 /* ── 软边揭示 · 立方体面（旋转 3D）：**居中**绽放，半径读继承自 #cube 的单一 --rv-r
       （cube 级 hover 驱动，无逐面命中切换 → 半径单调 → 不闪）。
       **禁 translateZ(0)**：3D 面上会引入合成/背面剔除闪烁；居中 mask 随面旋转不失真。 */
@@ -406,6 +410,7 @@ main { position: relative; }
 }
 @media (prefers-reduced-motion: reduce) {
   .image-container .layer-base, .image-container:hover .layer-base { transition: none; transform: none; }
+  .layer-reveal { transition: none; transform: none; }   /* hover 即时显隐，不做淡入放大 */
   .iamf .who { animation: none; }
   .iamf .caret { animation: none; }
   .spine-branch { transition: none; }
