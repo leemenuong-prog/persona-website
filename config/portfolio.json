@@ -69,13 +69,15 @@
         "poster": "assets/portfolio/cowork/video-poster.jpg",
         "poster_ratio": 1.7778,
         "url": "https://alnt-med.netlify.app/project.html?id=cowork",
+        "motto": "Watch it work.", "motto_zh": "看它跑起来",
         "label_zh": "观看交互影片", "label_en": "Watch the interactive film"
       },
       "cover": {
         "shot": "assets/portfolio/cowork/landing-01.jpg", "ratio": 1.854, "frame": "browser",
         "label_zh": "落地页", "label_en": "THE LANDING PAGE",
+        "lede_en": "Click once — the agents do the rest.",
         "lede_zh": "点击，然后让 Agent 替你干活。",
-        "lede_en": "Click once — the agents do the rest."
+        "caption_zh": "主界面 · 开屏先告诉你这周什么在涨", "caption_en": "Home · opens with what's trending this week"
       },
       "lineart": {
         "src": "assets/project/cowork/content/plate-core.svg",
@@ -93,9 +95,9 @@
             { "imgs": [0, 1] }
           ],
           "images": [
-            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac" },
-            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac" },
-            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac" }
+            { "src": "assets/portfolio/cowork/research-01.jpg", "ratio": 1.252,  "frame": "mac", "caption_zh": "定价模式 · 填入成本与对标商品", "caption_en": "Pricing mode · cost and benchmark in" },
+            { "src": "assets/portfolio/cowork/research-02.jpg", "ratio": 1.2987, "frame": "mac", "caption_zh": "同类比价 · 逐条抓取在售同款", "caption_en": "Comparables · live listings, line by line" },
+            { "src": "assets/portfolio/cowork/research-03.jpg", "ratio": 1.3389, "frame": "mac", "caption_zh": "输出 · 建议价落在市场分布上", "caption_en": "Output · suggested price on the market curve" }
           ]
         },
         {
@@ -123,9 +125,9 @@
             { "imgs": [2, 1] }
           ],
           "images": [
-            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser" },
-            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac" },
-            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser" }
+            { "src": "assets/portfolio/cowork/landing-02.jpg", "ratio": 1.4995, "frame": "browser", "caption_zh": "工具矩阵 · 按场景进入工作流", "caption_en": "Tool matrix · enter by scenario" },
+            { "src": "assets/portfolio/cowork/login-01.jpg",   "ratio": 1.0376, "frame": "mac", "caption_zh": "登录 · 选小组、选本人，飞书授权", "caption_en": "Sign-in · team, name, Feishu auth" },
+            { "src": "assets/portfolio/cowork/landing-03.jpg", "ratio": 2.3529, "frame": "browser", "caption_zh": "Pears 集市 · 部门工具一处汇聚", "caption_en": "Pears market · tools in one place" }
           ]
         },
         {
@@ -137,8 +139,8 @@
             { "imgs": [1, 0] }
           ],
           "images": [
-            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac" },
-            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac" }
+            { "src": "assets/portfolio/cowork/admin-02.jpg", "ratio": 1.5282, "frame": "mac", "caption_zh": "漏斗诊断 · 逐环节看流失", "caption_en": "Funnel · drop-off by stage" },
+            { "src": "assets/portfolio/cowork/admin-01.jpg", "ratio": 1.93,   "frame": "mac", "caption_zh": "数据窗口 · 覆盖、回访、完成率与 ROI", "caption_en": "Data window · usage, retention, completion, ROI" }
           ]
         }
       ]

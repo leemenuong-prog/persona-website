@@ -67,7 +67,10 @@
 - **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景 rows、截图清单+ratio、窗框 frame、指标带 metrics、lineart、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
 - **正文页横向行模块铁律（2026-07-08 三轮用户裁定，勿再做左右双栏正文）**：场景页 = 页头（kicker+sec-h）+ 行模块纵向依次码放，每行横向满宽，行只有五种——`{text:true}` 一文 / `{text:true,img:i,img_mm}` 一文一图（少数）/ `{imgs:[i]}` 一图 / 两图 / 三图（等高对齐 flex-grow=ratio）。配置在 `scenes[].rows`（下标引用 images，每图恰好引用一次，tests 守卫）。二迭代的 split/split-band 双栏被用户整体推翻，勿恢复。
 - **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **14 页**；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm）。
-- **作品封面统一紧凑模板**：kicker→标题→keywords→双栏（左 tldr｜右封面方图+奖项）→指标带→**落地页说明头**（小标签「落地页 · THE LANDING PAGE」+ 一句有人味的话术如「点击，然后让 Agent 替你干活。」，数据在 cover.label_zh/en + lede_zh/en——2026-07-08 用户裁定：填补文字与大图之间的空腔，话术用户会自己调词）→底部主要落地页大图；metrics/cover **有字段才渲染**——占位作品日后补字段即自动升级，零代码。（one_liner 不在封面：见线稿块的文字零重复铁律。）
+- **作品封面统一紧凑模板**：kicker→标题→keywords→双栏（左 tldr｜右封面方图+奖项）→指标带→**落地页说明头**（小标签「落地页 · THE LANDING PAGE」+ **英文大标题 lede_en（拉丁 Monterey）+ 中文解释 lede_zh 小注**——六轮修正：必须走「英文大标+中文解释」全站口径，话术有人味如「Click once — the agents do the rest. / 点击，然后让 Agent 替你干活。」，用户会自己调词）→底部主要落地页大图+图注；metrics/cover **有字段才渲染**——占位作品日后补字段即自动升级，零代码。（one_liner 不在封面：见线稿块的文字零重复铁律。）
+- **图注铁律（2026-07-08 六轮用户裁定）**：**真实场景截图一律带图注**（caption_zh/en，9.5px 居中灰），包括封面落地页大图；线稿不算真实场景（注释烧在 SVG 内）。
+- **模块间隔铁律（同上）**：**不同内容的模块之间间隔拉大**（如线稿块 ↔ 场景正文 = 13mm、影片块上间距 11mm）；同一模块内的行保持 4-5mm。
+- **线稿标题版式 = 通用分隔模块定式（同上）**：「拉丁 Monterey 核心语句大标题 + 中文小注 + 辅文」左、图右——线稿块与**影片门面**（motto「Watch it work. / 看它跑起来」+ 观看外链 + 海报右）均用此定式；后续需要与正文分隔的异质模块优先套用。
 - **正文排满规则（2026-07-08 用户裁定）**：正文页尽量排满——内容不足半页的模块并入相邻页。落地实现：有场景页的作品，线稿块并入首场景页顶部（不单独成页）；仅无场景页的作品保留独立线稿页。共 **14 页**。
 - **Mac 窗框三灯 = macOS 原色**（#FF5F57/#FEBC2E/#28C840，2026-07-07 二轮用户裁定）：三灯与截图/封面素材是灰阶体系仅有的色彩例外；个人页人像也保持彩色（勿加黑白滤镜）。
 - **⚠️ 体积铁律：打印态禁 CSS filter**——filter 迫使 Chrome 把 JPEG 重栅格成无损位图（实测建筑页 6 图 150KB/张→1MB/张，全册 16MB）。屏显 saturate 调色保留，`@media print` 一律 `filter:none`（portfolio.css 打印块）。

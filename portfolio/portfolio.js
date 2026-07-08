@@ -119,19 +119,33 @@
     return c;
   }
 
-  /* 视频门面：poster + 播放钮 + 外链（web/PDF 同 DOM，链接即注记） */
+  /* 视频门面（2026-07-08 六轮：套用线稿标题版式做与正文的分隔）：
+     左 = 核心语句大标题（motto 拉丁 Monterey + 中文小注）+ 观看外链；
+     右 = 海报 + 播放钮。整块 <a>，web/PDF 同 DOM，链接即注记。 */
   function film(video) {
     var a = h('a', 'film');
     a.href = video.url; a.target = '_blank'; a.rel = 'noopener';
+    var grid = h('span', 'film-grid');
+
+    var side = h('span', 'film-side');
+    var motto = h('span', 'la-motto');
+    motto.appendChild(document.createTextNode(video.motto || t(video, 'label')));
+    motto.appendChild(psq());
+    if (video.motto_zh) motto.appendChild(h('span', 'zh-note', video.motto_zh));
+    side.appendChild(motto);
+    var cta = h('span', 'film-cta');
+    if (video.label_zh) cta.appendChild(h('span', 'zh-note', video.label_zh + ' ·'));
+    cta.appendChild(h('span', 'cta-link', (video.label_en || '').toUpperCase() + ' ↗'));
+    side.appendChild(cta);
+    grid.appendChild(side);
+
     var poster = h('span', 'film-poster');
     poster.style.setProperty('--r', video.poster_ratio || 1.7778);
     poster.appendChild(img(video.poster, t(video, 'label')));
     poster.appendChild(h('span', 'film-btn'));
-    a.appendChild(poster);
-    var cta = h('span', 'film-cta');
-    if (video.label_zh) cta.appendChild(h('span', 'zh-note', video.label_zh + ' ·'));
-    cta.appendChild(h('span', 'cta-link', (video.label_en || '').toUpperCase() + ' ↗'));
-    a.appendChild(cta);
+    grid.appendChild(poster);
+
+    a.appendChild(grid);
     return a;
   }
 
@@ -391,20 +405,27 @@
 
     if (prod.cover) {
       var shot = h('div', 'work-cover-shot');
-      /* 落地页说明头（定式）：小标签点明「这是落地页」+ 一句有人味的话术，
-         填补上方文字与大图之间的空腔（cover.label/lede，用户可随时改词） */
-      if (prod.cover.label_en || prod.cover.lede_zh) {
+      /* 落地页说明头（定式，六轮修正）：小标签点明「这是落地页」+
+         英文大标题（lede_en 拉丁 Monterey）+ 中文解释小注（lede_zh，EN 版隐藏）
+         ——英文大标+中文正文的全站口径；话术用户可随时改词 */
+      if (prod.cover.label_en || prod.cover.lede_en) {
         var head = h('div', 'shot-head');
         var label = h('div', 'shot-label');
         label.appendChild(psq());
         if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
         label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
         head.appendChild(label);
-        var lede = t(prod.cover, 'lede');
-        if (lede) head.appendChild(h('p', 'shot-lede', lede));
+        if (prod.cover.lede_en) {
+          var lede = h('p', 'shot-lede');
+          lede.appendChild(document.createTextNode(prod.cover.lede_en));
+          if (prod.cover.lede_zh) lede.appendChild(h('span', 'zh-note shot-lede-zh', prod.cover.lede_zh));
+          head.appendChild(lede);
+        }
         shot.appendChild(head);
       }
       shot.appendChild(win(prod.cover.shot, prod.cover.ratio, { frame: prod.cover.frame, url: joined.url, alt: prod.display }));
+      var shotCap = t(prod.cover, 'caption');
+      if (shotCap) shot.appendChild(h('div', 'cell-cap', shotCap));
       main.appendChild(shot);
     } else {
       var more = h('p', 'ph-more');
