@@ -279,8 +279,8 @@
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "企业里的决策会，常常开成表态会：真正的分歧藏在没说出口的立场里，结论靠职级高低往下传。\n在香港中文大学的企业 Agent 黑客松上，我负责产品和开发，想把「达成共识」这件事变得有结构。\n它组织 7 个角色的视角，在战略目标、事实证据、利益角色、权重权责这四层上逐层收敛分歧。\n拿了黑客松亚军；它给的不是一句结论，而是共识度评分、决策要满足的条件，和仍然待解决的分歧点。",
-          "body_en": "Corporate decision meetings often turn into rounds of taking sides: the real disagreements stay unspoken, and seniority hands the verdict down.\nAt CUHK's enterprise agent hackathon, I owned product and build, out to give \"reaching consensus\" an actual structure.\nIt orchestrates seven role perspectives and converges the disagreements layer by layer — strategic goals, factual evidence, stakeholders, weighted accountability.\nWe took runner-up; what it returns isn't a single verdict but a consensus score, the conditions the decision must meet, and the disagreements still open.",
+          "body_zh": "企业里的决策会，常常开成表态会：真正的分歧藏在没说出口的立场里，结论靠职级高低往下传。\n在香港中文大学的企业 Agent 黑客松上，我负责产品和开发，想把「达成共识」这件事变得有结构。\n它组织 7 个角色的视角，在战略目标、事实证据、利益角色、权重权责这四层上逐层收敛分歧。\n在 50 多支队伍里拿了亚军；它给的不是一句结论，而是共识度评分、决策要满足的条件，和仍然待解决的分歧点。",
+          "body_en": "Corporate decision meetings often turn into rounds of taking sides: the real disagreements stay unspoken, and seniority hands the verdict down.\nAt CUHK's enterprise agent hackathon, I owned product and build, out to give \"reaching consensus\" an actual structure.\nIt orchestrates seven role perspectives and converges the disagreements layer by layer — strategic goals, factual evidence, stakeholders, weighted accountability.\nWe took runner-up among 50-plus teams; what it returns isn't a single verdict but a consensus score, the conditions the decision must meet, and the disagreements still open.",
           "figure": {
             "src": "assets/project/yijian/content/plate-core.svg"
           }
@@ -347,16 +347,16 @@
       "desc_en": "The AI butler I built for myself — one Python program that runs my daily life.",
       "one_liner_zh": "你好，我是 Meco 🍄‍🟫——文苑给自己造的个人管家：一个 Mac 应用，把飞书机器人、AI 应用、日程和他的 Obsidian 知识库串在一起，替他打理工作和生活的日常。",
       "one_liner_en": "Hi, I'm Meco 🍄‍🟫 — the personal butler Wenyuan built for himself: a Mac app that ties his Feishu bot, his AI tools, his schedule and his Obsidian vault together, and runs the daily grind of work and life for him.",
-      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体，配上 8 个能真动手的工具。现在晨报、复盘每天自动跑，人肉搬信息基本归零。",
-      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one, with 8 tools it can actually use. Now the daily briefs run themselves, and the information-carrying is basically gone.",
+      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体，配上 8 个能真动手的工具。现在晨报、复盘每天自动跑，人肉搬信息比过去少了九成。",
+      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one, with 8 tools it can actually use. Now the daily briefs run themselves, and the information-carrying is down by ninety percent.",
       "tech_stack_zh": "Python · FastAPI · pywebview · 飞书开放平台（长连接）· Obsidian · Tavily · Claude / LLM · Claude Code",
       "tech_stack_en": "Python · FastAPI · pywebview · Feishu Open Platform · Obsidian · Tavily · Claude / LLM · Claude Code",
       "sections": {
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "求职最忙那阵，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 库把生活、工作、求职三头连成了 Meco，还配上 8 个我天天要用的工具。\n现在 Meco 是我每天都会打开的 App；后来也分享给了几个有同样需要的同学。",
-          "body_en": "At the busiest stretch of my job hunt, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone, using my Obsidian vault to tie life, work and the job hunt into one thing — Meco — with 8 tools I reach for every day.\nMeco is something I now open daily, and I've since passed it to a few classmates who needed the same.",
+          "body_zh": "求职最忙那阵，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 库把生活、工作、求职三头连成了 Meco，还配上 8 个我天天要用的工具。\n现在 Meco 是我每天要打开 3 次以上的 App；后来也分享给了几个有同样需要的同学。",
+          "body_en": "At the busiest stretch of my job hunt, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone, using my Obsidian vault to tie life, work and the job hunt into one thing — Meco — with 8 tools I reach for every day.\nMeco is an app I now open three-plus times a day, and I've since passed it to a few classmates who needed the same.",
           "figure": {
             "src": "assets/project/meco/content/plate-01-organs.svg"
           }
@@ -379,8 +379,8 @@
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "我在飞书或桌面窗口里说一句话，它听懂意图就去调用合适的工具——记笔记、设提醒、看看板、搜网页。\n看板上的每个数字都实时从 Obsidian 笔记库解析出来，我一眼就能看清自己的近况。\n上课、复盘、写日记这类事，本质上是会循环的日程：到点自动触发，办完把结果推回飞书——顺带也把新内容喂回了知识库。",
-          "body_en": "I say a line in Feishu or the desktop window; it catches what I mean and calls the right tool — take a note, set a reminder, check the boards, search the web.\nEvery number on the boards is parsed live from the Obsidian vault, so one look tells me where I stand.\nClasses, reviews, journaling — these are really recurring schedules: they fire on time, push their results back to Feishu, and feed the fresh material back into the vault along the way.",
+          "body_zh": "我在飞书或桌面窗口里说一句话，它听懂意图就去调用合适的工具——记笔记、设提醒、看看板、搜网页。\n看板上的每个数字，都实时从 200 多份笔记的 Obsidian 库里解析出来，我一眼就能看清自己的近况。\n上课、复盘、写日记这类事，本质上是会循环的日程，这样的每日任务我建了超过 4 个：到点自动触发，办完把结果推回飞书——顺带也把新内容喂回了知识库。",
+          "body_en": "I say a line in Feishu or the desktop window; it catches what I mean and calls the right tool — take a note, set a reminder, check the boards, search the web.\nEvery number on the boards is parsed live from an Obsidian vault of 200-plus notes, so one look tells me where I stand.\nClasses, reviews, journaling — these are really recurring schedules, and I keep more than four of them running daily: they fire on time, push their results back to Feishu, and feed the fresh material back into the vault along the way.",
           "figure": {
             "src": "assets/project/meco/content/plate-03-brain-fence.svg"
           }
@@ -388,8 +388,8 @@
         "why_it_matters": {
           "title_zh": "影响与意义",
           "title_en": "Impact",
-          "body_zh": "每天的手动整理几乎降到零——时间更多花在琢磨明天，而不是誊抄今天。\n知识库从「我伺候工具」变成了「工具主动来找我」。",
-          "body_en": "The daily hand-tidying is down to almost nothing — more of my time goes to thinking about tomorrow instead of copying out today.\nMy knowledge base flipped: from me waiting on the tools to the tools coming to me."
+          "body_zh": "每天的手动整理比过去少了九成——时间更多花在琢磨明天，而不是誊抄今天。\n知识库从「我伺候工具」变成了「工具主动来找我」。",
+          "body_en": "The daily hand-tidying is down by ninety percent — more of my time goes to thinking about tomorrow instead of copying out today.\nMy knowledge base flipped: from me waiting on the tools to the tools coming to me."
         }
       },
       "media": [
@@ -462,8 +462,8 @@
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "展品「非标」意味着每一件的输入都不一样：手绘、照片、文本、实体扫描——传统流程只能逐件手工建。\n变化的是输入，不变的是输出标准。把输出端 SOP 化，输入端交给多模态模型，流程就能自动跑。",
-          "body_en": "One-off exhibits mean every input is different: sketches, photos, text, physical scans — the traditional route is modeling each by hand.\nWhat varies is the input; what never varies is the output standard. Fix the output with an SOP, hand the input to multimodal models, and the process runs itself."
+          "body_zh": "展品「非标」意味着每一件的输入都不一样：手绘、照片、文本、实体扫描，四种模态——传统流程只能逐件手工建。\n变化的是输入，不变的是输出标准。把输出端 SOP 化，输入端交给多模态模型，流程就能自动跑。",
+          "body_en": "One-off exhibits mean every input is different: sketches, photos, text, physical scans — four modalities — and the traditional route is modeling each by hand.\nWhat varies is the input; what never varies is the output standard. Fix the output with an SOP, hand the input to multimodal models, and the process runs itself."
         },
         "key_contributions": {
           "title_zh": "核心贡献",

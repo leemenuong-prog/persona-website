@@ -29,8 +29,9 @@ for (const prod of pf.products) {
       assert.ok(joined.sections && joined.sections[key] && joined.sections[key].body_zh,
         prod.ref + " needs sections." + key + ".body_zh in projects.json (the portfolio joins it)");
     }
-    assert.ok(Array.isArray(prod.scenes) && prod.scenes.length > 0, prod.ref + " needs scenes");
-    for (const scene of prod.scenes) {
+    /* scenes 可暂缺(如 UABB 封面先行、截图后补);写了就不能是空数组 */
+    if (prod.scenes) assert.ok(Array.isArray(prod.scenes) && prod.scenes.length > 0, prod.ref + " scenes must not be empty");
+    for (const scene of prod.scenes || []) {
       assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
         prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
       for (const img of scene.images) {
@@ -77,9 +78,10 @@ pf.products.forEach((p, i) => walkBan(p, "[" + i + "]"));
 const files = [pf.profile.portrait, pf.profile.qr.svg, pf.architecture.index_cover];
 for (const prod of pf.products) {
   if (prod.placeholder) continue;
-  files.push(prod.cover.shot, prod.video.poster);
+  files.push(prod.cover.shot);
+  if (prod.video) files.push(prod.video.poster);
   if (prod.lineart) files.push(prod.lineart.src);
-  for (const scene of prod.scenes) for (const img of scene.images) files.push(img.src);
+  for (const scene of prod.scenes || []) for (const img of scene.images) files.push(img.src);
 }
 for (const f of files) {
   assert.ok(exists(f), f + " referenced by portfolio.json must exist");

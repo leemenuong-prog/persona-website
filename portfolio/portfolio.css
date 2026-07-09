@@ -449,6 +449,20 @@ a.work-ext:hover { color: var(--c-title); }
 
 /* 封面双栏带：左 tldr 列表 ｜ 右封面艺术方图（+奖项注）——统一模板 */
 .p-work .cover-cols { display: grid; grid-template-columns: 1fr 54mm; gap: 4mm 6mm; align-items: start; margin-top: 5.5mm; }
+/* EN 版结论列表比中文长一截：封面 EN 专属收紧，zh 定版不动（2026-07-09；
+   作用域锁 .cc-left / 封面 oneliner / 封面块间距，场景页 plist 不受影响。
+   验收口径：封面图注底缘必须高于页脚顶缘（cap-vs-foot < 0），溢出探测器
+   测不到「压进页脚带」，改版后要用 DOM 量测复核） */
+[data-locale="en"] .p-work .cc-left .plist { font-size: 12.5px; line-height: 1.5; }
+[data-locale="en"] .p-work .cc-left .plist li { margin-bottom: 0.8mm; }
+[data-locale="en"] .p-work .work-oneliner { line-height: 1.55; margin-top: 3.5mm; }
+[data-locale="en"] .p-work .cover-cols { margin-top: 4mm; }
+[data-locale="en"] .p-work .metrics { margin: 3mm 0; padding: 2.5mm 0; }
+[data-locale="en"] .p-work .work-cover-shot { padding-top: 3.5mm; }
+[data-locale="en"] .p-work .shot-head { margin-bottom: 2mm; }
+/* 封面无框海报（frame:"none"，如 UABB 展报）＝图版而非界面窗口：居中内缩呈现，
+   顺带让「one_liner+大图」同页的封面不压页脚（2026-07-09） */
+.p-work .work-cover-shot .shot-plain { width: 88%; margin-left: auto; margin-right: auto; }
 .p-work .cover-cols.ph { grid-template-columns: 1fr 60mm; }
 .p-work .cover-art { margin: 0; }
 .p-work .cover-art .ca-thumb { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-border); }

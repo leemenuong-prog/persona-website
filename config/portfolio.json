@@ -133,7 +133,127 @@
     {
       "ref": "pears",
       "display": "Pears",
-      "placeholder": true
+      "placeholder": false,
+      "metrics": [
+        {
+          "value": "4+",
+          "label_zh": "现场企业对接意向",
+          "label_en": "ENTERPRISE LEADS ON SITE"
+        },
+        {
+          "value": "36/85",
+          "label_zh": "选手互投 · 人气第一",
+          "label_en": "PEER VOTE · NO.1"
+        },
+        {
+          "value": "0→1",
+          "label_zh": "独立构建到上线",
+          "label_en": "SOLO · ZERO TO LAUNCH"
+        }
+      ],
+      "video": {
+        "poster": "works/pears-roadshow-cover.jpg",
+        "poster_ratio": 1.5389,
+        "url": "https://alnt-med.netlify.app/project.html?id=pears",
+        "motto": "Watch the pitch.",
+        "motto_zh": "看它路演",
+        "label_zh": "观看路演影片",
+        "label_en": "Watch the roadshow film"
+      },
+      "cover": {
+        "shot": "assets/portfolio/pears/landing-01.jpg",
+        "ratio": 1.741,
+        "frame": "browser",
+        "label_zh": "落地页",
+        "label_en": "THE LANDING PAGE",
+        "lede_en": "Hand the busywork to a pear.",
+        "lede_zh": "把重复工作交给一只梨。",
+        "caption_zh": "首页 · 一段描述、一个样例，开始学习",
+        "caption_en": "Home · one brief, one sample — learning starts"
+      },
+      "lineart": {
+        "src": "assets/project/pears/content/plate-core.svg",
+        "ratio": 1.6,
+        "motto": "Watch, distill, build.",
+        "motto_zh": "看一遍 · 蒸馏 · 生成"
+      },
+      "scenes": [
+        {
+          "id": "path",
+          "name_zh": "学习路径",
+          "name_en": "OBSERVE · DISTILL · GENERATE",
+          "copy_ref": "how_it_works",
+          "rows": [
+            {
+              "text": true,
+              "img": 0,
+              "img_mm": 70
+            },
+            {
+              "imgs": [
+                1,
+                2
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/pears/feature-01.jpg",
+              "ratio": 1.6931,
+              "frame": "mac",
+              "caption_zh": "① 准备 · 看你做一遍：点击、切换、键入都记下",
+              "caption_en": "① Watch · clicks, switches, keystrokes"
+            },
+            {
+              "src": "assets/portfolio/pears/feature-02.jpg",
+              "ratio": 2.0253,
+              "frame": "mac",
+              "caption_zh": "② Agent 搭建 · 每一步怎么做，你拍板",
+              "caption_en": "② Assemble · each step, your call"
+            },
+            {
+              "src": "assets/portfolio/pears/feature-03.jpg",
+              "ratio": 1.2185,
+              "frame": "mac",
+              "caption_zh": "③ 构建包 · 能读能改的 PRD，交给编码 Agent",
+              "caption_en": "③ Build pack · a PRD you can read and edit"
+            }
+          ]
+        },
+        {
+          "id": "market",
+          "name_zh": "工作台与集市",
+          "name_en": "THE WORKBENCH & MARKET",
+          "copy_ref": "why_it_matters",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0,
+                1
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/pears/dashboard-01.jpg",
+              "ratio": 1.5595,
+              "frame": "mac",
+              "caption_zh": "效果仪表盘 · 运行、节时与 ROI 一屏看清",
+              "caption_en": "Dashboard · runs, hours saved, ROI"
+            },
+            {
+              "src": "assets/portfolio/pears/market-01.jpg",
+              "ratio": 1.3072,
+              "frame": "browser",
+              "caption_zh": "集市 · 别人的做法，一键拉进你的工作区",
+              "caption_en": "Market · pull a working app into your space"
+            }
+          ]
+        }
+      ]
     },
     {
       "ref": "cowork",
@@ -146,7 +266,7 @@
           "label_en": "PEOPLE · 4 DEPTS"
         },
         {
-          "value": "7",
+          "value": "8",
           "label_zh": "生产工具",
           "label_en": "PRODUCTION TOOLS"
         },
@@ -172,20 +292,20 @@
       },
       "cover": {
         "shot": "assets/portfolio/cowork/landing-01.jpg",
-        "ratio": 1.854,
+        "ratio": 1.7335,
         "frame": "browser",
         "label_zh": "落地页",
         "label_en": "THE LANDING PAGE",
         "lede_en": "Click once — the agents do the rest.",
         "lede_zh": "点击，然后让 Agent 替你干活。",
-        "caption_zh": "主界面 · 开屏先告诉你这周什么在涨",
-        "caption_en": "Home · opens with what's trending this week"
+        "caption_zh": "主界面 · 选个工具开始，或者直接说你想做什么",
+        "caption_en": "Home · pick a tool, or just say the word"
       },
       "lineart": {
         "src": "assets/project/cowork/content/plate-core.svg",
         "ratio": 1.6,
-        "motto": "Seven tools, one memory.",
-        "motto_zh": "七头一座"
+        "motto": "Eight tools, one memory.",
+        "motto_zh": "八头一座"
       },
       "scenes": [
         {
@@ -227,51 +347,6 @@
               "frame": "mac",
               "caption_zh": "输出 · 建议价落在市场分布上",
               "caption_en": "Output · suggested price on the market curve"
-            }
-          ]
-        },
-        {
-          "id": "script",
-          "name_zh": "脚本工具 · 三候选并出",
-          "name_en": "SCRIPT TOOL",
-          "copy_ref": "key_contributions",
-          "rows": [
-            {
-              "text": true
-            },
-            {
-              "imgs": [
-                0
-              ]
-            },
-            {
-              "imgs": [
-                1,
-                2
-              ]
-            }
-          ],
-          "images": [
-            {
-              "src": "assets/portfolio/cowork/script-01.jpg",
-              "ratio": 1.7279,
-              "frame": "mac",
-              "caption_zh": "① 准备 · 输入核心内容",
-              "caption_en": "① Brief"
-            },
-            {
-              "src": "assets/portfolio/cowork/script-02.jpg",
-              "ratio": 1.7316,
-              "frame": "mac",
-              "caption_zh": "② 趋势 · 接入近期热点",
-              "caption_en": "② Trends"
-            },
-            {
-              "src": "assets/portfolio/cowork/script-03.jpg",
-              "ratio": 1.7817,
-              "frame": "mac",
-              "caption_zh": "③ 脚本 · 三候选并出",
-              "caption_en": "③ Three candidates"
             }
           ]
         },
@@ -324,7 +399,7 @@
           "id": "admin",
           "name_zh": "ROI 看板",
           "name_en": "THE ROI DASHBOARD",
-          "copy_ref": "why_it_matters",
+          "copy_ref": "key_contributions",
           "rows": [
             {
               "text": true
@@ -358,17 +433,251 @@
     {
       "ref": "yijian",
       "display": "Yijian",
-      "placeholder": true
+      "placeholder": false,
+      "metrics": [
+        {
+          "value": "7",
+          "label_zh": "角色视角",
+          "label_en": "ROLE AGENTS"
+        },
+        {
+          "value": "4",
+          "label_zh": "层层收敛分歧",
+          "label_en": "CONVERGENCE LAYERS"
+        },
+        {
+          "value": "2/50+",
+          "label_zh": "支队伍中的亚军",
+          "label_en": "RUNNER-UP OF 50+ TEAMS"
+        }
+      ],
+      "cover": {
+        "shot": "assets/portfolio/yijian/landing-01.jpg",
+        "ratio": 1.6684,
+        "frame": "browser",
+        "label_zh": "落地页",
+        "label_en": "THE LANDING PAGE",
+        "lede_en": "Seven voices, one verdict.",
+        "lede_zh": "七个视角，一个可追溯的结论。",
+        "caption_zh": "主界面 · 输入一件待决策的事，开始议见",
+        "caption_en": "Home · drop in a decision, deliberation starts"
+      },
+      "lineart": {
+        "src": "assets/project/yijian/content/plate-core.svg",
+        "ratio": 1.6,
+        "motto": "Four layers to yes.",
+        "motto_zh": "四层收敛"
+      },
+      "scenes": [
+        {
+          "id": "deliberate",
+          "name_zh": "多角色审议",
+          "name_en": "THE DELIBERATION",
+          "copy_ref": "how_it_works",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0,
+                1
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/yijian/roles-01.jpg",
+              "ratio": 1.4184,
+              "frame": "mac",
+              "caption_zh": "角色 Persona · 七个角色，各自的立场与 KPI",
+              "caption_en": "Personas · seven roles, stakes and KPIs"
+            },
+            {
+              "src": "assets/portfolio/yijian/heat-01.jpg",
+              "ratio": 1.2448,
+              "frame": "mac",
+              "caption_zh": "分歧热力图 · 谁支持谁反对，一眼看到卡点",
+              "caption_en": "Heatmap · who backs what, where it snags"
+            }
+          ]
+        },
+        {
+          "id": "verdict",
+          "name_zh": "推演报告",
+          "name_en": "THE VERDICT",
+          "copy_ref": "why_it_matters",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0,
+                1
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/yijian/report-01.jpg",
+              "ratio": 1.2628,
+              "frame": "mac",
+              "caption_zh": "决策报告 · 结论、评分与仍待解决的分歧",
+              "caption_en": "The verdict · decision, score, open points"
+            },
+            {
+              "src": "assets/portfolio/yijian/features-01.jpg",
+              "ratio": 0.3943,
+              "frame": "mac",
+              "caption_zh": "功能模块 · 从审议、证据到决策复盘",
+              "caption_en": "Modules · deliberation to review"
+            }
+          ]
+        }
+      ]
     },
     {
       "ref": "meco",
       "display": "Meco",
-      "placeholder": true
+      "placeholder": false,
+      "metrics": [
+        {
+          "value": "3+",
+          "label_zh": "每天打开次数",
+          "label_en": "OPENS A DAY"
+        },
+        {
+          "value": "-90%",
+          "label_zh": "人肉搬运",
+          "label_en": "MANUAL CARRYING"
+        },
+        {
+          "value": "4+",
+          "label_zh": "每日自动任务",
+          "label_en": "DAILY ROUTINES"
+        },
+        {
+          "value": "200+",
+          "label_zh": "Obsidian 知识条目",
+          "label_en": "VAULT NOTES"
+        }
+      ],
+      "cover": {
+        "shot": "assets/portfolio/meco/landing-01.jpg",
+        "ratio": 1.6097,
+        "frame": "mac",
+        "label_zh": "看板首屏",
+        "label_en": "THE HOME BOARD",
+        "lede_en": "One butler for the daily grind.",
+        "lede_zh": "日常琐事，交给管家。",
+        "caption_zh": "首屏 · 日历、今日清单与目标进度",
+        "caption_en": "Home · calendar, today's list, goals"
+      },
+      "lineart": {
+        "src": "assets/project/meco/content/plate-01-organs.svg",
+        "ratio": 1.6,
+        "motto": "Three lives, one thread.",
+        "motto_zh": "三头一线"
+      },
+      "scenes": [
+        {
+          "id": "companion",
+          "name_zh": "对话与日程",
+          "name_en": "TALK & SCHEDULE",
+          "copy_ref": "how_it_works",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0,
+                1
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/meco/phone-01.jpg",
+              "ratio": 0.4612,
+              "frame": "mac",
+              "caption_zh": "飞书随身端 · 一句话设提醒，随口问近况",
+              "caption_en": "In Feishu · set a reminder, ask how it's going"
+            },
+            {
+              "src": "assets/portfolio/meco/vault-01.jpg",
+              "ratio": 1.5296,
+              "frame": "mac",
+              "caption_zh": "Obsidian 知识库 · 200+ 份笔记连成一张网",
+              "caption_en": "The vault · 200+ notes, one graph"
+            }
+          ]
+        },
+        {
+          "id": "boards",
+          "name_zh": "一屏看板",
+          "name_en": "THE BOARDS",
+          "copy_ref": "why_it_matters",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/meco/board-01.jpg",
+              "ratio": 1.4733,
+              "frame": "mac",
+              "caption_zh": "学习与求职看板 · 每个数字都从笔记库实时解析",
+              "caption_en": "Boards · every number parsed live from the vault"
+            }
+          ]
+        }
+      ]
     },
     {
       "ref": "uabb",
       "display": "UABB",
-      "placeholder": true
+      "placeholder": false,
+      "metrics": [
+        {
+          "value": "4",
+          "label_zh": "输入模态",
+          "label_en": "INPUT MODALITIES"
+        },
+        {
+          "value": "50+",
+          "label_zh": "非标展品",
+          "label_en": "ONE-OFF EXHIBITS"
+        },
+        {
+          "value": "30d→5d",
+          "label_zh": "处理周期",
+          "label_en": "CYCLE TIME"
+        },
+        {
+          "value": "120+",
+          "label_zh": "草图与模型迭代",
+          "label_en": "ITERATIONS"
+        }
+      ],
+      "cover": {
+        "shot": "assets/portfolio/uabb/poster-01.jpg",
+        "ratio": 1.5797,
+        "frame": "none",
+        "label_zh": "展会海报",
+        "label_en": "THE POSTER",
+        "lede_en": "Odd in, standard out.",
+        "lede_zh": "非标进，标准出。",
+        "caption_zh": "《Mars Together》· 地外剧场板块展报",
+        "caption_en": "Mars Together — the Off-World Theater broadsheet"
+      }
     }
   ],
   "architecture": {
