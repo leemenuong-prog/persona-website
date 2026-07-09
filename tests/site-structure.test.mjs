@@ -12,12 +12,14 @@ const read = (file) => readFileSync(join(root, file), "utf8");
 const exists = (file) => existsSync(join(root, file));
 
 /* ── 五个页面 + 404 存在且是完整 HTML ── */
-const PAGES = ["index.html", "projects.html", "project.html", "about.html", "around.html", "404.html"];
+/* projects.html 已并入 around.html（2026-07-09），不再是独立页 */
+const PAGES = ["index.html", "project.html", "about.html", "around.html", "404.html"];
 for (const page of PAGES) {
   assert.ok(exists(page), page + " should exist");
   assert.match(read(page), /<html/i, page + " should be an HTML document");
 }
-for (const page of PAGES.slice(0, 5)) {
+assert.ok(!exists("projects.html"), "projects.html was merged into around.html and must stay retired");
+for (const page of PAGES.slice(0, 4)) {
   assert.match(read(page), /js\/main\.js/, page + " should load the shared js/main.js");
 }
 
