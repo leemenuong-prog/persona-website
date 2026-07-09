@@ -26,17 +26,24 @@
   <link rel="preload" href="../assets/fonts/monterey-medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/barmorph.css">
-  <link rel="stylesheet" href="portfolio.css">
+  <link rel="stylesheet" href="portfolio.css?v=20260709-nav">
 </head>
 <body data-page="portfolio">
 
-  <header class="pf-topbar screen-only" aria-label="portfolio chrome">
-    <a class="pf-back" href="../" data-zh="← Alnt_med" data-en="← Alnt_med">← Alnt_med</a>
-    <span class="pf-topbar-title" data-zh="AI 产品作品集" data-en="AI Product Portfolio">AI 产品作品集</span>
-    <span class="pf-topbar-actions">
+  <header class="site-header screen-only" aria-label="site chrome">
+    <div class="header-left">
+      <a class="wordmark" href="../index.html" aria-label=".IAM. — Alnt_med · 回首页"><span class="logoslot"></span></a>
+      <a class="nav-btn" href="../around.html" data-zh="AROUND" data-en="AROUND">AROUND</a>
+      <a class="nav-btn" href="./" aria-current="page" data-zh="PORTFOLIO" data-en="PORTFOLIO">PORTFOLIO</a>
+    </div>
+    <div class="header-right">
       <a class="pf-pdf" href="../uploads/portfolio-ai.pdf" target="_blank" rel="noopener" data-zh="PDF 版" data-en="PDF">PDF 版</a>
+      <span class="header-name">李文苑<i class="sep">·</i><span class="name-en">ALNT MED</span></span>
       <button class="lang-toggle" type="button">EN</button>
-    </span>
+      <a class="gh-link" href="https://github.com/leemenuong-prog" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      </a>
+    </div>
   </header>
 
   <main class="deck" id="deck" aria-live="polite"></main>
@@ -44,5 +51,12 @@
   <script src="../js/language-toggle.js" defer></script>
   <script src="../js/barmorph.js" defer></script>
   <script src="portfolio.js" defer></script>
+  <script>
+    /* 与全站 header 一致：把 .IAM. 品牌带挂进 header 的 logoslot（barmorph.js 已 defer 先执行） */
+    document.addEventListener('DOMContentLoaded', function () {
+      var slot = document.querySelector('.site-header .logoslot');
+      if (window.Barmorph && slot) window.Barmorph.mountBrandBand(slot);
+    });
+  </script>
 </body>
 </html>

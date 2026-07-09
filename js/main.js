@@ -17,9 +17,6 @@
         '<a class="wordmark" href="index.html" aria-label=".IAM. — Alnt_med · 回首页">' +
           '<span class="logoslot"></span>' +
         '</a>' +
-        '<a class="nav-btn" href="projects.html"' +
-          (PAGE === 'projects' ? ' aria-current="page"' : '') +
-          ' data-zh="PROJECTS" data-en="PROJECTS">PROJECTS</a>' +
         '<a class="nav-btn" href="around.html"' +
           (PAGE === 'around' ? ' aria-current="page"' : '') +
           ' data-zh="AROUND" data-en="AROUND">AROUND</a>' +
@@ -43,7 +40,6 @@
       '</div>' +
       /* 站内导航：页脚是 finale 编舞的终点，也是 <1024（无侧钮）时的 ABOUTME 入口 */
       '<nav class="foot-nav" aria-label="站内导航 · Site">' +
-        '<a href="projects.html"' + (PAGE === 'projects' ? ' aria-current="page"' : '') + '>PROJECTS</a>' +
         '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
         '<a href="portfolio/">PORTFOLIO</a>' +
         '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUTME</a>' +

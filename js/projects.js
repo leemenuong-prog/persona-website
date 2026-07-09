@@ -1,5 +1,6 @@
 /* ════════════════════════════════════════════════════════════
-   projects.js — 全部作品索引页：主线组 + 尾声组扁平列表。
+   projects.js — 作品清单（渲染进 #projects-list，现挂在 AROUND 页）：
+   全部作品按 sort_order 扁平排列，不分组。
    ════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -28,25 +29,13 @@
     return a;
   }
 
-  function groupLabel(zh, en) {
-    var h = document.createElement('h2');
-    h.className = 'projects-group-label';
-    h.setAttribute('data-zh', zh);
-    h.setAttribute('data-en', en);
-    h.textContent = window.I18N.locale === 'zh' ? zh : en;
-    return h;
-  }
-
   function render(data) {
     var host = document.getElementById('projects-list');
+    if (!host) return;
     host.textContent = '';
-    var all = (data.projects || []).slice().sort(function (a, b) {
+    (data.projects || []).slice().sort(function (a, b) {
       return (a.sort_order || 99) - (b.sort_order || 99);
-    });
-    host.appendChild(groupLabel('主线 — AI 产品与 AIGC 工作流', 'MAIN — AI PRODUCTS & AIGC WORKFLOWS'));
-    all.filter(function (p) { return p.main === true; }).forEach(function (p) { host.appendChild(item(p)); });
-    host.appendChild(groupLabel('尾声 — 建筑作品', 'EPILOGUE — ARCHITECTURE'));
-    all.filter(function (p) { return p.main !== true; }).forEach(function (p) { host.appendChild(item(p)); });
+    }).forEach(function (p) { host.appendChild(item(p)); });
   }
 
   function boot() {

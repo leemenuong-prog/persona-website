@@ -270,7 +270,7 @@
     var host = document.getElementById('project-header');
     host.innerHTML = '<div class="detail-notfound">' +
       '<p>没有找到这个作品（id: ' + esc(id) + '）。</p>' +
-      '<p><a href="projects.html">回到全部作品 →</a></p></div>';
+      '<p><a href="around.html">回到全部作品 →</a></p></div>';
   }
 
   function render(p) {
