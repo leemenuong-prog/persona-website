@@ -1,5 +1,5 @@
 {
-  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。",
+  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。mapped=true → 画廊详情页（project.html?id=ref）改用作品集同款排版渲染（封面块→线稿块→场景行模块→影片+STACK 连续网页流，作品集没放的内容画廊也不放），此后两页共同管理；UABB 截图补齐后再开。",
   "meta": {
     "doc_title_zh": "AI 产品作品集",
     "doc_title_en": "AI Product Portfolio",
@@ -134,6 +134,7 @@
       "ref": "pears",
       "display": "Pears",
       "placeholder": false,
+      "mapped": true,
       "metrics": [
         {
           "value": "4+",
@@ -279,6 +280,7 @@
       "ref": "cowork",
       "display": "Co-work",
       "placeholder": false,
+      "mapped": true,
       "metrics": [
         {
           "value": "65",
@@ -457,6 +459,7 @@
       "ref": "yijian",
       "display": "Yijian",
       "placeholder": false,
+      "mapped": true,
       "metrics": [
         {
           "value": "7",
@@ -579,6 +582,7 @@
       "ref": "meco",
       "display": "Meco",
       "placeholder": false,
+      "mapped": true,
       "metrics": [
         {
           "value": "3+",

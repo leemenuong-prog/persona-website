@@ -1,10 +1,18 @@
 /* ════════════════════════════════════════════════════════════
    project-detail.js — 作品详情页渲染器。
    URL: project.html?id={projectId}
-   渲染顺序：头部（标题/keywords/奖项/Meta/tags）→ 媒体块
-   （video-local / iframe-lazy 门面）→ 正文（四段式，缺段回退
-   full_description）→ Tech Stack → 内容长图（显式 contentImages
-   列表 + 文字球图注 + 点击 lightbox）。
+
+   两种形态：
+   ① 作品集映射模式（config/portfolio.json products[].mapped=true 的
+     AI 作品）：与作品集页（portfolio/）同一事实源、同一排版——
+     头部（kicker+Monterey 标题+keywords）→ 顶部视频门面（Pears/Co-work，
+     视频入口因此出现两次，用户裁定没关系）→ 封面块（tldr 双栏+奖项+
+     指标带+落地页说明头+落地页大图）→ 线稿块 → 场景行模块 →
+     影片块+STACK。连续网页流（照 architecture.html 阅读器），非 A4；
+     作品集没放的内容（meta 行/tags/旧内容长图/图注球）画廊也不放。
+   ② 经典模式（建筑作品 + 未开 mapped 的 UABB）：头部（标题/keywords/
+     奖项/Meta/tags）→ 媒体块 → 正文（缺段回退 full_description）→
+     Tech Stack → 内容长图 + 文字球。
    ════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -266,6 +274,391 @@
     });
   }
 
+  /* ════════════════════════════════════════════════════════════
+     作品集映射模式 —— 与 portfolio/portfolio.js 同一套排版语法
+     （plist / secH / 窗框 / 场景行模块 / 线稿块 / 影片块），
+     尺度换网页阅读档（css/project-detail.css 的 .pd-mapped 段）。
+     ════════════════════════════════════════════════════════════ */
+
+  function h(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function psq() { return h('span', 'psq'); }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function hostOf(url) { try { return new URL(url).hostname; } catch (e) { return ''; } }
+  function zoomable(im, src, alt) {
+    im.addEventListener('click', function () {
+      if (window.Site && Site.openLightbox) Site.openLightbox(src, alt || '');
+    });
+  }
+
+  /* body 按 \n 拆「—」列表；行首「标签：」加粗，否则加粗首个逗号前的
+     短语（先说结论四条的 STAR 头）——与 portfolio.js plist 同口径 */
+  function plist(body) {
+    var ul = h('ul', 'plist');
+    String(body || '').split('\n').forEach(function (line) {
+      line = line.trim();
+      if (!line) return;
+      var li = h('li');
+      var m = line.match(/^(.{1,10}[：:])\s*(.*)$/);
+      if (!m) {
+        var c = line.match(/^([^，,]{2,24}[，,]\s*)([\s\S]*)$/);
+        if (c) m = [null, c[1], c[2]];
+      }
+      if (m) {
+        li.appendChild(h('b', null, m[1]));
+        var sep = /[:,]$/.test(m[1].trim()) ? ' ' : '';
+        li.appendChild(document.createTextNode(sep + m[2]));
+      } else {
+        li.textContent = line;
+      }
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  /* 章节 h2：英文大标 + 中文小注（EN 版 CSS 隐藏 .zh-note） */
+  function secH(section) {
+    var elh = h('h2', 'sec-h');
+    elh.appendChild(document.createTextNode(section.title_en || section.title_zh || ''));
+    if (section.title_zh) elh.appendChild(h('span', 'zh-note', section.title_zh));
+    return elh;
+  }
+
+  /* Mac/浏览器/手机窗框（三灯 = macOS 原色，灰阶体系的色彩例外） */
+  function winEl(src, ratio, opts) {
+    opts = opts || {};
+    var alt = opts.alt || '';
+    function shotBox() {
+      var scr = h('div', 'win-shot');
+      scr.style.setProperty('--r', ratio);
+      var im = h('img');
+      im.src = src; im.alt = alt; im.loading = 'lazy'; im.decoding = 'async';
+      zoomable(im, src, alt);
+      scr.appendChild(im);
+      return scr;
+    }
+    if (opts.frame === 'phone') {
+      var ph = h('div', 'phone-shell' + (opts.small ? ' win-sm' : ''));
+      ph.appendChild(shotBox());
+      return ph;
+    }
+    if (opts.frame === 'none') {
+      var pl = h('div', 'shot-plain' + (opts.small ? ' win-sm' : ''));
+      pl.style.setProperty('--r', ratio);
+      var im2 = h('img');
+      im2.src = src; im2.alt = alt; im2.loading = 'lazy'; im2.decoding = 'async';
+      zoomable(im2, src, alt);
+      pl.appendChild(im2);
+      return pl;
+    }
+    var w = h('div', 'win' + (opts.small ? ' win-sm' : ''));
+    var bar = h('div', 'win-bar');
+    bar.appendChild(h('span', 'win-dot'));
+    bar.appendChild(h('span', 'win-dot'));
+    bar.appendChild(h('span', 'win-dot'));
+    if (opts.frame === 'browser' && opts.url && !opts.small) {
+      bar.appendChild(h('span', 'win-url', hostOf(opts.url)));
+      bar.appendChild(h('span', 'win-spacer'));
+    }
+    w.appendChild(bar);
+    w.appendChild(shotBox());
+    return w;
+  }
+
+  /* 图格：窗框 + 图注 */
+  function cellEl(im, prodUrl, alt, small) {
+    var c = h('div', 'cell');
+    c.style.setProperty('--r', im.ratio);
+    c.appendChild(winEl(im.src, im.ratio, { frame: im.frame, url: prodUrl, small: small !== false, alt: alt }));
+    var cap = t(im, 'caption');
+    if (cap) c.appendChild(h('div', 'cell-cap', cap));
+    return c;
+  }
+
+  /* 头部：kicker（PROJECT 0n · 类别 · 年份）+ Monterey 标题 + ↗ + keywords */
+  function mappedHead(p, prod, idx) {
+    var host = document.getElementById('project-header');
+    host.textContent = '';
+    host.appendChild(h('div', 'pd-kicker',
+      'PROJECT ' + pad2(idx + 1) + ' · ' + (p.category || '').toUpperCase() + ' · ' + (p.year || '')));
+    var row = h('div', 'pd-title-row');
+    var h1 = h('h1', 'detail-title');
+    h1.appendChild(document.createTextNode(prod.display || p.id));
+    h1.appendChild(psq());
+    row.appendChild(h1);
+    if (p.url) {
+      var a = h('a', 'pd-ext', '↗');
+      a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+      a.setAttribute('aria-label', (prod.display || p.id) + ' — live');
+      row.appendChild(a);
+    }
+    host.appendChild(row);
+    var kw = t(p, 'keywords');
+    if (kw) host.appendChild(h('p', 'detail-keywords', kw.split(/\s*\|\s*/).join(' · ')));
+    document.title = t(p, 'title') + ' · Alnt_med';
+  }
+
+  /* 封面块：tldr 双栏（列表｜封面方图+奖项）→ 指标带 → 落地页说明头 + 大图 */
+  function mappedCover(p, prod) {
+    var block = h('section', 'pd-block pd-cover');
+
+    var cols = h('div', 'pd-cover-cols');
+    var lc = h('section', 'pd-cc-left detail-section');
+    lc.setAttribute('data-skey', 'tldr');
+    lc.appendChild(secH(p.sections.tldr));
+    lc.appendChild(plist(t(p.sections.tldr, 'body')));
+    cols.appendChild(lc);
+
+    var art = h('figure', 'pd-cover-art');
+    var th = h('div', 'ca-thumb');
+    var im = h('img');
+    im.src = p.thumb; im.alt = t(p, 'title'); im.loading = 'lazy'; im.decoding = 'async';
+    zoomable(im, p.thumb, t(p, 'title'));
+    th.appendChild(im);
+    art.appendChild(th);
+    var award = t(p, 'award');
+    if (award) {
+      var ac = h('figcaption', 'pd-award');
+      ac.appendChild(psq());
+      ac.appendChild(document.createTextNode(' ' + award));
+      art.appendChild(ac);
+    }
+    cols.appendChild(art);
+    block.appendChild(cols);
+
+    if (prod.metrics) {
+      var mb = h('div', 'pd-metrics');
+      prod.metrics.forEach(function (m) {
+        var c = h('div');
+        c.appendChild(h('div', 'm-val', m.value));
+        c.appendChild(h('div', 'm-label', t(m, 'label')));
+        mb.appendChild(c);
+      });
+      block.appendChild(mb);
+    }
+
+    if (prod.cover) {
+      var shot = h('div', 'pd-cover-shot');
+      if (prod.cover.label_en || prod.cover.lede_en) {
+        var head = h('div', 'pd-shot-head');
+        var label = h('div', 'pd-shot-label');
+        label.appendChild(psq());
+        if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
+        label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
+        head.appendChild(label);
+        if (prod.cover.lede_en) {
+          var lede = h('p', 'pd-shot-lede');
+          lede.appendChild(document.createTextNode(prod.cover.lede_en));
+          if (prod.cover.lede_zh) lede.appendChild(h('span', 'zh-note shot-lede-zh', prod.cover.lede_zh));
+          head.appendChild(lede);
+        }
+        shot.appendChild(head);
+      }
+      shot.appendChild(winEl(prod.cover.shot, prod.cover.ratio,
+        { frame: prod.cover.frame, url: p.url, small: false, alt: prod.display }));
+      var cap = t(prod.cover, 'caption');
+      if (cap) shot.appendChild(h('div', 'cell-cap', cap));
+      block.appendChild(shot);
+    }
+    return block;
+  }
+
+  /* 线稿块定式：核心语句大标题 + 中文小注 + 斜体 one_liner ｜ 线稿图 */
+  function mappedLineart(p, prod, idx) {
+    var block = h('section', 'pd-block pd-lineart');
+    block.appendChild(h('div', 'pd-kicker',
+      'PROJECT ' + pad2(idx + 1) + ' · ' + (prod.display || '').toUpperCase() + ' · SYSTEM LINEART'));
+    var grid = h('div', 'pd-la-grid');
+    var side = h('div', 'pd-la-side');
+    var motto = h('h2', 'la-motto');
+    motto.appendChild(document.createTextNode(prod.lineart.motto || (prod.display || p.id)));
+    motto.appendChild(psq());
+    if (prod.lineart.motto_zh) motto.appendChild(h('span', 'zh-note', prod.lineart.motto_zh));
+    side.appendChild(motto);
+    var one = t(p, 'one_liner');
+    if (one) side.appendChild(h('p', 'detail-oneliner', one));
+    grid.appendChild(side);
+    var fig = h('figure', 'pd-la-fig');
+    var im = h('img');
+    im.src = prod.lineart.src; im.alt = (prod.display || p.id) + ' — system lineart';
+    im.loading = 'lazy'; im.decoding = 'async';
+    zoomable(im, prod.lineart.src, im.alt);
+    fig.appendChild(im);
+    grid.appendChild(fig);
+    block.appendChild(grid);
+    return block;
+  }
+
+  /* 场景块：kicker（SCENE 0n · 场景名）+ 章节 h2 + 横向行模块 */
+  function mappedScene(p, prod, sc, sceneNo) {
+    var block = h('section', 'pd-block pd-scene');
+    var kick = h('div', 'pd-kicker');
+    kick.appendChild(document.createTextNode('SCENE ' + pad2(sceneNo) + ' · ' + (sc.name_en || sc.id)));
+    if (sc.name_zh) kick.appendChild(h('span', 'zh-note', '　' + sc.name_zh));
+    block.appendChild(kick);
+
+    var section = p.sections[sc.copy_ref];
+    var body = h('section', 'pd-scene-body detail-section');
+    body.setAttribute('data-skey', sc.copy_ref);
+    body.appendChild(secH(section));
+
+    var alt = (prod.display || p.id) + ' — ' + (sc.name_en || sc.id);
+    var imgs = sc.images || [];
+    var rows = sc.rows || [{ text: true }, { imgs: imgs.map(function (_, i) { return i; }) }];
+    if (!rows.some(function (r) { return r.text; })) rows = [{ text: true }].concat(rows);
+
+    rows.forEach(function (r) {
+      if (r.text && r.img != null) {
+        /* 一文一图：文左 + 定宽小图右。img_mm 按作品集主区 167mm 折算成百分比 */
+        var ti = h('div', 'row-ti');
+        var txt = h('div', 'row-ti-text');
+        txt.appendChild(plist(t(section, 'body')));
+        ti.appendChild(txt);
+        var c = cellEl(imgs[r.img], p.url, alt);
+        if (r.img_mm) c.style.setProperty('--w', (r.img_mm / 167 * 100).toFixed(1) + '%');
+        ti.appendChild(c);
+        body.appendChild(ti);
+      } else if (r.text) {
+        var rt = h('div', 'row-text');
+        rt.appendChild(plist(t(section, 'body')));
+        body.appendChild(rt);
+      } else if (r.sec) {
+        /* 独立文字节模块：引用另一节文案，自带节标题，间隔拉大 */
+        var sec2 = p.sections[r.sec];
+        if (!sec2) { console.warn('[detail] rows.sec 未命中:', sc.id, r.sec); return; }
+        var rs = h('section', 'row-text row-sec detail-section');
+        rs.setAttribute('data-skey', r.sec);
+        rs.appendChild(secH(sec2));
+        rs.appendChild(plist(t(sec2, 'body')));
+        body.appendChild(rs);
+      } else if (r.imgs && r.imgs.length) {
+        var row = h('div', 'scene-row');
+        r.imgs.forEach(function (i) {
+          var im = imgs[i];
+          if (!im) { console.warn('[detail] rows 引用越界:', sc.id, i); return; }
+          row.appendChild(cellEl(im, p.url, alt, r.imgs.length > 1));
+        });
+        body.appendChild(row);
+      }
+    });
+    block.appendChild(body);
+    return block;
+  }
+
+  /* 影片块（线稿标题版式）：motto｜海报——点击就地播放（video-local 换
+     <video>，iframe-lazy 换 <iframe>），与顶部门面是同一入口的第二次出现 */
+  function mappedFilm(p, prod) {
+    var video = prod.video;
+    var block = h('section', 'pd-block pd-film');
+    var grid = h('div', 'pd-film-grid');
+
+    var side = h('div', 'pd-film-side');
+    var motto = h('h2', 'la-motto');
+    motto.appendChild(document.createTextNode(video.motto || t(video, 'label')));
+    motto.appendChild(psq());
+    if (video.motto_zh) motto.appendChild(h('span', 'zh-note', video.motto_zh));
+    side.appendChild(motto);
+    var cta = h('p', 'pd-film-cta');
+    if (video.label_zh) cta.appendChild(h('span', 'zh-note', video.label_zh + ' ·'));
+    cta.appendChild(h('span', 'cta-link', (video.label_en || '').toUpperCase()));
+    side.appendChild(cta);
+    grid.appendChild(side);
+
+    var poster = h('div', 'pd-film-poster');
+    poster.style.setProperty('--r', video.poster_ratio || 1.7778);
+    var pi = h('img', 'pd-film-cover');
+    pi.src = video.poster; pi.alt = t(video, 'label'); pi.loading = 'lazy'; pi.decoding = 'async';
+    poster.appendChild(pi);
+    poster.appendChild(h('span', 'pd-film-btn'));
+
+    var playable = (p.media || []).filter(function (m) {
+      return m.type === 'video-local' || m.type === 'iframe-lazy';
+    })[0];
+    poster.addEventListener('click', function play() {
+      if (!playable) return;
+      poster.removeEventListener('click', play);
+      poster.classList.add('playing');
+      poster.textContent = '';
+      if (playable.type === 'video-local') {
+        var v = document.createElement('video');
+        v.src = playable.src; v.controls = true; v.playsInline = true; v.preload = 'auto';
+        if (playable.poster) v.poster = playable.poster;
+        poster.appendChild(v);
+        v.play().catch(function () { /* 需手势的环境交给 controls */ });
+      } else {
+        var f = document.createElement('iframe');
+        f.src = playable.src; f.loading = 'lazy'; f.allow = 'fullscreen';
+        f.title = playable.label_zh || 'demo';
+        poster.appendChild(f);
+      }
+    });
+    grid.appendChild(poster);
+    block.appendChild(grid);
+    return block;
+  }
+
+  /* 浮出动效（照首页/建筑阅读器：只动 opacity/transform，IO 逐块入场；
+     重渲染直接终态） */
+  var pdBooted = false;
+  function pdReveal(blocks) {
+    if (pdBooted || !('IntersectionObserver' in window)) {
+      blocks.forEach(function (b) { b.classList.add('pd-reveal', 'in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -4% 0px' });
+    blocks.forEach(function (b) { b.classList.add('pd-reveal'); io.observe(b); });
+  }
+
+  function renderMapped(p, prod, pf) {
+    document.body.classList.add('pd-mapped');
+    var idx = pf.products.indexOf(prod);
+    mappedHead(p, prod, idx);
+
+    /* 顶部媒体：只保留视频/交互影片门面（Pears/Co-work 视频在开头；
+       作品集没放的媒体——如 Meco 的看板截图——一律不放） */
+    var mediaHost = document.getElementById('media-container');
+    mediaHost.textContent = '';
+    (p.media || []).forEach(function (m) {
+      if (m.type === 'video-local') mediaHost.appendChild(mediaVideoLocal(m));
+      else if (m.type === 'iframe-lazy') mediaHost.appendChild(mediaIframeLazy(m));
+    });
+
+    var host = document.getElementById('content-column');
+    host.textContent = '';
+    document.getElementById('content-images').textContent = '';
+
+    host.appendChild(mappedCover(p, prod));
+    var scenes = prod.scenes || [];
+    if (prod.lineart) host.appendChild(mappedLineart(p, prod, idx));
+    scenes.forEach(function (sc, si) {
+      host.appendChild(mappedScene(p, prod, sc, si + 1));
+    });
+    if (prod.video) host.appendChild(mappedFilm(p, prod));
+    var stack = t(p, 'tech_stack');
+    if (stack) {
+      var line = h('p', 'pd-block pd-stack stack-line');
+      line.appendChild(h('span', 'stack-label', 'STACK'));
+      line.appendChild(document.createTextNode(stack));
+      host.appendChild(line);
+    }
+
+    var blocks = [document.getElementById('project-header')]
+      .concat(Array.prototype.slice.call(mediaHost.children))
+      .concat(Array.prototype.slice.call(host.children));
+    pdReveal(blocks);
+    pdBooted = true;
+
+    document.dispatchEvent(new CustomEvent('detailrendered', { detail: { project: p } }));
+  }
+
   function renderNotFound(id) {
     var host = document.getElementById('project-header');
     host.innerHTML = '<div class="detail-notfound">' +
@@ -290,7 +683,12 @@
     }
 
     var id = getId();
-    window.Site.loadProjects().then(function (data) {
+    Promise.all([
+      window.Site.loadProjects(),
+      /* 作品集配置：映射模式的场景/指标/线稿来源；拿不到则回落经典模式 */
+      fetch('config/portfolio.json').then(function (r) { return r.json(); }).catch(function () { return null; })
+    ]).then(function (res) {
+      var data = res[0], pf = res[1];
       var p = (data.projects || []).find(function (x) { return x.id === id; });
       if (!p) { renderNotFound(id); return; }
       /* 编辑者模式的本机草稿：有则整体覆盖该项目（仅本浏览器可见） */
@@ -302,9 +700,13 @@
           data.projects[i] = p;
         }
       } catch (e) { /* 草稿损坏则忽略 */ }
-      window.__detail = { project: p, data: data, render: function () { render(p); } };
-      render(p);
-      document.addEventListener('localechange', function () { render(p); });
+      var prod = pf && (pf.products || []).find(function (x) { return x.ref === id && x.mapped; });
+      var paint = prod
+        ? function () { renderMapped(p, prod, pf); }
+        : function () { render(p); };
+      window.__detail = { project: p, data: data, render: paint };
+      paint();
+      document.addEventListener('localechange', paint);
     }).catch(function (err) {
       console.error('[detail] projects.json 加载失败', err);
     });
