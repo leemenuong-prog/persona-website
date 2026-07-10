@@ -459,6 +459,9 @@ a.work-ext:hover { color: var(--c-title); }
   display: block; margin-top: 1.6mm;
   font: 400 11px/1.7 var(--font-serif); letter-spacing: .02em; color: var(--c-body);
 }
+/* EN 版隐藏中文小注：上面的 display:block (0,3,0) 压过全局 zh-note 通道 (0,2,1)，
+   需在 EN 通道单独压回（2026-07-10 用户裁定按文档口径隐藏） */
+[data-locale="en"] .p-work .shot-lede .shot-lede-zh { display: none; }
 .p-work .work-award { font: 9.5px/1.7 var(--font-sans); letter-spacing: .08em; color: var(--c-sub); margin-top: 2mm; }
 .p-work .work-award .psq { width: 3px; height: 3px; }
 
