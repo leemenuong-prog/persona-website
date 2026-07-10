@@ -65,17 +65,17 @@
 ## AI 产品作品集 `portfolio/`（2026-07-07 新增 + 当日二迭代，A4 定版信息流 + 双语 PDF）
 
 - **同步铁律**：产品文案（title/one_liner/七段 sections/tech_stack/keywords/award/url）一律运行时 join `config/projects.json`；`config/portfolio.json` 只放作品集特有信息（页序=products 数组序、场景 rows、截图清单+ratio、窗框 frame、指标带 metrics、lineart、个人页 profile、建筑矩阵）。**改产品文案永远改 projects.json**，两边自动同步；`tests/portfolio.test.mjs` 守卫禁文案漂移。
-- **正文页横向行模块铁律（2026-07-08 三轮用户裁定，勿再做左右双栏正文）**：场景页 = 页头（kicker+sec-h）+ 行模块纵向依次码放，每行横向满宽，行只有五种——`{text:true}` 一文 / `{text:true,img:i,img_mm}` 一文一图（少数）/ `{imgs:[i]}` 一图 / 两图 / 三图（等高对齐 flex-grow=ratio）。配置在 `scenes[].rows`（下标引用 images，每图恰好引用一次，tests 守卫）。二迭代的 split/split-band 双栏被用户整体推翻，勿恢复。
-- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **19 页**（2026-07-09 五作正文补全后）；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm）。
+- **正文页横向行模块铁律（2026-07-08 三轮用户裁定，勿再做左右双栏正文）**：场景页 = 页头（kicker+sec-h）+ 行模块纵向依次码放，每行横向满宽，行只有六种——`{text:true}` 一文 / `{text:true,img:i,img_mm}` 一文一图（少数）/ `{imgs:[i]}` 一图 / 两图 / 三图（等高对齐 flex-grow=ratio）/ `{sec:"节名"}` 独立文字节模块（自带 sec-h 标题引用另一节文案，2026-07-10：画廊详情里写了的节，作品集必须都有）。配置在 `scenes[].rows`（下标引用 images，每图恰好引用一次；sec 必须命中五节之一，tests 守卫）。二迭代的 split/split-band 双栏被用户整体推翻，勿恢复。
+- **版式**：A4 定版 `.sheet`（mm 页盒 + overflow:hidden + break-after:page），共 **23 页**（2026-07-10 补回 Why/核心贡献等未上页文案后）；文案改长会触发溢出探测（屏显红描边 + console.warn），别让它默默裁切。**六作体系**：rail/INDEX 01-06，第 06 项=建筑合集（JS 由 architecture 合成，products 保持 5 项）。**索引双档**：产品封面页=完整 26mm rail；场景/线稿/建筑页=极简 rail（`.rail--mini`，主区加宽到 167mm）。
 - **作品封面统一紧凑模板**：kicker→标题→keywords→双栏（左 tldr｜右封面方图+奖项）→指标带→**落地页说明头**（小标签「落地页 · THE LANDING PAGE」+ **英文大标题 lede_en（拉丁 Monterey）+ 中文解释 lede_zh 小注**——六轮修正：必须走「英文大标+中文解释」全站口径，话术有人味如「Click once — the agents do the rest. / 点击，然后让 Agent 替你干活。」，用户会自己调词）→底部主要落地页大图+图注；metrics/cover **有字段才渲染**——占位作品日后补字段即自动升级，零代码。（one_liner 不在封面：见线稿块的文字零重复铁律。）
 - **图注铁律（2026-07-08 六轮用户裁定）**：**真实场景截图一律带图注**（caption_zh/en，9.5px 居中灰），包括封面落地页大图；线稿不算真实场景（注释烧在 SVG 内）。
 - **模块间隔铁律（同上）**：**不同内容的模块之间间隔拉大**（如线稿块 ↔ 场景正文 = 13mm、影片块上间距 11mm）；同一模块内的行保持 4-5mm。
 - **线稿标题版式 = 通用分隔模块定式（同上）**：「拉丁 Monterey 核心语句大标题 + 中文小注 + 辅文」左、图右——线稿块与**影片门面**（motto「Watch it work. / 看它跑起来」+ 观看外链 + 海报右）均用此定式；后续需要与正文分隔的异质模块优先套用。
-- **正文排满规则（2026-07-08 用户裁定）**：正文页尽量排满——内容不足半页的模块并入相邻页。落地实现：有场景页的作品，线稿块并入首场景页顶部（不单独成页）；仅无场景页的作品保留独立线稿页。共 **19 页**（3 前页 + Pears 3 / Co-work 4 / 议见 3 / Meco 3 / UABB 1（封面先行，场景待截图）+ 建筑 1 + 封底）。
+- **正文排满规则（2026-07-08 用户裁定）**：正文页尽量排满——内容不足半页的模块并入相邻页。落地实现：有场景页的作品，线稿块并入首场景页顶部（不单独成页）；仅无场景页的作品保留独立线稿页。共 **23 页**（3 前页 + Pears 4 / Co-work 4 / 议见 4 / Meco 4 / UABB 2（产品截图仍待补）+ 建筑 1 + 封底；Pears/议见/Meco 各带「brief」文字页=线稿块+Why+核心贡献，UABB 第 2 页=四节纯文字+STACK）。
 - **Mac 窗框三灯 = macOS 原色**（#FF5F57/#FEBC2E/#28C840，2026-07-07 二轮用户裁定）：三灯与截图/封面素材是灰阶体系仅有的色彩例外；个人页人像也保持彩色（勿加黑白滤镜）。
 - **⚠️ 体积铁律：打印态禁 CSS filter**——filter 迫使 Chrome 把 JPEG 重栅格成无损位图（实测建筑页 6 图 150KB/张→1MB/张，全册 16MB）。屏显 saturate 调色保留，`@media print` 一律 `filter:none`（portfolio.css 打印块）。
 - **视频/交互影片**：作品集页绝不内嵌 video/iframe（与门面点击约定互斥、打印会空框）——一律 poster + 播放角标 + 外链 `<a>`（PDF 里自动成可点注记）。
-- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**19**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
+- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**23**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。
 - **双语**：`?lang=zh|en` 显式覆盖（无头打印必带）；中文版=英文大标题+中文正文（`.zh-note` 在 EN 版 CSS 隐藏）。
 - **线稿页定式（2026-07-08 用户裁定，后续所有作品的线稿页照此）**：一侧文字｜一侧线稿图，文字侧 = 大标题（**线稿核心语句** `lineart.motto`，拉丁 Monterey + `motto_zh` 中文小注）+ 斜体 one_liner。**文字零重复铁律**：每段文案全册只出现一次——one_liner 归线稿页（有线稿页的作品封面不再渲染 one_liner），keywords 归封面，STACK 归尾场景页；线稿图注烧在 SVG 内不重复排版。Co-work 线稿引用站内 `assets/project/cowork/content/plate-core.svg`（不复制文件=天然同步）。
 - 主站入口：header/foot-nav 的 PORTFOLIO（main.js 注入，≤1023/≤479 断点已为三钮收纳）+ about 作品集区。

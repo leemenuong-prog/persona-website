@@ -149,6 +149,11 @@
           "value": "0→1",
           "label_zh": "独立构建到上线",
           "label_en": "SOLO · ZERO TO LAUNCH"
+        },
+        {
+          "value": "TOP 3%",
+          "label_zh": "清华黑客松 · 季军",
+          "label_en": "TSINGHUA · 2ND RUNNER-UP"
         }
       ],
       "video": {
@@ -178,6 +183,21 @@
         "motto_zh": "看一遍 · 蒸馏 · 生成"
       },
       "scenes": [
+        {
+          "id": "brief",
+          "name_zh": "立项与贡献",
+          "name_en": "THE BRIEF",
+          "copy_ref": "why_built",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "sec": "key_contributions"
+            }
+          ],
+          "images": []
+        },
         {
           "id": "path",
           "name_zh": "学习路径",
@@ -409,6 +429,9 @@
                 1,
                 0
               ]
+            },
+            {
+              "sec": "why_it_matters"
             }
           ],
           "images": [
@@ -446,8 +469,8 @@
           "label_en": "CONVERGENCE LAYERS"
         },
         {
-          "value": "2/50+",
-          "label_zh": "支队伍中的亚军",
+          "value": "TOP 5%",
+          "label_zh": "50+ 支队伍中的亚军",
           "label_en": "RUNNER-UP OF 50+ TEAMS"
         }
       ],
@@ -469,6 +492,21 @@
         "motto_zh": "四层收敛"
       },
       "scenes": [
+        {
+          "id": "brief",
+          "name_zh": "立项与贡献",
+          "name_en": "THE BRIEF",
+          "copy_ref": "why_built",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "sec": "key_contributions"
+            }
+          ],
+          "images": []
+        },
         {
           "id": "deliberate",
           "name_zh": "多角色审议",
@@ -582,6 +620,21 @@
       },
       "scenes": [
         {
+          "id": "brief",
+          "name_zh": "立项与贡献",
+          "name_en": "THE BRIEF",
+          "copy_ref": "why_built",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "sec": "key_contributions"
+            }
+          ],
+          "images": []
+        },
+        {
           "id": "companion",
           "name_zh": "对话与日程",
           "name_en": "TALK & SCHEDULE",
@@ -601,7 +654,7 @@
             {
               "src": "assets/portfolio/meco/phone-01.jpg",
               "ratio": 0.4612,
-              "frame": "mac",
+              "frame": "phone",
               "caption_zh": "飞书随身端 · 一句话设提醒，随口问近况",
               "caption_en": "In Feishu · set a reminder, ask how it's going"
             },
@@ -677,7 +730,30 @@
         "lede_zh": "非标进，标准出。",
         "caption_zh": "《Mars Together》· 地外剧场板块展报",
         "caption_en": "Mars Together — the Off-World Theater broadsheet"
-      }
+      },
+      "scenes": [
+        {
+          "id": "pipeline",
+          "name_zh": "管线拆解",
+          "name_en": "THE PIPELINE",
+          "copy_ref": "why_built",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "sec": "key_contributions"
+            },
+            {
+              "sec": "how_it_works"
+            },
+            {
+              "sec": "why_it_matters"
+            }
+          ],
+          "images": []
+        }
+      ]
     }
   ],
   "architecture": {

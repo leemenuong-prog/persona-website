@@ -35,12 +35,15 @@ for (const prod of pf.products) {
       assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
         prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
       for (const img of scene.images) {
-        assert.ok(["mac", "browser", "none"].includes(img.frame), scene.id + " image frame must be mac|browser|none");
+        assert.ok(["mac", "browser", "none", "phone"].includes(img.frame), scene.id + " image frame must be mac|browser|none|phone");
       }
-      /* 横向行模块语法(2026-07-08 用户裁定):rows 引用下标必须命中,且每张图恰好被引用一次 */
+      /* 横向行模块语法(2026-07-08 用户裁定):rows 引用下标必须命中,且每张图恰好被引用一次;
+         {sec:"…"} 独立文字节模块(2026-07-10)必须命中五节之一 */
       if (scene.rows) {
         const used = new Map();
         for (const row of scene.rows) {
+          if (row.sec) assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(row.sec),
+            scene.id + " rows.sec '" + row.sec + "' must name a projects.json section");
           const refs = row.imgs ? row.imgs : (row.img != null ? [row.img] : []);
           for (const i of refs) {
             assert.ok(Number.isInteger(i) && i >= 0 && i < scene.images.length,

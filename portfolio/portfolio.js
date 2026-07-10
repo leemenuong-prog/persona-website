@@ -86,6 +86,16 @@
   function win(src, ratio, opts) {
     opts = opts || {};
     var w = h('div', 'win' + (opts.small ? ' win-sm' : ''));
+    if (opts.frame === 'phone') {
+      /* 手机壳：竖屏移动端截图专用（如飞书随身端）——上下窄边框
+         承担设备感，两侧贴边；听筒/指示条只落边框带内，不遮内容 */
+      w.className = 'phone-shell' + (opts.small ? ' win-sm' : '');
+      var scr = h('div', 'win-shot');
+      scr.style.setProperty('--r', ratio);
+      scr.appendChild(img(src, opts.alt));
+      w.appendChild(scr);
+      return w;
+    }
     if (opts.frame !== 'none') {
       var bar = h('div', 'win-bar');
       bar.appendChild(h('span', 'win-dot'));
@@ -526,6 +536,16 @@
         var rt = h('div', 'row-text');
         rt.appendChild(plist(t(section, 'body')));
         wrap.appendChild(rt);
+      } else if (r.sec) {
+        /* 独立文字节模块：引用另一节文案（自带节标题的满宽文字行）——
+           画廊详情里写了的节，作品集必须都有（2026-07-10 用户裁定）；
+           与场景主节异质，上间距拉大（.row-sec） */
+        var sec2 = joined.sections[r.sec];
+        if (!sec2) { console.warn('[portfolio] rows.sec 未命中:', sc.id, r.sec); return; }
+        var rs = h('div', 'row-text row-sec');
+        rs.appendChild(secH(sec2));
+        rs.appendChild(plist(t(sec2, 'body')));
+        wrap.appendChild(rs);
       } else if (r.imgs && r.imgs.length) {
         /* 一图/两图/三图：等高对齐行（单图=满宽） */
         var row = h('div', 'scene-row');

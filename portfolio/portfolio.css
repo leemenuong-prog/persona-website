@@ -250,6 +250,19 @@ html[data-locale="en"] .zh-note { display: none; }
 /* 无框图 */
 .shot-plain { position: relative; aspect-ratio: var(--r, 1.6); border: 1px solid var(--c-border); }
 .shot-plain img { width: 100%; height: 100%; object-fit: cover; }
+/* 手机壳（竖屏移动端截图，如飞书随身端）：全面屏式——上下窄边框 +
+   大圆角，两侧贴边；听筒/指示条落在边框带内不遮内容。无三灯无刘海。 */
+.phone-shell {
+  position: relative; border: 1px solid var(--c-border); border-radius: 14px;
+  padding: 8px 0; background: var(--c-white); overflow: hidden;
+}
+.phone-shell .win-shot { border-radius: 6px; overflow: hidden; }
+.phone-shell::before, .phone-shell::after {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+  background: var(--c-border); border-radius: 1px; height: 2px;
+}
+.phone-shell::before { top: 3px; width: 12px; }
+.phone-shell::after { bottom: 3px; width: 16px; }
 
 /* ════════ 场景组块（三迭代：横向行模块语法，2026-07-08 用户裁定） ════════
    每一行 = 一个横向满宽模块，纵向依次码进 A4，正文禁左右双栏。
@@ -258,6 +271,8 @@ html[data-locale="en"] .zh-note { display: none; }
 .scene > * + * { margin-top: 5mm; }
 .row-text { max-width: 150mm; }
 .row-text .plist li { margin-bottom: 2.2mm; }
+/* 独立文字节模块（rows.sec）：自带节标题，与场景主节异质，上间距拉大 */
+.scene > .row-sec { margin-top: 8mm; }
 .row-ti { display: flex; gap: 6mm; align-items: center; }
 .row-ti .row-ti-text { flex: 1; min-width: 0; }
 .row-ti .row-ti-text .plist li { margin-bottom: 2.2mm; }
@@ -456,10 +471,17 @@ a.work-ext:hover { color: var(--c-title); }
 [data-locale="en"] .p-work .cc-left .plist { font-size: 12.5px; line-height: 1.5; }
 [data-locale="en"] .p-work .cc-left .plist li { margin-bottom: 0.8mm; }
 [data-locale="en"] .p-work .work-oneliner { line-height: 1.55; margin-top: 3.5mm; }
-[data-locale="en"] .p-work .cover-cols { margin-top: 4mm; }
-[data-locale="en"] .p-work .metrics { margin: 3mm 0; padding: 2.5mm 0; }
-[data-locale="en"] .p-work .work-cover-shot { padding-top: 3.5mm; }
-[data-locale="en"] .p-work .shot-head { margin-bottom: 2mm; }
+[data-locale="en"] .p-work .cover-cols { margin-top: 3.5mm; }
+[data-locale="en"] .p-work .metrics { margin: 2.5mm 0; padding: 2mm 0; }
+[data-locale="en"] .p-work .metrics .m-label { margin-top: 0.5mm; }
+[data-locale="en"] .p-work .work-cover-shot { padding-top: 3mm; }
+[data-locale="en"] .p-work .shot-head { margin-bottom: 1.5mm; }
+/* EN 场景页同理微收（2026-07-10：四格数据条+新文字节模块后，Pears 封面与
+   Co-work 平台页 EN 曾压页脚带 6-22px）：行距/图注上距各收零点几毫米 */
+[data-locale="en"] .p-work .scene { margin-top: 4.2mm; }
+[data-locale="en"] .p-work .scene > * + * { margin-top: 4.2mm; }
+[data-locale="en"] .p-work .scene > .row-sec { margin-top: 7mm; }
+[data-locale="en"] .p-work .cell-cap { margin-top: 1.2mm; }
 /* 封面无框海报（frame:"none"，如 UABB 展报）＝图版而非界面窗口：居中内缩呈现，
    顺带让「one_liner+大图」同页的封面不压页脚（2026-07-09） */
 .p-work .work-cover-shot .shot-plain { width: 88%; margin-left: auto; margin-right: auto; }
