@@ -577,7 +577,15 @@
           "body_en": "Featured work of its section, launched virtually in the UABB main hall.\nFor me it was a full rehearsal of designing narrative as a system — the method I later brought to AI products took shape here."
         }
       },
-      "media": [],
+      "media": [
+        {
+          "type": "video-local",
+          "src": "works/aftersilence.mp4",
+          "poster": "works/aftersilence-cover.jpg",
+          "label_zh": "展览影片 · 点击播放",
+          "label_en": "Exhibition film — click to play"
+        }
+      ],
       "contentImages": [
         "assets/project/after-silence/content/1.jpg",
         "assets/project/after-silence/content/2.jpg",

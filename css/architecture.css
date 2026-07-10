@@ -71,6 +71,37 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
 /* 领衔图（作品第一张，先给视觉）：与页头拉开一档 */
 .arch-plate--lead { margin-top: 28px; }
 
+/* ════════ 影片门面（点击加载，不自动播放；与图版同美学，灰阶播放钮） ════════ */
+.arch-video { margin: 28px 0 0; }
+.av-frame {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;
+  border: 1px solid var(--c-border); border-radius: 5px; background: var(--c-cream);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05), 0 18px 40px rgba(0, 0, 0, .07);
+  transition: box-shadow .3s var(--ez);
+}
+.av-frame:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, .08), 0 24px 52px rgba(0, 0, 0, .11); }
+.av-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.92) contrast(1.03); }
+.av-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.av-btn {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255, 255, 255, .92); box-shadow: 0 4px 18px rgba(0, 0, 0, .22);
+  transition: transform .25s var(--ez), background-color .25s;
+}
+.av-btn::after {
+  content: ''; position: absolute; left: 54%; top: 50%; transform: translate(-50%, -50%);
+  border-style: solid; border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent var(--c-title);
+}
+.av-frame:hover .av-btn { transform: translate(-50%, -50%) scale(1.08); background: #fff; }
+.av-label {
+  position: absolute; left: 0; right: 0; bottom: 14px; text-align: center;
+  font: 12px/1.5 var(--font-sans); letter-spacing: .12em;
+  color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, .55); pointer-events: none;
+}
+.av-frame.playing { cursor: default; }
+
 /* ════════ 英雄封面（回响 AI 作品集封面：kicker + 大标题 + 名 + 品牌带） ════════ */
 .arch-hero {
   min-height: calc(86vh - var(--header-h)); min-height: calc(86svh - var(--header-h));
@@ -87,14 +118,6 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
 .arch-hero .ah-name {
   margin: 28px 0 0; font: 13px/1.7 var(--font-sans); letter-spacing: .26em; text-transform: uppercase;
   color: var(--c-body);
-}
-.arch-hero .ah-meta {
-  margin: 8px 0 0; font: 11px/1.7 var(--font-sans); letter-spacing: .24em; text-transform: uppercase;
-  color: var(--c-kw);
-}
-.arch-hero .ah-lede {
-  margin: 26px auto 0; max-width: 560px;
-  font-family: var(--font-serif); font-size: 18px; line-height: 1.75; color: var(--c-body);
 }
 .arch-hero .ah-band { margin: 40px 0 34px; display: flex; justify-content: center; }
 .arch-hero .brandband--hero { --bb-h: 60px; --bb-bar: 7px; --bb-gap: 17px; --bb-dot: 10px; }
@@ -123,7 +146,6 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
 }
 .arch-index .ai-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 30px; letter-spacing: .12em; color: var(--c-title); }
 .arch-index .ai-title .psq { width: 6px; height: 6px; }
-.arch-index .ai-sub { margin: 0; font: 11px/1.7 var(--font-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--c-kw); }
 .arch-index .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .arch-index .ai-card {
   display: flex; flex-direction: column;
@@ -173,7 +195,6 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
 }
 .arch-outro .ao-band { margin-bottom: 30px; }
 .arch-outro .brandband { --bb-h: 40px; --bb-bar: 5px; --bb-gap: 11px; --bb-dot: 6px; }
-.arch-outro .ao-line { margin: 0 auto; max-width: 520px; font-family: var(--font-serif); font-size: 16px; line-height: 1.75; color: var(--c-body); }
 .arch-outro .ao-actions { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 26px; font-family: var(--font-sans); }
 .arch-outro .ao-alt {
   display: inline-flex; align-items: center; height: 44px; padding: 0 24px;

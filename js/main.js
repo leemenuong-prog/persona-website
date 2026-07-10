@@ -17,10 +17,13 @@
         '<a class="wordmark" href="index.html" aria-label=".IAM. — Alnt_med · 回首页">' +
           '<span class="logoslot"></span>' +
         '</a>' +
+        '<a class="nav-btn" href="portfolio/" data-zh="PORTFOLIO" data-en="PORTFOLIO">PORTFOLIO</a>' +
+        '<a class="nav-btn" href="architecture.html"' +
+          (PAGE === 'architecture' ? ' aria-current="page"' : '') +
+          ' data-zh="ARCH" data-en="ARCH">ARCH</a>' +
         '<a class="nav-btn" href="around.html"' +
           (PAGE === 'around' ? ' aria-current="page"' : '') +
           ' data-zh="AROUND" data-en="AROUND">AROUND</a>' +
-        '<a class="nav-btn" href="portfolio/" data-zh="PORTFOLIO" data-en="PORTFOLIO">PORTFOLIO</a>' +
       '</div>' +
       '<div class="header-right">' +
         '<span class="header-name">李文苑<i class="sep">·</i><span class="name-en">ALNT MED</span></span>' +
@@ -40,8 +43,9 @@
       '</div>' +
       /* 站内导航：页脚是 finale 编舞的终点，也是 <1024（无侧钮）时的 ABOUTME 入口 */
       '<nav class="foot-nav" aria-label="站内导航 · Site">' +
-        '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
         '<a href="portfolio/">PORTFOLIO</a>' +
+        '<a href="architecture.html"' + (PAGE === 'architecture' ? ' aria-current="page"' : '') + '>ARCH</a>' +
+        '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
         '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUTME</a>' +
       '</nav>' +
       '<div class="foot-contact">' +

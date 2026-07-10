@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════════════════
    architecture.js — 建筑作品集阅读器（连续滚动图册）。
    照 AI 作品集（portfolio/）的设计语言，但为网页连续流重排：
-   英雄封面 → 目录（六卡）→ 逐作品（页头 + 自述七段 + 跨页图版内嵌）→ 尾声。
+   英雄封面 → 目录（六卡）→ 逐作品（页头 + 自述三段 + 影片/图版内嵌）→ 尾声。
    文案单一事实源 = config/projects.json（七段式）；建筑合集元信息
    （合集简介 / PDF / 排序）取 config/portfolio.json 的 architecture 块。
    站点 chrome（header/footer/lightbox/reveal）由 js/main.js 注入复用。
@@ -13,8 +13,9 @@
   var byId = null, arch = null, meta = null;
   var booted = false;
 
-  /* 自述段落顺序（与 project-detail.js / 文案规则一致） */
-  var SECTION_ORDER = ['tldr', 'why_built', 'key_contributions', 'how_it_works', 'why_it_matters'];
+  /* 阅读器只渲染三段：先说结论 + 为什么 + 系统如何运作（用户裁定 2026-07-10：
+     其余段落多为补写显牵强，精简之；完整七段仍在 projects.json 与详情页） */
+  var SECTION_ORDER = ['tldr', 'why_built', 'how_it_works'];
 
   /* ── 工具 ── */
   function t(obj, base) { return window.I18N ? I18N.t(obj, base) : (obj && obj[base + '_zh']) || ''; }
@@ -83,14 +84,30 @@
     return fig;
   }
 
-  function yearRange() {
-    var years = arch.items.map(function (id) {
-      var p = byId.get(id);
-      return p ? parseInt(p.year, 10) : NaN;
-    }).filter(function (n) { return !isNaN(n); });
-    if (!years.length) return '';
-    var lo = Math.min.apply(null, years), hi = Math.max.apply(null, years);
-    return lo === hi ? '' + lo : lo + '–' + hi;
+  /* 视频门面（点击加载，不自动播放）——照 project-detail.js mediaVideoLocal 范式，
+     但用阅读器自己的灰阶类名，与图版同美学 */
+  function videoFacade(m, alt) {
+    var fig = h('figure', 'arch-video');
+    var frame = h('div', 'av-frame');
+    if (m.poster) {
+      var pi = h('img', 'av-poster');
+      pi.src = m.poster; pi.alt = alt || ''; pi.loading = 'lazy'; pi.decoding = 'async';
+      frame.appendChild(pi);
+    }
+    frame.appendChild(h('span', 'av-btn'));
+    frame.appendChild(h('span', 'av-label', L(m.label_zh || '点击播放', m.label_en || 'Play')));
+    frame.addEventListener('click', function play() {
+      frame.removeEventListener('click', play);
+      frame.classList.add('playing');
+      frame.textContent = '';
+      var v = document.createElement('video');
+      v.src = m.src; v.controls = true; v.playsInline = true; v.preload = 'auto';
+      if (m.poster) v.poster = m.poster;
+      frame.appendChild(v);
+      v.play().catch(function () { /* 需手势的环境交给 controls */ });
+    });
+    fig.appendChild(frame);
+    return fig;
   }
 
   /* ════════ 英雄封面（回响 AI 作品集封面：kicker + 大标题 + 名 + 品牌带） ════════ */
@@ -104,13 +121,6 @@
     sec.appendChild(title);
     sec.appendChild(h('p', 'ah-name', L('李文苑 · 建筑设计', 'LI WENYUAN · ARCHITECTURE')));
 
-    var range = yearRange();
-    sec.appendChild(h('p', 'ah-meta',
-      L('六个作品', 'SIX WORKS') + (range ? ' · ' + range : '')));
-
-    var lede = t(arch, 'lede');
-    if (lede) sec.appendChild(h('p', 'ah-lede', lede));
-
     /* .IAM. 品牌带（封面居中一道，与 AI 作品集封面同编舞） */
     var band = h('div', 'ah-band');
     var mount = h('span');
@@ -121,7 +131,7 @@
     var actions = h('div', 'ah-actions');
     var go = h('a', 'ah-go');
     go.href = '#arch-index';
-    go.textContent = L('浏览六个作品', 'Browse the six works') + ' ↓';
+    go.textContent = L('浏览作品', 'Browse') + ' ↓';
     actions.appendChild(go);
     var alt = h('a', 'ah-alt');
     alt.href = 'portfolio/';
@@ -141,9 +151,6 @@
     title.appendChild(document.createTextNode('INDEX'));
     title.appendChild(psq());
     head.appendChild(title);
-    var range = yearRange();
-    head.appendChild(h('p', 'ai-sub',
-      L('六个建筑作品', 'SIX WORKS OF ARCHITECTURE') + (range ? ' · ' + range : '')));
     sec.appendChild(head);
 
     var grid = h('div', 'ai-grid');
@@ -170,7 +177,7 @@
     return sec;
   }
 
-  /* ════════ 逐作品页（页头 + 自述七段，跨页图版内嵌其间） ════════ */
+  /* ════════ 逐作品页（页头 + 自述三段 + 影片/图版内嵌其间） ════════ */
   function workSection(id, idx) {
     var p = byId.get(id);
     if (!p) { console.warn('[architecture] id 不在 projects.json:', id); return null; }
@@ -213,8 +220,7 @@
     var one = t(p, 'one_liner');
     if (one) sec.appendChild(h('p', 'oneliner aw-oneliner', one));
 
-    /* 图版 + 自述交错：先以首图领衔（建筑先给视觉），
-       其后每一段自述后补一张图版，图用尽则纯文字收尾 */
+    /* 图版 + 自述交错：领衔给视觉，其后每一段自述后补一张图版，图用尽则纯文字收尾 */
     var imgs = (p.contentImages || []).slice();
     var altBase = t(p, 'title');
     var plateNo = 0;
@@ -226,7 +232,10 @@
         L('图版 ', 'PLATE ') + pad2(plateNo), lead);
     }
 
-    var lead = nextPlate(true);
+    /* 领衔：作品挂了展映影片（projects.json media）则影片门面领衔（不吃图版，
+       图版全部留给正文交错）；否则首图版领衔 */
+    var vid = (p.media || []).filter(function (m) { return m.type === 'video-local'; })[0];
+    var lead = vid ? videoFacade(vid, altBase) : nextPlate(true);
     if (lead) sec.appendChild(lead);
 
     var body = h('div', 'aw-body');
@@ -276,10 +285,6 @@
     band.appendChild(mount);
     sec.appendChild(band);
     if (window.Barmorph) Barmorph.mountBrandBand(mount);
-
-    sec.appendChild(h('p', 'ao-line',
-      L('六个建筑作品——体系化训练的来处。',
-        'Six works of architecture — where the systems training comes from.')));
 
     var actions = h('div', 'ao-actions');
     var alt = h('a', 'ao-alt');

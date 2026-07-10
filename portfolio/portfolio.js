@@ -313,7 +313,7 @@
     title.appendChild(document.createTextNode('INDEX'));
     title.appendChild(psq());
     inner.appendChild(title);
-    inner.appendChild(h('p', 'index-sub', L('AI 产品 × 建筑 · 六个作品', 'SIX WORKS · AI PRODUCT × ARCHITECTURE')));
+    inner.appendChild(h('p', 'index-sub', L('AI 产品 × 建筑', 'AI PRODUCT × ARCHITECTURE')));
 
     var grid = h('div', 'matrix');
     function card(href, name, numStr, meta, thumbSrc, alt) {
@@ -591,7 +591,8 @@
     title.appendChild(document.createTextNode(arch.title_en));
     title.appendChild(h('span', 'zh-note', arch.title_zh));
     inner.appendChild(title);
-    inner.appendChild(h('p', 'arch-lede', t(arch, 'lede')));
+    var archLede = t(arch, 'lede');
+    if (archLede) inner.appendChild(h('p', 'arch-lede', archLede));
 
     var grid = h('div', 'arch-grid');
     arch.items.forEach(function (id) {
