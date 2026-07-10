@@ -616,7 +616,7 @@
 
     var pdf = h('p', 'arch-pdf');
     var a = h('a', null, t(arch, 'pdf_label') + ' ↗');
-    a.href = arch.pdf; a.target = '_blank'; a.rel = 'noopener';
+    a.href = pf.meta.site_url + 'architecture.html'; a.target = '_blank'; a.rel = 'noopener';
     pdf.appendChild(a);
     inner.appendChild(pdf);
 
@@ -694,8 +694,6 @@
     deck.appendChild(frag.apply(null, sheets));
 
     document.title = 'Portfolio · Alnt_med';
-    var pdfLink = document.querySelector('.pf-pdf');
-    if (pdfLink && pf.meta.pdf) pdfLink.href = '../' + (pf.meta.pdf[locale()] || pf.meta.pdf.zh);
 
     if (booted || matchMedia('print').matches) {
       sheets.forEach(function (holder) { holder.classList.add('in'); });

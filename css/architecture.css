@@ -1,0 +1,208 @@
+/* ════════════════════════════════════════════════════════════
+   architecture.css — 建筑作品集阅读器（连续滚动图册）。
+   借 AI 作品集（portfolio.css）的版式原子——kicker / sec-h（英文大标+
+   中文小注）/ plist / oneliner / psq / 矩阵卡——但为网页连续流重排，
+   非 A4 纸盒：跨页图版全宽内嵌，逐作品纵向码放。颜色全走 tokens 令牌。
+   站点 chrome（header/footer/lightbox）由 css/main.css 承担，此处不重复。
+   ════════════════════════════════════════════════════════════ */
+
+/* 阅读器统一栏宽：文字块另收窄到可读宽度，图版吃满此栏 */
+#arch-deck { --aw: min(1120px, 100% - 56px); --tw: 760px; padding-bottom: 40px; }
+#arch-deck section { width: var(--aw); margin-inline: auto; }
+
+/* 中文小注：EN 版整体隐去（英文大标题双层结构的下层，与 portfolio.css 同口径） */
+html[data-locale="en"] #arch-deck .zh-note { display: none; }
+
+/* ── 屏显入场（仅首次；只动 opacity/transform，合成器安全） ── */
+.arch-reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ez), transform .8s var(--ez); }
+.arch-reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .arch-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ════════ 版式原子（借 portfolio.css，尺度上调到网页阅读档） ════════ */
+#arch-deck .kicker {
+  font: 11px/1.6 var(--font-sans); letter-spacing: .3em; text-transform: uppercase;
+  color: var(--c-kw); margin: 0;
+}
+#arch-deck .psq { display: inline-block; width: .16em; height: .16em; background: var(--c-emph); margin-left: .18em; vertical-align: .12em; }
+
+#arch-deck .sec-h {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 0 0 18px; padding-bottom: 9px;
+  border-bottom: 1px solid var(--c-border);
+  font-family: var(--font-serif); font-weight: 600; font-size: 21px; letter-spacing: .01em;
+  color: var(--c-title);
+}
+#arch-deck .sec-h .zh-note { font: 400 12px/1 var(--font-sans); letter-spacing: .16em; color: var(--c-kw); }
+
+#arch-deck .oneliner {
+  margin: 0; padding-left: 18px; border-left: 2px solid var(--c-border);
+  font-style: italic; font-size: 19px; line-height: 1.7; color: var(--c-sub);
+  max-width: var(--tw);
+}
+
+#arch-deck .plist { list-style: none; margin: 0; padding: 0; max-width: var(--tw); }
+#arch-deck .plist li { position: relative; padding-left: 22px; margin: 0 0 10px; font-size: 16.5px; line-height: 1.72; color: var(--c-body); }
+#arch-deck .plist li::before { content: '—'; position: absolute; left: 0; color: var(--c-kw); }
+#arch-deck .plist b { font-weight: 700; color: var(--c-title); }
+
+#arch-deck .stack-line {
+  font-family: var(--font-serif); font-variant: small-caps; letter-spacing: .06em;
+  font-size: 14px; color: var(--c-sub); margin: 30px 0 0; max-width: var(--tw);
+}
+#arch-deck .stack-line .stack-label { color: var(--c-kw); margin-right: 12px; letter-spacing: .1em; }
+
+/* ════════ 跨页图版（全宽横构图 + 图注 + 点击 lightbox） ════════ */
+.arch-plate { margin: 34px 0 0; }
+.arch-plate img {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--c-border); border-radius: 5px;
+  background: var(--c-white);
+  filter: saturate(.92) contrast(1.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05), 0 18px 40px rgba(0, 0, 0, .07);
+  cursor: zoom-in; transition: box-shadow .3s var(--ez);
+}
+.arch-plate img:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, .08), 0 24px 52px rgba(0, 0, 0, .11); }
+.arch-plate figcaption {
+  margin-top: 10px; text-align: center;
+  font: 11px/1.5 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--c-kw);
+}
+/* 领衔图（作品第一张，先给视觉）：与页头拉开一档 */
+.arch-plate--lead { margin-top: 28px; }
+
+/* ════════ 英雄封面（回响 AI 作品集封面：kicker + 大标题 + 名 + 品牌带） ════════ */
+.arch-hero {
+  min-height: calc(86vh - var(--header-h)); min-height: calc(86svh - var(--header-h));
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 48px 0 40px;
+}
+.arch-hero .ah-kicker { margin-bottom: 26px; }
+.arch-hero .ah-title {
+  margin: 0; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(56px, 11vw, 128px); line-height: 1; letter-spacing: .32em;
+  padding-left: .32em; color: var(--c-title);
+}
+.arch-hero .ah-title .psq { width: .1em; height: .1em; margin-left: .04em; vertical-align: .18em; }
+.arch-hero .ah-name {
+  margin: 28px 0 0; font: 13px/1.7 var(--font-sans); letter-spacing: .26em; text-transform: uppercase;
+  color: var(--c-body);
+}
+.arch-hero .ah-meta {
+  margin: 8px 0 0; font: 11px/1.7 var(--font-sans); letter-spacing: .24em; text-transform: uppercase;
+  color: var(--c-kw);
+}
+.arch-hero .ah-lede {
+  margin: 26px auto 0; max-width: 560px;
+  font-family: var(--font-serif); font-size: 18px; line-height: 1.75; color: var(--c-body);
+}
+.arch-hero .ah-band { margin: 40px 0 34px; display: flex; justify-content: center; }
+.arch-hero .brandband--hero { --bb-h: 60px; --bb-bar: 7px; --bb-gap: 17px; --bb-dot: 10px; }
+.arch-hero .ah-actions {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 26px;
+  font-family: var(--font-sans);
+}
+.arch-hero .ah-go {
+  display: inline-flex; align-items: center; height: 44px; padding: 0 24px;
+  border: 1px solid var(--c-sub); border-radius: 22px;
+  font-size: 14px; letter-spacing: .08em; color: var(--c-sub);
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.arch-hero .ah-go:hover { background: var(--c-title); border-color: var(--c-title); color: var(--c-white); }
+.arch-hero .ah-alt {
+  font-size: 13px; letter-spacing: .1em; color: var(--c-kw);
+  border-bottom: 1px solid var(--c-border); padding-bottom: 2px; transition: color .2s, border-color .2s;
+}
+.arch-hero .ah-alt:hover { color: var(--c-title); border-color: var(--c-kw); }
+
+/* ════════ 目录（六卡矩阵） ════════ */
+.arch-index { padding: 8px 0 20px; scroll-margin-top: calc(var(--header-h) + 18px); }
+.arch-index .ai-head {
+  display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  padding-bottom: 16px; margin-bottom: 30px; border-bottom: 1px solid var(--c-border);
+}
+.arch-index .ai-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 30px; letter-spacing: .12em; color: var(--c-title); }
+.arch-index .ai-title .psq { width: 6px; height: 6px; }
+.arch-index .ai-sub { margin: 0; font: 11px/1.7 var(--font-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--c-kw); }
+.arch-index .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.arch-index .ai-card {
+  display: flex; flex-direction: column;
+  background: var(--c-white); border: 1px solid var(--c-border); border-radius: 6px;
+  padding: 16px 16px 18px; transition: border-color .2s, transform .3s var(--ez), box-shadow .3s var(--ez);
+}
+.arch-index .ai-card:hover { border-color: var(--c-kw); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 0, 0, .07); }
+.arch-index .aic-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.arch-index .aic-name { font: 600 13px/1.4 var(--font-sans); letter-spacing: .02em; color: var(--c-title); }
+.arch-index .aic-num { font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--c-title); flex: 0 0 auto; }
+.arch-index .aic-meta { margin-top: 3px; font: 10.5px/1.5 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--c-kw); }
+.arch-index .aic-thumb { margin-top: 16px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 3px; background: var(--c-cream); }
+.arch-index .aic-thumb img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) contrast(1.03); transition: transform .5s var(--ez); }
+.arch-index .ai-card:hover .aic-thumb img { transform: scale(1.03); }
+
+/* ════════ 逐作品页 ════════ */
+.arch-work {
+  padding-top: 84px; margin-top: 76px; border-top: 1px solid var(--c-border);
+  scroll-margin-top: calc(var(--header-h) + 18px);
+}
+.arch-work .aw-head { margin-bottom: 6px; }
+.arch-work .aw-head .kicker { margin-bottom: 12px; }
+.arch-work .aw-title-row { display: flex; align-items: baseline; gap: 16px; }
+.arch-work .aw-title {
+  margin: 0; font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(34px, 5.4vw, 56px); line-height: 1.08; letter-spacing: .005em; color: var(--c-title);
+}
+.arch-work .aw-title .psq { width: .11em; height: .11em; }
+.arch-work .aw-ext { font-family: var(--font-display); font-size: 26px; color: var(--c-kw); transition: color .2s; }
+.arch-work .aw-ext:hover { color: var(--c-title); }
+.arch-work .aw-kw { margin: 16px 0 0; font-style: italic; font-size: 15px; color: var(--c-kw); max-width: var(--tw); }
+.arch-work .aw-meta { margin: 8px 0 0; font: 12px/1.7 var(--font-sans); letter-spacing: .1em; color: var(--c-muted); }
+.arch-work .aw-award { margin: 14px 0 0; font: 13px/1.7 var(--font-sans); letter-spacing: .04em; color: var(--c-sub); }
+.arch-work .aw-award .psq { width: 4px; height: 4px; }
+.arch-work .aw-oneliner { margin-top: 24px; }
+
+.arch-work .aw-body { margin-top: 8px; }
+.arch-work .aw-sec { margin-top: 40px; }
+.arch-work .aw-more { margin: 30px 0 0; font: 13px/1.7 var(--font-sans); letter-spacing: .08em; }
+.arch-work .aw-more a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+.arch-work .aw-more a:hover { color: var(--c-title); border-color: var(--c-title); }
+
+/* ════════ 尾声 ════════ */
+.arch-outro {
+  margin-top: 90px; padding: 70px 0 30px; border-top: 1px solid var(--c-border);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.arch-outro .ao-band { margin-bottom: 30px; }
+.arch-outro .brandband { --bb-h: 40px; --bb-bar: 5px; --bb-gap: 11px; --bb-dot: 6px; }
+.arch-outro .ao-line { margin: 0 auto; max-width: 520px; font-family: var(--font-serif); font-size: 16px; line-height: 1.75; color: var(--c-body); }
+.arch-outro .ao-actions { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 26px; font-family: var(--font-sans); }
+.arch-outro .ao-alt {
+  display: inline-flex; align-items: center; height: 44px; padding: 0 24px;
+  border: 1px solid var(--c-sub); border-radius: 22px;
+  font-size: 14px; letter-spacing: .08em; color: var(--c-sub);
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.arch-outro .ao-alt:hover { background: var(--c-title); border-color: var(--c-title); color: var(--c-white); }
+.arch-outro .ao-top { font-size: 13px; letter-spacing: .1em; color: var(--c-kw); border-bottom: 1px solid var(--c-border); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+.arch-outro .ao-top:hover { color: var(--c-title); border-color: var(--c-kw); }
+
+.arch-error { width: min(1120px, 100% - 56px); margin: 80px auto; text-align: center; color: var(--c-kw); }
+
+/* ════════ 响应式 ════════ */
+@media (max-width: 900px) {
+  .arch-index .ai-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  #arch-deck { --aw: calc(100% - 36px); }
+  .arch-hero { min-height: calc(72vh - var(--header-h)); min-height: calc(72svh - var(--header-h)); }
+  .arch-hero .ah-title { letter-spacing: .18em; padding-left: .18em; }
+  .arch-work { padding-top: 56px; margin-top: 52px; }
+  .arch-work .aw-title-row { gap: 10px; }
+  #arch-deck .sec-h { font-size: 19px; }
+  .arch-plate { margin-top: 26px; }
+  .arch-outro { margin-top: 60px; padding-top: 50px; }
+}
+@media (max-width: 559px) {
+  .arch-index .ai-grid { grid-template-columns: 1fr; }
+  #arch-deck .oneliner { font-size: 17px; }
+  #arch-deck .plist li { font-size: 16px; }
+}
