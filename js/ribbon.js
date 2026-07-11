@@ -46,11 +46,14 @@
   var PSI_MAX = 35;              /* 飞入扭转峰值（deg，绕路径切线） */
   var HYST = Math.sin(1.5 * D2R);/* 迁移迟滞 ±1.5° */
   var INTRO_DUR = 4600;          /* 飞入幕时长（ms）：easeOutSine 终点导数 0 → C¹ 融进巡航 */
-  var SEAM = 0.08;               /* 卡间缝 = 0.08H（参与环闭合） */
-  var MAX_FOLD = 4 * D2R;        /* 相邻 strip 折角上限（弯曲顺滑度） */
+  var SEAM = 0.025;              /* 卡间缝 = 0.025H（参与环闭合）。六迭代由 0.08 收窄：
+                                    缝越宽卡间折角越集中（半条+缝+半条），曾在环前侧读成生硬切痕 */
+  var MAX_FOLD = 2.6 * D2R;      /* 相邻 strip 折角上限（弯曲顺滑度）。六迭代 4°→2.6°（~138 条）：
+                                    连同窄缝把带内/卡间折角拉平到 ≈2.6/3.2°，切线连续无折痕 */
   var OVERLAP = 0.75;            /* strip 重叠 px：防投影取整白缝 */
   var Q_REF = 3.9;               /* 定标锚：远端参考弧角（rad） */
-  var SCALE_FAR = 0.42;          /* 定标锚：远端投影 scale（入场「小」的程度） */
+  var SCALE_FAR = 0.36;          /* 定标锚：远端投影 scale。六迭代 0.42→0.36（入场更远更小，
+                                    远处折角在屏上更不可辨——用户「飞远一些」） */
   var BOT_FRAC = 0.55;           /* 定标锚：掠底点投影 y = 0.55×半层高（层下半） */
 
   var strips = [];               /* {el, img, shade, id, s, w, side, phi, _o} */
@@ -69,7 +72,7 @@
   /* ── 镜像路径（环局部坐标，y 向下为正；tilt/bank 由 world 统一施加） ── */
   function pathPos(u, g) {
     var q = Math.max(0, -u);
-    var r = g.R * (1 + 0.22 * Math.pow(q, 1.7));
+    var r = g.R * (1 + 0.16 * Math.pow(q, 1.6));       /* 六迭代放缓外扩：螺线曲率更贴近环，飞行中折角不放大 */
     var lift = g.ky * Math.pow(q, 1.4);                /* 正=向下：掠屏幕底部 */
     var pull = -g.kz * Math.pow(q, 1.6);               /* 恒负：入场远景小（从小到大） */
     return [-r * Math.sin(u), lift, r * Math.cos(u) + pull];
