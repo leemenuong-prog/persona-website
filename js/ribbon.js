@@ -33,9 +33,9 @@
   var PERSP = 1500;              /* 与 css .ribbon-layer 的 perspective 同值 */
   var TILT = -22;                /* 环倾斜 rotateX（deg）：后弧抬高让位大标题（三迭代 −14→−22） */
   var BANK = -4;                 /* 环斜置 rotateZ（deg）：微斜，不把后弧压回标题（−7→−4） */
-  var COVER = 0.30;              /* 后弧带顶边锚在标题 (1−COVER) 高度线：只没入字下段 30%、
-                                    藏在（更深的）字色后面——标题上 70% 恒清晰；前弧整体在标题下方
-                                    （对齐参考视频「标题在上、环带绕其下」的关系） */
+  var COVER = 0.35;              /* 前弧带顶边锚在标题 (1−COVER) 高度线：前弧压字下段 35%、
+                                    后弧从字后绕过并露出字上方 —— 环「套住」标题（四迭代核心裁定，
+                                    勿再让环与标题分离）；后弧顶另有 header 越界守卫 */
   var MARGIN_Z = 40;             /* 世界深度上限 −40px：投影 scale 恒 <1 */
   var H_DIV = 2.0;               /* 带高 H = token 宽 ÷ H_DIV（旋钮：前弧偏大则加大） */
   var X_FRAC = 0.32;             /* 环投影半宽 = X_FRAC×vw（旋钮） */
@@ -110,17 +110,24 @@
     };
     g.gain = R2D / (R * g.sf);                         /* 拖拽：前弧带贴手指（°/px） */
 
-    /* 环心纵向：桌面由「后弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y（后弧顶只没入
-       字下段、藏在字后，标题上部恒清晰；前弧随之落在标题下方）；手机对 hero 中心 */
+    /* 环心纵向：桌面由「前弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y——前弧压字前、
+       后弧从字后/字上方绕过，环「套住」标题；守卫：后弧顶不得越出 hero 顶压 header。
+       手机档对 hero 中心（三段式布局） */
+    var sinAbsT = Math.sin(-TILT * D2R);
+    var sb = PERSP / (PERSP + Zoff + R * g.cosT);      /* 后弧投影 scale */
     if (!MOBILE.matches && els.nameText) {
       var nameTop = 0, e = els.nameText;
       while (e && e !== els.hero) { nameTop += e.offsetTop; e = e.offsetParent; }
       var nameH = els.nameText.offsetHeight;
-      var zb = -Zoff - R * g.cosT;                     /* 后弧深度 → 后弧投影 scale */
-      var sb = PERSP / (PERSP - zb);
-      var backTop = nameTop + nameH * (1 - COVER) - layer.height / 2;
-      g.yc = (backTop + (H / 2) * sb) / sb + R * Math.sin(-TILT * D2R);
+      var frontTop = nameTop + nameH * (1 - COVER) - layer.height / 2;
+      g.yc = (frontTop + (H / 2) * g.sf) / g.sf - R * sinAbsT;
+      var backTopMin = 8 - layer.height / 2;           /* 后弧顶最高到 hero 顶 +8px */
+      var backTop = (g.yc - R * sinAbsT) * sb - (H / 2) * sb;
+      if (backTop < backTopMin) {
+        g.yc = (backTopMin + (H / 2) * sb) / sb + R * sinAbsT;
+      }
     }
+    g.sb = sb;
 
     /* 定标二元二轮：kz=远端(Q_REF)投影 scale=SCALE_FAR；ky=掠底点(q=π)投影 y=BOT_FRAC×半层高。
        kz 允许负（螺线 r 外扩本身已把远端推小，基线可能低于目标；负 kz=微拉近，
@@ -361,6 +368,21 @@
     els.frontW.appendChild(frag);
     relayout();                                        /* 解几何 + 写布局 + 摆 idle 首帧 */
   }
+  /* 环的地面阴影：椭圆压在前弧下缘（重量感，静态透明度不呼吸）；仅 relayout 写 */
+  function layoutFloor() {
+    if (!els.floor) return;
+    var layerH = els.frontLayer.getBoundingClientRect().height;
+    var layerW = els.frontLayer.getBoundingClientRect().width;
+    var frontBottom = layerH / 2 +
+      (geo.yc + geo.R * Math.sin(-TILT * D2R)) * geo.sf + (geo.H / 2) * geo.sf;
+    var halfW = geo.R * PERSP / (PERSP + geo.Zoff);    /* 环投影半宽（侧棱深度处） */
+    var w = halfW * 2 * 1.06;
+    var h = Math.max(46, halfW * 0.3);
+    els.floor.style.width = w.toFixed(0) + 'px';
+    els.floor.style.height = h.toFixed(0) + 'px';
+    els.floor.style.left = ((layerW - w) / 2).toFixed(0) + 'px';
+    els.floor.style.top = (frontBottom - h * 0.35).toFixed(0) + 'px';
+  }
   /* 布局尺寸写 px（仅 init/relayout；宽随卡变）+ 弧长偏移 s */
   function layoutStrips() {
     strips.forEach(function (st) {
@@ -411,6 +433,7 @@
       frontW: frontLayer.querySelector('.ribbon-world'),
       backW: document.querySelector('.ribbon-back .ribbon-world'),
       hit: document.querySelector('.ribbon-hit'),
+      floor: document.querySelector('.ribbon-floor'),
       nameText: document.querySelector('.hero-name-text')
     };
 
@@ -454,6 +477,7 @@
     sEnd = geo.L;                                      /* = 2πR：头尾精确合拢 */
     omegaArc = BASE * 60 * D2R * geo.R;
     layoutStrips();
+    layoutFloor();
     if (mode === 'intro') { freezeToRing(sEnd + omegaArc * tIntro / 1000); return; }
     if (mode === 'ring' || mode === 'static') {
       for (var j = 0; j < strips.length; j++) {

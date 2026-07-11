@@ -26,18 +26,13 @@
   --hero-fit: 1;                    /* fitHeroName() 一次拟合到 ≈92vw */
   display: inline-block;            /* 行内元素不吃 transform；视差/offsetWidth 都需要盒 */
   font-family: var(--font-display);
-  font-weight: 400;                 /* 常规体（用户裁定：Bold 形态不像「他的字体」，重量感靠短文案大字号+深渐变） */
+  font-weight: 400;                 /* 常规体（用户裁定：Bold 形态不像「他的字体」） */
   font-size: calc(clamp(64px, 13vw, 264px) * var(--hero-fit));
   line-height: .9;
   letter-spacing: .04em;
   white-space: nowrap;
   -webkit-user-select: none; user-select: none;
-  /* 距离渐变整体压深两档（两端 #333、中心 #999）：环穿字而过仍读得住（全取灰阶令牌梯，勿引编外灰） */
-  background: linear-gradient(90deg,
-    #333333 0%, #6F6F6F 26%, #999999 42%,
-    #999999 58%, #6F6F6F 74%, #333333 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--c-title);            /* 标准标题色（2026-07-11 四迭代用户裁定：距离渐变废除，勿恢复 background-clip 渐变） */
 }
 
 /* ── 贴底行：左 intro（原两行降级）+ 右精选 ── */
@@ -80,9 +75,11 @@
   .hero-name         { animation: heroNameIn .95s var(--ez) both; }
   .polygon-container { animation: heroRise .85s var(--ez) both .35s; }
   .ribbon-layer      { animation: ribbonFade .85s var(--ez) both .35s; }   /* 纯 opacity：勿加 transform（双容器投影必须逐像素一致） */
+  .ribbon-floor      { animation: ribbonFade .85s var(--ez) both .35s; }
   .hero-intro        { animation: heroRise .85s var(--ez) both .55s; }
   .hero-aside        { animation: heroRise .85s var(--ez) both .7s; }
   html.loading .hero-name, html.loading .polygon-container, html.loading .ribbon-layer,
+  html.loading .ribbon-floor,
   html.loading .hero-intro, html.loading .hero-aside { animation-play-state: paused; }
 }
 @keyframes ribbonFade { from { opacity: 0; } to { opacity: 1; } }
@@ -135,9 +132,17 @@
 }
 .ribbon-back  { z-index: 1; }
 .ribbon-front { z-index: 4; }
+/* 环的地面阴影（重量感，沿旧立方体接触影语汇）：静态径向渐变一次成型，
+   位置/尺寸由 ribbon.js 随几何写（仅 relayout，非逐帧）；透明度恒定不呼吸 */
+.ribbon-floor {
+  position: absolute; z-index: 0;
+  background: radial-gradient(ellipse 50% 50% at center,
+    rgba(24, 24, 24, .20) 0%, rgba(24, 24, 24, .09) 46%, transparent 72%);
+  pointer-events: none;
+}
 /* 拖拽命中带：环带区域的透明矩形（卡缝/空区也能起手拨环）；hero-foot z5 压其上不受影响 */
 .ribbon-hit {
-  position: absolute; left: 0; right: 0; top: 22%; bottom: 10%;
+  position: absolute; left: 0; right: 0; top: 8%; bottom: 30%;
   z-index: 3;
   touch-action: pan-y;   /* 竖划还给页面滚动（浏览器接管发 pointercancel）；横向起手归拨环 */
   cursor: grab;

@@ -54,6 +54,9 @@
       <!-- 丝带舞台流内占位（buildSpine 锚此下缘；高度纯 CSS，勿依赖 JS/图片）；波点场装饰在其 ::before -->
       <div class="polygon-container" aria-hidden="true"></div>
 
+      <!-- 环的地面阴影（椭圆径向渐变，静态；位置/尺寸由 ribbon.js 随几何写一次，非逐帧） -->
+      <div class="ribbon-floor" aria-hidden="true"></div>
+
       <!-- 3D 作品丝带：双容器 z-split 深度遮挡（back z1 → 大字 z2 → hit z3 → front z4 → foot z5）。
            卡片由 js/ribbon.js 生成并按世界深度在 back/front 间迁移；禁给两容器套共用 transform wrapper -->
       <div class="ribbon-layer ribbon-back" aria-hidden="true"><div class="ribbon-world"></div></div>
@@ -62,18 +65,15 @@
 
       <!-- 贴底行：左 intro + 右精选 -->
       <div class="hero-foot">
+        <!-- 英雄页统一英文（2026-07-11 四迭代用户裁定）：不挂 data-zh/en，语言切换不影响本区 -->
         <div class="hero-intro">
           <p class="intro-kick">THE ART OF RATIONALITY</p>
-          <p class="intro-title">
-            <span data-zh="你好，我是 " data-en="HI, I AM ">你好，我是 </span>
-            <span class="b" data-zh="李文苑" data-en="WENYUAN LI">李文苑</span>
-            <span data-zh="。" data-en=".">。</span>
-          </p>
+          <p class="intro-title">HI, I AM <span class="b">WENYUAN LI</span>.</p>
         </div>
         <aside class="hero-aside">
-          <p class="aside-kick" data-zh="精选 — SELECTED" data-en="SELECTED WORK">精选 — SELECTED</p>
-          <a class="aside-item" href="project.html?id=pears"><span data-zh="Pears · AI 产品" data-en="Pears · AI Product">Pears · AI 产品</span><i class="asq"></i></a>
-          <a class="aside-item" href="project.html?id=cowork"><span data-zh="Co-work · AIGC 工作流" data-en="Co-work · AIGC Workflow">Co-work · AIGC 工作流</span><i class="asq"></i></a>
+          <p class="aside-kick">SELECTED WORK</p>
+          <a class="aside-item" href="project.html?id=pears"><span>Pears · AI Product</span><i class="asq"></i></a>
+          <a class="aside-item" href="project.html?id=cowork"><span>Co-work · AIGC Workflow</span><i class="asq"></i></a>
         </aside>
       </div>
     </section>
