@@ -584,6 +584,15 @@ a.work-ext:hover { color: var(--c-title); }
   .site-header .nav-btn { font-size: 11px; padding: 0 4px; }
 }
 
+/* ════════ 册尾 PDF 入口（仅屏显，print 走 .screen-only 隐藏） ════════ */
+.deck-pdf { text-align: center; padding: 4px 0 56px; }
+.deck-pdf a {
+  font: 10px/1.7 var(--font-sans); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c-sub); text-decoration: none;
+  border-bottom: 1px solid var(--c-kw); padding-bottom: 2px;
+}
+.deck-pdf a:hover { color: var(--c-title); border-color: var(--c-title); }
+
 /* ════════ 打印 ════════ */
 @page { size: 210mm 297mm; margin: 0; }
 @media print {

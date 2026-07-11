@@ -53,8 +53,8 @@
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "这两年 AI 能力猛涨，可我看到一个反差：团队里大量能交给 Agent 的重复活，还在拖着人往前走。\n我想把「做一个 Agent」的门槛，从「跟 AI 把需求讲清楚」换成「把这件事做一遍给它看」。\n我一个人做了个私域 Agent 开发平台：看你操作、把轨迹蒸馏成一份能读能改的 PRD，再交给 AI 编码 Agent 生成你专属的 Workflow Agent，从 0 做到上线。\n拿了清华 AI Agent 高校联盟黑客松季军，也是现场企业对接意向最多的项目之一。",
-          "body_en": "AI has leapt ahead these past two years, but I kept seeing the same gap: teams still dragging through repetitive work that an agent could take off their hands.\nI wanted to move the bar for building an agent from \"explain the requirement to an AI\" to \"just do the task once and let it watch.\"\nSolo, I built a private-domain agent platform: it watches you work, distills the trace into a PRD you can read and edit, then hands it to an AI coding agent that builds a workflow agent of your own — zero to launch.\nIt took 2nd runner-up at the Tsinghua AI Agent collegiate hackathon, and drew some of the most enterprise interest on site.",
+          "body_zh": "这两年 AI 能力猛涨，可我看到一个反差：团队里大量能交给 Agent 干的活，还在拖累着人的工作效率。\n我想把「做一个 Agent」的门槛，从「跟 AI 把需求讲清楚」换成「把这件事做一遍给它看」。\n我一个人做了个私域 Agent 开发平台：看你操作、把轨迹蒸馏成一份能读能改的 PRD，再交给 AI 编码成你专属的 Workflow Agent，从 0 做到上线。\n最后拿了清华 AI Agent 高校联盟黑客松季军，也是现场企业对接意向最多的项目之一。",
+          "body_en": "AI has leapt ahead these past two years, but I kept seeing the same gap: piles of work an agent could do were still dragging down people's productivity.\nI wanted to move the bar for building an agent from \"explain the requirement to an AI\" to \"just do the task once and let it watch.\"\nSolo, I built a private-domain agent platform: it watches you work, distills the trace into a PRD you can read and edit, then has AI code it into a workflow agent of your own — zero to launch.\nIn the end it took 2nd runner-up at the Tsinghua AI Agent collegiate hackathon, and drew some of the most enterprise interest on site.",
           "figure": {
             "src": "assets/project/pears/content/plate-core.svg"
           }
@@ -62,20 +62,20 @@
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "AI coding 把写代码这件事的门槛降下来了，可最懂业务的一线同事，手里还是没有一个属于自己的「AI 员工」。\n难点在于：最懂业务的人，往往最不擅长把需求讲清楚——让他们写提示词、画流程图，等于又立了一道新门槛。\n可每个人都会做自己每天在做的事。把「做一遍」本身当成需求，门槛就没了。",
-          "body_en": "AI coding brought the bar for writing software way down, yet the front-line colleagues who understand the business best still don't have an \"AI employee\" of their own.\nThe catch: the people who know the work are usually the worst at describing it — ask them to write prompts or draw flowcharts and you've just raised a new barrier.\nBut everyone can do the job they do every day. Treat \"doing it once\" as the spec, and the barrier is gone."
+          "body_zh": "AI coding 把写代码这件事的门槛降下来了，可最懂业务的一线同事，手里还是没有一个属于自己的「AI 员工」。\n难点在于：懂业务的人，不一定擅长把需求讲清楚——让他们写提示词、画流程图，等于又立了一道新门槛。\n可每个人都会做自己每天在做的事。把「做一遍」当成需求，门槛就没了。",
+          "body_en": "AI coding brought the bar for writing software way down, yet the front-line colleagues who understand the business best still don't have an \"AI employee\" of their own.\nThe catch: the people who know the business aren't necessarily good at describing it — ask them to write prompts or draw flowcharts and you've just raised a new barrier.\nBut everyone can do the job they do every day. Treat \"doing it once\" as the spec, and the barrier is gone."
         },
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "从产品定义到上线，全程一个人跑下来，没有团队分工兜底。\n设计了「观察 → 蒸馏 → 生成」这条学习路径：轨迹不直接变代码，中间先落成一份人能读、能改的 PRD——自动化到哪一步，你说了算。\n隐私边界第一天就定死：只在你开口时才记录，你一停下任务，记录立刻结束。\n现场路演拿下季军，是企业对接意向最多的项目之一（4+ 家），选手互投里人气第一（36/85）。",
-          "body_en": "Ran the whole thing solo, product definition to launch — no team to divide the work or fall back on.\nDesigned the observe → distill → generate path: the trace never turns straight into code; it first lands as a PRD you can read and edit, and how far the automation goes is your call.\nPrivacy was fixed on day one: it records only when you say so, and stops the instant you stop the task.\n2nd runner-up at the live roadshow, among the most enterprise-courted projects there (4+ companies), and first in the contestants' own popular vote (36/85)."
+          "body_zh": "独立完成从产品定义到上线的全流程。\n设计了「观察 → 蒸馏 → 生成」这条学习路径：轨迹不直接变代码，中间先落成一份人能读、能改的 PRD——自动化到哪一步，你说了算。\n隐私边界从第一天就守住：只在你开口时才记录，停止任务，记录立即结束。\n现场路演拿下季军，是企业对接意向最多的项目之一（4+ 家），选手互投里人气第一（36/85 组）。",
+          "body_en": "Completed the full run from product definition to launch, solo.\nDesigned the observe → distill → generate path: the trace never turns straight into code; it first lands as a PRD you can read and edit, and how far the automation goes is your call.\nPrivacy held from day one: it records only when you say so — stop the task, and recording ends on the spot.\n2nd runner-up at the live roadshow, among the most enterprise-courted projects there (4+ companies), and first in the contestants' own popular vote (36/85 teams)."
         },
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "对齐：先用一段澄清对话和一份目标文档，跟它说清楚这件事要做成什么样。\n示范：你在浏览器里照常把工作做一遍，插件记下关键动作——点了哪、切到哪、输入了什么。\n重构：这条轨迹不是照录一遍就回放，而是用 RAG 重新梳理成一条真正能跑的工作流。\n分发：做好的能力放进应用市场，别人不用从头教，换个应用就能上手。\n边界：只有你明确开始任务后才记录，你一停就断，而且只记关键事件。",
-          "body_en": "Align: a short clarifying chat and a goal doc get it clear on what this task should produce.\nDemonstrate: you do the work once in the browser as usual, and the extension records the key moves — what you clicked, switched to, typed.\nRebuild: the trace isn't replayed verbatim; RAG reworks it into a workflow that actually runs.\nShare: finished capabilities go into an app market — no teaching from scratch, just swap in an app.\nBoundaries: it records only after you explicitly start a task, cuts off the moment you stop, and logs only the key events."
+          "body_zh": "学习方式：先用一段澄清对话和一份目标文档，跟它说清楚这件事要做成什么样。\n示范：你在浏览器里照常把工作做一遍，插件记下关键动作——点了哪、切到哪、输入了什么。\n重构：这条轨迹不是照录一遍就回放，而是用 RAG 重新梳理成一条真正能跑的工作流。\n分发：做好的能力放进应用市场，别人不用从头教，换个应用就能上手。\n边界：只有你明确开始任务后才记录，你一停就断，而且只记关键事件。",
+          "body_en": "Learning: a short clarifying chat and a goal doc get it clear on what this task should produce.\nDemo: you do the work once in the browser as usual, and the extension records the key moves — what you clicked, switched to, typed.\nRebuild: the trace isn't replayed verbatim; RAG reworks it into a workflow that actually runs.\nShare: finished capabilities go into an app market — no teaching from scratch, just swap in an app.\nBoundaries: it records only after you explicitly start a task, cuts off the moment you stop, and logs only the key events."
         },
         "why_it_matters": {
           "title_zh": "影响与意义",
@@ -177,8 +177,8 @@
       },
       "desc_zh": "在 XTOOL 单人把部门 Agent 平台从 0 做到 1：8 个工具覆盖运营、产品、内容等团队，服务 4 部门 65 人，完成率 80%+。",
       "desc_en": "A one-person build of the department's agent platform — eight tools, four departments, 65 people.",
-      "one_liner_zh": "你好，我是 Co-work——服务于企业团队的 Agent 工作台；所有工具共享同一份记忆，越用越聪明。",
-      "one_liner_en": "Hi, I'm Co-work — the agent workbench built for a company's teams; every tool shares one memory and gets sharper the more it's used.",
+      "one_liner_zh": "你好，我是 Co-work——服务于企业团队的 Agent 工作台；同事在使用中不断沉淀 skill，越用越聪明。",
+      "one_liner_en": "Hi, I'm Co-work — the agent workbench built for a company's teams; colleagues' know-how keeps settling into skills as they use me, so I get sharper with every run.",
       "full_description_zh": "我在 XTOOL 实习时一个人把部门 Agent 平台从 0 做到 1：8 个工具覆盖运营、产品、内容等团队。埋点告诉我哪些工具在关键环节流失严重，我据此一代代迭代；同时把高 ROI 工具的共性抽成判断标准。现覆盖 4 部门 65 人，完成率 80%+；平台自带 ROI 看板——每花 $1 的 Token 省 0.39 工时。",
       "full_description_en": "",
       "tech_stack_zh": "飞书开放平台 · RAG · 埋点与 ROI 看板",
@@ -187,8 +187,8 @@
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "在 XTOOL 实习时，部门生产力被两件事拖着：重复的手工活，和全靠人跑的流程；再加上熟手一走，经验也被带走。\n我要做的，是把这些人力活升级成 Agent 工作流，也把大家的经验留在平台上。\n于是逐个团队调研、拆需求，从 0 到 1 搭出部门 Agent 平台：8 个工具覆盖运营、产品、内容等团队，靠埋点持续迭代。\n现在覆盖 4 部门 65 人，完成率 80%+；按平台 ROI 算，每花 $1 Token 省 0.39 工时。",
-          "body_en": "Interning at XTOOL, the department's output was dragged by two things: manual repetition and human-run processes — and worse, know-how left with whoever quit.\nMy job was to turn that manual work into agent workflows, and keep everyone's know-how in the platform.\nTeam by team, I built the department's agent platform zero to one: 8 tools across operations, product and content, iterated on analytics.\nIt now serves 65 people across 4 departments at 80%+ completion; by the platform's ROI, every $1 in saves 0.39 work-hours.",
+          "body_zh": "在实习时，我看到部门生产力被两件事拖着：大量能交给 Agent 干的活，还在拖累着人的工作效率；再加上熟手一走，经验也被带走。\n我要做的，是把这些人力活升级成 Agent 工作流，同时把大家的经验留在平台上。\n于是我逐个团队调研、拆需求，从 0 到 1 搭出部门 Agent 平台：8 个工具覆盖运营、产品、内容等团队，靠埋点持续迭代。\n现在覆盖 4 部门 65 人，完成率 80%+；按平台 ROI 算，每花 $1 Token 省 0.39 工时。",
+          "body_en": "During my internship I watched the department's output dragged by two things: piles of work an agent could do were still eating people's hours — and worse, know-how left with whoever quit.\nMy job was to upgrade that manual work into agent workflows, while keeping everyone's know-how on the platform.\nSo I researched team by team, broke down the needs, and built the department's agent platform zero to one: 8 tools across operations, product and content, iterated on analytics.\nIt now serves 65 people across 4 departments at 80%+ completion; by the platform's ROI, every $1 in saves 0.39 work-hours.",
           "figure": {
             "src": "assets/project/cowork/content/plate-core.svg"
           }
@@ -196,7 +196,7 @@
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "部门里很多团队卡在同一个地方：素材靠人找、初稿靠人攒、资料靠人搜——全是耗人的活。\n单个工具解决不了：彼此之间没有共享的记忆和规则，每换一个都得从头教一遍。\n再加上人员流动大，一个熟手离职，产出效率就跟着抖一下。",
+          "body_zh": "部门里很多团队卡在同一个地方：素材靠人找、初稿靠人攒、资料靠人搜——全是耗人的活。\n单个工具解决不了：彼此之间没有共享的记忆和规则，每换一个都得从头教一遍。\n再加上人员流动大，一个熟手离职，产出效率就跟着震动。",
           "body_en": "Team after team got stuck in the same place: hunting for assets by hand, piecing together first drafts by hand, digging up references by hand — all of it draining.\nSingle tools couldn't solve it: with no shared memory or rules between them, each one had to be taught from scratch.\nAnd with high turnover, one experienced person leaving would send output wobbling."
         },
         "key_contributions": {
@@ -237,8 +237,8 @@
       "id": "yijian",
       "sort_order": 3,
       "main": true,
-      "title_zh": "议见 Yijian — 共识引擎",
-      "title_en": "Yijian — Consensus Engine",
+      "title_zh": "Yi-Jian — 共识引擎",
+      "title_en": "Yi-Jian — Consensus Engine",
       "category": "AI Product",
       "category_zh": "AI 产品",
       "category_en": "AI Product",
@@ -270,7 +270,7 @@
       "desc_zh": "给企业团队做的「决策共识」Agent：多角色视角，在四层收敛分歧，给出可追溯的结论。",
       "desc_en": "A consensus engine for enterprise decisions — four layers, one auditable verdict.",
       "one_liner_zh": "你好，我是议见——把一件要决策的事交给我，我组织多角色视角，把分歧收敛成一个可追溯的结论。",
-      "one_liner_en": "Hi, I'm Yijian — hand me a decision, and I orchestrate the viewpoints until disagreement converges into one auditable verdict.",
+      "one_liner_en": "Hi, I'm Yi-Jian — hand me a decision, and I orchestrate the viewpoints until disagreement converges into one auditable verdict.",
       "full_description_zh": "给企业团队做的「决策共识」Agent。把一项待决策的事交给它——选方案、加预算、进不进一个市场——它组织多角色视角，在战略目标、事实证据、利益角色、权重权责四层收敛分歧，最后给出可追溯的结论：共识度评分、决策要满足的条件、仍待解决的分歧点。",
       "full_description_en": "",
       "tech_stack_zh": "多角色 Agent 编排 · 四层共识收敛",
@@ -307,7 +307,7 @@
           "title_zh": "影响与意义",
           "title_en": "Impact",
           "body_zh": "决策的质量不取决于会开多久，而取决于分歧有没有被看见——议见把看不见的分歧变成可处理的对象。\n对企业团队，可追溯意味着决策能被复盘、被审计，而不是「当时大家都同意了」。",
-          "body_en": "Decision quality isn't about how long the meeting runs; it's about whether the disagreements get seen — Yijian turns invisible friction into a workable object.\nFor enterprise teams, traceability means decisions can be reviewed and audited, instead of \"everyone agreed at the time\"."
+          "body_en": "Decision quality isn't about how long the meeting runs; it's about whether the disagreements get seen — Yi-Jian turns invisible friction into a workable object.\nFor enterprise teams, traceability means decisions can be reviewed and audited, instead of \"everyone agreed at the time\"."
         }
       },
       "media": [],
@@ -347,18 +347,18 @@
       },
       "desc_zh": "我给自己造的个人管家：每天早上比我先开工，替我打理工作和生活，还一版一版把自己改得更像我。",
       "desc_en": "The butler I built for myself — it clocks in before me, runs my day, and rebuilds itself version by version.",
-      "one_liner_zh": "你好，我是 Meco ✦——文苑给自己造的个人管家：一个连着他 Obsidian 知识库的 Mac 应用，每天早上比他先开工，替他打理工作和生活的日常；我还跟他一样兼着产品经理，看他怎么用我，一版一版把自己改得更像他。",
-      "one_liner_en": "Hi, I'm Meco ✦ — the personal butler Wenyuan built for himself: a Mac app wired to his Obsidian vault, clocking in before him every morning to run the daily grind of work and life; like him, I also work as a product manager — watching how he uses me and rebuilding myself, version by version, to grow more like him.",
+      "one_liner_zh": "你好，我是 Meco ✦——文苑给自己造的个人管家：一个连着他 Obsidian 知识库的 App，每天替他打理工作和生活的日常；我还跟他一样兼着产品经理，看他怎么用，一版一版改得更适合他。",
+      "one_liner_en": "Hi, I'm Meco ✦ — the personal butler Wenyuan built for himself: an app wired to his Obsidian vault, running the daily grind of his work and life; like him, I moonlight as a product manager — watching how he uses me and revising myself, version by version, to fit him better.",
       "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体。现在它每天早上先我一步开工，把当天理顺；还像个产品经理一样读我的使用痕迹，一版一版把自己改得更像我。",
       "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one. Now it clocks in before me every morning to set the day straight — and like a product manager, it reads how I use it and rebuilds itself, version by version, to grow more like me.",
-      "tech_stack_zh": "Python · FastAPI · pywebview · 飞书开放平台（长连接）· Obsidian · Tavily · Claude / LLM · Claude Code · Cowork Schedule",
-      "tech_stack_en": "Python · FastAPI · pywebview · Feishu Open Platform · Obsidian · Tavily · Claude / LLM · Claude Code · Cowork Schedule",
+      "tech_stack_zh": "Python · FastAPI · 飞书开放平台 · Claude Code",
+      "tech_stack_en": "Python · FastAPI · Feishu Open Platform · Claude Code",
       "sections": {
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "求职最忙那阵，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 库把生活、工作、求职连成了 Meco；现在它每天早上先我一步开工——排好当天、陪我练面试，还琢磨着自己下一版该改什么。\n如今我的一天从它的早报开始，该收工时也有它劝我收工；这个越用越像我的 App，也分享给了几个有同样需要的同学。",
-          "body_en": "At the busiest stretch of my job hunt, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone and tied life, work and the job hunt into one thing with my Obsidian vault; now Meco clocks in before me every morning — laying out my day, drilling me for interviews, and mulling over what its next version should fix.\nThese days my day starts with its brief and ends with it telling me to call it a day; the app keeps growing more like me, and I've passed it to a few classmates who needed the same.",
+          "body_zh": "最忙那段时间，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 把生活、工作、求职连成了 Meco；现在它每天早上先我一步开工——排好当天、陪我面试，还自己琢磨着下一版应用该改什么。\n如今我的一天从它的汇报开始，该收工时也有它劝我收工；这个越用越像我的 App，也分享给了几个有同样需要的同学。",
+          "body_en": "At my busiest stretch, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone and tied life, work and the job hunt into Meco with my Obsidian vault; now it clocks in before me every morning — laying out my day, walking me through interviews, and mulling over what its own next version should fix.\nThese days my day starts with its report and ends with it telling me to knock off; the app keeps growing more like me, and I've shared it with a few classmates who needed the same.",
           "figure": {
             "src": "assets/project/meco/content/plate-01-balance.svg"
           }
@@ -366,14 +366,14 @@
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "求职那阵，投递记录躺在 Obsidian，提醒散在飞书，复盘全靠手写——三样各在一处，每天光是手动把它们对上，就没了快一个钟头。\n想明白之后我发现：缺的不是新工具，工具早就够多了；缺的是一个能自动把我的日常理顺的 AI，和一个愿意自己先动手的管家。",
-          "body_en": "During the hunt my applications sat in Obsidian, my reminders in Feishu, my reviews in handwriting — three places, and just reconciling them by hand ate close to an hour a day.\nOnce it clicked, I saw what was missing wasn't another tool; there were plenty. What was missing was an AI that could tidy my day on its own, and a butler who'd start working without being told."
+          "body_zh": "最忙那阵，投递记录躺在 Obsidian，提醒散在飞书，复盘全靠手写，也没空把注意力放在生活上，每天光是手动把它们对上，就没了快一个钟头。\n想明白之后我发现：缺的不是新工具，工具早就够多了；缺的是一个能自动把我的日常理顺的 AI，和一个愿意自己先动手的管家。",
+          "body_en": "At the peak, my applications sat in Obsidian, my reminders in Feishu, my reviews in handwriting — no attention left for life itself, and just reconciling them by hand ate close to an hour a day.\nOnce it clicked, I saw what was missing wasn't another tool; there were plenty. What was missing was an AI that could tidy my day on its own, and a butler who'd start working without being told."
         },
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口装进同一个 Mac 应用——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，也给无人值守的部分立了规矩：检查知识库只报告、不代修，任何写入都要先经我确认，碰上我没收拾完的半成品，它宁可跳过也不动工。\n它的每日开工和自迭代，都是 Claude Code 的定时任务在跑；行为准绳则是一份我随时能改的 Markdown 手册——想让管家换个做法，改那页纸就行，改过的每一版都留得住。",
-          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Mac app — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and set house rules for the unattended parts: vault checkups report and never repair, anything that writes waits for my yes, and when it finds my half-finished work sitting around, it skips rather than builds on top.\nBoth its daily shift and its self-iteration run on Claude Code's scheduled tasks; its conduct lives in one Markdown handbook I can edit any time — want the butler to work differently, change that page, and every past version stays on record.",
+          "body_zh": "把飞书、知识库、心跳引擎（Claude）和本地接口装进同一个 App 里——双击就能用，不用伺候一堆软件。\n给对话大脑配上能真正动手的工具，每天自己整理我的生活与工作信息，并且能自动给出下个版本的优化方向。\n它的每日开工和自迭代，都是 Claude Code 的定时任务在跑；通过 HITL 掌舵应用的前进方向。",
+          "body_en": "Folded Feishu, the vault, the heartbeat engine (Claude) and the local endpoints into one app — double-click and it runs, no fleet of software to babysit.\nGave the conversational brain tools that actually do things: every day it tidies my life and work information on its own, and proposes where the next version should improve.\nBoth its daily shift and its self-iteration run on Claude Code's scheduled tasks; HITL keeps my hand on the wheel of where the app goes.",
           "figure": {
             "src": "assets/project/meco/content/plate-02-boards.svg"
           }
@@ -381,8 +381,8 @@
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "每天九点刚过，飞书里会先后收到它备好的三样：当天的安排和接下来几天的提醒、一轮面试陪练、一份 AI 早报。陪练是先让我开口再讲评，连我答题收尾总往产品上拐的老毛病，它都记着；简历建议每天只给一条，攒着攒着就成了一册。\n白天我在飞书或桌面窗口里说一句话，它听懂就去调合适的工具——记笔记、设提醒、查看板；看板上的每个数字，都是从两百多篇笔记里实时读出来的。\n晚上的日报末尾，总有一句劝我收工的话。到了周五，它换上产品经理的身份，带着一周的使用痕迹——只记在我这台电脑上——琢磨出至多三条迭代：界面上的小改它自己动手，动筋骨的改动先提案，拍板永远在我。我抱怨过「没办法调节想看的板块」，下一版看板就能自己排了。",
-          "body_en": "Just past nine every morning, Feishu brings me three things it has ready: the day's plan with reminders for the days ahead, a round of interview practice, and an AI industry brief. The practice makes me speak first and critiques after — it even remembers my old habit of steering answers back to product at the end; résumé advice comes one line a day, and the lines have quietly grown into a booklet.\nDuring the day I say one line in Feishu or the desktop window and it calls the right tool — take a note, set a reminder, pull up the boards; every number on those boards is read live out of two-hundred-odd notes.\nAt night the daily log always ends with a line telling me to knock off. On Fridays it puts on its product-manager hat and, with a week of usage traces — kept only on this machine — works out at most three iterations: small interface changes it makes itself, anything structural goes in as a proposal, and the final call is always mine. I once complained I couldn't rearrange which boards I see, and the next version let me lay them out myself.",
+          "body_zh": "每天九点，飞书里会收到备好的内容：当天的安排、一轮课程、一份 AI 早报。它们被积累着，攒成我个人的知识库。\n快速调用：我在飞书里说一句话，它就根据知识库信息去调合适的工具——记笔记、设提醒、查看板。\n自迭代：我给它设计了一个 AI 产品身份，根据后台我的使用数据，它能和我一样规划下个版本的更新方向。",
+          "body_en": "At nine every morning, Feishu brings what it has ready: the day's plan, a round of coursework, an AI brief — all of it accumulating into a knowledge base of my own.\nQuick call: I say one line in Feishu and it reads the vault to call the right tool — take a note, set a reminder, pull up the boards.\nIterate: I gave it an AI-product identity of its own; from my usage data it plans the next version's updates, the same way I would.",
           "figure": {
             "src": "assets/project/meco/content/plate-03-brain-fence.svg"
           }
@@ -390,8 +390,8 @@
         "why_it_matters": {
           "title_zh": "影响与意义",
           "title_en": "Impact",
-          "body_zh": "每天的手动整理比过去少了九成——时间更多花在琢磨明天，而不是誊抄今天。\n前阵子扁桃体发炎，我没硬撑，踏实歇了两天，周报里它替我记下一句：「病了就歇」的判断是对的。在它那儿，求职的目标和健身的计划，从来都是并排放着的。\n它不只打理我的日常——它跟我一样是个产品经理，看我怎么用它，就一版一版把自己改得更顺手、长得更像我；这大概是它和货架上任何一个软件最不一样的地方。",
-          "body_en": "The daily hand-tidying is down by ninety percent — more of my time goes to thinking about tomorrow instead of copying out today.\nA while back my tonsils flared up; I didn't push through, I properly rested for two days — and in the weekly review it wrote the call down for me: resting when sick was the right decision. In its books, the job-hunt goal and the workout plan have always sat side by side.\nIt doesn't just keep my days in order — like me, it's a product manager: it watches how I use it and rewrites itself, version by version, into something more my shape; which is probably what sets it apart from anything off the shelf."
+          "body_zh": "每天的手动整理比过去少了九成——时间更多花在琢磨明天，而不是临摹今天。\n它不只打理我的日常——它跟我一样是个产品经理，看我怎么用它，就一版一版把自己改得更顺手、长得更像我；这大概是它和货架上任何一个软件最不一样的地方。",
+          "body_en": "The daily hand-tidying is down by ninety percent — more of my time goes to thinking about tomorrow instead of tracing over today.\nIt doesn't just keep my days in order — like me, it's a product manager: it watches how I use it and rewrites itself, version by version, into something more my shape; which is probably what sets it apart from anything off the shelf."
         }
       },
       "media": [
@@ -432,8 +432,8 @@
       "role_en": "Multimodal AIGC lead",
       "award_zh": "深港双年展 UABB 2025 · 板块唯一学生代表",
       "award_en": "UABB 2025 · Sole student representative of the section",
-      "keywords_zh": "ComfyUI | Gemini · Tripo | 3D 资产 SOP",
-      "keywords_en": "ComfyUI | Gemini · Tripo | 3D asset SOP",
+      "keywords_zh": "ComfyUI | 3D 资产 Workflow",
+      "keywords_en": "ComfyUI | 3D asset workflow",
       "tags": [
         "ComfyUI",
         "AIGC",
@@ -448,36 +448,36 @@
       },
       "desc_zh": "ComfyUI 外接 API 的自动化转译工作流 + 标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。",
       "desc_en": "A ComfyUI + API pipeline that cut 50+ exhibits' processing from 30 days to 5.",
-      "one_liner_zh": "你好，我是 UABB 的多模态转译管线——把非标展品变成标准 3D 资产，是我每天的活。",
-      "one_liner_en": "Hi, I'm the multimodal pipeline behind UABB — turning one-off exhibits into standard 3D assets is my day job.",
-      "full_description_zh": "我给双年展搭了一条 ComfyUI 外接 API（Gemini / Tripo）的自动化转译工作流，加一套标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。背后是 120+ 次草图与模型迭代，最后我带着这套管线在展会现场做了分享。",
+      "one_liner_zh": "",
+      "one_liner_en": "",
+      "full_description_zh": "我给双年展搭了一条 ComfyUI 外接 AI 模型的自动化转译工作流，加一套标准化 3D 资产 SOP：50+ 非标展品的处理周期从 30 天缩到 5 天。背后是 120+ 次草图与模型迭代，最后我带着这套工作流在现场做了分享。",
       "full_description_en": "",
-      "tech_stack_zh": "ComfyUI · Gemini · Tripo · 3D 资产 SOP",
-      "tech_stack_en": "ComfyUI · Gemini · Tripo · 3D asset SOP",
+      "tech_stack_zh": "ComfyUI · Hunyuan · 3D 资产 SOP",
+      "tech_stack_en": "ComfyUI · Hunyuan · 3D asset SOP",
       "sections": {
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "深港双年展的板块里有 50+ 件非标展品，逐件人工转译要 30 天起步。\n我负责多模态 AIGC，要在展期前把它们全部变成可用的 3D 资产。\n我用 ComfyUI 外接 Gemini / Tripo API 搭了自动化转译工作流，配一套标准化 3D 资产 SOP；背后是 120+ 次草图与模型迭代。\n处理周期从 30 天缩到 5 天；我作为板块唯一学生代表，带着这套管线在展会现场做了分享。",
-          "body_en": "The biennale section held 50+ one-off exhibits; translating them by hand runs 30 days minimum.\nI owned multimodal AIGC and had to turn all of them into usable 3D assets before opening.\nI orchestrated Gemini and Tripo through ComfyUI into an automated translation pipeline, backed by a standardized 3D-asset SOP — with 120+ sketch and model iterations behind it.\nProcessing fell from 30 days to 5; as the section's only student representative, I presented the pipeline on-site."
+          "body_zh": "深港双年展的板块里有 50+ 件非标展品，传统人工转译要 30 天起步。\n我负责多模态 AIGC 工作流，要在展期前把它们全部变成可用的裸眼 3D 资产。\n我用 ComfyUI 外接 AI 模型搭了自动化转译工作流，并配置了一套标准化 3D 资产 SOP。\n处理周期从 30 天缩到 5 天；我作为板块唯一学生代表，带着这套工作流在现场做了分享。",
+          "body_en": "The biennale section held 50+ one-off exhibits; traditional hand translation runs 30 days minimum.\nI owned the multimodal AIGC workflow, and had to turn all of them into usable glasses-free 3D assets before opening.\nI built an automated translation workflow — ComfyUI orchestrating external AI models — and set up a standardized 3D-asset SOP.\nProcessing fell from 30 days to 5; as the section's only student representative, I presented the workflow on-site."
         },
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "展品「非标」意味着每一件的输入都不一样：手绘、照片、文本、实体扫描，四种模态——传统流程只能逐件手工建。\n变化的是输入，不变的是输出标准。把输出端 SOP 化，输入端交给多模态模型，流程就能自动跑。",
-          "body_en": "One-off exhibits mean every input is different: sketches, photos, text, physical scans — four modalities — and the traditional route is modeling each by hand.\nWhat varies is the input; what never varies is the output standard. Fix the output with an SOP, hand the input to multimodal models, and the process runs itself."
+          "body_zh": "展品「非标」意味着每一件的输入都不一样：手绘、照片、文本、实体扫描，四种模态。\n传统流程只能逐件手工建，同时不能快速修改方案。",
+          "body_en": "One-off exhibits mean every input is different: sketches, photos, text, physical scans — four modalities.\nThe traditional route models each piece by hand, and leaves no room for quick revisions."
         },
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "用 ComfyUI 把 Gemini（理解与转译）和 Tripo（3D 生成）编排成一条可复跑的流水线。\n制定标准化 3D 资产 SOP：命名、面数、贴图、坐标系一次定死，后续环节零沟通成本。\n120+ 次草图与模型迭代，把管线磨到能交付展览级质量。\n作为板块唯一学生代表在展会现场分享方法。",
-          "body_en": "Orchestrated Gemini (understanding & translation) and Tripo (3D generation) into a repeatable ComfyUI pipeline.\nWrote the 3D-asset SOP — naming, poly count, textures, coordinate system fixed once, zero negotiation downstream.\n120+ sketch and model iterations to reach exhibition-grade quality.\nPresented the method on-site as the section's only student representative."
+          "body_zh": "用 ComfyUI 把 AI 模型与 3D 生成编排成一条可复跑的流水线。\n制定标准化 3D 资产 SOP：命名、贴图、坐标系一次定死，后续环节零合并成本。\n120+ 次草图与模型迭代，把草模磨到能交付展览级质量。",
+          "body_en": "Orchestrated AI models and 3D generation into a repeatable ComfyUI pipeline.\nWrote the standardized 3D-asset SOP — naming, textures, coordinate system fixed once, zero merge cost downstream.\n120+ sketch and model iterations, polishing rough massing into exhibition-grade quality."
         },
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "输入：任意形态的展品素材——图纸、照片、文字描述。\n理解：Gemini 做多模态解析，把素材转译成结构化的生成指令。\n生成：Tripo 产出 3D 模型，ComfyUI 把全流程串成自动执行。\n出厂：按 SOP 校验命名、面数与贴图，直接进入展陈管线。",
-          "body_en": "Input: exhibit material in any form — drawings, photos, text descriptions.\nUnderstand: Gemini parses the material into structured generation instructions.\nGenerate: Tripo produces the 3D model; ComfyUI chains the whole run automatically.\nShip: SOP checks on naming, poly count and textures, then straight into the exhibition pipeline."
+          "body_zh": "输入：任意形态的展品素材——图片、模型、文字描述。\n生成：Hunyuan 产出 3D 模型，ComfyUI 把全流程串成自动执行。\n验收：按 SOP 校验命名与贴图，直接进入展陈候选。",
+          "body_en": "Input: exhibit material in any form — images, models, text descriptions.\nGenerate: Hunyuan produces the 3D model; ComfyUI chains the whole run automatically.\nAccept: SOP checks on naming and textures, then straight into the exhibition candidates."
         },
         "why_it_matters": {
           "title_zh": "影响与意义",

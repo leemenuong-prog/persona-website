@@ -13,11 +13,11 @@
   "profile": {
     "display_name": "LI WENYUAN",
     "hello": "Hello, I'm Wenyuan",
-    "role_zh": "AI 产品经理 · 建筑学出身",
-    "role_en": "AI Product Manager, trained as an architect",
+    "role_zh": "AI 产品经理",
+    "role_en": "AI Product Manager",
     "portrait": "uploads/whoami-portrait.jpg",
-    "intro_zh": "我是李文苑（Alnt Med）。建筑学出身，现在做 AI 产品——在 XTOOL 负责部门 Agent 平台，也做自己的产品。建筑教我把零散的需求搭成稳定的体系；AI 产品让我把这套方法用在真实场景，从想法到落地。",
-    "intro_en": "I'm Wenyuan Li (Alnt Med). Trained as an architect, now building AI products — I run a department agent platform at XTOOL and build my own. Architecture taught me to turn scattered needs into a stable system; AI product work is where that method meets real scenarios.",
+    "intro_zh": "我是李文苑（Alnt Med）。有 AI 产品相关经历，能独立交付 AI Agent 0→1 落地；在公司负责 Agent 平台，也做自己的产品。建筑教我把零散的需求搭成稳定的体系；AI 产品让我把这套方法用在真实场景，从想法到落地。",
+    "intro_en": "I'm Wenyuan Li (Alnt Med). I've shipped AI products before and can take an AI agent from zero to launch on my own — at work I run an agent platform, and I build products of my own. Architecture taught me to turn scattered needs into a stable system; AI product work is where that method meets real scenarios, from idea to launch.",
     "qr": {
       "svg": "assets/portfolio/qr-site.svg",
       "url": "https://alnt-med.netlify.app/",
@@ -43,9 +43,10 @@
     ],
     "education": [
       {
-        "period": "2025 —",
-        "text_zh": "深圳大学 · 建筑学（复合 AI 方向）硕士 · 转向 AI 产品",
-        "text_en": "Shenzhen University · M.Arch, architecture × AI — the pivot to AI product"
+        "period": "2025 — 至今",
+        "period_en": "2025 —",
+        "text_zh": "深圳大学 · 建筑学（复合 AI 方向）硕士",
+        "text_en": "Shenzhen University · M.Arch, architecture × AI"
       },
       {
         "period": "2020–2025",
@@ -56,8 +57,8 @@
     "experience": [
       {
         "period": "2026",
-        "text_zh": "XTOOL · AIPM 实习 · Co-work Agent 平台 0→1（4 部门 65 人，完成率 80%+）",
-        "text_en": "XTOOL · AIPM intern · Co-work agent platform, zero to one (65 people across 4 departments, 80%+ completion)"
+        "text_zh": "XTOOL · AIPM 实习（AI 应用 / Agent 方向）",
+        "text_en": "XTOOL · AIPM intern (AI applications / agents)"
       },
       {
         "period": "2025",
@@ -71,8 +72,8 @@
       },
       {
         "period": "2025",
-        "text_zh": "《建筑学报》T1 期刊 · 第二作者（AIGC 三维空间优化）",
-        "text_en": "Architectural Journal (T1) · second author, AIGC spatial optimisation"
+        "text_zh": "《建筑学报》T1 期刊 · 第二作者",
+        "text_en": "Architectural Journal (T1) · second author"
       }
     ],
     "awards": [
@@ -98,8 +99,8 @@
       },
       {
         "text_zh": "「NCDA」未来设计师全国数字设计大赛 · 一等奖",
-        "text_en": "NCDA National Digital Design Award · First Prize",
-        "note": ""
+        "text_en": "NCDA National Digital Design Competition · First Prize",
+        "note": "TOP 5%"
       }
     ],
     "skills": [
@@ -137,6 +138,11 @@
       "mapped": true,
       "metrics": [
         {
+          "value": "TOP 3%",
+          "label_zh": "清华黑客松 · 季军",
+          "label_en": "TSINGHUA · 2ND RUNNER-UP"
+        },
+        {
           "value": "4+",
           "label_zh": "现场企业对接意向",
           "label_en": "ENTERPRISE LEADS ON SITE"
@@ -150,11 +156,6 @@
           "value": "0→1",
           "label_zh": "独立构建到上线",
           "label_en": "SOLO · ZERO TO LAUNCH"
-        },
-        {
-          "value": "TOP 3%",
-          "label_zh": "清华黑客松 · 季军",
-          "label_en": "TSINGHUA · 2ND RUNNER-UP"
         }
       ],
       "video": {
@@ -170,12 +171,10 @@
         "shot": "assets/portfolio/pears/landing-01.jpg",
         "ratio": 1.741,
         "frame": "browser",
-        "label_zh": "落地页",
-        "label_en": "THE LANDING PAGE",
         "lede_en": "Hand the busywork to a pear.",
         "lede_zh": "把重复工作交给一只梨。",
-        "caption_zh": "首页 · 一段描述、一个样例，开始学习",
-        "caption_en": "Home · one brief, one sample — learning starts"
+        "caption_zh": "首页 · 一段描述，开始学习",
+        "caption_en": "Home · one brief — learning starts"
       },
       "lineart": {
         "src": "assets/project/pears/content/plate-core.svg",
@@ -222,22 +221,22 @@
               "src": "assets/portfolio/pears/feature-01.jpg",
               "ratio": 1.6931,
               "frame": "mac",
-              "caption_zh": "① 准备 · 看你做一遍：点击、切换、键入都记下",
-              "caption_en": "① Watch · clicks, switches, keystrokes"
+              "caption_zh": "① 准备 · 看你做一遍：记录关键动作",
+              "caption_en": "① Watch · do it once, key moves recorded"
             },
             {
               "src": "assets/portfolio/pears/feature-02.jpg",
               "ratio": 2.0253,
               "frame": "mac",
-              "caption_zh": "② Agent 搭建 · 每一步怎么做，你拍板",
-              "caption_en": "② Assemble · each step, your call"
+              "caption_zh": "② Agent 搭建 · 构建方向，你拍板",
+              "caption_en": "② Assemble · the build direction is your call"
             },
             {
               "src": "assets/portfolio/pears/feature-03.jpg",
               "ratio": 1.2185,
               "frame": "mac",
-              "caption_zh": "③ 构建包 · 能读能改的 PRD，交给编码 Agent",
-              "caption_en": "③ Build pack · a PRD you can read and edit"
+              "caption_zh": "③ PRD 生成 · 能读改的 PRD，交给 AI coding",
+              "caption_en": "③ PRD · readable, editable, handed to AI coding"
             }
           ]
         },
@@ -316,18 +315,16 @@
         "shot": "assets/portfolio/cowork/landing-01.jpg",
         "ratio": 1.7335,
         "frame": "browser",
-        "label_zh": "落地页",
-        "label_en": "THE LANDING PAGE",
         "lede_en": "Click once — the agents do the rest.",
         "lede_zh": "点击，然后让 Agent 替你干活。",
-        "caption_zh": "主界面 · 选个工具开始，或者直接说你想做什么",
-        "caption_en": "Home · pick a tool, or just say the word"
+        "caption_zh": "主界面",
+        "caption_en": "Home"
       },
       "lineart": {
         "src": "assets/project/cowork/content/plate-core.svg",
         "ratio": 1.6,
         "motto": "Eight tools, one memory.",
-        "motto_zh": "八头一座"
+        "motto_zh": "多个工具，共用平台"
       },
       "scenes": [
         {
@@ -338,13 +335,13 @@
           "rows": [
             {
               "text": true,
-              "img": 2,
+              "img": 0,
               "img_mm": 70
             },
             {
               "imgs": [
-                0,
-                1
+                1,
+                2
               ]
             }
           ],
@@ -353,22 +350,22 @@
               "src": "assets/portfolio/cowork/research-01.jpg",
               "ratio": 1.252,
               "frame": "mac",
-              "caption_zh": "定价模式 · 填入成本与对标商品",
-              "caption_en": "Pricing mode · cost and benchmark in"
+              "caption_zh": "① 场景示例 · 市场竞争力调研",
+              "caption_en": "① The scenario · a market-competitiveness study"
             },
             {
               "src": "assets/portfolio/cowork/research-02.jpg",
               "ratio": 1.2987,
               "frame": "mac",
-              "caption_zh": "同类比价 · 逐条抓取在售同款",
-              "caption_en": "Comparables · live listings, line by line"
+              "caption_zh": "② 同类比价 · 接入多个电商平台",
+              "caption_en": "② Comparables · multiple e-commerce platforms plugged in"
             },
             {
               "src": "assets/portfolio/cowork/research-03.jpg",
               "ratio": 1.3389,
               "frame": "mac",
-              "caption_zh": "输出 · 建议价落在市场分布上",
-              "caption_en": "Output · suggested price on the market curve"
+              "caption_zh": "③ 成果 · 市场竞争力分析",
+              "caption_en": "③ The result · a market-competitiveness analysis"
             }
           ]
         },
@@ -398,22 +395,22 @@
               "src": "assets/portfolio/cowork/landing-02.jpg",
               "ratio": 1.4995,
               "frame": "browser",
-              "caption_zh": "工具矩阵 · 按场景进入工作流",
-              "caption_en": "Tool matrix · enter by scenario"
+              "caption_zh": "工具矩阵",
+              "caption_en": "The tool matrix"
             },
             {
               "src": "assets/portfolio/cowork/login-01.jpg",
               "ratio": 1.0376,
               "frame": "mac",
-              "caption_zh": "登录 · 选小组、选本人，飞书授权",
-              "caption_en": "Sign-in · team, name, Feishu auth"
+              "caption_zh": "登录系统",
+              "caption_en": "The sign-in"
             },
             {
               "src": "assets/portfolio/cowork/landing-03.jpg",
               "ratio": 2.3529,
               "frame": "browser",
-              "caption_zh": "Pears 集市 · 部门工具一处汇聚",
-              "caption_en": "Pears market · tools in one place"
+              "caption_zh": "部门工具集市",
+              "caption_en": "The department tool market"
             }
           ]
         },
@@ -441,15 +438,15 @@
               "src": "assets/portfolio/cowork/admin-02.jpg",
               "ratio": 1.5282,
               "frame": "mac",
-              "caption_zh": "漏斗诊断 · 逐环节看流失",
-              "caption_en": "Funnel · drop-off by stage"
+              "caption_zh": "漏斗诊断",
+              "caption_en": "The funnel"
             },
             {
               "src": "assets/portfolio/cowork/admin-01.jpg",
               "ratio": 1.93,
               "frame": "mac",
-              "caption_zh": "数据窗口 · 覆盖、回访、完成率与 ROI",
-              "caption_en": "Data window · usage, retention, completion, ROI"
+              "caption_zh": "数据窗口",
+              "caption_en": "The data window"
             }
           ]
         }
@@ -457,10 +454,15 @@
     },
     {
       "ref": "yijian",
-      "display": "Yijian",
+      "display": "Yi-Jian",
       "placeholder": false,
       "mapped": true,
       "metrics": [
+        {
+          "value": "TOP 5%",
+          "label_zh": "50+ 支队伍中的亚军",
+          "label_en": "RUNNER-UP OF 50+ TEAMS"
+        },
         {
           "value": "7",
           "label_zh": "角色视角",
@@ -470,23 +472,16 @@
           "value": "4",
           "label_zh": "层层收敛分歧",
           "label_en": "CONVERGENCE LAYERS"
-        },
-        {
-          "value": "TOP 5%",
-          "label_zh": "50+ 支队伍中的亚军",
-          "label_en": "RUNNER-UP OF 50+ TEAMS"
         }
       ],
       "cover": {
         "shot": "assets/portfolio/yijian/landing-01.jpg",
         "ratio": 1.6684,
         "frame": "browser",
-        "label_zh": "落地页",
-        "label_en": "THE LANDING PAGE",
         "lede_en": "Seven voices, one verdict.",
         "lede_zh": "七个视角，一个可追溯的结论。",
-        "caption_zh": "主界面 · 输入一件待决策的事，开始议见",
-        "caption_en": "Home · drop in a decision, deliberation starts"
+        "caption_zh": "主界面",
+        "caption_en": "Home"
       },
       "lineart": {
         "src": "assets/project/yijian/content/plate-core.svg",
@@ -512,18 +507,24 @@
         },
         {
           "id": "deliberate",
-          "name_zh": "多角色审议",
-          "name_en": "THE DELIBERATION",
+          "name_zh": "多角色审议 · 推演报告",
+          "name_en": "DELIBERATION & VERDICT",
           "copy_ref": "how_it_works",
           "rows": [
             {
-              "text": true
+              "text": true,
+              "img": 3,
+              "img_mm": 28
             },
             {
               "imgs": [
                 0,
-                1
+                1,
+                2
               ]
+            },
+            {
+              "sec": "why_it_matters"
             }
           ],
           "images": [
@@ -531,48 +532,29 @@
               "src": "assets/portfolio/yijian/roles-01.jpg",
               "ratio": 1.4184,
               "frame": "mac",
-              "caption_zh": "角色 Persona · 七个角色，各自的立场与 KPI",
-              "caption_en": "Personas · seven roles, stakes and KPIs"
+              "caption_zh": "多 Agent 立场",
+              "caption_en": "Agent stances"
             },
             {
               "src": "assets/portfolio/yijian/heat-01.jpg",
               "ratio": 1.2448,
               "frame": "mac",
-              "caption_zh": "分歧热力图 · 谁支持谁反对，一眼看到卡点",
-              "caption_en": "Heatmap · who backs what, where it snags"
-            }
-          ]
-        },
-        {
-          "id": "verdict",
-          "name_zh": "推演报告",
-          "name_en": "THE VERDICT",
-          "copy_ref": "why_it_matters",
-          "rows": [
-            {
-              "text": true
+              "caption_zh": "分歧热力图",
+              "caption_en": "The disagreement heatmap"
             },
-            {
-              "imgs": [
-                0,
-                1
-              ]
-            }
-          ],
-          "images": [
             {
               "src": "assets/portfolio/yijian/report-01.jpg",
               "ratio": 1.2628,
               "frame": "mac",
-              "caption_zh": "决策报告 · 结论、评分与仍待解决的分歧",
-              "caption_en": "The verdict · decision, score, open points"
+              "caption_zh": "决策报告",
+              "caption_en": "The decision report"
             },
             {
               "src": "assets/portfolio/yijian/features-01.jpg",
               "ratio": 0.3943,
               "frame": "mac",
-              "caption_zh": "功能模块 · 从审议、证据到决策复盘",
-              "caption_en": "Modules · deliberation to review"
+              "caption_zh": "功能模块",
+              "caption_en": "The modules"
             }
           ]
         }
@@ -585,19 +567,19 @@
       "mapped": true,
       "metrics": [
         {
-          "value": "3+",
+          "value": "5+",
           "label_zh": "每天打开次数",
           "label_en": "OPENS A DAY"
         },
         {
           "value": "-90%",
-          "label_zh": "人肉搬运",
-          "label_en": "MANUAL CARRYING"
+          "label_zh": "人力整理",
+          "label_en": "MANUAL TIDYING"
         },
         {
-          "value": "3",
-          "label_zh": "晨间自动任务",
-          "label_en": "MORNING RUNS"
+          "value": "4",
+          "label_zh": "管理板块",
+          "label_en": "BOARDS"
         },
         {
           "value": "240+",
@@ -609,12 +591,10 @@
         "shot": "assets/portfolio/meco/landing-01.jpg",
         "ratio": 1.6007,
         "frame": "mac",
-        "label_zh": "看板首屏",
-        "label_en": "THE HOME BOARD",
         "lede_en": "One butler for the daily grind.",
         "lede_zh": "日常琐事，交给管家。",
-        "caption_zh": "首屏 · 日历、今日清单与目标进度",
-        "caption_en": "Home · calendar, today's list, goals"
+        "caption_zh": "主页看板",
+        "caption_en": "The home board"
       },
       "lineart": {
         "src": "assets/project/meco/content/plate-01-balance.svg",
@@ -659,15 +639,15 @@
               "src": "assets/portfolio/meco/phone-01.jpg",
               "ratio": 0.4612,
               "frame": "phone",
-              "caption_zh": "飞书随身端 · 一句话设提醒，随口问近况",
-              "caption_en": "In Feishu · set a reminder, ask how it's going"
+              "caption_zh": "飞书端",
+              "caption_en": "In Feishu"
             },
             {
               "src": "assets/portfolio/meco/vault-01.jpg",
               "ratio": 1.4235,
               "frame": "mac",
-              "caption_zh": "知识库 · 240+ 篇笔记连成一张网",
-              "caption_en": "The vault · 240+ notes, one graph"
+              "caption_zh": "知识库",
+              "caption_en": "The vault"
             }
           ]
         },
@@ -692,15 +672,15 @@
               "src": "assets/portfolio/meco/study-01.jpg",
               "ratio": 1.3483,
               "frame": "mac",
-              "caption_zh": "学习板块 · 课堂进度与弱项卡",
-              "caption_en": "Study · course progress and weak-spot cards"
+              "caption_zh": "学习板块",
+              "caption_en": "The study board"
             },
             {
               "src": "assets/portfolio/meco/work-01.jpg",
               "ratio": 1.3714,
               "frame": "mac",
-              "caption_zh": "工作板块 · 求职作战与跟进雷达",
-              "caption_en": "Work · the job-hunt board and follow-up radar"
+              "caption_zh": "工作板块",
+              "caption_en": "The work board"
             }
           ]
         }
@@ -737,10 +717,8 @@
         "shot": "assets/portfolio/uabb/landing-01.jpg",
         "ratio": 2.4361,
         "frame": "none",
-        "label_zh": "总流程",
-        "label_en": "THE WORKFLOW",
         "lede_en": "Odd in, standard out.",
-        "lede_zh": "非标进，标准出。",
+        "lede_zh": "放入任意内容，产出 3D 模型。",
         "caption_zh": "3D-GC Workflow · 从一句话到 3D 资产",
         "caption_en": "3D-GC Workflow — from one line of text to a 3D asset"
       },
@@ -770,15 +748,15 @@
               "src": "assets/portfolio/uabb/input-01.jpg",
               "ratio": 1.5865,
               "frame": "browser",
-              "caption_zh": "第一步 · 文字或参考图进来，两处人工确认把关",
-              "caption_en": "Step 1 · text or reference in, two manual checkpoints"
+              "caption_zh": "第一步 · 输入文字信息（或图片、模型）",
+              "caption_en": "Step 1 · text in (or an image, or a model)"
             },
             {
               "src": "assets/portfolio/uabb/candidates-01.jpg",
               "ratio": 2.6416,
               "frame": "browser",
-              "caption_zh": "第二步 · 一次出四张候选，建筑负向词收紧口径",
-              "caption_en": "Step 2 · four candidates a run, tightened by architecture negatives"
+              "caption_zh": "第二步 · 从候选图中拍板",
+              "caption_en": "Step 2 · pick from the candidates"
             }
           ]
         },
@@ -811,11 +789,7 @@
           "id": "outcome",
           "name_zh": "成品与海报",
           "name_en": "THE OUTCOME",
-          "copy_ref": "why_it_matters",
           "rows": [
-            {
-              "text": true
-            },
             {
               "imgs": [
                 0
@@ -832,8 +806,8 @@
               "src": "assets/portfolio/uabb/result-01.jpg",
               "ratio": 2.8019,
               "frame": "browser",
-              "caption_zh": "收尾 · 四视图喂给 Hunyuan3D，长出可预览的白模",
-              "caption_en": "Finally · four views into Hunyuan3D, out comes a previewable massing model"
+              "caption_zh": "最终生成效果",
+              "caption_en": "The final result"
             },
             {
               "src": "assets/portfolio/uabb/poster-01.jpg",

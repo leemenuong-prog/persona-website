@@ -214,7 +214,7 @@
     s.sheet.appendChild(top);
 
     var core = h('div', 'cover-core');
-    core.appendChild(h('div', 'kicker cover-kicker', 'AI PRODUCT'));
+    core.appendChild(h('div', 'kicker cover-kicker', L('AI 产品 × 建筑设计', 'AI PRODUCT × ARCHITECTURE')));
     var title = h('h1', 'cover-title');
     title.appendChild(document.createTextNode('PORTFOLIO'));
     title.appendChild(psq());
@@ -280,7 +280,7 @@
       var ol = h('ul', 'cv-list');
       items.forEach(function (it) {
         var li = h('li');
-        if (it.period) li.appendChild(h('span', 'cv-period', it.period));
+        if (it.period) li.appendChild(h('span', 'cv-period', locale() === 'zh' ? it.period : (it.period_en || it.period)));
         li.appendChild(h('span', 'cv-text', t(it, 'text')));
         if (it.note) li.appendChild(h('span', 'cv-note', it.note));
         ol.appendChild(li);
@@ -313,7 +313,7 @@
     title.appendChild(document.createTextNode('INDEX'));
     title.appendChild(psq());
     inner.appendChild(title);
-    inner.appendChild(h('p', 'index-sub', L('AI 产品 × 建筑', 'AI PRODUCT × ARCHITECTURE')));
+    inner.appendChild(h('p', 'index-sub', L('AI 产品 × 建筑设计', 'AI PRODUCT × ARCHITECTURE')));
 
     var grid = h('div', 'matrix');
     function card(href, name, numStr, meta, thumbSrc, alt) {
@@ -415,16 +415,18 @@
 
     if (prod.cover) {
       var shot = h('div', 'work-cover-shot');
-      /* 落地页说明头（定式，六轮修正）：小标签点明「这是落地页」+
-         英文大标题（lede_en 拉丁 Monterey）+ 中文解释小注（lede_zh，EN 版隐藏）
-         ——英文大标+中文正文的全站口径；话术用户可随时改词 */
+      /* 落地页说明头：英文大标题（lede_en 拉丁 Monterey）+ 中文解释小注
+         （lede_zh，EN 版隐藏）。小标签行（「落地页 · THE LANDING PAGE」）
+         2026-07-11 用户裁定统一去掉——label 字段缺省即不渲染 */
       if (prod.cover.label_en || prod.cover.lede_en) {
         var head = h('div', 'shot-head');
-        var label = h('div', 'shot-label');
-        label.appendChild(psq());
-        if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
-        label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
-        head.appendChild(label);
+        if (prod.cover.label_en || prod.cover.label_zh) {
+          var label = h('div', 'shot-label');
+          label.appendChild(psq());
+          if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
+          label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
+          head.appendChild(label);
+        }
         if (prod.cover.lede_en) {
           var lede = h('p', 'shot-lede');
           lede.appendChild(document.createTextNode(prod.cover.lede_en));
@@ -508,19 +510,22 @@
     if (sc.name_zh) kick.appendChild(h('span', 'zh-note', '　' + sc.name_zh));
     main.appendChild(kick);
 
-    var section = joined.sections[sc.copy_ref];
-    main.appendChild(secH(section));
+    /* copy_ref 可省（2026-07-11）：纯图场景（如 UABB 成品页）不渲染章节头，
+       也不自动补正文行 */
+    var section = sc.copy_ref ? joined.sections[sc.copy_ref] : null;
+    if (section) main.appendChild(secH(section));
 
     var alt = (prod.display || prod.ref) + ' — ' + (sc.name_en || sc.id);
     var imgs = sc.images || [];
     var rows = sc.rows || [{ text: true }, { imgs: imgs.map(function (_, i) { return i; }) }];
 
-    /* rows 里没有 text 行时自动前置一行满宽正文 */
+    /* rows 里没有 text 行时自动前置一行满宽正文（有正文节才补） */
     var hasText = rows.some(function (r) { return r.text; });
-    if (!hasText) rows = [{ text: true }].concat(rows);
+    if (!hasText && section) rows = [{ text: true }].concat(rows);
 
     var wrap = h('section', 'scene');
     rows.forEach(function (r) {
+      if (r.text && !section) { console.warn('[portfolio] text 行需要 copy_ref:', sc.id); return; }
       if (r.text && r.img != null) {
         /* 一文一图：文左 + 定宽小图右（少数行） */
         var ti = h('div', 'row-ti');
@@ -693,6 +698,15 @@
     sheets.push(sheetArch(num++));
     sheets.push(sheetBack());
     deck.appendChild(frag.apply(null, sheets));
+
+    /* 册尾 PDF 入口（2026-07-11 用户裁定）：仅屏显、print 隐藏——用户自导出
+       通道（随语言指向 zh/en 版）；访客侧其余作品集入口仍一律指网页阅读器 */
+    var pdfBar = h('div', 'deck-pdf screen-only');
+    var pdfA = h('a', null, L('PDF 版', 'PDF EDITION') + ' ↗');
+    pdfA.href = '../' + (locale() === 'zh' ? pf.meta.pdf.zh : pf.meta.pdf.en);
+    pdfA.target = '_blank'; pdfA.rel = 'noopener';
+    pdfBar.appendChild(pdfA);
+    deck.appendChild(pdfBar);
 
     document.title = 'Portfolio · Alnt_med';
 

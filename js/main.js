@@ -41,12 +41,12 @@
         '<div class="foot-name">李<span class="sep">·</span>LI &nbsp;文苑<span class="sep">·</span>MENUONG</div>' +
         '<div data-zh="AI 产品 × 建筑 — 作品集" data-en="AI Product × Architecture — Portfolio">AI 产品 × 建筑 — 作品集</div>' +
       '</div>' +
-      /* 站内导航：页脚是 finale 编舞的终点，也是 <1024（无侧钮）时的 ABOUTME 入口 */
+      /* 站内导航：页脚是 finale 编舞的终点，也是 <1024（无侧钮）时的 ABOUT ME 入口 */
       '<nav class="foot-nav" aria-label="站内导航 · Site">' +
         '<a href="portfolio/">PORTFOLIO</a>' +
         '<a href="architecture.html"' + (PAGE === 'architecture' ? ' aria-current="page"' : '') + '>ARCH</a>' +
         '<a href="around.html"' + (PAGE === 'around' ? ' aria-current="page"' : '') + '>AROUND</a>' +
-        '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUTME</a>' +
+        '<a href="about.html"' + (PAGE === 'about' ? ' aria-current="page"' : '') + '>ABOUT ME</a>' +
       '</nav>' +
       '<div class="foot-contact">' +
         '<div><a href="mailto:lee.menuong@gmail.com">lee.menuong@gmail.com</a></div>' +
@@ -54,11 +54,11 @@
       '</div>';
     document.body.appendChild(footer);
 
-    /* 浮动侧钮：右 ABOUTME（AROUND 已并入 header 顶栏） */
+    /* 浮动侧钮：右 ABOUT ME（AROUND 已并入 header 顶栏） */
     var right = document.createElement('a');
     right.className = 'side-btn right';
     right.href = 'about.html';
-    right.textContent = 'ABOUTME';
+    right.textContent = 'ABOUT ME';
     document.body.appendChild(right);
 
     /* 品牌带 */

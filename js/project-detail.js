@@ -443,13 +443,17 @@
 
     if (prod.cover) {
       var shot = h('div', 'pd-cover-shot');
+      /* 小标签行（「落地页 · THE LANDING PAGE」）2026-07-11 用户裁定统一去掉——
+         label 字段缺省即不渲染，说明头只剩 lede 英文大标 + 中文小注 */
       if (prod.cover.label_en || prod.cover.lede_en) {
         var head = h('div', 'pd-shot-head');
-        var label = h('div', 'pd-shot-label');
-        label.appendChild(psq());
-        if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
-        label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
-        head.appendChild(label);
+        if (prod.cover.label_en || prod.cover.label_zh) {
+          var label = h('div', 'pd-shot-label');
+          label.appendChild(psq());
+          if (prod.cover.label_zh) label.appendChild(h('span', 'zh-note', prod.cover.label_zh));
+          label.appendChild(h('span', 'sl-en', prod.cover.label_en || ''));
+          head.appendChild(label);
+        }
         if (prod.cover.lede_en) {
           var lede = h('p', 'pd-shot-lede');
           lede.appendChild(document.createTextNode(prod.cover.lede_en));
@@ -501,17 +505,20 @@
     if (sc.name_zh) kick.appendChild(h('span', 'zh-note', '　' + sc.name_zh));
     block.appendChild(kick);
 
-    var section = p.sections[sc.copy_ref];
+    /* copy_ref 可省（2026-07-11）：纯图场景（如 UABB 成品页）不渲染章节头，
+       也不自动补正文行——与作品集页同构 */
+    var section = sc.copy_ref ? p.sections[sc.copy_ref] : null;
     var body = h('section', 'pd-scene-body detail-section');
-    body.setAttribute('data-skey', sc.copy_ref);
-    body.appendChild(secH(section));
+    if (sc.copy_ref) body.setAttribute('data-skey', sc.copy_ref);
+    if (section) body.appendChild(secH(section));
 
     var alt = (prod.display || p.id) + ' — ' + (sc.name_en || sc.id);
     var imgs = sc.images || [];
     var rows = sc.rows || [{ text: true }, { imgs: imgs.map(function (_, i) { return i; }) }];
-    if (!rows.some(function (r) { return r.text; })) rows = [{ text: true }].concat(rows);
+    if (!rows.some(function (r) { return r.text; }) && section) rows = [{ text: true }].concat(rows);
 
     rows.forEach(function (r) {
+      if (r.text && !section) { console.warn('[detail] text 行需要 copy_ref:', sc.id); return; }
       if (r.text && r.img != null) {
         /* 一文一图：文左 + 定宽小图右。img_mm 按作品集主区 167mm 折算成百分比 */
         var ti = h('div', 'row-ti');

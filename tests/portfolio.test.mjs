@@ -32,8 +32,14 @@ for (const prod of pf.products) {
     /* scenes 可暂缺(如 UABB 封面先行、截图后补);写了就不能是空数组 */
     if (prod.scenes) assert.ok(Array.isArray(prod.scenes) && prod.scenes.length > 0, prod.ref + " scenes must not be empty");
     for (const scene of prod.scenes || []) {
-      assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
-        prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
+      /* copy_ref 可省（2026-07-11）：纯图场景（如 UABB 成品页）；省了就不能再有 text 行 */
+      if (scene.copy_ref != null) {
+        assert.ok(["tldr", "why_built", "key_contributions", "how_it_works", "why_it_matters"].includes(scene.copy_ref),
+          prod.ref + " scene '" + scene.id + "' copy_ref must name a projects.json section");
+      } else {
+        assert.ok((scene.rows || []).every((r) => !r.text),
+          prod.ref + " scene '" + scene.id + "' has no copy_ref, so its rows must be image-only");
+      }
       for (const img of scene.images) {
         assert.ok(["mac", "browser", "none", "phone"].includes(img.frame), scene.id + " image frame must be mac|browser|none|phone");
       }
