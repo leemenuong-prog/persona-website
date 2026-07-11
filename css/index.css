@@ -26,7 +26,7 @@
   --hero-fit: 1;                    /* fitHeroName() 一次拟合到 ≈92vw */
   display: inline-block;            /* 行内元素不吃 transform；视差/offsetWidth 都需要盒 */
   font-family: var(--font-display);
-  font-weight: 700;                 /* 真字重 monterey-bold（2026-07-11 用户要「再重一些」） */
+  font-weight: 400;                 /* 常规体（用户裁定：Bold 形态不像「他的字体」，重量感靠短文案大字号+深渐变） */
   font-size: calc(clamp(64px, 13vw, 264px) * var(--hero-fit));
   line-height: .9;
   letter-spacing: .04em;
@@ -137,7 +137,7 @@
 .ribbon-front { z-index: 4; }
 /* 拖拽命中带：环带区域的透明矩形（卡缝/空区也能起手拨环）；hero-foot z5 压其上不受影响 */
 .ribbon-hit {
-  position: absolute; left: 0; right: 0; top: 9%; bottom: 18%;
+  position: absolute; left: 0; right: 0; top: 22%; bottom: 10%;
   z-index: 3;
   touch-action: pan-y;   /* 竖划还给页面滚动（浏览器接管发 pointercancel）；横向起手归拨环 */
   cursor: grab;
@@ -148,35 +148,32 @@
   position: absolute; left: 50%; top: 50%; width: 0; height: 0;
   transform-style: preserve-3d;
 }
-/* 丝带卡：布局尺寸=近掠最大显示尺寸（动画中投影 scale 恒 ≤1，防合成层放大糊）；
-   材质沿立方体口径：白实底 + 棱线 + 统一 saturate/contrast = 同一块材料。
-   ⚠️ 零 transition/animation（DOM 在 back/front 间迁移会重置它们，姿态全 JS 直写）。 */
-.rcard {
+/* 丝带条带（strip 切片 = 真弯曲，2026-07-11 三迭代用户核心裁定「这是一条丝带不是一个个卡片」）：
+   每卡切 N 条竖直窄条（折角 ≤4°），每条是传送带上的独立链节 → 带体在路径任意曲率处连续弯曲。
+   布局尺寸（宽随卡变/等高混宽带）由 JS 在 init/relayout 写 px；⚠️ 零 transition（DOM 迁移会重置）。 */
+.rstrip {
   position: absolute; left: 0; top: 0;
-  width: var(--ribbon-card-w);
-  height: calc(var(--ribbon-card-w) / 1.5);   /* 3:2，与 assets/ribbon/ 卡图同比 */
-  margin-left: calc(var(--ribbon-card-w) / -2);
-  margin-top: calc(var(--ribbon-card-w) / -3);
-  background: var(--c-border);                 /* 灰底兜图片解码空窗（灰阶站不突兀） */
-  border: 1px solid rgba(24, 24, 24, .22);
-  border-radius: 4px;
   overflow: hidden;                            /* 叶子平面自身裁切安全（非 3D 容器） */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5),
-              inset 0 -14px 26px rgba(24, 24, 24, .05);
+  background: var(--c-border);                 /* 灰底兜图片解码空窗（灰阶站不突兀） */
   -webkit-user-select: none; user-select: none;
 }
-.ribbon-front .rcard { pointer-events: auto; cursor: pointer; }
-.ribbon-back  .rcard { pointer-events: none; }
-.rcard img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: .94;
-  filter: saturate(.85) contrast(1.03);
+/* 外角圆角只在各卡首/末条的外侧（弯带上整卡圆角/棱线/inset 阴影会逐条断裂，弃用） */
+.rstrip--head { border-radius: 3px 0 0 3px; }
+.rstrip--tail { border-radius: 0 3px 3px 0; }
+.ribbon-front .rstrip { pointer-events: auto; cursor: pointer; }
+.ribbon-back  .rstrip { pointer-events: none; }
+.rstrip img {
+  position: absolute; top: 0;
+  max-width: none;   /* ⚠️ 必须覆盖 main.css 全局 img{max-width:100%}，否则条内全卡宽 img 被压扁 */
+  filter: saturate(.85) contrast(1.03) brightness(1.02);   /* opacity 恒 1（条间重叠区半透明会反出暗缝），调色补偿 */
 }
-/* 深度/背面遮罩：JS 每帧写 opacity（背面压暗吸收镜像感；沿 face-shade 先例，只动 opacity） */
-.rcard-shade {
+/* 深度/背面遮罩：JS 写 opacity（背面压暗吸收镜像感）；静态 translateZ(0) 提层 →
+   opacity 走合成器零重绘（93 条/帧的解药；strip overflow 已扁平化子树，非 hover 动态挂不违防闪总则） */
+.rstrip-shade {
   position: absolute; inset: 0;
   background: #181818;
   opacity: 0; pointer-events: none;
+  transform: translateZ(0);
 }
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
