@@ -18,7 +18,7 @@
 
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
-  /* ── 大字拟合：LI WENYUAN 恰好 ≈92vw（Monterey 就绪后校准一次，resize 复用；
+  /* ── 大字拟合：Liwenyuan's Website 恰好 ≈92vw（Monterey 就绪后校准一次，resize 复用；
         量 offsetWidth（布局宽，不受入场/视差 transform 影响），线性关系一步收敛 ── */
   function fitHeroName() {
     var el = document.querySelector('.hero-name-text');

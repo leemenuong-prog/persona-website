@@ -28,7 +28,9 @@
   var PERSP = 1500;              /* 与 css .ribbon-layer 的 perspective 同值 */
   var TILT = -14;                /* 环倾斜 rotateX（deg）：前弧沉、后弧抬 */
   var BANK = -7;                 /* 环斜置 rotateZ（deg）：带子斜穿标题（不改 z，迁移公式不变） */
-  var DROP = 0.32;               /* 环心下沉：标题中线 + DROP×标题高（前弧只遮字下段） */
+  var COVER = 0.16;              /* 前弧卡顶边锚在标题 (1−COVER) 高度线（名义值）；BANK 斜置与
+                                    倾斜卡的包围盒会把实际视觉遮挡抬高 ~20%，0.16 → 实测遮字下段 ≈35%。
+                                    直接钉住「遮多少」这条视觉关系，标题换字号/文案不用重调 */
   var COVERAGE = 0.82;           /* 弦覆盖率：卡宽 ≈ 82% 弦长 → 胶片首尾相接 */
   var MARGIN_Z = 40;             /* 世界深度上限 −40px：投影 scale 恒 <1 */
   var BASE = 0.05;               /* 巡航 3°/s（0.05°/60fps 帧，与立方体同钟表感） */
@@ -83,23 +85,24 @@
     var Zoff = Math.max(PERSP * (R / X - 1), R * Math.cos(TILT * D2R) + MARGIN_Z);
     var layer = els.frontLayer.getBoundingClientRect();
 
-    /* 环心纵向：桌面对准大字中线（offsetTop 链，不受入场/视差 transform 影响）；
-       手机档大字小且贴顶，环心改对 hero 视口中心（三段式布局） */
-    var ycScreen = 0;
-    if (!MOBILE.matches && els.nameText) {
-      var nameTop = 0, e = els.nameText;
-      while (e && e !== els.hero) { nameTop += e.offsetTop; e = e.offsetParent; }
-      var nameH = els.nameText.offsetHeight;
-      ycScreen = nameTop + nameH / 2 + DROP * nameH - layer.height / 2;
-    }
     var g = {
       W0: W0, dphi: dphi, R: R, Zoff: Zoff,
       cosT: Math.cos(TILT * D2R), sinT: Math.sin(TILT * D2R),
-      yc: ycScreen * (PERSP + Zoff) / PERSP,             /* 反投影回环心深度平面 */
+      yc: 0,
       sf: PERSP / (PERSP + Zoff - R * Math.cos(TILT * D2R)),   /* 前弧投影 scale */
       ky: 0.07 * R, kz: 1,
       gain: 0, sLink: R * dphi, arcU: null, arcS: null
     };
+    /* 环心纵向：桌面由「前弧卡顶边 = 标题 (1−COVER) 高度线」反解世界 y（offsetTop 链量标题，
+       不受入场/视差 transform 影响）；手机档大字小且贴顶，环心对 hero 视口中心（三段式布局） */
+    if (!MOBILE.matches && els.nameText) {
+      var nameTop = 0, e = els.nameText;
+      while (e && e !== els.hero) { nameTop += e.offsetTop; e = e.offsetParent; }
+      var nameH = els.nameText.offsetHeight;
+      var frontTop = nameTop + nameH * (1 - COVER) - layer.height / 2;   /* 相对层中心 */
+      var hf = (W0 / 3) * g.sf;                          /* 前弧卡投影半高（W0/1.5/2） */
+      g.yc = (frontTop + hf) / g.sf - R * Math.sin(-TILT * D2R);
+    }
     g.gain = R2D / (R * g.sf);                           /* 拖拽：前弧卡贴手指（°/px） */
 
     /* kz 定标：采样螺线，缩放 pull 使 max z_w = −MARGIN_Z（近掠贴脸、scale 恒 <1） */

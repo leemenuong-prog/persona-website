@@ -26,17 +26,16 @@
   --hero-fit: 1;                    /* fitHeroName() 一次拟合到 ≈92vw */
   display: inline-block;            /* 行内元素不吃 transform；视差/offsetWidth 都需要盒 */
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;                 /* 真字重 monterey-bold（2026-07-11 用户要「再重一些」） */
   font-size: calc(clamp(64px, 13vw, 264px) * var(--hero-fit));
   line-height: .9;
   letter-spacing: .04em;
   white-space: nowrap;
   -webkit-user-select: none; user-select: none;
-  /* 距离立方体越远越清晰：两端深灰、中段淡出（全部取自灰阶令牌梯，勿引编外灰） */
+  /* 距离渐变整体压深两档（两端 #333、中心 #999）：环穿字而过仍读得住（全取灰阶令牌梯，勿引编外灰） */
   background: linear-gradient(90deg,
-    #6F6F6F 0%, #999999 26%, #BEBEBE 42%,
-    #D7D7D7 50%,
-    #BEBEBE 58%, #999999 74%, #6F6F6F 100%);
+    #333333 0%, #6F6F6F 26%, #999999 42%,
+    #999999 58%, #6F6F6F 74%, #333333 100%);
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
 }
@@ -61,13 +60,7 @@
   color: var(--c-title);
 }
 .intro-title .b { color: var(--c-emph); font-weight: 700; }
-.intro-sub {
-  margin: 0; font-family: var(--font-display);
-  font-size: clamp(13px, 1.05vw, 15px); font-weight: 400; line-height: 1.75;
-  color: var(--c-kw);
-}
-.intro-sub .k { color: var(--c-sub); font-weight: 500; }
-.intro-sub .l { color: var(--c-muted); }
+/* intro-sub（我在做 AI 产品…）已删——左下角简化为 kick + 问候两级（2026-07-11 用户裁定） */
 .hero-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
 .aside-kick {
   margin: 0 0 5px; font-family: var(--font-display);
@@ -384,7 +377,6 @@ main { position: relative; }
   /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把占位顶到上方 */
   .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
-  .intro-sub { font-size: 13px; }
   /* margin-top 归零：否则会叠加在 justify-center 上把环推离正中 */
   .polygon-container { margin-top: 0; }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
@@ -398,7 +390,6 @@ main { position: relative; }
 @media (max-width: 479px) {
   .hero-foot { padding: 0 20px 28px; }
   .intro-title { font-size: 17px; }
-  .intro-sub { font-size: 12.5px; }
   .hero { --ribbon-card-w: 180px; }
   .projects-section { margin-top: 76px; }
   .mainline { gap: 72px; }
