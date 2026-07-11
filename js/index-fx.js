@@ -1,12 +1,12 @@
 /* ════════════════════════════════════════════════════════════
    index-fx.js — 首页动效层：
-   1) 3D 立方体：rAF 自转 + Pointer 拖拽，离屏暂停
+   1) 大字拟合 fitHeroName（LI WENYUAN ≈92vw）
    2) 中轴数据条进度指示（用户原创，取代老师站的波浪线+圆珠）：
       竖向轨道 + 随滚动生长的墨色填充；到达作品节点时
       延伸一根指向标题列的水平分支，同侧标题提亮。克制。
-   3) 软边 mask 鼠标揭示（卡片 + 立方体面）
-   4) 页脚 finale：「I am ___」轮换 + Logo 从 header 下坠落底
-   IndexFx.refresh() 由 index.js 渲染完成后调用。
+   3) 页脚 finale：「I am ___」轮换
+   （英雄区 3D 作品丝带在 js/ribbon.js；旧 3D 立方体已退役，git 历史可查）
+   IndexFx.refresh(list) 由 index.js 渲染完成后调用。
    ════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -17,199 +17,6 @@
   var IAM_BARS = (window.Barmorph && window.Barmorph.IAM_BARS) || [0.97, 0.58, 1, 0.66, 0.9, 0.52, 0.74, 1];
 
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-
-  /* ── 1. 立方体（重量感体系：dt 归一 + 惯性 + Lambert 光照 + 接触影呼吸 + bob + 视差） ── */
-  /* 立方体六面封面 = 各作品封面缩略图（无悬浮揭示，2026-07-07 已移除）。cowork = 作品封面海报
-     （Co-Work 文件盒，assets/project/cowork/thumbnails/1.jpg，源 Website 封面页/正图/cowork01.png）。 */
-  var CUBE_FACES = [
-    'assets/project/pears/thumbnails/1.png',
-    'assets/project/cowork/thumbnails/1.jpg',
-    'assets/project/yijian/thumbnails/1.jpg',
-    'assets/project/ring-world/thumbnails/1.jpg',
-    'assets/project/air-cube/thumbnails/1.jpg',
-    'assets/cube/brand.svg'
-  ];
-
-  var D2R = Math.PI / 180;
-  /* 左上前方主光位；六面局部法线按 layoutFaces 的 T 顺序（CSS 坐标 y 向下 → 顶面法线 -y） */
-  var LIGHT = (function () {
-    var x = -0.35, y = -0.75, z = 0.55, m = Math.sqrt(x * x + y * y + z * z);
-    return [x / m, y / m, z / m];
-  })();
-  var NORMALS = [[0, 0, 1], [1, 0, 0], [0, 0, -1], [-1, 0, 0], [0, -1, 0], [0, 1, 0]];
-  var SHADE_MAX = 0.16;
-  var shades = [];
-
-  /* 立方体面悬浮揭示已移除（2026-07-07 用户裁定冗余）：六面只显默认封面 CUBE_FACES，
-     不再逐面挂第二张揭示图、不再有 cube 级 --rv-r 中心绽放。cowork 的视频封面/议见落地页
-     等"悬浮态"改由主线卡（.layer-reveal，projects.json 的 float.reveal）承载。 */
-
-  /* 每帧按面法线 n' = Rx(rx)·Ry(ry)·n 的 Lambert 受光量写遮罩 opacity；值未变跳过写入 */
-  function applyLighting(rx, ry) {
-    if (!shades.length) return;
-    var cx = Math.cos(rx * D2R), sx = Math.sin(rx * D2R);
-    var cy = Math.cos(ry * D2R), sy = Math.sin(ry * D2R);
-    for (var i = 0; i < 6; i++) {
-      var n = NORMALS[i];
-      var x1 = n[0] * cy + n[2] * sy, z1 = -n[0] * sy + n[2] * cy;   /* Ry */
-      var y2 = n[1] * cx - z1 * sx, z2 = n[1] * sx + z1 * cx;        /* Rx */
-      var lambert = Math.max(0, x1 * LIGHT[0] + y2 * LIGHT[1] + z2 * LIGHT[2]);
-      var o = SHADE_MAX * (1 - lambert);
-      var s = shades[i];
-      if (Math.abs(o - s._o) > 0.002) { s.style.opacity = o.toFixed(3); s._o = o; }
-    }
-  }
-
-  /* 面变换按当前 --cube-size 摆放；横竖屏/断点切换后重算（否则面会散架） */
-  var cubeHalf = 0;
-  function layoutFaces() {
-    var cube = document.getElementById('cube');
-    if (!cube) return;
-    var faces = cube.querySelectorAll('.face');
-    if (!faces.length) return;
-    var half = (parseInt(getComputedStyle(cube).width, 10) || 320) / 2;
-    if (half === cubeHalf) return;
-    cubeHalf = half;
-    var T = [
-      'rotateY(0deg) translateZ(' + half + 'px)',
-      'rotateY(90deg) translateZ(' + half + 'px)',
-      'rotateY(180deg) translateZ(' + half + 'px)',
-      'rotateY(270deg) translateZ(' + half + 'px)',
-      'rotateX(90deg) translateZ(' + half + 'px)',
-      'rotateX(-90deg) translateZ(' + half + 'px)'
-    ];
-    Array.prototype.forEach.call(faces, function (f, i) {
-      f.style.transform = T[i];
-    });
-  }
-
-  function initCube() {
-    var cube = document.getElementById('cube');
-    if (!cube || cube.dataset.ready) return;
-    cube.dataset.ready = '1';
-
-    shades = [];
-    CUBE_FACES.forEach(function (src, i) {
-      var f = document.createElement('div');
-      f.className = 'face';
-      var img = document.createElement('img');
-      img.src = src;
-      img.alt = '';
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.draggable = false;
-      f.appendChild(img);
-      var sh = document.createElement('i');
-      sh.className = 'face-shade';
-      sh._o = 0;
-      f.appendChild(sh);
-      shades.push(sh);
-      cube.appendChild(f);
-    });
-    layoutFaces();
-
-    var rx = -20, ry = 35;
-    cube.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
-    applyLighting(rx, ry);   /* 静帧也要有明暗（REDUCE 场景仅此一帧） */
-
-    var rig = document.querySelector('.cube-rig');
-    var bob = document.querySelector('.cube-bob');
-    var shadow = document.querySelector('.cube-shadow');
-    var nameText = document.querySelector('.hero-name-text');
-
-    if (REDUCE) {
-      /* 静态重量证据全保：定格中间态接触影，砍全部运动 */
-      if (shadow) shadow.style.opacity = '0.92';
-      return;
-    }
-
-    var dragging = false, px = 0, py = 0, visible = true, raf = null;
-    var BASE = 0.05, FRICTION = 0.95, GAIN = 0.22;   /* 重物：低基速 · 高阻尼 · 缓释惯性 */
-    var vel = BASE, lastDx = 0, lastT = 0, bobT = 0;
-    var BOB_T = DESKTOP.matches ? 7000 : 8000;
-    var BOB_A = DESKTOP.matches ? 7 : 3;
-    var HOVERFINE = window.matchMedia('(hover: hover) and (pointer: fine)');
-    var par = { tx: 0, ty: 0, x: 0, y: 0 };
-
-    function render(now) {
-      raf = null;
-      if (!lastT) lastT = now;
-      var dt = Math.min((now - lastT) / 16.7, 3); /* 归一到 60fps 帧：120Hz 屏手感一致 */
-      lastT = now;
-
-      if (dragging) {
-        lastDx *= Math.pow(0.8, dt);              /* 按住不动 → 松手速度衰到 0，不误甩 */
-      } else {
-        vel = BASE + (vel - BASE) * Math.pow(FRICTION, dt);
-        ry += vel * dt;
-        rx += (-20 - rx) * (1 - Math.pow(0.994, dt));   /* 极慢回沉平衡位 */
-      }
-      cube.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-      applyLighting(rx, ry);
-
-      /* bob 与接触影同相呼吸（JS 同驱不脱相）：升→影淡+散，降→影浓+紧。
-         悬浮不再冻结（用户要「悬浮不影响立方体状态」）——仅拖拽时暂停 bob 相位推进 */
-      if (!dragging) bobT += dt * 16.7;
-      var lift = 0.5 + 0.5 * Math.sin(bobT / BOB_T * 2 * Math.PI);
-      if (bob) bob.style.transform = 'translate3d(0,' + (-BOB_A * lift).toFixed(2) + 'px,0)';
-      if (shadow) {
-        var footprint = (Math.abs(Math.cos(ry * D2R)) + Math.abs(Math.sin(ry * D2R)) - 1) / 0.414;
-        var sxS = (1 + 0.06 * lift) * (1 + 0.06 * footprint);   /* 转到对角投影脚印略宽 */
-        shadow.style.opacity = (1 - 0.28 * lift).toFixed(3);
-        shadow.style.transform = 'translateX(-50%) scale(' + sxS.toFixed(3) + ',' + (1 + 0.05 * lift).toFixed(3) + ')';
-      }
-
-      /* 视差：lerp 滞后跟随（重物跟不上鼠标）；大字反向低速 → 三层纵深（波点场静止）。
-         悬浮不冻结视差（只在拖拽时冻结，见下方 pointermove 的 dragging 判断） */
-      if (HOVERFINE.matches) {
-        var k = 1 - Math.pow(0.94, dt);
-        par.x += (par.tx - par.x) * k;
-        par.y += (par.ty - par.y) * k;
-        if (rig) rig.style.transform = 'translate3d(' + (par.x * 14).toFixed(1) + 'px,' + (par.y * 10).toFixed(1) + 'px,0)';
-        if (nameText) nameText.style.transform = 'translate3d(' + (par.x * -8).toFixed(1) + 'px,' + (par.y * -5).toFixed(1) + 'px,0)';
-      }
-
-      if (visible) raf = requestAnimationFrame(render);
-    }
-    function ensure() { if (!raf && visible) { lastT = 0; raf = requestAnimationFrame(render); } }
-
-    var vp = cube.parentElement;
-    vp.addEventListener('pointerdown', function (e) {
-      dragging = true; px = e.clientX; py = e.clientY; lastDx = 0;
-      try { vp.setPointerCapture(e.pointerId); } catch (err) { /* 指针已释放/合成事件 */ }
-    });
-    vp.addEventListener('pointermove', function (e) {
-      if (!dragging) return;
-      var dx = e.clientX - px, dy = e.clientY - py;
-      ry += dx * GAIN;
-      rx = clamp(rx - dy * GAIN, -70, 70);
-      lastDx = dx;
-      px = e.clientX; py = e.clientY;
-    });
-    ['pointerup', 'pointercancel'].forEach(function (ev) {
-      vp.addEventListener(ev, function () {
-        dragging = false;
-        vel = clamp(lastDx * GAIN, -3, 3);   /* 松手惯性：重物甩不出高转速 */
-      });
-    });
-
-    /* 视差目标（仅拖拽时冻结，不因悬浮而停） */
-    if (HOVERFINE.matches) {
-      window.addEventListener('pointermove', function (e) {
-        if (dragging) return;
-        par.tx = e.clientX / window.innerWidth * 2 - 1;
-        par.ty = e.clientY / window.innerHeight * 2 - 1;
-      }, { passive: true });
-    }
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (ents) {
-        visible = ents[0].isIntersecting;
-        ensure();
-      }, { threshold: 0 }).observe(vp);
-    }
-    ensure();
-  }
 
   /* ── 大字拟合：LI WENYUAN 恰好 ≈92vw（Monterey 就绪后校准一次，resize 复用；
         量 offsetWidth（布局宽，不受入场/视差 transform 影响），线性关系一步收敛 ── */
@@ -243,9 +50,12 @@
 
     host.innerHTML = '';
 
-    /* 相对 main 定位：从立方体台下缘垂到「尾声」标题上方（勿压到标题文字） */
+    /* 相对 main 定位：从丝带舞台占位（.polygon-container）下缘垂到「尾声」标题上方（勿压到标题文字）。
+       占位下缘用 offsetTop 链量（布局值）——rect 会把 heroRise 入场动画的 22px 位移量进去导致起点偏低 */
     var mainRect = main.getBoundingClientRect();
-    var top = polygon.getBoundingClientRect().bottom - mainRect.top + 48;
+    var polyOy = 0, pEl = polygon;
+    while (pEl && pEl !== main) { polyOy += pEl.offsetTop; pEl = pEl.offsetParent; }
+    var top = polyOy + polygon.offsetHeight + 48;
     var epi = document.querySelector('.epilogue-title');
     var endEl = epi || gallery;
     var end = endEl.getBoundingClientRect().top - mainRect.top - 56;
@@ -372,15 +182,18 @@
     }, 2200);
   }
 
-  function refresh() {
+  function refresh(list) {
     fitHeroName();
-    initCube();
+    if (window.Ribbon) window.Ribbon.init(list);   /* 丝带在 buildSpine 前就位（锚点量 polygon 下缘） */
     buildSpine();
     initFinale();
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { fitHeroName(); buildSpine(); layoutFaces(); });
+  window.addEventListener('resize', function () {
+    fitHeroName(); buildSpine();
+    if (window.Ribbon) window.Ribbon.relayout();
+  });
   /* Monterey 晚到会移动标题基线 — 字体就绪后重测大字拟合与分支位置 */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () { fitHeroName(); buildSpine(); });

@@ -45,7 +45,7 @@
   --safe-left:   env(safe-area-inset-left, 0px);
   --safe-right:  env(safe-area-inset-right, 0px);
   --header-h:    calc(70px + var(--safe-top));
-  --cube-size:     420px;
+  --ribbon-card-w: 420px;   /* 丝带卡布局宽默认档（断点档在 index.css 的 .hero 上） */
   --card-size:     360px;
   --spine-gap:     96px;    /* 主线卡中轴让位 */
   --mainline-gap:  320px;   /* 主线项间距（老师页实证：作品间留足呼吸） */

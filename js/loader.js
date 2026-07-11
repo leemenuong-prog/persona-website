@@ -18,6 +18,7 @@
   function skip(node) {
     if (node) node.remove();
     document.documentElement.classList.remove('loading');
+    document.dispatchEvent(new CustomEvent('loaderdone'));   /* 丝带等此信号起跑（ribbon.js） */
   }
 
   function boot() {
@@ -151,6 +152,7 @@
         setTimeout(function () { if (band) band.classList.remove('preset'); }, 80);
         node.remove();
         document.documentElement.classList.remove('loading');
+        document.dispatchEvent(new CustomEvent('loaderdone'));   /* 丝带等此信号起跑（ribbon.js） */
       }, 400 + 1350);
     }, 400);
   }

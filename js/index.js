@@ -57,6 +57,7 @@
     host.textContent = '';
     list.forEach(function (p) {
       var item = el('article', 'project-item');
+      item.id = 'work-' + p.id;               /* 英雄区丝带卡点击滚动锚点 */
       item.setAttribute('data-reveal', '');
 
       var txt = el('div', 'text-container');
@@ -89,6 +90,7 @@
     host.textContent = '';
     list.forEach(function (p) {
       var a = el('a', 'gallery-item');
+      a.id = 'work-' + p.id;                  /* 英雄区丝带卡点击滚动锚点 */
       a.href = 'project.html?id=' + encodeURIComponent(p.id);
       a.setAttribute('data-reveal', '');
       a.appendChild(imageBlock(p, 480));
@@ -104,7 +106,7 @@
     renderMainline(all.filter(function (p) { return p.main === true; }));
     renderGallery(all.filter(function (p) { return p.main !== true; }));
     window.Site.initReveal();
-    if (window.IndexFx) window.IndexFx.refresh();   /* M2 交互层重新丈量 */
+    if (window.IndexFx) window.IndexFx.refresh(all);   /* 动效层重新丈量（丝带吃全 11 作） */
   }
 
   function boot() {

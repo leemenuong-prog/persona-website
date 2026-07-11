@@ -16,7 +16,7 @@
 - **Logo**：header 左上角 8 条天际线（IAM_BARS=[.97,.58,1,.66,.9,.52,.74,1]）+ 双黑方点，`js/barmorph.js`；Logo 即回首页按钮
 - **Header 布局（2026-07-06 定稿）**：左＝Logo + PROJECTS + AROUND；右＝「李文苑 · ALNT MED」名字 + EN 语言切换 + GitHub 图标（→ github.com/leemenuong-prog）。浮动侧钮只剩右侧 ABOUTME。站名统一「Alnt_med」（`<title>` 口径）
 - **启动页**（仅 index，每会话一次 sessionStorage.loaderPlayed）：「I am」→「I alnt med」展开 → 字母冻结成条（I→1 a→3 m→4）→ 飞入左上角 Logo。暖纸底。`js/loader.js`
-  - **合成器铁律（2026-07-07 三迭代，修卡顿）**：加载页动画只准用 transform/opacity/clip-path，**禁 max-width/top/left/width/height 等布局属性**——开屏时主线程正忙于建立方体/画廊/字体回流，布局动画会被抢帧卡壳。名字展开=ins 用 `clip-path inset` 从右揭示 + `.tail` 用 translateX 让位 + reveal translateX 回中，三者 .7s 同曲线锁相（loader.js 量 ins 宽写初始位移）；morph 条：rise 用 `scaleY`（origin 底中）、fly 用 `translate+scale`（同底中原点映射源盒→header 条位，两段过渡连续）
+  - **合成器铁律（2026-07-07 三迭代，修卡顿）**：加载页动画只准用 transform/opacity/clip-path，**禁 max-width/top/left/width/height 等布局属性**——开屏时主线程正忙于建丝带/画廊/字体回流，布局动画会被抢帧卡壳。名字展开=ins 用 `clip-path inset` 从右揭示 + `.tail` 用 translateX 让位 + reveal translateX 回中，三者 .7s 同曲线锁相（loader.js 量 ins 宽写初始位移）；morph 条：rise 用 `scaleY`（origin 底中）、fly 用 `translate+scale`（同底中原点映射源盒→header 条位，两段过渡连续）
 - **页脚 finale**（index，2026-07-07 用户裁定简化）：「I am ___」五词轮换（Alnt Med / an AIPM / an Architect / a Builder / anything.）后**直接接 site-footer**——波点带与「Logo 从 header 下坠落槽」编舞已整体删除（fdots / fband-slot / fly-band / tickFinale 均不复存在，勿恢复）
 - **中轴进度指示**（用户原创，替代老师站波浪线+圆珠）：竖向数据条轨道 + 随滚动生长的墨色填充（IAM 节奏微调制）+ 作品节点水平分支、标题提亮。**分支必须吸附在某根短横线行上**（看起来是那根短横线在延伸，不能凭空生线），从中轴向左划到**大标题左缘正下方**收在方点。**走过的横线保持伸展态不回缩**（波只在进度头前方做预备）；轨道**头尾都不许压到文字**——尾端止于「尾声」标题上方。**无圆珠**，效果克制
 - **品牌条尺寸走 `--bb-*` 令牌**（barmorph.css：`--bb-h/--bb-bar/--bb-gap/--bb-dot`，默认=header 档 69×22）。**放大场景一律换令牌原生渲染，禁 transform scale 放大**（合成层按原生栅格化再放大必糊）。`.brandband--footer` 大档令牌保留在 barmorph.css 备查（页脚落槽已删，现无使用场景）。极窄屏（≤374）header 条切 18px 小档
@@ -26,9 +26,15 @@
 ## 版式基准（老师站实证规格）
 
 - **大标题字体铁律（用户裁定 2026-07-07）**：所有页级大标题一律 Monterey（`var(--font-display)`）——首页英雄标题、projects 页标题、**详情页 `.detail-title`**、主线卡标题；中文按栈回退宋体。章节 h2 与正文保持衬线，不得把详情页大标题改回 Georgia。
-- hero（英雄区，2026-07-07 motionsites eco-intelligence 式改版 + 当日二迭代）：近全视口舞台三层——巨大 `LI WENYUAN` 垫底 z1 → 立方体台 z2 压字 → 贴底行 z3（左 intro；右精选面板 <1024 隐藏）。大字规格：h1 `top: clamp(12px,6vh,56px)` **偏上方**；内层 `.hero-name-text` Monterey 400、`calc(clamp(64px,13vw,264px) × --hero-fit)`（`fitHeroName()` JS 拟合到 ≈92vw，挂 refresh/resize/fonts.ready/RO 防抖四处）、全断点一行 nowrap；**颜色=距离渐变**（用户裁定：离立方体越远越清晰）——`background-clip:text` 横向渐变 `#6F6F6F 0% → #999 26% → #BEBEBE 42% → #D7D7D7 50%（中心最淡）→ 镜像`，全取灰阶令牌梯勿引编外灰；**立方体只遮大字下段 ≈40%**（`polygon-container margin-top: clamp(32px,11vh,110px)` 控制，字上半必须清晰可读）；**不加下划线**；**双语均拉丁**不参与翻译，中文身份由 aria-label + intro 承载。贴底行排版三级（用户裁定「该轻的轻该重的重」）：kick 10px/.42em/#999 最轻 → `.intro-title` clamp(20px,1.9vw,27px)/#181818/强调词 700 黑最重 → `.intro-sub` clamp(13px,1.05vw,15px)/#999 轻（关键词 `.k` #333/500）；**intro 不再用下划线**。入场编舞挂 `html.loading` 冻结第 0 帧、条落 Logo 后梯次起跑（大字 → 立方体 +.35s → intro +.55s → aside +.7s）；**transform 分层铁律**：入场动画在 h1/.polygon-container、视差在 .hero-name-text/.cube-rig、bob 在 .cube-bob、拖拽在 #cube，互不抢
-  - **手机档三段式（≤767，四迭代用户裁定「大字在上·立方体在中·贴底行沉底」）**：`.hero { justify-content: center }` 让立方体（唯一流内元素）垂直居中；`.polygon-container { margin-top: 0 }`（否则 base 的 11vh margin 叠加会把立方体推离正中）；大字保持 base `top:clamp` 在顶部（**勿**把大字也居中，会变成大字压立方体）；`.hero-foot` 改 `position:absolute; bottom:0`（脱流沉底，替掉 margin-top:auto，否则空白全堆到立方体下方把它顶到顶部）。桌面档不动（margin-auto 沉底 + polygon margin-top:clamp 已定稿）
-- 立方体重量感体系（index-fx.js 单一 render 循环，dt 归一保 60/120Hz 同速）：自转 3°/s（一圈≈2min）· 拖拽增益 .22 + 松手惯性（vel≤3°/帧、摩擦 .95/帧 ≈1.2s 归稳）· bob 7s/7px（手机 8s/3px）与接触影**同相呼吸**（升→影淡+散、降→影浓+紧，JS 同驱勿改 CSS 动画）· 六面 Lambert 光照遮罩 `.face-shade`（光源左上前 norm(-.35,-.75,.55)、上限 .16、顶面恒最亮）· 面棱线 `rgba(24,24,24,.22)` + inset 上高光/下暗角 · 缩略图统一 `saturate(.85) contrast(1.03)` · 鼠标视差（hover+fine 才启用：rig ±14/10px、大字反向 ±8/5px、仅**拖拽**时冻结目标）· **悬浮不影响立方体运动铁律（五迭代用户裁定）**：指针悬在 cube-vp 上时自转/bob/视差**照常跑**，**勿**再加"悬浮停转"（曾为压制揭示闪加过，用户明确不要）；尺寸：桌面 `--cube-size: min(460px,34vw,50vh)`（**勿用 svh**——自定义属性无双写回退，旧 Safari 整条失效塌立方体）、平板 `min(360px,44vw)`、≤767 260px、≤479 230px，台高一律 `calc(--cube-size × 1.35)`；reduced-motion 保静态光照/定格影/材质，砍全部运动
+- hero（英雄区，2026-07-11 丝带改版：作品丝带飞入 → 绕大字自转环，取代 3D 立方体）：近全视口舞台五层 z 阶梯——`.ribbon-back` z1（环后弧，pointer-events:none）→ 巨大 `LI WENYUAN` z2 → `.ribbon-hit` z3（拖拽命中带）→ `.ribbon-front` z4（环前弧，卡可点击）→ 贴底行 z5（左 intro；右精选面板 <1024 隐藏）。`.polygon-container` 只剩**流内占位**职责（撑 hero 中段高度纯 CSS `calc(--ribbon-card-w × 1.02)` + `margin-top: clamp(32px,11vh,110px)`，buildSpine 锚它的下缘，波点场 ::before 仍挂它）。大字规格：h1 `top: clamp(12px,6vh,56px)` **偏上方**；内层 `.hero-name-text` Monterey 400、`calc(clamp(64px,13vw,264px) × --hero-fit)`（`fitHeroName()` JS 拟合到 ≈92vw，挂 refresh/resize/fonts.ready/RO 防抖四处）、全断点一行 nowrap；**颜色=距离渐变**——`background-clip:text` 横向渐变 `#6F6F6F 0% → #999 26% → #BEBEBE 42% → #D7D7D7 50%（中心最淡）→ 镜像`，全取灰阶令牌梯勿引编外灰；环前弧压大字下段、后弧藏字后（环心对大字中线）；**不加下划线**；**双语均拉丁**不参与翻译，中文身份由 aria-label + intro 承载。贴底行排版三级（用户裁定「该轻的轻该重的重」）：kick 10px/.42em/#999 最轻 → `.intro-title` clamp(20px,1.9vw,27px)/#181818/强调词 700 黑最重 → `.intro-sub` clamp(13px,1.05vw,15px)/#999 轻（关键词 `.k` #333/500）；**intro 不再用下划线**。入场编舞挂 `html.loading` 冻结第 0 帧、条落 Logo 后梯次起跑（大字 → 波点场/丝带层 +.35s → intro +.55s → aside +.7s；丝带 JS 时间轴另听 `loaderdone` 事件 +350ms 对齐，见 ribbon.js）；**transform 分层铁律**：入场动画在 h1/.polygon-container/.ribbon-layer（丝带层只准 opacity 淡入——双容器投影必须逐像素一致）、视差与自转折进 .ribbon-world 的 world 变换、卡片姿态在 .rcard，互不抢
+  - **手机档三段式（≤767，四迭代用户裁定「大字在上·环在中·贴底行沉底」）**：`.hero { justify-content: center }` 让丝带占位（唯一流内元素）垂直居中；`.polygon-container { margin-top: 0 }`（否则 base 的 11vh margin 叠加会推离正中）；大字保持 base `top:clamp` 在顶部（**勿**把大字也居中）；`.hero-foot` 改 `position:absolute; bottom:0`（脱流沉底，替掉 margin-top:auto）。手机档**环心不对大字中线**，改对 hero 视口中心（ribbon.js 的 MOBILE 分支）。桌面档不动（margin-auto 沉底 + polygon margin-top:clamp 已定稿）
+- **丝带运动体系（js/ribbon.js，2026-07-11；单 render 循环，dt 归一保 60/120Hz 同速）**：
+  - **传送带模型（无状态混合）**：一条以环角 u 为参数的路径——u≥0 段=环本身、u<0 段=向镜头外扩的螺线；11 卡以恒定弧长间距 `sLink=R·Δφ` 前进，头部弧长 `S(t)=S0+ΔS·easeOutQuint+ω·R·t`（quint 终点导数 0 → 终端斜率恰=巡航 ω·R），飞入幕 3.8s 在 u=0 处 **C¹ 连续融进环态**——勿改回「路径态→环态 blend」（欧拉角插值有跳变坑）；
+  - **深度遮挡（双容器 z-split）**：back/front 两个逐像素相同的透视容器（共享 `.ribbon-layer` 类，perspective:1500px）夹住大字，卡片按世界深度 `z_w=−Zoff+R·cos(θ+φ)·cosτ` 正负迁移 DOM（迁移点=侧棱对镜 ±90° + ±1.5° 迟滞，与样式写入同帧）。**禁给两容器套共用 transform wrapper**（合成组会挡掉大字 z-index 夹层）；**背面不可点**=back 容器 pointer-events:none 架构自带；
+  - **几何**：卡 3:2、布局宽 `--ribbon-card-w`=近掠最大显示尺寸（投影 scale 恒 ≤1 防合成层放大糊，全环 z≤−40px 由 Zoff 守卫）；R=W0/(0.82·Δφ)，Zoff 由环投影半宽 0.40vw 反解；环倾斜 rotateX(−12°)；kz（掠镜拉近）采样定标不手调；
+  - **交互**：巡航 3°/s（BASE=0.05°/帧，与立方体同钟表感）· 拖拽增益按几何换算 `°/px=R2D/(R·s_f)`（前弧卡贴手指）· 惯性 clamp ±0.8°/帧、摩擦 .95/帧 · down 绑 `.ribbon-hit`+front 容器冒泡（**不逐卡绑**，防闪总则第 4 条）、move/up 走 window · 点击=位移<6px（触屏 10px）且 <400ms → 滚到 `#work-{id}` 锚点（`scrollIntoView` **不传 smooth**——吃全局 scroll-behavior，RM 自动瞬跳）+ `.jump-hit` 提示 .95s · **悬浮不停转铁律沿用**（hover 不碰 θ/vel）· 鼠标视差（hover+fine：world ±14/10px、大字反向 ±8/5px、拖拽时冻结目标）；
+  - **卡材质**：白实底 + 棱线 `rgba(24,24,24,.22)` + 圆角 4 + 图 `saturate(.85) contrast(1.03)`（与旧立方体同口径「同一块材料」）；背面 backface visible 显镜像 + `.rcard-shade` 遮罩压暗（≤.5）吸收镜像感，**勿加第二背面元素**（共面 z-fighting）；卡片**零 CSS transition**（DOM 迁移会重置）；
+  - **卫生**：图片 decode 门（1800ms 兜底）后才起跑；t0=首个 rAF（后台标签页等可见才开演）；`now−lastT>1s` 整帧重基不追帧；IO 离屏停 rAF；resize/断点=重解几何，**飞入途中遭遇 resize 直接跳剪到环态**；尺寸档：桌面 `--ribbon-card-w: min(620px,42vw,74vh)`（**勿用 svh**——自定义属性无双写回退，旧 Safari 整条失效塌丝带）、平板 `min(480px,50vw)`、≤767 `min(230px,60vw)`、≤479 180px（挂 `.hero`，默认档在 tokens.css）；reduced-motion 静态定格环态（θ=半槽偏移，正前是卡缝），零 rAF，点击仍可用
 - **🚫 揭示/hover 动效防闪总则（六迭代定死，凡做 hover 显图/揭示一律遵守，别再逐个踩坑）**：
   1. **只动 `opacity` / `transform`**（合成器线程，任何浏览器含微信 webview 都不闪）；
   2. **mask/clip-path 必须静态**——绝不用 JS 逐帧改 `mask-image`/`clip-path` 的**半径或圆心**（每帧改=主线程连续重绘，移动端/微信 webview 必闪。这是反复被报"还闪"的总根源）；
@@ -36,12 +42,12 @@
   4. **旋转/3D 物体绝不逐面/逐子元素绑 `pointerenter/leave`**（投影重叠时命中面高频切换=振荡闪）——改绑稳定不旋转的容器级 hover。
 - **落地（两条路径均遵上则）**：
   - **卡片（画廊 + 主线，平面 2D）`.layer-reveal`**：**纯 CSS** `:hover` 交叉淡入——`opacity 0→1` + `transform: scale(.9)→scale(1)`（从小长大），边缘柔和由**静态** `radial-gradient(ellipse 78% 78% …)` mask 一次成型。**无 JS、无 rAF、无光标跟随**（`attachReveal`/`bindReveal` 已删）。
-  - **立方体面（旋转 3D）`.face-reveal`**：**cube 级**居中绽放。只绑不旋转的 `.cube-vp`（一次 enter/leave）→ 驱动单一 `--rv-r` 写 `#cube` 继承给各面（mask `at 50% 50%` 居中），半径在 render 循环**单调**缓动（0↔cubeHalf×0.92，到位即停写=静态），无振荡。face-reveal **禁 translateZ(0)**（3D 面引背面剔除闪）。
-  - 触屏 `(hover:none)` 两者皆隐藏。
+  - ~~立方体面 `.face-reveal`~~ 已随立方体退役（2026-07-11 丝带改版）；总则第 4 条对丝带卡**依然生效**——丝带的 pointer 事件全部绑稳定容器（`.ribbon-hit` + `.ribbon-front` 冒泡），卡上不绑 enter/leave、无 hover 视觉。
+  - 触屏 `(hover:none)` 揭示层隐藏。
 - 主线卡**不左右交替**：文字恒左（列内居中）、图恒右；封面 360 方图、无边框、圆角 4px；文字列**居中收拢**（justify-content:center + 30px 簇间距，禁 space-between 把标题/正文撑到两端）；作品间距 `--mainline-gap: 320px`（老师页实证的呼吸感）
 - 揭示层：`assets/project/{id}/float/1.jpg`，软边 mask 随鼠标显影（规格见上方「软边揭示 UX」，禁硬边 clip-path 圆）——**素描版封面（thumbnails/2 位）由用户 ComfyUI 管线后续产出替换**；尾声（建筑）揭示层是横构图版面 → `object-fit: contain` 白底整页收进框，**禁 cover 拦腰裁半**
 - **尾声建筑卡 = 3:2 横构图**（建筑渲染都是横图，方图裁到看不见内容——用户裁定）：封面 = 母版首页主渲染 3:2 满幅裁（960×640，无白边无页面装饰）；主线 AI 卡保持 360 方图
-- **立方体面必须实底白**（var(--c-white)）——透明 PNG 封面（梨/拼图）会透出对面；六面=Pears/Co-work/议见/环世界/风贯立方/品牌 SVG（UABB 魔方图不上立方体，用户裁定）
+- **丝带卡图 = `assets/ribbon/{id}.jpg` 派生版**（2026-07-11，用户裁定卡面用封面不用落地页截图）：640×427 · 3:2 · JPEG q85 · ≤110KB——建筑六作=thumbnails 3:2 满幅缩放；AI 五作=方图/竖图**白底居中 pad**（顺带压平 pears/meco 透明通道；旧「面必须实底白」问题由派生管线吸收）。全部 11 作上环、无品牌卡（用户裁定）；tests 有存在性守卫，加作品须同步 sips 派生
 - 建筑翻页图（content/）一律取**母版完整版面（带页边白）**，不做去白边裁切——上桥曾因裁掉顶部白边与其他五作不一致（2026-07-06 已重导）
 - 详情页两种形态（2026-07-10 起）：
   - **作品集映射模式**（`portfolio.json products[].mapped=true`，现 Pears/Co-work/议见/Meco/UABB 五作全开）：详情页与作品集页**同一事实源同一排版**——kicker+Monterey 标题+↗+keywords → 顶部视频门面（Pears/Co-work 保持视频在开头，与结尾影片块构成同一入口的两次出现，用户裁定没关系）→ 封面块（tldr 双栏+封面方图+奖项+指标带+落地页说明头+落地页大图）→ 线稿块 → 场景行模块（复用 portfolio.json scenes/rows 语法）→ 影片块（点击就地播放）+STACK。连续网页流照 architecture.html（非 A4），浮出动效照首页（IO + opacity/transform）；**作品集没放的内容（meta 行/tags/旧内容长图/文字球）画廊也不放**，此后两页共同管理，改场景/截图只改 portfolio.json、改文案只改 projects.json。样式在 project-detail.css 的 `.pd-mapped` 段。
@@ -53,14 +59,14 @@
 - **断点体系**：`1023 / 767 / 479 / 374` 四档递进（374 只管 header 极窄收纳）。中轴进度条与侧钮 <1024 隐藏是设计决定，勿做移动替代。
 - **safe-area**：六页 viewport meta 带 `viewport-fit=cover`；tokens 层 `--safe-*` 四令牌 + `--header-h: calc(70px + var(--safe-top))` 一次性兜底，header/footer/modal/侧钮全部 env() 补偿。桌面预览 env()=0，刘海效果需真机复核。
 - **触屏热区 pattern**：`@media (pointer:coarse),(max-width:1023px)` 下用 `::after` 伪元素 `max(100%,44px)` 扩热区（不可见/不占布局/不改设计稿）；落点 `.text-ball`、`.media-cta a`、`.modal-close`、`.about-bio li a`。可见块级目标（返回钮/门面钮/列表行）直接真实达标 ≥44。
-- **立方体触屏**：`touch-action: pan-y`（竖划归页面滚动，横向起手归拖拽）；面变换 `layoutFaces()` 在 resize 重算（否则横竖屏切换会散架）。
+- **丝带触屏**：`.ribbon-hit` 带 `touch-action: pan-y`（竖划归页面滚动，横向起手归拨环）；几何在 resize 走 `Ribbon.relayout()` 重解（否则横竖屏切换会散架）；点击判定触屏放宽到 10px 位移。
 - **⚠️ 横向溢出防线在 body**（`overflow-x: hidden; overflow-x: clip`）——**绝不能放 html**：html 上的 clip 会把整页竖向滚动一起钳死（Chrome 实测）。装饰层禁止横向负 inset 出血。
 - **vh 一律双写 svh**（`height: Xvh; height: Xsvh;` 回退行在前），防 iOS 地址栏收放抖动。
 - 尾声网格：767 两列（gap 28/20）→ 479 单列满幅；详情页 479 档白卡 `margin-inline:-12px` 回收页边（与 `.container` 的 `100%-48px` 强耦合）。
 
 ## 数据与素材约定
 
-- 加作品 = projects.json 加一条 + `assets/project/{id}/{thumbnails,float,content}/` 放图，零代码
+- 加作品 = projects.json 加一条 + `assets/project/{id}/{thumbnails,float,content}/` 放图 + `assets/ribbon/{id}.jpg` sips 派生（英雄区丝带卡，tests 守卫），其余零代码
 - 媒体：`video-local` / `iframe-lazy` 一律门面点击才加载；视频 ffmpeg H.264 crf26 `+faststart` <30MB，原片留 `../源文件/`
 - 资产文件名全小写（GH Pages 大小写敏感）；`annotations` 图注内联 JSON（图右下 12px 文字球）
 

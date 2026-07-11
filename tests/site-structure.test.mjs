@@ -70,6 +70,12 @@ for (const p of projects) {
   assert.ok(thumbs.some((f) => /^1\.(jpg|jpeg|png|svg|webp)$/i.test(f)),
     p.id + " should have a cover thumbnail assets/project/" + p.id + "/thumbnails/1.*");
 }
+/* 英雄区丝带卡图(2026-07-11 丝带改版):assets/ribbon/{id}.jpg 由封面缩略图 sips 派生
+   (640×427·3:2·白底 pad),js/ribbon.js 按约定路径引用——缺派生图测试红,不许线上静默回退 */
+for (const p of projects) {
+  assert.ok(exists("assets/ribbon/" + p.id + ".jpg"),
+    p.id + " should have a hero ribbon card assets/ribbon/" + p.id + ".jpg (sips-derive from its thumbnail)");
+}
 const referenced = [];
 for (const p of projects) {
   referenced.push(...p.contentImages.map((src) => [p.id, src]));

@@ -1,23 +1,24 @@
 /* ════════════════════════════════════════════════════════════
    index.css — 首页版式（V2：照 wenxin.design 实证规格修正）：
-   intro 下划线三档分词 · 立方体波点场 · 主线卡不交替文字居中 ·
+   intro 三级排版 · 作品丝带环（js/ribbon.js）+ 波点场 · 主线卡不交替文字居中 ·
    封面无边框圆角4 · 中轴数据条进度指示 · 页脚 finale。
    ════════════════════════════════════════════════════════════ */
 
-/* ── hero：近全视口合成舞台（大字垫底 z1 · 立方体 z2 · 贴底行 z3） ── */
+/* ── hero：近全视口合成舞台。z 阶梯（双容器 z-split 深度遮挡，2026-07-11 丝带改版）：
+      ribbon-back z1 → 大字 z2 → ribbon-hit z3 → ribbon-front z4 → 贴底行 z5 ── */
 .hero {
   position: relative;
   min-height: calc(100vh - var(--header-h));
   min-height: calc(100svh - var(--header-h));
   display: flex; flex-direction: column;
 }
-/* 巨大名字：偏上方（参考图 TERRA NOVA 位），立方体只遮字的下半段 */
+/* 巨大名字：偏上方（参考图 TERRA NOVA 位），丝带前弧压字下段、后弧藏字后 */
 .hero-name {
   position: absolute; left: 0; right: 0;
   top: clamp(12px, 6vh, 56px);
   margin: 0;
   display: flex; justify-content: center;
-  z-index: 1; pointer-events: none;
+  z-index: 2; pointer-events: none;
 }
 /* 内层 span：字号拟合量 offsetWidth（transform-free）、视差 transform 由 JS 写——
    与外层 h1 的入场动画三者解耦，互不抢 transform */
@@ -42,7 +43,7 @@
 
 /* ── 贴底行：左 intro（原两行降级）+ 右精选 ── */
 .hero-foot {
-  position: relative; z-index: 3;
+  position: relative; z-index: 5;
   margin-top: auto;
   display: flex; justify-content: space-between; align-items: flex-end;
   gap: 32px; padding: 0 48px 44px;
@@ -85,11 +86,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .hero-name         { animation: heroNameIn .95s var(--ez) both; }
   .polygon-container { animation: heroRise .85s var(--ez) both .35s; }
+  .ribbon-layer      { animation: ribbonFade .85s var(--ez) both .35s; }   /* 纯 opacity：勿加 transform（双容器投影必须逐像素一致） */
   .hero-intro        { animation: heroRise .85s var(--ez) both .55s; }
   .hero-aside        { animation: heroRise .85s var(--ez) both .7s; }
-  html.loading .hero-name, html.loading .polygon-container,
+  html.loading .hero-name, html.loading .polygon-container, html.loading .ribbon-layer,
   html.loading .hero-intro, html.loading .hero-aside { animation-play-state: paused; }
 }
+@keyframes ribbonFade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes heroNameIn {
   from { opacity: 0; transform: translateY(18px) scaleX(1.03); }
   to   { opacity: 1; transform: none; }
@@ -99,20 +102,22 @@
   to { opacity: 1; transform: none; }
 }
 
-/* ── 3D 立方体台 + 渐隐波点场（重量感体系：rig 视差 / shadow 接触影 / bob 浮动 / face-shade 光照） ── */
+/* ── 作品丝带环（2026-07-11 改版，动画本体在 js/ribbon.js）+ 渐隐波点场 ──
+   .polygon-container 只剩「流内占位」职责：撑 hero 中段高度（纯 CSS，勿依赖 JS/图片，
+   buildSpine 锚它的下缘）+ 承载波点场装饰；丝带卡画在两个绝对定位的透视容器里。 */
 .polygon-container {
-  position: relative; z-index: 2;
-  height: calc(var(--cube-size) * 1.35);   /* 投影包围盒实测比（rx-20/ry35 姿态） */
-  margin-top: clamp(32px, 11vh, 110px);   /* 下沉：立方体只遮大字下段 ~40%，字的上半清晰可读 */
-  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 0;
+  height: calc(var(--ribbon-card-w) * 1.02);   /* ≈环带投影高度，spine 起点落在环下缘附近 */
+  margin-top: clamp(32px, 11vh, 110px);   /* 下沉：环心对大字中线、前弧压字下段 */
+  pointer-events: none;
 }
 @media (min-width: 1024px) {
   /* 注意：自定义属性不吃 vh/svh 双写回退（后声明恒胜出），svh 在旧 Safari 会让
-     var() 代入端整条失效 → 立方体塌没。桌面档 vh 与 svh 无实义差别，用 vh。 */
-  .polygon-container { --cube-size: min(460px, 34vw, 50vh); }
+     var() 代入端整条失效 → 丝带塌没。桌面档 vh 与 svh 无实义差别，用 vh。 */
+  .hero { --ribbon-card-w: min(620px, 42vw, 74vh); }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
-  .polygon-container { --cube-size: min(360px, 44vw); }
+  .hero { --ribbon-card-w: min(480px, 50vw); }
 }
 /* 波点场：灰阶半调双层错位，四周径向渐隐（旧站 .fdots 语法的英雄区变体） */
 .polygon-container::before {
@@ -127,58 +132,59 @@
   mask-image: radial-gradient(ellipse at center, #000 26%, transparent 70%);
   pointer-events: none;
 }
-/* 视差平移层：JS lerp 跟随鼠标（拖拽期间冻结目标值） */
-.cube-rig { position: relative; }
-/* 接触阴影：椭圆径向渐变，随 bob 呼吸（升→淡+散，降→浓+紧，JS 写 opacity/transform） */
-.cube-shadow {
-  position: absolute; left: 50%;
-  top: calc(50% + var(--cube-size) * 0.58);
-  width: calc(var(--cube-size) * 1.15);
-  height: calc(var(--cube-size) * 0.26);
-  transform: translateX(-50%);
-  background: radial-gradient(ellipse 50% 50% at center,
-    rgba(24, 24, 24, .30) 0%, rgba(24, 24, 24, .14) 45%, transparent 72%);
-  filter: blur(6px);   /* 静态模糊一次栅格化；动画只碰 transform/opacity */
+/* 双透视容器：back/front 共享本类，透视参数必须逐像素一致（DOM 迁移无缝的前提）。
+   ⚠️ 立法：本层与 .ribbon-world 禁 overflow / filter / opacity<1 / 圆角裁切
+   （Safari preserve-3d 扁平化触发器，一加环就拍扁）；入场淡入动画只挂本层（容器不在 3D 场景内）。 */
+.ribbon-layer {
+  position: absolute; inset: 0;
+  perspective: 1500px; perspective-origin: center center;
   pointer-events: none;
 }
-/* 浮动 bob 层：JS 与接触影同相驱动（CSS 动画会与影呼吸脱相） */
-.cube-bob { position: relative; }
-.cube-vp {
-  width: var(--cube-size); height: var(--cube-size);
-  perspective: 1500px; perspective-origin: center center;
-  /* pan-y：竖划还给页面滚动（浏览器接管时发 pointercancel，拖拽状态已有处理）；
-     横向起手仍归拖拽 */
-  touch-action: pan-y; cursor: grab; position: relative; z-index: 1;
+.ribbon-back  { z-index: 1; }
+.ribbon-front { z-index: 4; }
+/* 拖拽命中带：环带区域的透明矩形（卡缝/空区也能起手拨环）；hero-foot z5 压其上不受影响 */
+.ribbon-hit {
+  position: absolute; left: 0; right: 0; top: 9%; bottom: 18%;
+  z-index: 3;
+  touch-action: pan-y;   /* 竖划还给页面滚动（浏览器接管发 pointercancel）；横向起手归拨环 */
+  cursor: grab;
   -webkit-user-select: none; user-select: none;
 }
-.cube-vp:active { cursor: grabbing; }
-.cube {
-  position: relative; width: 100%; height: 100%;
+.ribbon-hit:active { cursor: grabbing; }
+.ribbon-world {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0;
   transform-style: preserve-3d;
-  transform: rotateX(-20deg) rotateY(35deg);
 }
-.cube .face {
-  position: absolute; inset: 0;
-  background: var(--c-white);   /* 实底：透明 PNG 封面不透出对面 */
-  border: 1px solid rgba(24, 24, 24, .22);   /* 棱线加实=体块边界确定 */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5),      /* 上棱高光线 */
-              inset 0 -14px 26px rgba(24, 24, 24, .07);    /* 下缘内收暗角 */
-  overflow: hidden;
-  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+/* 丝带卡：布局尺寸=近掠最大显示尺寸（动画中投影 scale 恒 ≤1，防合成层放大糊）；
+   材质沿立方体口径：白实底 + 棱线 + 统一 saturate/contrast = 同一块材料。
+   ⚠️ 零 transition/animation（DOM 在 back/front 间迁移会重置它们，姿态全 JS 直写）。 */
+.rcard {
+  position: absolute; left: 0; top: 0;
+  width: var(--ribbon-card-w);
+  height: calc(var(--ribbon-card-w) / 1.5);   /* 3:2，与 assets/ribbon/ 卡图同比 */
+  margin-left: calc(var(--ribbon-card-w) / -2);
+  margin-top: calc(var(--ribbon-card-w) / -3);
+  background: var(--c-border);                 /* 灰底兜图片解码空窗（灰阶站不突兀） */
+  border: 1px solid rgba(24, 24, 24, .22);
+  border-radius: 4px;
+  overflow: hidden;                            /* 叶子平面自身裁切安全（非 3D 容器） */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5),
+              inset 0 -14px 26px rgba(24, 24, 24, .05);
+  -webkit-user-select: none; user-select: none;
 }
-.cube .face img {
-  width: 100%; height: 100%; object-fit: cover;
-  opacity: .9;
-  filter: saturate(.85) contrast(1.03);   /* 六面统一收敛=同一块材料的六个切面 */
+.ribbon-front .rcard { pointer-events: auto; cursor: pointer; }
+.ribbon-back  .rcard { pointer-events: none; }
+.rcard img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: .94;
+  filter: saturate(.85) contrast(1.03);
 }
-/* 光照遮罩：JS 每帧按面法线 Lambert 受光量写 opacity（上限 .16，功能层非装饰补丁） */
-.cube .face-shade {
+/* 深度/背面遮罩：JS 每帧写 opacity（背面压暗吸收镜像感；沿 face-shade 先例，只动 opacity） */
+.rcard-shade {
   position: absolute; inset: 0;
   background: #181818;
   opacity: 0; pointer-events: none;
 }
-/* 立方体面悬浮揭示已移除（2026-07-07 用户裁定冗余）——六面只显默认封面，无第二层揭示图。
-   卡片揭示 .layer-reveal 仍保留（见下方）。 */
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
 main { position: relative; }
@@ -222,6 +228,13 @@ main { position: relative; }
   grid-template-columns: var(--card-size) var(--spine-gap) var(--card-size);
   justify-content: center; align-items: center;
 }
+/* 丝带卡点击滚动锚点（#work-{id}）：fixed header 让位 */
+.project-item, .gallery-item { scroll-margin-top: calc(var(--header-h) + 24px); }
+/* 滚动到位提示：标题提亮（复用 spine-on 链路）+ 图容器一次 opacity 脉冲，只动 opacity/color */
+.project-item.jump-hit .project-title { color: var(--c-emph); }
+.gallery-item.jump-hit .gallery-title { color: var(--c-title); }
+.jump-hit .image-container { animation: jumpPulse .9s ease both; }
+@keyframes jumpPulse { 0% { opacity: 1; } 35% { opacity: .72; } 100% { opacity: 1; } }
 /* 文字列：标题簇与正文收拢居中（老师页规格——不要 space-between 把两端撑开） */
 .project-item .text-container {
   width: var(--card-size); min-height: var(--card-size);
@@ -363,15 +376,17 @@ main { position: relative; }
   .hero {
     min-height: max(560px, calc(100vh - var(--header-h)));
     min-height: max(560px, calc(100svh - var(--header-h)));
-    justify-content: center;   /* 立方体（唯一流内元素）真正垂直居中 */
+    justify-content: center;   /* 丝带占位（唯一流内元素）真正垂直居中 */
+    --ribbon-card-w: min(230px, 60vw);
   }
-  /* 大字留在顶部（大字在上、立方体在中、贴底行沉底 三段式）；base 的 top:clamp 生效 */
-  /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把立方体顶到上方 */
+  /* 大字留在顶部（大字在上、丝带环在中、贴底行沉底 三段式）；base 的 top:clamp 生效。
+     手机档环心不再对大字中线（ribbon.js 改对 hero 视口中心） */
+  /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把占位顶到上方 */
   .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
   .intro-sub { font-size: 13px; }
-  /* margin-top 归零：否则会叠加在 justify-center 上把立方体推离正中 */
-  .polygon-container { --cube-size: 260px; margin-top: 0; }
+  /* margin-top 归零：否则会叠加在 justify-center 上把环推离正中 */
+  .polygon-container { margin-top: 0; }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
   .projects-section { margin-top: 96px; }
   .mainline { gap: 90px; }
@@ -384,7 +399,7 @@ main { position: relative; }
   .hero-foot { padding: 0 20px 28px; }
   .intro-title { font-size: 17px; }
   .intro-sub { font-size: 12.5px; }
-  .polygon-container { --cube-size: 230px; }
+  .hero { --ribbon-card-w: 180px; }
   .projects-section { margin-top: 76px; }
   .mainline { gap: 72px; }
   .epilogue-title { margin: 88px 0 30px; }
@@ -403,4 +418,6 @@ main { position: relative; }
   .iamf .who { animation: none; }
   .iamf .caret { animation: none; }
   .spine-branch { transition: none; }
+  .jump-hit .image-container { animation: none; }
+  /* 丝带静态降级由 ribbon.js 摆一帧定格环态（θ=半槽偏移），零 rAF；点击仍可用 */
 }
