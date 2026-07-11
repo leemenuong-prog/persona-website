@@ -1,5 +1,5 @@
 {
-  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。mapped=true → 画廊详情页（project.html?id=ref）改用作品集同款排版渲染（封面块→线稿块→场景行模块→影片+STACK 连续网页流，作品集没放的内容画廊也不放），此后两页共同管理；UABB 截图补齐后再开。",
+  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。mapped=true → 画廊详情页（project.html?id=ref）改用作品集同款排版渲染（封面块→线稿块→场景行模块→影片+STACK 连续网页流，作品集没放的内容画廊也不放），此后两页共同管理；五个主线 AI 作品均已开启。",
   "meta": {
     "doc_title_zh": "AI 产品作品集",
     "doc_title_en": "AI Product Portfolio",
@@ -595,19 +595,19 @@
           "label_en": "MANUAL CARRYING"
         },
         {
-          "value": "4+",
-          "label_zh": "每日自动任务",
-          "label_en": "DAILY ROUTINES"
+          "value": "3",
+          "label_zh": "晨间自动任务",
+          "label_en": "MORNING RUNS"
         },
         {
-          "value": "200+",
-          "label_zh": "Obsidian 知识条目",
+          "value": "240+",
+          "label_zh": "知识笔记",
           "label_en": "VAULT NOTES"
         }
       ],
       "cover": {
         "shot": "assets/portfolio/meco/landing-01.jpg",
-        "ratio": 1.6097,
+        "ratio": 1.6007,
         "frame": "mac",
         "label_zh": "看板首屏",
         "label_en": "THE HOME BOARD",
@@ -617,10 +617,10 @@
         "caption_en": "Home · calendar, today's list, goals"
       },
       "lineart": {
-        "src": "assets/project/meco/content/plate-01-organs.svg",
+        "src": "assets/project/meco/content/plate-01-balance.svg",
         "ratio": 1.6,
-        "motto": "Three lives, one thread.",
-        "motto_zh": "三头一线"
+        "motto": "Work one side, life the other.",
+        "motto_zh": "工作一头，生活一头"
       },
       "scenes": [
         {
@@ -664,10 +664,10 @@
             },
             {
               "src": "assets/portfolio/meco/vault-01.jpg",
-              "ratio": 1.5296,
+              "ratio": 1.4235,
               "frame": "mac",
-              "caption_zh": "Obsidian 知识库 · 200+ 份笔记连成一张网",
-              "caption_en": "The vault · 200+ notes, one graph"
+              "caption_zh": "知识库 · 240+ 篇笔记连成一张网",
+              "caption_en": "The vault · 240+ notes, one graph"
             }
           ]
         },
@@ -682,17 +682,25 @@
             },
             {
               "imgs": [
-                0
+                0,
+                1
               ]
             }
           ],
           "images": [
             {
-              "src": "assets/portfolio/meco/board-01.jpg",
-              "ratio": 1.4733,
+              "src": "assets/portfolio/meco/study-01.jpg",
+              "ratio": 1.3483,
               "frame": "mac",
-              "caption_zh": "学习与求职看板 · 每个数字都从笔记库实时解析",
-              "caption_en": "Boards · every number parsed live from the vault"
+              "caption_zh": "学习板块 · 课堂进度与弱项卡",
+              "caption_en": "Study · course progress and weak-spot cards"
+            },
+            {
+              "src": "assets/portfolio/meco/work-01.jpg",
+              "ratio": 1.3714,
+              "frame": "mac",
+              "caption_zh": "工作板块 · 求职作战与跟进雷达",
+              "caption_en": "Work · the job-hunt board and follow-up radar"
             }
           ]
         }
@@ -702,6 +710,7 @@
       "ref": "uabb",
       "display": "UABB",
       "placeholder": false,
+      "mapped": true,
       "metrics": [
         {
           "value": "4",
@@ -725,37 +734,115 @@
         }
       ],
       "cover": {
-        "shot": "assets/portfolio/uabb/poster-01.jpg",
-        "ratio": 1.5797,
+        "shot": "assets/portfolio/uabb/landing-01.jpg",
+        "ratio": 2.4361,
         "frame": "none",
-        "label_zh": "展会海报",
-        "label_en": "THE POSTER",
+        "label_zh": "总流程",
+        "label_en": "THE WORKFLOW",
         "lede_en": "Odd in, standard out.",
         "lede_zh": "非标进，标准出。",
-        "caption_zh": "《Mars Together》· 地外剧场板块展报",
-        "caption_en": "Mars Together — the Off-World Theater broadsheet"
+        "caption_zh": "3D-GC Workflow · 从一句话到 3D 资产",
+        "caption_en": "3D-GC Workflow — from one line of text to a 3D asset"
       },
       "scenes": [
         {
-          "id": "pipeline",
-          "name_zh": "管线拆解",
-          "name_en": "THE PIPELINE",
+          "id": "input",
+          "name_zh": "输入与候选",
+          "name_en": "INPUT & CANDIDATES",
           "copy_ref": "why_built",
           "rows": [
             {
-              "text": true
+              "text": true,
+              "img": 0,
+              "img_mm": 70
             },
             {
               "sec": "key_contributions"
             },
             {
-              "sec": "how_it_works"
-            },
-            {
-              "sec": "why_it_matters"
+              "imgs": [
+                1
+              ]
             }
           ],
-          "images": []
+          "images": [
+            {
+              "src": "assets/portfolio/uabb/input-01.jpg",
+              "ratio": 1.5865,
+              "frame": "browser",
+              "caption_zh": "第一步 · 文字或参考图进来，两处人工确认把关",
+              "caption_en": "Step 1 · text or reference in, two manual checkpoints"
+            },
+            {
+              "src": "assets/portfolio/uabb/candidates-01.jpg",
+              "ratio": 2.6416,
+              "frame": "browser",
+              "caption_zh": "第二步 · 一次出四张候选，建筑负向词收紧口径",
+              "caption_en": "Step 2 · four candidates a run, tightened by architecture negatives"
+            }
+          ]
+        },
+        {
+          "id": "views",
+          "name_zh": "四视图与去背",
+          "name_en": "STRICT VIEWS",
+          "copy_ref": "how_it_works",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/uabb/views-01.jpg",
+              "ratio": 1.4286,
+              "frame": "browser",
+              "caption_zh": "第四步 · 锁相机生成四向立面，再统一去背",
+              "caption_en": "Step 4 · camera-locked elevations, then background removal"
+            }
+          ]
+        },
+        {
+          "id": "outcome",
+          "name_zh": "成品与海报",
+          "name_en": "THE OUTCOME",
+          "copy_ref": "why_it_matters",
+          "rows": [
+            {
+              "text": true
+            },
+            {
+              "imgs": [
+                0
+              ]
+            },
+            {
+              "imgs": [
+                1
+              ]
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/portfolio/uabb/result-01.jpg",
+              "ratio": 2.8019,
+              "frame": "browser",
+              "caption_zh": "收尾 · 四视图喂给 Hunyuan3D，长出可预览的白模",
+              "caption_en": "Finally · four views into Hunyuan3D, out comes a previewable massing model"
+            },
+            {
+              "src": "assets/portfolio/uabb/poster-01.jpg",
+              "ratio": 1.5797,
+              "frame": "none",
+              "caption_zh": "《Mars Together》· 地外剧场板块展报",
+              "caption_en": "Mars Together — the Off-World Theater broadsheet"
+            }
+          ]
         }
       ]
     }

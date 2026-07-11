@@ -331,47 +331,47 @@
       "role_en": "Solo build",
       "award_zh": "",
       "award_en": "",
-      "keywords_zh": "个人管家 | 自我成长 | 知识库",
-      "keywords_en": "Personal butler | Self-growth | Knowledge base",
+      "keywords_zh": "个人管家 | Work-life balance | 知识库",
+      "keywords_en": "Personal butler | Work-life balance | Knowledge base",
       "tags": [
         "AI Agent",
         "Python",
         "Feishu Bot",
         "Obsidian"
       ],
-      "url": "",
+      "url": "https://github.com/leemenuong-prog/Meco",
       "links": [],
       "thumb": "assets/project/meco/thumbnails/1.png",
       "float": {},
-      "desc_zh": "我给自己造的 AI 生活管家：一个 Python 程序，替我打理求职冲刺期的日常。",
-      "desc_en": "The AI butler I built for myself — one Python program that runs my daily life.",
-      "one_liner_zh": "你好，我是 Meco 🍄‍🟫——文苑给自己造的个人管家：一个 Mac 应用，把飞书机器人、AI 应用、日程和他的 Obsidian 知识库串在一起，替他打理工作和生活的日常。",
-      "one_liner_en": "Hi, I'm Meco 🍄‍🟫 — the personal butler Wenyuan built for himself: a Mac app that ties his Feishu bot, his AI tools, his schedule and his Obsidian vault together, and runs the daily grind of work and life for him.",
-      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体，配上 8 个能真动手的工具。现在晨报、复盘每天自动跑，人肉搬信息比过去少了九成。",
-      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one, with 8 tools it can actually use. Now the daily briefs run themselves, and the information-carrying is down by ninety percent.",
-      "tech_stack_zh": "Python · FastAPI · pywebview · 飞书开放平台（长连接）· Obsidian · Tavily · Claude / LLM · Claude Code",
-      "tech_stack_en": "Python · FastAPI · pywebview · Feishu Open Platform · Obsidian · Tavily · Claude / LLM · Claude Code",
+      "desc_zh": "我给自己造的个人管家：每天早上比我先开工，替我打理工作和生活，还一版一版把自己改得更像我。",
+      "desc_en": "The butler I built for myself — it clocks in before me, runs my day, and rebuilds itself version by version.",
+      "one_liner_zh": "你好，我是 Meco ✦——文苑给自己造的个人管家：一个连着他 Obsidian 知识库的 Mac 应用，每天早上比他先开工，替他打理工作和生活的日常；我还跟他一样兼着产品经理，看他怎么用我，一版一版把自己改得更像他。",
+      "one_liner_en": "Hi, I'm Meco ✦ — the personal butler Wenyuan built for himself: a Mac app wired to his Obsidian vault, clocking in before him every morning to run the daily grind of work and life; like him, I also work as a product manager — watching how he uses me and rebuilding myself, version by version, to grow more like him.",
+      "full_description_zh": "求职最忙那阵，我的事情散在飞书、笔记、日历三个地方。我不想再多装一个 App，想要一条把它们串起来的线——于是一个人做了 Meco 这个 Mac 应用：飞书机器人、桌面窗口、日程闹钟和 Obsidian 笔记库连成一体。现在它每天早上先我一步开工，把当天理顺；还像个产品经理一样读我的使用痕迹，一版一版把自己改得更像我。",
+      "full_description_en": "At the busiest point of my job hunt, my life was scattered across Feishu, my notes and my calendar. I didn't want another app — I wanted one thread through them all. So I built Meco alone, as a single Mac app: a Feishu bot, a desktop window, a scheduler and my Obsidian vault, wired into one. Now it clocks in before me every morning to set the day straight — and like a product manager, it reads how I use it and rebuilds itself, version by version, to grow more like me.",
+      "tech_stack_zh": "Python · FastAPI · pywebview · 飞书开放平台（长连接）· Obsidian · Tavily · Claude / LLM · Claude Code · Cowork Schedule",
+      "tech_stack_en": "Python · FastAPI · pywebview · Feishu Open Platform · Obsidian · Tavily · Claude / LLM · Claude Code · Cowork Schedule",
       "sections": {
         "tldr": {
           "title_zh": "先说结论",
           "title_en": "The Short Version",
-          "body_zh": "求职最忙那阵，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 库把生活、工作、求职三头连成了 Meco，还配上 8 个我天天要用的工具。\n现在 Meco 是我每天要打开 3 次以上的 App；后来也分享给了几个有同样需要的同学。",
-          "body_en": "At the busiest stretch of my job hunt, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone, using my Obsidian vault to tie life, work and the job hunt into one thing — Meco — with 8 tools I reach for every day.\nMeco is an app I now open three-plus times a day, and I've since passed it to a few classmates who needed the same.",
+          "body_zh": "求职最忙那阵，我的工作和生活散在好几个地方，嘴上说的 work-life balance 根本顾不上。\n我要的不是再多下一个 App，而是把手上已有的东西交给 AI 替我打理，别再反过来伺候工具。\n于是我一个人做了个 Mac 应用，用 Obsidian 库把生活、工作、求职连成了 Meco；现在它每天早上先我一步开工——排好当天、陪我练面试，还琢磨着自己下一版该改什么。\n如今我的一天从它的早报开始，该收工时也有它劝我收工；这个越用越像我的 App，也分享给了几个有同样需要的同学。",
+          "body_en": "At the busiest stretch of my job hunt, work and life were scattered across half a dozen places — the work-life balance I kept promising myself was nowhere in sight.\nI didn't want to install yet another app; I wanted to hand what I already had to an AI and stop waiting on my tools hand and foot.\nSo I built a Mac app alone and tied life, work and the job hunt into one thing with my Obsidian vault; now Meco clocks in before me every morning — laying out my day, drilling me for interviews, and mulling over what its next version should fix.\nThese days my day starts with its brief and ends with it telling me to call it a day; the app keeps growing more like me, and I've passed it to a few classmates who needed the same.",
           "figure": {
-            "src": "assets/project/meco/content/plate-01-organs.svg"
+            "src": "assets/project/meco/content/plate-01-balance.svg"
           }
         },
         "why_built": {
           "title_zh": "为什么做这个",
           "title_en": "Why",
-          "body_zh": "求职那阵，投递记录躺在 Obsidian，提醒散在飞书，复盘全靠手写——三样各在一处，每天光是手动把它们对上，就没了快一个钟头。\n想明白之后我发现：缺的不是新工具，工具早就够多了；缺的是一个能自动把我的日常理顺的 AI，和一个愿意替我干活的管家。",
-          "body_en": "During the hunt my applications sat in Obsidian, my reminders in Feishu, my reviews in handwriting — three places, and just reconciling them by hand ate close to an hour a day.\nOnce it clicked, I saw what was missing wasn't another tool; there were plenty. What was missing was an AI that could tidy my day on its own, and a butler willing to do the work for me."
+          "body_zh": "求职那阵，投递记录躺在 Obsidian，提醒散在飞书，复盘全靠手写——三样各在一处，每天光是手动把它们对上，就没了快一个钟头。\n想明白之后我发现：缺的不是新工具，工具早就够多了；缺的是一个能自动把我的日常理顺的 AI，和一个愿意自己先动手的管家。",
+          "body_en": "During the hunt my applications sat in Obsidian, my reminders in Feishu, my reviews in handwriting — three places, and just reconciling them by hand ate close to an hour a day.\nOnce it clicked, I saw what was missing wasn't another tool; there were plenty. What was missing was an AI that could tidy my day on its own, and a butler who'd start working without being told."
         },
         "key_contributions": {
           "title_zh": "核心贡献",
           "title_en": "Key Contributions",
-          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口装进同一个 Mac 应用——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，同时为无人值守的定时任务划出只读边界，任何写入都要经我确认。\n把投递、健康、目标、学习画成一屏图表看板，并打通 Claude Code 与飞书——后台长任务跑完，它会主动来报。",
-          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Mac app — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and drew a read-only boundary around unattended runs — anything that writes waits for my explicit yes.\nTurned applications, health, goals and learning into one screen of charts, and wired Claude Code to Feishu — when a long job finishes, it reports back on its own.",
+          "body_zh": "把飞书机器人、本地接口、日程引擎和桌面窗口装进同一个 Mac 应用——双击就能用，不用部署，也不用伺候一堆服务。\n给对话大脑配上能真正动手的工具，也给无人值守的部分立了规矩：检查知识库只报告、不代修，任何写入都要先经我确认，碰上我没收拾完的半成品，它宁可跳过也不动工。\n它的每日开工和自迭代，都是 Claude Code 的定时任务在跑；行为准绳则是一份我随时能改的 Markdown 手册——想让管家换个做法，改那页纸就行，改过的每一版都留得住。",
+          "body_en": "Folded the Feishu bot, the local endpoints, the scheduler and the desktop window into one Mac app — double-click and it runs, nothing to deploy or babysit.\nGave the conversational brain tools that actually do things, and set house rules for the unattended parts: vault checkups report and never repair, anything that writes waits for my yes, and when it finds my half-finished work sitting around, it skips rather than builds on top.\nBoth its daily shift and its self-iteration run on Claude Code's scheduled tasks; its conduct lives in one Markdown handbook I can edit any time — want the butler to work differently, change that page, and every past version stays on record.",
           "figure": {
             "src": "assets/project/meco/content/plate-02-boards.svg"
           }
@@ -379,8 +379,8 @@
         "how_it_works": {
           "title_zh": "系统如何运作",
           "title_en": "How It Works",
-          "body_zh": "我在飞书或桌面窗口里说一句话，它听懂意图就去调用合适的工具——记笔记、设提醒、看看板、搜网页。\n看板上的每个数字，都实时从 200 多份笔记的 Obsidian 库里解析出来，我一眼就能看清自己的近况。\n上课、复盘、写日记这类事，本质上是会循环的日程，这样的每日任务我建了超过 4 个：到点自动触发，办完把结果推回飞书——顺带也把新内容喂回了知识库。",
-          "body_en": "I say a line in Feishu or the desktop window; it catches what I mean and calls the right tool — take a note, set a reminder, check the boards, search the web.\nEvery number on the boards is parsed live from an Obsidian vault of 200-plus notes, so one look tells me where I stand.\nClasses, reviews, journaling — these are really recurring schedules, and I keep more than four of them running daily: they fire on time, push their results back to Feishu, and feed the fresh material back into the vault along the way.",
+          "body_zh": "每天九点刚过，飞书里会先后收到它备好的三样：当天的安排和接下来几天的提醒、一轮面试陪练、一份 AI 早报。陪练是先让我开口再讲评，连我答题收尾总往产品上拐的老毛病，它都记着；简历建议每天只给一条，攒着攒着就成了一册。\n白天我在飞书或桌面窗口里说一句话，它听懂就去调合适的工具——记笔记、设提醒、查看板；看板上的每个数字，都是从两百多篇笔记里实时读出来的。\n晚上的日报末尾，总有一句劝我收工的话。到了周五，它换上产品经理的身份，带着一周的使用痕迹——只记在我这台电脑上——琢磨出至多三条迭代：界面上的小改它自己动手，动筋骨的改动先提案，拍板永远在我。我抱怨过「没办法调节想看的板块」，下一版看板就能自己排了。",
+          "body_en": "Just past nine every morning, Feishu brings me three things it has ready: the day's plan with reminders for the days ahead, a round of interview practice, and an AI industry brief. The practice makes me speak first and critiques after — it even remembers my old habit of steering answers back to product at the end; résumé advice comes one line a day, and the lines have quietly grown into a booklet.\nDuring the day I say one line in Feishu or the desktop window and it calls the right tool — take a note, set a reminder, pull up the boards; every number on those boards is read live out of two-hundred-odd notes.\nAt night the daily log always ends with a line telling me to knock off. On Fridays it puts on its product-manager hat and, with a week of usage traces — kept only on this machine — works out at most three iterations: small interface changes it makes itself, anything structural goes in as a proposal, and the final call is always mine. I once complained I couldn't rearrange which boards I see, and the next version let me lay them out myself.",
           "figure": {
             "src": "assets/project/meco/content/plate-03-brain-fence.svg"
           }
@@ -388,8 +388,8 @@
         "why_it_matters": {
           "title_zh": "影响与意义",
           "title_en": "Impact",
-          "body_zh": "每天的手动整理比过去少了九成——时间更多花在琢磨明天，而不是誊抄今天。\n知识库从「我伺候工具」变成了「工具主动来找我」。",
-          "body_en": "The daily hand-tidying is down by ninety percent — more of my time goes to thinking about tomorrow instead of copying out today.\nMy knowledge base flipped: from me waiting on the tools to the tools coming to me."
+          "body_zh": "每天的手动整理比过去少了九成——时间更多花在琢磨明天，而不是誊抄今天。\n前阵子扁桃体发炎，我没硬撑，踏实歇了两天，周报里它替我记下一句：「病了就歇」的判断是对的。在它那儿，求职的目标和健身的计划，从来都是并排放着的。\n它不只打理我的日常——它跟我一样是个产品经理，看我怎么用它，就一版一版把自己改得更顺手、长得更像我；这大概是它和货架上任何一个软件最不一样的地方。",
+          "body_en": "The daily hand-tidying is down by ninety percent — more of my time goes to thinking about tomorrow instead of copying out today.\nA while back my tonsils flared up; I didn't push through, I properly rested for two days — and in the weekly review it wrote the call down for me: resting when sick was the right decision. In its books, the job-hunt goal and the workout plan have always sat side by side.\nIt doesn't just keep my days in order — like me, it's a product manager: it watches how I use it and rewrites itself, version by version, into something more my shape; which is probably what sets it apart from anything off the shelf."
         }
       },
       "media": [
@@ -484,15 +484,7 @@
           "body_en": "Thirty days to five wasn't overtime; it was a different process — for the first time the curatorial team could iterate on exhibition content.\nThis pipeline is also my hinge from architecture to AI product: proof that workflow thinking transfers to any production floor."
         }
       },
-      "media": [
-        {
-          "type": "video-local",
-          "src": "works/aftersilence.mp4",
-          "poster": "works/aftersilence-cover.jpg",
-          "label_zh": "工作流演示 · 点击播放",
-          "label_en": "Pipeline demo — click to play"
-        }
-      ],
+      "media": [],
       "contentImages": [
         "assets/project/uabb/content/flow-overview.svg",
         "assets/project/uabb/content/1.jpg",

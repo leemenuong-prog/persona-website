@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Meco — 工作一头，生活一头 / work one side, life the other</title>
+  <style>line,rect,circle,ellipse,path,polyline,polygon{vector-effect:non-scaling-stroke}</style>
+  <rect x="0" y="0" width="1200" height="750" fill="#FFFFFF"/>
+  <polygon points="513.4,307 885.8,522 686.6,637 314.2,422" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="314.2,422 686.6,637 686.6,669 314.2,454" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="686.6,637 885.8,522 885.8,554 686.6,669" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="321.1" y1="436" x2="679.7" y2="643" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="693.5" y1="643" x2="878.9" y2="536" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="321.1" y1="444" x2="679.7" y2="651" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="693.5" y1="651" x2="878.9" y2="544" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="321.1" y1="452" x2="679.7" y2="659" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="693.5" y1="659" x2="878.9" y2="552" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="314.2" y1="422" x2="686.6" y2="637" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="686.6" y1="637" x2="885.8" y2="522" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="314.2" y1="454" x2="686.6" y2="669" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="686.6" y1="669" x2="885.8" y2="554" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="314.2" y1="422" x2="314.2" y2="454" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="885.8" y1="522" x2="885.8" y2="554" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="686.6" y1="637" x2="686.6" y2="669" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <ellipse cx="435.5" cy="377" rx="42" ry="15" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <ellipse cx="764.5" cy="567" rx="42" ry="15" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="379.2" y1="314.5" x2="820.8" y2="569.5" fill="none" stroke="#E0E0E0" stroke-width="0.75" stroke-dasharray="2 6"/>
+  <polygon points="726.4,618 813,568 813,584 726.4,634" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="726.4,618 813,568 821.7,573 735.1,623" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="813,568 821.7,573 821.7,589 813,584" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="735.1,623 821.7,573 821.7,589 735.1,639" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="766.3,598 750.7,587 743.8,611" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="759.3" y1="597" x2="749" y2="607" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <polygon points="778.4,600 779.9,603.5 783.4,605 779.9,606.5 778.4,610 776.9,606.5 773.4,605 776.9,603.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 636 487 Q 682 558 744 582" fill="none" stroke="#BEBEBE" stroke-width="1" stroke-dasharray="7 5"/>
+  <line x1="737.8" y1="575.5" x2="744" y2="582" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="735" y1="582.6" x2="744" y2="582" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 556 376 L 556 472 A 44 26 0 0 0 644 472 L 644 376 Z" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <ellipse cx="600" cy="376" rx="44" ry="26" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 556 376 A 44 26 0 0 0 644 376" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="637.4" y1="376" x2="644" y2="376" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="632.4" y1="387.1" x2="638.1" y2="389" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="618.7" y1="395.1" x2="622" y2="398.5" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="600" y1="398.1" x2="600" y2="402" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="584.6" y1="391.8" x2="578" y2="398.5" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="573.3" y1="385.1" x2="561.9" y2="389" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="569.2" y1="376" x2="556" y2="376" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="567.6" y1="364.9" x2="561.9" y2="363" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="581.3" y1="356.9" x2="578" y2="353.5" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="600" y1="353.9" x2="600" y2="350" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="618.7" y1="356.9" x2="622" y2="353.5" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <line x1="632.4" y1="364.9" x2="638.1" y2="363" fill="none" stroke="#BEBEBE" stroke-width="0.75"/>
+  <circle cx="600" cy="420" r="14" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="600" y1="420" x2="600" y2="409.5" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="600" y1="420" x2="589.5" y2="420" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <circle cx="600" cy="420" r="1.5" fill="#181818" stroke="none"/>
+  <polygon points="600,344 588,376 612,376" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <polygon points="403.4,213.5 805.2,445.5 796.6,450.5 394.8,218.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="796.6,450.5 805.2,445.5 805.2,457.5 796.6,462.5" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="394.8,218.5 796.6,450.5 796.6,462.5 394.8,230.5" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <polygon points="600,286.5 605,299.5 618,304.5 605,309.5 600,322.5 595,309.5 582,304.5 595,299.5" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <line x1="435.5" y1="249" x2="385.5" y2="347" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="435.5" y1="249" x2="485.5" y2="347" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 385.5 347 Q 435.5 367 485.5 347" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <ellipse cx="435.5" cy="347" rx="50" ry="18" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 385.5 347 A 50 18 0 0 0 485.5 347" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <line x1="764.5" y1="439" x2="714.5" y2="537" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <line x1="764.5" y1="439" x2="814.5" y2="537" fill="none" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 714.5 537 Q 764.5 557 814.5 537" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <ellipse cx="764.5" cy="537" rx="50" ry="18" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <path d="M 714.5 537 A 50 18 0 0 0 814.5 537" fill="none" stroke="#181818" stroke-width="1.5"/>
+  <polygon points="412.9,272 468.4,304 458,310 402.6,278" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="458,310 468.4,304 468.4,360 458,366" fill="#FFFFFF" stroke="#6F6F6F" stroke-width="1"/>
+  <polygon points="402.6,278 458,310 458,366 402.6,334" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <g transform="matrix(0.866,0.5,0,1,402.6,278)">
+    <line x1="0" y1="11" x2="64" y2="11" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <circle cx="7" cy="6" r="2" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <circle cx="14" cy="6" r="2" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="6" y="17" width="25" height="33" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <line x1="11" y1="45" x2="11" y2="38" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <line x1="16" y1="45" x2="16" y2="32" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <line x1="21" y1="45" x2="21" y2="41" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <line x1="26" y1="45" x2="26" y2="35" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <rect x="36" y="17" width="22" height="33" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+    <polyline points="39,45 45,38 50,41 55,32" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  </g>
+  <circle cx="764.5" cy="509" r="34" fill="#FFFFFF" stroke="#181818" stroke-width="1.5"/>
+  <path d="M 730.5 509 A 34 10 0 0 0 798.5 509" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <path d="M 764.5 475 Q 777.5 509 764.5 543" fill="none" stroke="#BEBEBE" stroke-width="1"/>
+  <line x1="328" y1="242" x2="405" y2="280" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="322" y="246" text-anchor="end" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the work.</text>
+  <line x1="880" y1="494" x2="800" y2="506" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="884" y="498" text-anchor="start" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the life.</text>
+  <line x1="480" y1="460" x2="554" y2="445" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="474" y="464" text-anchor="end" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="19" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the schedule.</text>
+  <line x1="244" y1="426" x2="310" y2="420" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="238" y="430" text-anchor="end" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the vault.</text>
+  <line x1="934" y1="622" x2="824" y2="574" fill="none" stroke="#E0E0E0" stroke-width="0.75"/>
+  <text x="938" y="626" text-anchor="start" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="17" letter-spacing="1" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">the changes.</text>
+  <text x="600" y="706" text-anchor="middle" font-family="Garamond, 'EB Garamond', Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" letter-spacing="1.5" paint-order="stroke" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round" fill="#999999">work one side, life the other.</text>
+</svg>
