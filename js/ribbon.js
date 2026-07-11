@@ -31,14 +31,15 @@
 
   var D2R = Math.PI / 180, R2D = 180 / Math.PI;
   var PERSP = 1500;              /* 与 css .ribbon-layer 的 perspective 同值 */
-  var TILT = -22;                /* 环倾斜 rotateX（deg）：后弧抬高让位大标题（三迭代 −14→−22） */
+  var TILT = -26;                /* 环倾斜 rotateX（deg）：五迭代 −22→−26——椭圆更扁，前弧
+                                    只从字下缘掠过（用户批 −22 时前弧「拦腰截断」标题） */
   var BANK = -4;                 /* 环斜置 rotateZ（deg）：微斜，不把后弧压回标题（−7→−4） */
-  var COVER = 0.35;              /* 前弧带顶边锚在标题 (1−COVER) 高度线：前弧压字下段 35%、
-                                    后弧从字后绕过并露出字上方 —— 环「套住」标题（四迭代核心裁定，
-                                    勿再让环与标题分离）；后弧顶另有 header 越界守卫 */
+  var COVER = 0.30;              /* 前弧带顶边锚在标题 (1−COVER) 高度线（名义值）；实际构图通常由
+                                    header 守卫接管：后弧顶贴 hero 顶 → 大倾角自然把前弧压到字下缘。
+                                    环「套住」标题（前弧字前/后弧字后），勿再让环与标题分离 */
   var MARGIN_Z = 40;             /* 世界深度上限 −40px：投影 scale 恒 <1 */
-  var H_DIV = 2.0;               /* 带高 H = token 宽 ÷ H_DIV（旋钮：前弧偏大则加大） */
-  var X_FRAC = 0.32;             /* 环投影半宽 = X_FRAC×vw（旋钮） */
+  var H_DIV = 2.15;              /* 带高 H = token 宽 ÷ H_DIV（旋钮：前弧偏大则加大） */
+  var X_FRAC = 0.30;             /* 环投影半宽 = X_FRAC×vw（旋钮） */
   var BASE = 0.05;               /* 巡航速率量值 3°/s；环向 = 负（前弧右→左） */
   var FRICTION = 0.95;           /* 松手惯性摩擦/帧 */
   var VEL_MAX = 0.8;             /* 惯性上限 °/帧 */
@@ -214,7 +215,9 @@
       st.side = side;
       (side === 1 ? els.frontW : els.backW).appendChild(st.el);
     }
-    var o = c >= 0 ? 0.12 * (1 - c) : Math.min(0.5, 0.12 + 0.34 * (-c));
+    /* 白纱淡出（五迭代用户裁定：带到名字「后面」要变得很淡，分清前后无截断感）：
+       shade=白色罩，越靠后越浓 → 带体向暖白底淡去；前弧近乎全彩 */
+    var o = c >= 0 ? 0.06 * (1 - c) : Math.min(0.82, 0.06 + 0.72 * (-c));
     if (Math.abs(o - st._o) > 0.004) {
       st.shade.style.opacity = o.toFixed(3);
       st._o = o;
@@ -245,7 +248,9 @@
     var dt = Math.min(dtMs / 16.7, 3);
     lastT = now;
 
-    if (HOVERFINE.matches) {
+    /* 视差只在环态生效（五迭代：飞入是纯编舞——途中视差起步会造成「临近标题的小抖动」，
+       世界层与标题反向错动 ~20px；环成后从 0 lerp 进入，天然平滑） */
+    if (HOVERFINE.matches && mode === 'ring') {
       var k = 1 - Math.pow(0.94, dt);
       par.x += (par.tx - par.x) * k;
       par.y += (par.ty - par.y) * k;
@@ -300,7 +305,7 @@
     downCard = e.target && e.target.closest ? e.target.closest('.rstrip') : null;
   }
   function onMove(e) {
-    if (HOVERFINE.matches && !dragging) {
+    if (HOVERFINE.matches && !dragging && mode === 'ring') {   /* 视差目标仅环态更新 */
       par.tx = e.clientX / window.innerWidth * 2 - 1;
       par.ty = e.clientY / window.innerHeight * 2 - 1;
     }
@@ -495,5 +500,15 @@
     ensure();
   }
 
-  window.Ribbon = { init: init, relayout: relayout };
+  window.Ribbon = {
+    init: init, relayout: relayout,
+    /* 手动泵一帧 + 重启时间轴（调试/隐藏标签页环境确定性验证用，沿 IndexFx.tick 先例）：
+       传伪造时间戳逐帧驱动 render，配合替换 requestAnimationFrame 可离线扫描动画 */
+    _pump: function (ts) { raf = null; render(ts); },
+    _restart: function () {
+      if (!strips.length) return false;
+      tIntro = 0; theta = 0; vel = -BASE; lastT = 0; mode = 'intro';
+      return true;
+    }
+  };
 })();

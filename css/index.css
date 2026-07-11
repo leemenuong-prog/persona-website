@@ -172,11 +172,12 @@
   max-width: none;   /* ⚠️ 必须覆盖 main.css 全局 img{max-width:100%}，否则条内全卡宽 img 被压扁 */
   filter: saturate(.85) contrast(1.03) brightness(1.02);   /* opacity 恒 1（条间重叠区半透明会反出暗缝），调色补偿 */
 }
-/* 深度/背面遮罩：JS 写 opacity（背面压暗吸收镜像感）；静态 translateZ(0) 提层 →
-   opacity 走合成器零重绘（93 条/帧的解药；strip overflow 已扁平化子树，非 hover 动态挂不违防闪总则） */
+/* 深度遮罩=白纱（五迭代：带到名字后面要「变得很淡」——白罩向暖白底淡去，非压暗）：
+   JS 写 opacity；静态 translateZ(0) 提层 → opacity 走合成器零重绘
+   （93 条/帧的解药；strip overflow 已扁平化子树，非 hover 动态挂不违防闪总则） */
 .rstrip-shade {
   position: absolute; inset: 0;
-  background: #181818;
+  background: var(--c-white);
   opacity: 0; pointer-events: none;
   transform: translateZ(0);
 }
