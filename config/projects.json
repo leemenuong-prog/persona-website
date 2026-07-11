@@ -342,7 +342,9 @@
       "url": "https://github.com/leemenuong-prog/Meco",
       "links": [],
       "thumb": "assets/project/meco/thumbnails/1.png",
-      "float": {},
+      "float": {
+        "reveal": "assets/project/meco/float/1.jpg"
+      },
       "desc_zh": "我给自己造的个人管家：每天早上比我先开工，替我打理工作和生活，还一版一版把自己改得更像我。",
       "desc_en": "The butler I built for myself — it clocks in before me, runs my day, and rebuilds itself version by version.",
       "one_liner_zh": "你好，我是 Meco ✦——文苑给自己造的个人管家：一个连着他 Obsidian 知识库的 Mac 应用，每天早上比他先开工，替他打理工作和生活的日常；我还跟他一样兼着产品经理，看他怎么用我，一版一版把自己改得更像他。",
