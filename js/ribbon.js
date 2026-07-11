@@ -45,7 +45,10 @@
   var VEL_MAX = 0.8;             /* 惯性上限 °/帧 */
   var PSI_MAX = 35;              /* 飞入扭转峰值（deg，绕路径切线） */
   var HYST = Math.sin(1.5 * D2R);/* 迁移迟滞 ±1.5° */
-  var INTRO_DUR = 4600;          /* 飞入幕时长（ms）：easeOutSine 终点导数 0 → C¹ 融进巡航 */
+  var INTRO_DUR = 6000;          /* 飞入幕时长（ms）。七迭代速度曲线重设计（用户「按速度曲线设计」）：
+                                    easeInOutSine 钟形——起步=巡航速（缓起，带子徐徐探入）→ 中段峰值
+                                    1.57×均速（掠底冲刺）→ 终点导数 0（缓落，终端斜率恰=ω·R，
+                                    C¹ 融进巡航）；两端皆柔，总时长 4.6→6s 整体放缓 */
   var SEAM = 0.025;              /* 卡间缝 = 0.025H（参与环闭合）。六迭代由 0.08 收窄：
                                     缝越宽卡间折角越集中（半条+缝+半条），曾在环前侧读成生硬切痕 */
   var MAX_FOLD = 2.6 * D2R;      /* 相邻 strip 折角上限（弯曲顺滑度）。六迭代 4°→2.6°（~138 条）：
@@ -56,7 +59,9 @@
                                     远处折角在屏上更不可辨——用户「飞远一些」） */
   var BOT_FRAC = 0.55;           /* 定标锚：掠底点投影 y = 0.55×半层高（层下半） */
 
+  var DESKTOP = window.matchMedia('(min-width: 1024px)');
   var strips = [];               /* {el, img, shade, id, s, w, side, phi, _o} */
+  var spineTicks = null, spineBase = null, spineCk = 0;   /* 中轴轴头涟漪缓存（环↔进度轴互动） */
   var cardsMeta = [];            /* {id, src, thumb, aspect, w, start, n} */
   var geo = null;
   var mode = 'idle';             /* idle → intro → ring；REDUCE → static */
@@ -70,16 +75,21 @@
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /* ── 镜像路径（环局部坐标，y 向下为正；tilt/bank 由 world 统一施加） ── */
+  /* ⚠️ 七迭代曲率连续铁律：三个形状函数的指数一律 ≥2.2——指数 <2 时二阶导在 q→0
+     发散 = 路径曲率在「螺线并入环」处有无穷尖峰，带子过接环点必折一下（切痕真凶，
+     加密条数治不了）；≥2.2 时附加曲率在接环点归零，κ 连续、切线丝滑 */
   function pathPos(u, g) {
     var q = Math.max(0, -u);
-    var r = g.R * (1 + 0.16 * Math.pow(q, 1.6));       /* 六迭代放缓外扩：螺线曲率更贴近环，飞行中折角不放大 */
-    var lift = g.ky * Math.pow(q, 1.4);                /* 正=向下：掠屏幕底部 */
-    var pull = -g.kz * Math.pow(q, 1.6);               /* 恒负：入场远景小（从小到大） */
+    var r = g.R * (1 + 0.08 * Math.pow(q, 2.2));       /* 外扩（π 处 ≈2R，与旧版同 reach） */
+    var lift = g.ky * Math.pow(q, 2.4);                /* 正=向下：掠屏幕底部 */
+    var pull = -g.kz * Math.pow(q, 2.4);               /* 恒负：入场远景小（从小到大） */
     return [-r * Math.sin(u), lift, r * Math.cos(u) + pull];
   }
-  function pathPsi(u) {          /* 绕切线扭转：u=0 处零值零导（C¹ 融进环态） */
+  function pathPsi(u) {          /* 绕切线扭转：u=0 处零值零导（C¹ 融进环态）。
+                                    七迭代斜坡 1.2→1.8 rad：扭转梯度是相邻条带折角的叠加项，
+                                    拉宽斜坡削峰（全程可见折角 4.1°→≈3.5°） */
     var q = Math.max(0, -u);
-    var f = Math.min(1, q / 1.2);
+    var f = Math.min(1, q / 1.8);
     var sm = f * f * (3 - 2 * f);
     return PSI_MAX * sm * sm;
   }
@@ -141,7 +151,7 @@
       g.kz = bisect(-30, 60, function (kz) {           /* scale 随 kz 单调递减（更远更小） */
         g.kz = kz; return SCALE_FAR - projScale(pathPos(-Q_REF, g), g);
       });
-      g.ky = bisect(0, 4 * g.R / Math.pow(Math.PI, 1.4), function (ky) {
+      g.ky = bisect(0, 6 * g.R / Math.pow(Math.PI, 2.4), function (ky) {
         g.ky = ky; return screenY(pathPos(-Math.PI, g), g) - target;  /* y 随 ky 单调增 */
       });
     }
@@ -243,6 +253,31 @@
     theta = 0; vel = -BASE; mode = 'ring';
   }
 
+  /* ── 环↔进度轴互动（七迭代）：环态下轴头 6 根短横线泛一道随 θ 行进的涟漪——
+     环匀速转 → 轴头缓缓律动；拖拽拨环 → 涟漪随之加速。只动 transform、幅度克制；
+     仅桌面（<1024 轴隐藏）且页面在顶部（滚动后让位给 tickSpine 的滚动波，两写不冲突） ── */
+  function spineRipple() {
+    if (!DESKTOP.matches || window.scrollY > 40) return;
+    if (!spineTicks || !spineTicks.length || (++spineCk % 120 === 0 && !spineTicks[0].isConnected)) {
+      var els2 = document.querySelectorAll('.line-container .spine-tick');
+      if (!els2.length) { spineTicks = null; return; }
+      /* 基准长按 IAM 节奏公式独立算（与 index-fx buildSpine 同式）——
+         勿从当前 transform 读：滚动波/走过态（×2.1）会污染基准 */
+      var bars = (window.Barmorph && window.Barmorph.IAM_BARS) ||
+        [0.97, 0.58, 1, 0.66, 0.9, 0.52, 0.74, 1];
+      spineTicks = []; spineBase = [];
+      for (var i = 0; i < Math.min(6, els2.length); i++) {
+        spineTicks.push(els2[i]);
+        spineBase.push(0.55 + bars[i % bars.length] * 0.6);
+      }
+    }
+    for (var k = 0; k < spineTicks.length; k++) {
+      var wgt = 1 + 0.30 * Math.max(0, Math.sin(theta * 3 * D2R - k * 0.85)) * (1 - k / 7);
+      spineTicks[k].style.transform =
+        'translateX(-50%) scaleX(' + (spineBase[k] * wgt).toFixed(3) + ')';
+    }
+  }
+
   function render(now) {
     raf = null;
     if (!lastT) lastT = now;
@@ -263,7 +298,7 @@
     if (mode === 'intro') {
       tIntro += dtMs;
       var x = Math.min(1, tIntro / INTRO_DUR);
-      var ease = Math.sin(x * Math.PI / 2);            /* easeOutSine：近匀速出发、渐歇 */
+      var ease = (1 - Math.cos(Math.PI * x)) / 2;      /* easeInOutSine：缓起→峰值→缓落（钟形速度曲线） */
       var S = S0 + (sEnd - S0) * ease + omegaArc * tIntro / 1000;
       writeWorlds(worldString(null));
       for (var i = 0; i < strips.length; i++) {
@@ -282,6 +317,7 @@
       for (var j = 0; j < strips.length; j++) {
         sideAndShade(strips[j], (theta + strips[j].phi) * D2R);
       }
+      spineRipple();                                   /* 环↔进度轴互动：轴头随环转动泛涟漪 */
     }
 
     if (visible && mode !== 'idle') raf = requestAnimationFrame(render);
@@ -486,6 +522,9 @@
     omegaArc = BASE * 60 * D2R * geo.R;
     layoutStrips();
     layoutFloor();
+    spineTicks = null;                                 /* 轴可能重建，涟漪缓存失效 */
+    /* 地影/几何就位 → 通知 index-fx 重锚进度轴（轴头钉地影中心，与环相接） */
+    document.dispatchEvent(new CustomEvent('ribbonlayout'));
     if (mode === 'intro') { freezeToRing(sEnd + omegaArc * tIntro / 1000); return; }
     if (mode === 'ring' || mode === 'static') {
       for (var j = 0; j < strips.length; j++) {

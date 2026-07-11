@@ -50,12 +50,21 @@
 
     host.innerHTML = '';
 
-    /* 相对 main 定位：从丝带舞台占位（.polygon-container）下缘垂到「尾声」标题上方（勿压到标题文字）。
-       占位下缘用 offsetTop 链量（布局值）——rect 会把 heroRise 入场动画的 22px 位移量进去导致起点偏低 */
+    /* 相对 main 定位：轴头优先钉在丝带环的地影中心（.ribbon-floor，七迭代「进度轴上移、
+       与环相接」——环 → 地影 → 轴一条视觉链，环前弧从轴头上方扫过）；地影未就位时回退
+       丝带占位下缘 +48。一律 offsetTop 链量布局值——rect 会把 heroRise 入场位移量进去 */
     var mainRect = main.getBoundingClientRect();
-    var polyOy = 0, pEl = polygon;
-    while (pEl && pEl !== main) { polyOy += pEl.offsetTop; pEl = pEl.offsetParent; }
-    var top = polyOy + polygon.offsetHeight + 48;
+    var top;
+    var floor = document.querySelector('.ribbon-floor');
+    if (floor && floor.style.top) {
+      var heroOy = 0, hEl = floor.offsetParent;        /* floor 定位于 .hero */
+      while (hEl && hEl !== main) { heroOy += hEl.offsetTop; hEl = hEl.offsetParent; }
+      top = heroOy + parseFloat(floor.style.top) + floor.offsetHeight * 0.5;
+    } else {
+      var polyOy = 0, pEl = polygon;
+      while (pEl && pEl !== main) { polyOy += pEl.offsetTop; pEl = pEl.offsetParent; }
+      top = polyOy + polygon.offsetHeight + 48;
+    }
     var epi = document.querySelector('.epilogue-title');
     var endEl = epi || gallery;
     var end = endEl.getBoundingClientRect().top - mainRect.top - 56;
@@ -190,6 +199,8 @@
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  /* 丝带几何就位/变更 → 轴头重锚到地影中心（ribbon.js relayout 派发） */
+  document.addEventListener('ribbonlayout', function () { buildSpine(); });
   window.addEventListener('resize', function () {
     fitHeroName(); buildSpine();
     if (window.Ribbon) window.Ribbon.relayout();
