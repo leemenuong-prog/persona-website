@@ -12,6 +12,11 @@
   var deck = document.getElementById('deck');
   var pf = null, byId = null;
 
+  /* PDF 导出门（2026-07-13 提速）：tools/export-portfolio-pdf.sh 带 ?print=1 打印——
+     该模式下所有图保持 eager+sync+原 JPEG（Chrome 嵌入不转码，PDF 逐比特同源）；
+     普通访客走 lazy+WebP 变体（原先 51 图 ~8.1MB 首屏全量下载是手机端最大出血点） */
+  var PRINT = /[?&]print=1/.test(location.search);
+
   /* ── 工具 ── */
   function t(obj, base) { return window.I18N ? I18N.t(obj, base) : (obj && obj[base + '_zh']) || ''; }
   function locale() { return window.I18N ? I18N.locale : 'zh'; }
@@ -43,10 +48,32 @@
   }
   function img(src, alt) {
     var im = h('img');
-    im.src = '../' + src; im.alt = alt || '';
-    im.loading = 'eager'; im.decoding = 'sync';
+    im.alt = alt || '';
+    if (PRINT) {                       /* 打印管线维持 2026-07 原样，勿动 */
+      im.loading = 'eager'; im.decoding = 'sync';
+      im.src = '../' + src;
+      return im;
+    }
+    var v = window.ImgU.variant(src, 660);   /* 631px 主区：手机落 w800、桌面 DPR2 全尺寸 .webp */
+    if (v !== src) {
+      im.dataset.orig = '../' + src;
+      im.addEventListener('error', function (e) {   /* 变体缺→一次性回退原 JPEG */
+        e.stopImmediatePropagation();
+        im.src = im.dataset.orig;
+      }, { once: true });
+    }
+    im.loading = 'lazy'; im.decoding = 'async';
+    im.src = '../' + v;
     return im;
   }
+  /* 访客侧 Cmd+P 兜底（尽力而为；正式导出永远走 ?print=1）：翻回原图+eager */
+  window.addEventListener('beforeprint', function () {
+    if (PRINT) return;
+    Array.prototype.forEach.call(document.querySelectorAll('#deck img'), function (el) {
+      el.loading = 'eager';
+      if (el.dataset.orig) el.src = el.dataset.orig;
+    });
+  });
   function ext(url) { return /^https?:/.test(url || ''); }
   function host(url) { try { return new URL(url).hostname; } catch (e) { return ''; } }
   function pad2(n) { return String(n).padStart(2, '0'); }

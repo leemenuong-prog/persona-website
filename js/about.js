@@ -95,10 +95,8 @@
     if (thumbSrc) {
       var fig = h('div', 'idx-thumb');
       var img = document.createElement('img');
-      img.src = thumbSrc;
       img.alt = alt || name;
-      img.loading = 'lazy';
-      img.decoding = 'async';
+      window.ImgU.attach(img, thumbSrc, 400);   /* 变体回退先挂，缺图兜底在后 */
       img.addEventListener('error', function () { fig.remove(); });
       fig.appendChild(img);
       a.appendChild(fig);

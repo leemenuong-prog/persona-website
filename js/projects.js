@@ -19,7 +19,7 @@
     a.href = 'project.html?id=' + encodeURIComponent(p.id);
     a.innerHTML =
       (p.thumb
-        ? '<img class="li-thumb" src="' + esc(p.thumb) + '" alt="" loading="lazy" decoding="async">'
+        ? '<img class="li-thumb" src="' + esc(window.ImgU.variant(p.thumb, 120)) + '" alt="" loading="lazy" decoding="async">'
         : '<span class="li-thumb" aria-hidden="true"></span>') +
       '<span class="li-text">' +
         '<span class="li-title">' + esc(t(p, 'title')) + '</span>' +

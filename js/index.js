@@ -26,24 +26,25 @@
     if (p.thumb) {
       var base = document.createElement('img');
       base.className = 'layer-base';
-      base.src = p.thumb;
       base.alt = t(p, 'title');
-      base.loading = 'lazy';
-      base.decoding = 'async';
       base.width = sizeHint || 720; base.height = sizeHint || 720;
+      /* WebP 变体选档（2026-07-13 提速）：attach 的一次性变体回退必须先挂，
+         下面的缺图兜底监听只在原图也挂了才轮到（img-util.js stopImmediatePropagation） */
+      var isMobile = window.matchMedia('(max-width: 767px)').matches;
+      window.ImgU.attach(base, p.thumb, sizeHint === 480 ? (isMobile ? 180 : 420) : 380);
       base.addEventListener('error', function () {
         base.remove();
         box.appendChild(el('div', 'thumb-fallback', esc(p.title_en || p.id)));
       });
       box.appendChild(base);
       if (p.float && p.float.reveal) {
-        /* 揭示层=不透明白底画布（div），图 contain 居中——盖住封面，不再透底 */
+        /* 揭示层=不透明白底画布（div），图 contain 居中——盖住封面，不再透底。
+           触屏 hover:none 下 display:none+lazy=零下载不变；桌面滚动预取从原图
+           （建筑位是 500-800KB 的 content 图版）降到 w800/w1200 变体 */
         var rev = el('div', 'layer-reveal');
         var rimg = document.createElement('img');
-        rimg.src = p.float.reveal;
         rimg.alt = '';
-        rimg.loading = 'lazy';
-        rimg.decoding = 'async';
+        window.ImgU.attach(rimg, p.float.reveal, 600);
         rimg.addEventListener('error', function () { rev.remove(); });
         rev.appendChild(rimg);
         box.appendChild(rev);

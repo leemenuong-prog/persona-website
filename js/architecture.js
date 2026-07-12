@@ -87,10 +87,10 @@
   function plate(src, alt, cap, lead) {
     var fig = h('figure', 'arch-plate' + (lead ? ' arch-plate--lead' : ''));
     var im = h('img');
-    im.src = src; im.alt = alt || '';
-    im.loading = 'lazy'; im.decoding = 'async';
+    im.alt = alt || '';
+    window.ImgU.attach(im, src, 1100);        /* 桌面全尺寸 .webp（2200px 保锐），手机自动落 w800 */
     im.addEventListener('click', function () {
-      if (window.Site && Site.openLightbox) Site.openLightbox(src, alt);
+      if (window.Site && Site.openLightbox) Site.openLightbox(src, alt);   /* 灯箱吃原图 */
     });
     fig.appendChild(im);
     if (cap) fig.appendChild(h('figcaption', null, cap));
@@ -104,7 +104,8 @@
     var frame = h('div', 'av-frame');
     if (m.poster) {
       var pi = h('img', 'av-poster');
-      pi.src = m.poster; pi.alt = alt || ''; pi.loading = 'lazy'; pi.decoding = 'async';
+      pi.alt = alt || '';
+      window.ImgU.attach(pi, m.poster, 900);
       frame.appendChild(pi);
     }
     frame.appendChild(h('span', 'av-btn'));
@@ -180,8 +181,8 @@
         t(p, 'category') + (p.year ? ' · ' + p.year : '')));
       var th = h('div', 'aic-thumb');
       var im = h('img');
-      im.src = p.thumb; im.alt = t(p, 'title');
-      im.loading = 'lazy'; im.decoding = 'async';
+      im.alt = t(p, 'title');
+      window.ImgU.attach(im, p.thumb, 400);
       th.appendChild(im);
       card.appendChild(th);
       grid.appendChild(card);

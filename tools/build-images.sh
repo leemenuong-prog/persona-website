@@ -66,11 +66,14 @@ find assets/portfolio -name '*.jpg' | while read -r f; do suite "$f" 80 80; done
 echo "== works 视频海报 =="
 for f in works/*.jpg; do suite "$f" 80 80; done
 
+echo "== uploads 人像（about 静态 img + portfolio 个人页共用）=="
+for f in uploads/*.jpg; do suite "$f" 80 80; done
+
 echo "== xtool 门面海报（唯一 PNG 例外：摄影内容误存 PNG）=="
 gen xtool/screenshots/poster-team-time.png xtool/screenshots/poster-team-time.webp -q 80
 
 # while 子 shell 吞计数，清单直接以文件系统为准
-total_n=$(find assets works xtool/screenshots -name '*.webp' | wc -l | tr -d ' ')
-total_kb=$(find assets works xtool/screenshots -name '*.webp' -exec du -k {} + | awk '{s+=$1} END {print s}')
+total_n=$(find assets works uploads xtool/screenshots -name '*.webp' | wc -l | tr -d ' ')
+total_kb=$(find assets works uploads xtool/screenshots -name '*.webp' -exec du -k {} + | awk '{s+=$1} END {print s}')
 echo ""
 echo "✅ 变体总计: ${total_n} 个 .webp / ${total_kb}KB（本次新生成 ${made}+，跳过 ${skipped}+，警告 ${warned}+；find 计数含子 shell 内产出）"

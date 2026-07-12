@@ -230,7 +230,7 @@
         {
           "type": "iframe-lazy",
           "src": "xtool/",
-          "poster": "xtool/screenshots/poster-team-time.png",
+          "poster": "xtool/screenshots/poster-team-time.webp",
           "label_zh": "点击加载交互影片",
           "label_en": "Load the interactive film",
           "cta_url": "https://peersagent.netlify.app/",

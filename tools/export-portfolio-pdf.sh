@@ -34,7 +34,7 @@ for L in zh en; do
     --virtual-time-budget=30000 \
     --force-color-profile=srgb \
     --print-to-pdf="$MASTER" \
-    "http://localhost:$PORT/portfolio/index.html?lang=$L" 2>/dev/null
+    "http://localhost:$PORT/portfolio/index.html?lang=$L&print=1" 2>/dev/null
 
   cp "$MASTER" "$OUT"
 

@@ -101,7 +101,7 @@
     var block = el('div', 'media-block');
     var frame = el('div', 'media-frame media-facade');
     frame.innerHTML =
-      (m.poster ? '<img class="facade-cover" src="' + esc(m.poster) + '" alt="" loading="lazy">' : '') +
+      (m.poster ? '<img class="facade-cover" src="' + esc(window.ImgU.variant(m.poster, 900)) + '" alt="" loading="lazy">' : '') +
       '<button class="facade-btn" type="button" aria-label="播放视频 · Play">▶</button>' +
       '<div class="facade-label">' + esc(fe(window.I18N.locale === 'zh' ? (m.label_zh || '点击播放 · PLAY') : (m.label_en || 'PLAY'))) + '</div>';
     frame.addEventListener('click', function play() {
@@ -125,11 +125,9 @@
     var block = el('div', 'media-block');
     var frame = el('div', 'media-frame media-image');
     var img = document.createElement('img');
-    img.src = m.src;
     img.alt = window.I18N.locale === 'zh' ? (m.alt_zh || '') : (m.alt_en || m.alt_zh || '');
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.addEventListener('click', function () { window.Site.openLightbox(m.src, img.alt); });
+    window.ImgU.attach(img, m.src, 900);
+    img.addEventListener('click', function () { window.Site.openLightbox(m.src, img.alt); });   /* 灯箱始终吃原图全分辨率 */
     frame.appendChild(img);
     block.appendChild(frame);
     var label = window.I18N.locale === 'zh' ? m.label_zh : (m.label_en || m.label_zh);
@@ -141,7 +139,7 @@
     var block = el('div', 'media-block');
     var frame = el('div', 'media-frame media-facade');
     frame.innerHTML =
-      (m.poster ? '<img class="facade-cover" src="' + esc(m.poster) + '" alt="" loading="lazy">' : '') +
+      (m.poster ? '<img class="facade-cover" src="' + esc(window.ImgU.variant(m.poster, 900)) + '" alt="" loading="lazy">' : '') +
       '<button class="facade-btn" type="button" aria-label="加载交互演示 · Load demo">▶</button>' +
       '<div class="facade-label">' + esc(fe(window.I18N.locale === 'zh' ? (m.label_zh || '点击加载交互演示') : (m.label_en || 'Load interactive demo'))) + '</div>';
     frame.addEventListener('click', function load() {
@@ -202,11 +200,9 @@
     if (!f || !f.src) return null;
     var fig = el('figure', 'section-figure');
     var img = document.createElement('img');
-    img.src = f.src;
     img.alt = t(f, 'caption') || t(p, 'title');
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.addEventListener('click', function () { window.Site.openLightbox(f.src, img.alt); });
+    window.ImgU.attach(img, f.src, 900);
+    img.addEventListener('click', function () { window.Site.openLightbox(f.src, img.alt); });   /* 灯箱吃原图 */
     fig.appendChild(img);
     var cap = t(f, 'caption');
     if (cap) fig.appendChild(el('figcaption', null, esc(cap)));
@@ -261,11 +257,9 @@
     (p.contentImages || []).forEach(function (src, i) {
       var fig = el('figure', 'content-figure');
       var img = document.createElement('img');
-      img.src = src;
       img.alt = t(p, 'title') + ' — ' + (i + 1);
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.addEventListener('click', function () { window.Site.openLightbox(src, img.alt); });
+      window.ImgU.attach(img, src, 900);
+      img.addEventListener('click', function () { window.Site.openLightbox(src, img.alt); });   /* 灯箱吃原图 */
       fig.appendChild(img);
 
       var ann = anns[String(i + 1)];
@@ -349,8 +343,9 @@
       var scr = h('div', 'win-shot');
       scr.style.setProperty('--r', ratio);
       var im = h('img');
-      im.src = src; im.alt = alt; im.loading = 'lazy'; im.decoding = 'async';
-      zoomable(im, src, alt);
+      im.alt = alt;
+      window.ImgU.attach(im, src, 700);
+      zoomable(im, src, alt);                 /* 灯箱吃原图 */
       scr.appendChild(im);
       return scr;
     }
@@ -363,8 +358,9 @@
       var pl = h('div', 'shot-plain' + (opts.small ? ' win-sm' : ''));
       pl.style.setProperty('--r', ratio);
       var im2 = h('img');
-      im2.src = src; im2.alt = alt; im2.loading = 'lazy'; im2.decoding = 'async';
-      zoomable(im2, src, alt);
+      im2.alt = alt;
+      window.ImgU.attach(im2, src, 700);
+      zoomable(im2, src, alt);                /* 灯箱吃原图 */
       pl.appendChild(im2);
       return pl;
     }
@@ -434,8 +430,9 @@
     var art = h('figure', 'pd-cover-art');
     var th = h('div', 'ca-thumb');
     var im = h('img');
-    im.src = p.thumb; im.alt = t(p, 'title'); im.loading = 'lazy'; im.decoding = 'async';
-    zoomable(im, p.thumb, t(p, 'title'));
+    im.alt = t(p, 'title');
+    window.ImgU.attach(im, p.thumb, 420);
+    zoomable(im, p.thumb, t(p, 'title'));     /* 灯箱吃原图 */
     th.appendChild(im);
     art.appendChild(th);
     var award = t(p, 'award');
@@ -598,7 +595,8 @@
     var poster = h('div', 'pd-film-poster');
     poster.style.setProperty('--r', video.poster_ratio || 1.7778);
     var pi = h('img', 'pd-film-cover');
-    pi.src = video.poster; pi.alt = t(video, 'label'); pi.loading = 'lazy'; pi.decoding = 'async';
+    pi.alt = t(video, 'label');
+    window.ImgU.attach(pi, video.poster, 900);
     poster.appendChild(pi);
     poster.appendChild(h('span', 'pd-film-btn'));
 

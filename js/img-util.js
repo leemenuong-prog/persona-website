@@ -14,10 +14,13 @@ window.ImgU = (function () {
   var LADDER = [480, 800, 1200];
   var DPR = Math.min(window.devicePixelRatio || 1, 2);   /* 3x 屏按 2x 取档：肉眼无差、字节减半 */
 
-  /* 按「显示 CSS 宽 × DPR」在阶梯里选最小够用档；非 JPEG（webp/svg/png）原样通过 */
+  /* 按「显示 CSS 宽 × DPR」在阶梯里选最小够用档；非 JPEG（webp/svg/png）原样通过。
+     cssW 先与视口宽取小——全站图都 max-width:100%，不会显示得比视口宽，
+     手机端（~390px）一切大图自动落 w800 档，调用点不用写双份提示 */
   function variant(src, cssW) {
     if (!/\.jpe?g$/i.test(src || '')) return src;
-    var need = (cssW || 900) * DPR;
+    var vw = (document.documentElement && document.documentElement.clientWidth) || 1024;
+    var need = Math.min(cssW || 900, vw) * DPR;
     var base = src.replace(/\.jpe?g$/i, '');
     for (var i = 0; i < LADDER.length; i++) {
       if (LADDER[i] >= need) return base + '.w' + LADDER[i] + '.webp';
