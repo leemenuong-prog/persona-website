@@ -390,12 +390,13 @@ main { position: relative; }
   .hero { --ribbon-card-w: 200px; }
   .projects-section { margin-top: 76px; }
   .mainline { gap: 72px; }
-  .epilogue-title { margin: 88px 0 30px; }
+  .epilogue-title { margin: 72px 0 24px; }
   .project-item { grid-template-columns: 100%; }
   .project-item .image-container, .project-item .text-container { width: 100%; }
-  /* 单列满幅：375 屏卡面 327×218，建筑渲染可读 */
-  .gallery-grid { grid-template-columns: 100%; gap: 32px; }
-  .gallery-item .gallery-title { margin-top: 10px; }
+  /* 尾声保持两列小图（2026-07-12 晚用户裁定「详略」：建筑=密排缩略，勿再塌单列满幅——
+     单列时 6 条满宽横幅与 AI 大卡等重、共占 ~2.5 屏，层级消失）。375 屏卡面 ≈156×104 */
+  .gallery-grid { gap: 24px 14px; }
+  .gallery-item .gallery-title { margin-top: 8px; font-size: 12.5px; letter-spacing: .04em; }
   .finale { margin-top: 64px; }
   /* 保证最长词 "I am an Architect" 单行（375≈37px / 320≈32px） */
   .iamf { font-size: clamp(26px, 10vw, 40px); padding: 0 16px; }
