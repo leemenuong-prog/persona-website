@@ -363,20 +363,20 @@ main { position: relative; }
   .hero {
     min-height: max(560px, calc(100vh - var(--header-h)));
     min-height: max(560px, calc(100svh - var(--header-h)));
-    justify-content: flex-start;   /* 环上移套标题（2026-07-12 用户裁定），占位随之靠顶 */
+    justify-content: center;   /* 三段式：丝带占位（唯一流内元素）对 hero 垂直居中 */
     --ribbon-card-w: min(250px, 66vw);
   }
-  /* 手机档同桌面「环套标题」：ribbon.js 统一锚「前弧顶边钉标题 (1−COVER) 线」+header 守卫；
-     07-11 三段式（环对 hero 中心）已废除 */
-  /* 大字回到顶部小 top（桌面下沉的 18vh 会把小环推到中段、下半空一大片）：手机维持环套标题贴顶 */
-  .hero-name { top: clamp(12px, 6vh, 56px); }
+  /* 手机档三段式（2026-07-12 晚用户裁定恢复，推翻同日早些「环套标题」）：
+     大字贴顶 · 环对 hero 正中（ribbon.js 手机跳标题锚，yc=0；xf=0.42 ≈ 84% 屏宽，比 07-11 三段式的 0.30 大）
+     · 贴底行沉底。桌面/平板仍环套标题，不受影响 */
+  .hero-name { top: clamp(12px, 6vh, 56px); }   /* 大字贴顶（桌面 18vh 下沉不进手机档） */
   /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把占位顶到上方 */
   .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
-  .polygon-container { margin-top: clamp(8px, 3vh, 28px); }
+  /* margin-top 归零：否则叠加在 justify-center 上把环推离正中（勿整行删——会回落 base clamp(32px,11vh,110px)） */
+  .polygon-container { margin-top: 0; }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
-  /* 命中带随环上移（环区 ≈ hero 上半部） */
-  .ribbon-hit { top: 2%; bottom: 52%; }
+  /* 命中带回 base（top:8%; bottom:30%）：居中环带约占 hero 34%~69%，base 完整覆盖且留手指余量 */
   .projects-section { margin-top: 96px; }
   .mainline { gap: 90px; }
   .epilogue-title { margin: 110px 0 36px; }

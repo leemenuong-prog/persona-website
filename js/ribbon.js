@@ -127,7 +127,9 @@
     var L = 0;
     cardsMeta.forEach(function (c) { c.w = H * c.aspect; c.start = L; L += c.w + SEAM * H; });
     var R = L / (2 * Math.PI);
-    /* 手机档环放大（2026-07-12 用户裁定「环套标题」后环成主角）：投影半宽占比上调 */
+    /* 手机档三段式（2026-07-12 晚用户裁定）：环对层中心（yc=0，锚定分支有 MOBILE 例外），
+       投影半宽 0.42×vw ≈ 84% 屏宽（比 07-11 三段式的 0.30 大一档）。
+       ⚠️ 勿超 0.44：MARGIN_Z 守卫天花板在 414px+ 宽机型会把名义值钳住（token=200 时 430 宽 ≈0.421） */
     var xf = MOBILE.matches ? 0.42 : X_FRAC;
     var Zoff = Math.max(PERSP * (R / (xf * vw) - 1),
       R * Math.cos(TILT * D2R) + MARGIN_Z);
@@ -143,12 +145,13 @@
     };
     g.gain = R2D / (R * g.sf);                         /* 拖拽：前弧带贴手指（°/px） */
 
-    /* 环心纵向：由「前弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y——前弧压字前、
+    /* 环心纵向（桌面/平板）：由「前弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y——前弧压字前、
        后弧从字后/字上方绕过，环「套住」标题；守卫：后弧顶不得越出 hero 顶压 header。
-       2026-07-12 用户裁定：手机档同样环套标题（07-11 三段式「环对 hero 中心」废除） */
+       手机档（≤767）三段式：跳过标题锚，yc 保持 0 = 环心对层中心
+       （2026-07-12 晚用户裁定恢复三段式，推翻同日早些「手机环套标题」） */
     var sinAbsT = Math.sin(-TILT * D2R);
     var sb = PERSP / (PERSP + Zoff + R * g.cosT);      /* 后弧投影 scale */
-    if (els.nameText) {
+    if (!MOBILE.matches && els.nameText) {
       var nameTop = 0, e = els.nameText;
       while (e && e !== els.hero) { nameTop += e.offsetTop; e = e.offsetParent; }
       var nameH = els.nameText.offsetHeight;
