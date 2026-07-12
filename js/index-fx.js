@@ -203,9 +203,17 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   /* 丝带几何就位/变更 → 轴头重锚到地影中心（ribbon.js relayout 派发） */
   document.addEventListener('ribbonlayout', function () { buildSpine(); });
+  /* resize：大字拟合即时（单次量测，便宜），丝带几何解算+双 canvas 重分配尾沿防抖 120ms
+     （连续拖拽窗口不再每事件全量重解+反复申请十几 MB 背衬）。buildSpine 不在此直呼——
+     relayout 尾部派发的 ribbonlayout 会触发一次（消除每 resize 跑两遍）；无丝带时才直接重建轴。 */
+  var resizeT = null;
   window.addEventListener('resize', function () {
-    fitHeroName(); buildSpine();
-    if (window.Ribbon) window.Ribbon.relayout();
+    fitHeroName();
+    if (resizeT) clearTimeout(resizeT);
+    resizeT = setTimeout(function () {
+      if (window.Ribbon) window.Ribbon.relayout();
+      else buildSpine();
+    }, 120);
   });
   /* Monterey 晚到会移动标题基线 — 字体就绪后重测大字拟合与分支位置 */
   if (document.fonts && document.fonts.ready) {

@@ -78,6 +78,8 @@
   var par = { tx: 0, ty: 0, x: 0, y: 0 };
   var els = null;
   var lastCursor = '';
+  var activePointer = null;      /* 起手那根指的 pointerId；防多指交替污染拖拽基准 */
+  var lastGeoKey = '';           /* 上次解几何的尺寸指纹；相同则 relayout 跳过（iOS 地址栏收放 resize 空转+跳剪防线） */
   var rungBuf = new Float32Array(8 * RUNG_MAX);
   var rungTmp = new Float32Array(8);
   var mRot = {                   /* 预计算 Rz(BANK)·Rx(TILT) 系数（世界旋转，常量） */
@@ -274,6 +276,7 @@
     var lw2 = geo.layerW / 2 + 80, lh2 = geo.layerH / 2 + 80;
     var n = 0, ci, c;
     for (ci = 0; ci < cardsMeta.length; ci++) {
+      if (n >= RUNG_MAX - 1) break;                  /* 边界：连卡首 rung 也不越 rungBuf（否则返回计数超容量→越界 NaN 切片） */
       c = cardsMeta[ci];
       var send = c.start + c.w;
       var minDs = Math.max(c.w / 400, 0.05);
@@ -387,9 +390,13 @@
       spineRipple();                                   /* 环↔进度轴互动：轴头随环转动泛涟漪 */
     }
 
-    if (visible && mode !== 'idle') raf = requestAnimationFrame(render);
+    /* 只有活动态（飞入/自转）续订 rAF——static/idle 单帧成像后归 idle 队列
+       （REDUCE=static 若按 mode!=='idle' 续订会被 IO 初始回调拉起永久空转，违「零 rAF」） */
+    if (visible && (mode === 'intro' || mode === 'ring')) raf = requestAnimationFrame(render);
   }
-  function ensure() { if (!raf && visible && mode !== 'idle') { lastT = 0; raf = requestAnimationFrame(render); } }
+  function ensure() {
+    if (!raf && visible && (mode === 'intro' || mode === 'ring')) { lastT = 0; raf = requestAnimationFrame(render); }
+  }
 
   /* ── REDUCE 静态定格：θ=0 环态（合拢缝自然在正前），零 rAF；点击仍可用（拾取吃本帧快照） ── */
   function staticPose() {
@@ -418,14 +425,19 @@
   }
   function onDown(e) {
     if (mode !== 'ring' && mode !== 'static') return;
+    if (activePointer !== null) return;                /* 已有活跃指针 → 忽略第二指（防双指交替喂 onMove 抽搐乱转） */
     var pt = layerPoint(e);
     var ci = renderer.pick(pt.x, pt.y);
     if (ci < 0 && !inHitBand(e)) return;
+    activePointer = e.pointerId;
     downCard = ci >= 0 ? cardsMeta[ci].id : null;
     dragging = mode === 'ring';
     if (dragging) setCursor('grabbing');
     px = e.clientX; lastDx = 0;
     downX = e.clientX; downY = e.clientY; downT = performance.now();
+  }
+  function endDrag() {                                 /* 松手/丢 up/取消统一收尾 */
+    if (dragging) { dragging = false; setCursor(''); vel = clamp(-BASE + lastDx * geo.gain, -VEL_MAX, VEL_MAX); }
   }
   var hoverT = 0;
   function onMove(e) {
@@ -446,18 +458,18 @@
       }
       return;
     }
+    if (e.pointerId !== activePointer) return;         /* 只认起手那根指 */
+    if (e.pointerType === 'mouse' && !e.buttons) { endDrag(); activePointer = null; downT = 0; return; }   /* 丢 up 兜底：无按键不粘手 */
     var dx = e.clientX - px;
     theta += dx * geo.gain;
     lastDx = dx;
     px = e.clientX;
   }
   function onUp(e) {
+    if (activePointer !== null && e.pointerId !== activePointer) return;
+    activePointer = null;
     var wasDown = downT > 0;
-    if (dragging) {
-      dragging = false;
-      setCursor('');
-      vel = clamp(-BASE + lastDx * geo.gain, -VEL_MAX, VEL_MAX);
-    }
+    endDrag();
     if (!wasDown) return;
     var slop = COARSE.matches ? 10 : 6;
     var isTap = Math.hypot(e.clientX - downX, e.clientY - downY) < slop &&
@@ -534,7 +546,7 @@
     }
     if (!renderer) return;                             /* canvas 不可用：优雅无丝带（标题/波点不受影响） */
     els.frontCanvas.style.pointerEvents = 'auto';      /* 事件全层接收，语义域在 onDown 复刻 */
-    els.frontCanvas.style.touchAction = 'pan-y';       /* 竖划归页面滚动（同 .ribbon-hit 约定） */
+    els.frontCanvas.style.touchAction = 'pan-y pinch-zoom';   /* 竖划归页面滚动、捏合交还浏览器（会发 pointercancel，清态已兜）；横向起手归拨环 */
 
     /* 预载 11 张卡图（原比例派生版）：宽高比从 projects.json ribbon:{w,h} 来，
        几何同步可解、不等图；decode 到一张贴一张（灰占位渐进升级） */
@@ -550,11 +562,11 @@
     frontLayer.addEventListener('pointerdown', onDown);
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerup', onUp);
-    window.addEventListener('pointercancel', function () { dragging = false; downT = 0; downCard = null; });
+    window.addEventListener('pointercancel', function () { endDrag(); activePointer = null; downT = 0; downCard = null; });
 
     if ('IntersectionObserver' in window) {            /* 离屏停 rAF */
       new IntersectionObserver(function (ents) {
-        visible = ents[0].isIntersecting;
+        visible = ents[ents.length - 1].isIntersecting;   /* 取批次最新一条（同批出画又入画时勿用最旧 ents[0]） */
         ensure();
       }, { threshold: 0 }).observe(frontLayer);
     }
@@ -564,18 +576,20 @@
     if (REDUCE) { staticPose(); return; }
     armStart();
   }
-  /* 逐图解码钩子：成功→调色入 atlas（顺带用实测比例自愈 JSON 漂移）；失败→退 thumb 再试一次 */
+  /* 逐图解码钩子：成功→调色入 atlas（顺带用实测比例自愈 JSON 漂移）；失败→退 thumb 一次 */
   function hookDecode(c, i) {
     var ok = function () {
-      if (!renderer) return;
+      if (!renderer || !c.pre.naturalWidth) return;
       renderer.setCardImage(i, c.pre);
-      var real = (c.pre.naturalWidth && c.pre.naturalHeight)
-        ? c.pre.naturalWidth / c.pre.naturalHeight : 0;
+      var real = c.pre.naturalHeight ? c.pre.naturalWidth / c.pre.naturalHeight : 0;
       if (real && Math.abs(real - c.aspect) > 0.01) { c.aspect = real; relayout(); return; }
       if (mode === 'idle' || mode === 'static') paintPose();   /* 静止态补一帧显新图 */
     };
     var err = function () {
-      if (c.thumb && c.pre.src.indexOf(c.thumb) < 0) {
+      /* iOS Safari 内存压力下 decode() 有著名的假拒绝（图其实已好）——naturalWidth>0 即当成功，勿错退 thumb */
+      if (c.pre.naturalWidth) { ok(); return; }
+      if (c.thumb && !c.triedThumb) {                  /* 布尔标记，勿用 src 子串（编码后可能永不含原路径→无限重试） */
+        c.triedThumb = true;
         var im2 = new Image();
         im2.src = c.thumb;
         c.pre = im2;
@@ -589,6 +603,13 @@
   /* resize/断点：重解几何+重设画布（atlas 带高变超 10% 自动重建）。飞入途中遭遇 → 直接跳剪到环态 */
   function relayout() {
     if (!renderer || !cardsMeta.length) return;
+    /* 尺寸指纹未变则跳过：iOS 地址栏收放只改 innerHeight（clientWidth/svh 布局视口不变），
+       否则会把 intro 跳剪、把 ring 相位重置成 ~18° 瞬跳。飞入途中真改窗仍按下方跳剪。 */
+    var lr = els.frontLayer.getBoundingClientRect();
+    var key = (document.documentElement.clientWidth || 0) + 'x' +
+      Math.round(lr.width) + 'x' + Math.round(lr.height) + 'x' + (els.probe.offsetWidth || 0);
+    if (key === lastGeoKey && mode !== 'idle') return;
+    lastGeoKey = key;
     geo = solveGeometry();
     S0 = geo.sEntry;
     sEnd = geo.L;                                      /* = 2πR：头尾精确合拢 */
@@ -618,7 +639,7 @@
     init: init, relayout: relayout,
     /* 手动泵一帧 + 重启时间轴（调试/隐藏标签页环境确定性验证用，沿 IndexFx.tick 先例）：
        传伪造时间戳逐帧驱动 render，配合替换 requestAnimationFrame 可离线扫描动画 */
-    _pump: function (ts) { raf = null; render(ts); },
+    _pump: function (ts) { if (raf) cancelAnimationFrame(raf); raf = null; render(ts); },   /* 先取消待决回调，勿在活页面叠加并行循环 */
     _restart: function () {
       if (!cardsMeta.length) return false;
       tIntro = 0; theta = 0; vel = -BASE; lastT = 0; mode = 'intro';

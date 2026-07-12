@@ -85,7 +85,8 @@
     var dpr = 1;                 /* layout() 时定（cap 2） */
     var W = 0, Hpx = 0;          /* 层 CSS 尺寸 */
     var cards = null;            /* [{id, start, w, aspect}]（带坐标，来自 ribbon.js） */
-    var bandH = 0;               /* 带高（带坐标 px） */
+    var bandH = 0;               /* atlas 实际烧制时的带高（=「构建基准」，仅 rebuild 时更新，勿在 setBand 无脑覆盖） */
+    var builtL = 0;              /* atlas 实际烧制时的带总长 L（构建基准） */
     var atlas = null, atlasK = 0, atlasH = 0;   /* 图集 + 带px→图集px 比例 */
     var graded = [];             /* 调色后的源位图缓存（atlas 重建直接取用） */
     var white = opts.white || '#FFFFFF';
@@ -99,6 +100,7 @@
     function rebuildAtlas() {
       if (!cards || !bandH) return;
       var L = cards[cards.length - 1].start + cards[cards.length - 1].w;
+      builtL = L;                                /* 记录构建基准（setBand 拿它做迟滞比较，勿比「上次传入值」） */
       atlasK = Math.min(dpr, MAX_TEX / (L + 4), MAX_TEX / (bandH + 4));
       atlas = document.createElement('canvas');
       atlas.width = Math.max(2, Math.ceil(L * atlasK));
@@ -180,11 +182,19 @@
         if (len1 < 0.001) continue;
         var ovf = Math.min(0.45, OVERLAP / len1);
         var s0 = rungs[po], s1 = rungs[o];
-        var sx = s0 * atlasK, sw = (s1 - s0) * atlasK;
+        var sw = (s1 - s0) * atlasK;
         if (sw <= 0) continue;
+        /* 源矩形 + dest 同步裁进 atlas 边界：卡 0 首切片外扩后源 x<0、末卡越右边——
+           现代浏览器按规范裁剪，老 WebKit 按旧规范抛 IndexSizeError 中断整帧。等比裁 dest 保持映射不变 */
+        var ov = sw * ovf;
+        var srcX = s0 * atlasK - ov, srcW = sw + 2 * ov;
+        var dX = -ovf, dW = 1 + 2 * ovf;
+        if (srcX < 0) { dX += (-srcX) / srcW * dW; dW *= (srcW + srcX) / srcW; srcW += srcX; srcX = 0; }
+        var over = srcX + srcW - atlas.width;
+        if (over > 0) { dW *= (srcW - over) / srcW; srcW -= over; }
+        if (srcW <= 0) continue;
         ctx2.setTransform(e1x, e1y, e2x, e2y, ax, ay);
-        ctx2.drawImage(atlas, sx - sw * ovf, 0, sw * (1 + 2 * ovf), atlasH,
-          -ovf, 0, 1 + 2 * ovf, 1);
+        ctx2.drawImage(atlas, srcX, 0, srcW, atlasH, dX, 0, dW, 1);
         var veil = (rungs[po + 6] + rungs[o + 6]) * 0.5;
         if (veil > VEIL_MIN) {
           ctx2.globalAlpha = Math.min(1, veil);
@@ -232,12 +242,15 @@
 
     return {
       ok: true,
-      /* 卡表就位（几何解算后调；bandH 变超 10% 时自动重建 atlas） */
+      /* 卡表就位（几何解算后调）：带高或带总长相对「构建基准」变了就重建 atlas。
+         ⚠️ 迟滞必须对比构建基准（bandH/builtL），不能对比「上次传入值」——否则渐进 resize
+         每步 <阈值、基准被无脑刷新 → 永不重建 → drawList 的 s×atlasK 与当前 cards 坐标系脱钩、
+         末卡串图。resize 已在 index-fx 防抖，rebuild 低频、阈值取小值即可（亚像素稳定）。 */
       setBand: function (cardList, H) {
         cards = cardList;
-        var changed = !atlas || Math.abs(H - bandH) > bandH * 0.1;
-        bandH = H;
-        if (changed) rebuildAtlas();
+        var L = cardList.length ? cardList[cardList.length - 1].start + cardList[cardList.length - 1].w : 0;
+        var changed = !atlas || Math.abs(H - bandH) > 1 || Math.abs(L - builtL) > 1;
+        if (changed) { bandH = H; rebuildAtlas(); }
       },
       /* 图片 decode 后逐张升级（调色一次并缓存；atlas 重建直接复用缓存） */
       setCardImage: function (i, img) {
