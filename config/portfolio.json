@@ -1,5 +1,5 @@
 {
-  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。mapped=true → 画廊详情页（project.html?id=ref）改用作品集同款排版渲染（封面块→线稿块→场景行模块→影片+STACK 连续网页流，作品集没放的内容画廊也不放），此后两页共同管理；五个主线 AI 作品均已开启。",
+  "_readme": "作品集页（portfolio/）专属配置。产品文案一律运行时 join config/projects.json（键 = products[].ref = projects[].id），本文件禁写 title_*/one_liner_*/desc_*/body_* 等产品文案字段（tests/portfolio.test.mjs 守卫）。只放作品集特有信息：页序、场景 rows（横向行模块语法：{text:true}=一文 / {text:true,img:i,img_mm}=一文一图 / {imgs:[i,...]}=一图·两图·三图等高行，可选 w_mm=行定宽居中（行高等比降，竖长图两图行的降压阀）/ {sec:节名}=独立文字节模块，下标引用 images，每图恰好引用一次）、截图清单（ratio=宽高比）、窗框 frame、指标带（策展数据，数字须与 projects.json 文案一致）、lineart、个人信息页、建筑矩阵。display = 拉丁字面的版面大标题（Monterey），不参与翻译。mapped=true → 画廊详情页（project.html?id=ref）改用作品集同款排版渲染（封面块→线稿块→场景行模块→影片+STACK 连续网页流，作品集没放的内容画廊也不放），此后两页共同管理；五个主线 AI 作品均已开启。",
   "meta": {
     "doc_title_zh": "AI 产品作品集",
     "doc_title_en": "AI Product Portfolio",
@@ -512,16 +512,21 @@
           "copy_ref": "how_it_works",
           "rows": [
             {
-              "text": true,
-              "img": 3,
-              "img_mm": 28
+              "text": true
             },
             {
               "imgs": [
-                0,
+                3,
+                0
+              ],
+              "w_mm": 120
+            },
+            {
+              "imgs": [
                 1,
                 2
-              ]
+              ],
+              "w_mm": 132
             },
             {
               "sec": "why_it_matters"
@@ -620,8 +625,8 @@
         },
         {
           "id": "companion",
-          "name_zh": "对话与日程",
-          "name_en": "TALK & SCHEDULE",
+          "name_zh": "对话与日程 · 一屏看板",
+          "name_en": "TALK, SCHEDULE & BOARDS",
           "copy_ref": "how_it_works",
           "rows": [
             {
@@ -631,7 +636,18 @@
               "imgs": [
                 0,
                 1
-              ]
+              ],
+              "w_mm": 118
+            },
+            {
+              "sec": "why_it_matters"
+            },
+            {
+              "imgs": [
+                2,
+                3
+              ],
+              "w_mm": 134
             }
           ],
           "images": [
@@ -648,26 +664,7 @@
               "frame": "mac",
               "caption_zh": "知识库",
               "caption_en": "The vault"
-            }
-          ]
-        },
-        {
-          "id": "boards",
-          "name_zh": "一屏看板",
-          "name_en": "THE BOARDS",
-          "copy_ref": "why_it_matters",
-          "rows": [
-            {
-              "text": true
             },
-            {
-              "imgs": [
-                0,
-                1
-              ]
-            }
-          ],
-          "images": [
             {
               "src": "assets/portfolio/meco/study-01.jpg",
               "ratio": 1.3483,

@@ -173,7 +173,7 @@
       ],
       "thumb": "assets/project/cowork/thumbnails/1.jpg",
       "float": {
-        "reveal": "xtool/screenshots/poster-team-time.png"
+        "reveal": "assets/portfolio/cowork/landing-01.jpg"
       },
       "desc_zh": "在 XTOOL 单人把部门 Agent 平台从 0 做到 1：8 个工具覆盖运营、产品、内容等团队，服务 4 部门 65 人，完成率 80%+。",
       "desc_en": "A one-person build of the department's agent platform — eight tools, four departments, 65 people.",
@@ -265,7 +265,7 @@
       ],
       "thumb": "assets/project/yijian/thumbnails/1.jpg",
       "float": {
-        "reveal": "assets/project/yijian/float/1.jpg"
+        "reveal": "assets/portfolio/yijian/report-01.jpg"
       },
       "desc_zh": "给企业团队做的「决策共识」Agent：多角色视角，在四层收敛分歧，给出可追溯的结论。",
       "desc_en": "A consensus engine for enterprise decisions — four layers, one auditable verdict.",

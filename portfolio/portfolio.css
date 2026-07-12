@@ -263,6 +263,12 @@ html[data-locale="en"] .zh-note { display: none; }
    行只有五种：一文 .row-text ｜ 一文一图 .row-ti ｜ 一图/两图/三图 .scene-row（等高对齐） */
 .scene { margin-top: 5mm; }
 .scene > * + * { margin-top: 5mm; }
+/* 场景头 .sec-h（work-main 直属，在 .scene 外）与其 .scene 之间贴合：
+   scene 归零 margin-top，只留 .sec-h 的 3mm margin-bottom——与 .row-sec 里
+   sec-h→列表同口径，也与网页详情页 project-detail.css 的修法一致。
+   原先 3mm+5mm=8mm 的空档，就是「标题下空一行」的元凶。
+   带 .deck 前缀（0,4,0）压过下方 EN 档 .p-work .scene 覆写（0,3,0），两语同修。 */
+.deck .work-main > .sec-h + .scene { margin-top: 0; }
 .row-text { max-width: 150mm; }
 .row-text .plist li { margin-bottom: 2.2mm; }
 /* 独立文字节模块（rows.sec）：自带节标题，与场景主节异质，上间距拉大 */
@@ -273,6 +279,8 @@ html[data-locale="en"] .zh-note { display: none; }
 .row-ti .cell { flex: 0 0 var(--w, 70mm); }
 
 .scene-row { display: flex; gap: var(--sh-gap); align-items: flex-start; }
+/* 可选定宽行（rows.w_mm）：行按定宽居中、行高等比降——竖长图两图行的降压阀 */
+.scene-row--capped { width: var(--rw); margin-inline: auto; }
 .scene-row .cell { flex: var(--r, 1) 1 0; min-width: 0; }
 .scene figcaption, .cell-cap {
   font: 9.5px/1.5 var(--font-sans); letter-spacing: .04em; color: var(--c-kw);
@@ -513,7 +521,7 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 /* 独立线稿页（作品无场景页时的后备形态）：整簇垂直居中 */
 .p-la .la-grid { margin: auto 0; }
 
-/* ════════ P13 建筑压轴 ════════ */
+/* ════════ 建筑压轴（页号随册长自动排，现 p22） ════════ */
 .p-arch .arch-inner {
   padding: var(--sh-pad-t) var(--sh-pad-x) var(--sh-pad-b) calc(var(--sh-pad-x) + var(--sh-rail-mini) + var(--sh-gutter-mini));
   height: 100%; display: flex; flex-direction: column;
@@ -529,7 +537,7 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 .p-arch .arch-pdf a { color: var(--c-sub); border-bottom: 1px solid var(--c-kw); }
 .p-arch .arch-pdf a:hover { color: var(--c-title); border-color: var(--c-title); }
 
-/* ════════ P14 封底 ════════ */
+/* ════════ 封底（末页） ════════ */
 .sheet.p-back { background: var(--bg-gradient) var(--c-white); }
 .p-back .back-core {
   position: absolute; left: 0; right: 0; top: 30%;

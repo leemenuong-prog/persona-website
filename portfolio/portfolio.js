@@ -568,8 +568,10 @@
         rs.appendChild(plist(t(sec2, 'body')));
         wrap.appendChild(rs);
       } else if (r.imgs && r.imgs.length) {
-        /* 一图/两图/三图：等高对齐行（单图=满宽） */
+        /* 一图/两图/三图：等高对齐行（单图=满宽）；
+           可选 w_mm=定宽居中（行高等比降）——0.39 竖长图进两图行满宽必炸页 */
         var row = h('div', 'scene-row');
+        if (r.w_mm) { row.classList.add('scene-row--capped'); row.style.setProperty('--rw', r.w_mm + 'mm'); }
         r.imgs.forEach(function (i) {
           var im = imgs[i];
           if (!im) { console.warn('[portfolio] rows 引用越界:', sc.id, i); return; }

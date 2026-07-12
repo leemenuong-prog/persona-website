@@ -37,13 +37,15 @@
       });
       box.appendChild(base);
       if (p.float && p.float.reveal) {
-        var rev = document.createElement('img');
-        rev.className = 'layer-reveal';
-        rev.src = p.float.reveal;
-        rev.alt = '';
-        rev.loading = 'lazy';
-        rev.decoding = 'async';
-        rev.addEventListener('error', function () { rev.remove(); });
+        /* 揭示层=不透明白底画布（div），图 contain 居中——盖住封面，不再透底 */
+        var rev = el('div', 'layer-reveal');
+        var rimg = document.createElement('img');
+        rimg.src = p.float.reveal;
+        rimg.alt = '';
+        rimg.loading = 'lazy';
+        rimg.decoding = 'async';
+        rimg.addEventListener('error', function () { rev.remove(); });
+        rev.appendChild(rimg);
         box.appendChild(rev);
       }
     } else {

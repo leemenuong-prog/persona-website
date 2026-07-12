@@ -561,6 +561,8 @@
         body.appendChild(rs);
       } else if (r.imgs && r.imgs.length) {
         var row = h('div', 'scene-row');
+        /* w_mm 定宽行：按作品集主区 167mm 折算成百分比（img_mm 同一先例） */
+        if (r.w_mm) { row.classList.add('scene-row--capped'); row.style.setProperty('--rw', (r.w_mm / 167 * 100).toFixed(1) + '%'); }
         r.imgs.forEach(function (i) {
           var im = imgs[i];
           if (!im) { console.warn('[detail] rows 引用越界:', sc.id, i); return; }

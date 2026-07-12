@@ -354,6 +354,10 @@ body.pd-mapped .cell-cap {
 /* ── 场景行模块（横向满宽，纵向依次码放；正文禁左右双栏） ── */
 .pd-scene .pd-kicker { margin-bottom: 16px; }
 .pd-scene-body > * + * { margin-top: 26px; }
+/* 场景头 .sec-h 之后的首个内容行贴合标题——只吃 .sec-h 的 18px margin-bottom，
+   不再叠加 26px 行距（照 Key Contributions 的 h2→列表间距）。.row-sec 除外：
+   独立文字节模块须保留大间隔。 */
+.pd-scene-body > .sec-h + *:not(.row-sec) { margin-top: 0; }
 body.pd-mapped .row-text { max-width: var(--tw); }
 /* 独立文字节模块：与场景主节异质，间隔拉大（模块间隔铁律的网页档） */
 body.pd-mapped .row-sec { margin-top: 56px; }
@@ -361,6 +365,8 @@ body.pd-mapped .row-ti { display: flex; gap: 36px; align-items: center; }
 body.pd-mapped .row-ti .row-ti-text { flex: 1; min-width: 0; }
 body.pd-mapped .row-ti .cell { flex: 0 0 var(--w, 42%); }
 body.pd-mapped .scene-row { display: flex; gap: 18px; align-items: flex-start; }
+/* w_mm 定宽行（百分比由 project-detail.js 按 167mm 折算写入）：定宽居中，行高等比降 */
+body.pd-mapped .scene-row--capped { width: var(--rw); margin-inline: auto; }
 body.pd-mapped .scene-row .cell { flex: var(--r, 1) 1 0; }
 
 /* ── 线稿块（一侧文字｜一侧线稿图；斜体 one_liner 全页唯一一处） ── */
@@ -436,6 +442,7 @@ body.pd-mapped .la-motto .zh-note { display: block; margin-top: 10px; font: 400 
 }
 @media (max-width: 600px) {
   body.pd-mapped .scene-row { flex-direction: column; gap: 26px; }
+  body.pd-mapped .scene-row--capped { width: 100%; }   /* 窄屏纵排释放定宽，勿压小图 */
   body.pd-mapped .scene-row .cell { flex: none; width: 100%; }
   body.pd-mapped .phone-shell { max-width: 300px; margin-inline: auto; }
   body.pd-mapped .cell-cap { font-size: 11px; }

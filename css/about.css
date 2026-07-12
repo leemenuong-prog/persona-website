@@ -1,5 +1,8 @@
 /* ════════════════════════════════════════════════════════════
-   about.css — 关于页：BarWord 标题 · 画像 · 双语简介。
+   about.css — 关于页（2026-07-12 重构：作品集 P2 简历 + P3 目录的网页流式复刻）。
+   分区：共享段（around.html 复用，勿动）→ 标题/网格 → 身份簇 → CV 四节
+   → INDEX 六卡 → 尾区 → 揭示编舞 → 断点 → reduced-motion。
+   动画铁律：只动 opacity/transform；stagger 30–50ms/项、总时长 ≤300ms。
    ════════════════════════════════════════════════════════════ */
 
 .about-container { padding: 56px 0 110px; }
@@ -16,9 +19,10 @@
   width: 100%; height: auto; border: 1px solid var(--c-border);
   filter: grayscale(24%);
 }
+
+/* ── 共享段（⚠️ around.html 复用 .about-bio 全组 + 文末触屏热区，勿动） ── */
 .about-bio { font-size: 1.05rem; line-height: 1.85; color: var(--c-body); }
 .about-lede { font-family: Georgia, 'Songti SC', serif; font-style: italic; font-size: 1.2rem; color: var(--c-sub); margin-bottom: 1.6em; }
-.about-chrono li { margin-bottom: .7rem; }
 .about-bio h2 {
   font-size: 1.05rem; font-weight: 600; letter-spacing: .14em;
   color: var(--c-title); margin: 2.2em 0 .8em;
@@ -30,20 +34,164 @@
 .about-bio li { padding-left: 1.4rem; position: relative; margin-bottom: .55rem; }
 .about-bio li::before { content: "—"; position: absolute; left: 0; color: var(--c-kw); }
 
+/* ── ② 身份簇（P2 左栏的网页档：hello → role → 格言 → 自述） ── */
+.about-id { margin-top: 26px; }
+.about-hello {
+  margin: 0 0 6px; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; color: var(--c-title);
+}
+.about-role {
+  margin: 0 0 18px; font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--c-kw);
+}
+.about-id .about-lede { font-size: 1.1rem; }
+.about-intro { margin: 0; font-size: 1rem; line-height: 1.85; color: var(--c-body); }
+
+/* ── ② CV 四节（P2 右栏的网页档：行 = 期号｜正文｜右缘灰注） ── */
+.about-cv .cv-sec + .cv-sec { margin-top: 40px; }
+.cv-h {
+  margin: 0 0 6px; font-size: 1.05rem; font-weight: 600; letter-spacing: .14em;
+  color: var(--c-title); padding-bottom: 10px; border-bottom: 1px solid var(--c-border);
+}
+.cv-list { list-style: none; margin: 0; padding: 0; }
+.cv-row {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 10px 0; border-bottom: 1px solid var(--c-border);
+}
+.cv-list .cv-row:last-child { border-bottom: 0; }
+.cv-period {
+  flex: 0 0 76px; font-family: var(--font-display); font-weight: 500;
+  font-size: 15px; color: var(--c-title); white-space: nowrap;
+}
+.cv-text { flex: 1; min-width: 0; font-size: 1rem; line-height: 1.7; color: var(--c-body); }
+.cv-note {
+  flex: none; margin-left: auto; font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: .12em; color: var(--c-kw); white-space: nowrap;
+}
+.skill-row .skill-name {
+  flex: 0 0 132px; font-family: var(--font-sans); font-weight: 600;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--c-sub);
+}
+.skill-row .skill-items { flex: 1; min-width: 0; font-size: 15px; line-height: 1.7; color: var(--c-body); }
+
+/* ── ③ INDEX 目录（P3 六卡的网页化，卡片语言照 architecture.css .ai-card） ── */
+.about-index { margin-top: 90px; }
+.idx-head {
+  display: flex; align-items: baseline; gap: 18px;
+  padding-bottom: 12px; margin-bottom: 26px; border-bottom: 1px solid var(--c-border);
+}
+.idx-title {
+  margin: 0; font-family: var(--font-display); font-weight: 400;
+  font-size: 30px; letter-spacing: .12em; color: var(--c-title);
+}
+.idx-sub {
+  margin: 0; font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--c-kw);
+}
+.idx-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.idx-card {
+  display: flex; flex-direction: column;
+  background: var(--c-white); border: 1px solid var(--c-border); border-radius: 6px;
+  padding: 16px;
+  /* 过渡分列：opacity=入场（stagger 只延迟它）；transform/border/shadow=hover 即时 */
+  transition: opacity .6s var(--ez), transform .3s var(--ez), border-color .3s ease, box-shadow .3s ease;
+}
+.idx-card:hover {
+  border-color: var(--c-kw);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .07);
+}
+.idx-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.idx-name { font-family: var(--font-sans); font-weight: 600; font-size: 13px; letter-spacing: .02em; color: var(--c-title); }
+.idx-num { font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--c-kw); }
+.idx-meta {
+  margin: 6px 0 0; font-family: var(--font-sans);
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--c-kw);
+}
+.idx-thumb { margin-top: 16px; aspect-ratio: 1; overflow: hidden; border-radius: 3px; }
+.idx-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.85) contrast(1.03);
+  transition: transform .5s var(--ez);
+}
+.idx-card:hover .idx-thumb img { transform: scale(1.03); }
+
+/* ── ④ 尾区：作品集阅读器入口 + 联系（≥768 双列收尾） ── */
+.about-outro { margin-top: 90px; }
+@media (min-width: 768px) {
+  .about-outro { display: grid; grid-template-columns: 1fr 1fr; gap: 0 54px; }
+}
+
+/* ── 揭示编舞（父级 .in 触发子级延迟过渡；无新观察器，只动 opacity/transform） ── */
+.about-portrait[data-reveal] { transform: translateX(-18px); }        /* 方向变奏 */
+.about-portrait[data-reveal].in { transform: none; }
+.about-id[data-reveal] { transform: none; }                           /* 容器只做淡入门 */
+.about-id > * { opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ez), transform .6s var(--ez); }
+.about-id.in > * { opacity: 1; transform: none; }
+.about-id.in > *:nth-child(2) { transition-delay: .06s; }
+.about-id.in > *:nth-child(3) { transition-delay: .12s; }
+.about-id.in > *:nth-child(4) { transition-delay: .18s; }
+.cv-sec .cv-row { opacity: 0; transform: translateY(10px); transition: opacity .55s var(--ez), transform .55s var(--ez); }
+.cv-sec.in .cv-row { opacity: 1; transform: none; }
+.cv-sec.in .cv-row:nth-child(2) { transition-delay: .04s; }
+.cv-sec.in .cv-row:nth-child(3) { transition-delay: .08s; }
+.cv-sec.in .cv-row:nth-child(4) { transition-delay: .12s; }
+.cv-sec.in .cv-row:nth-child(5) { transition-delay: .16s; }
+.cv-sec.in .cv-row:nth-child(n+6) { transition-delay: .2s; }
+.idx-grid .idx-card { opacity: 0; }
+.idx-grid.in .idx-card { opacity: 1; }
+/* 延迟只落 opacity（首位），hover 的 transform/border/shadow 保持零延迟 */
+.idx-grid.in .idx-card:nth-child(2) { transition-delay: .05s, 0s, 0s, 0s; }
+.idx-grid.in .idx-card:nth-child(3) { transition-delay: .1s, 0s, 0s, 0s; }
+.idx-grid.in .idx-card:nth-child(4) { transition-delay: .15s, 0s, 0s, 0s; }
+.idx-grid.in .idx-card:nth-child(5) { transition-delay: .2s, 0s, 0s, 0s; }
+.idx-grid.in .idx-card:nth-child(6) { transition-delay: .25s, 0s, 0s, 0s; }
+
+/* ── 断点 ── */
+@media (max-width: 1023px) {
+  .idx-grid { gap: 18px; }
+  .cv-period { flex-basis: 68px; }
+}
+
 @media (max-width: 767px) {
   .about-container { padding-top: 26px; }
   .about-title { margin-bottom: 32px; }
   .about-grid { grid-template-columns: 1fr; gap: 30px; }
   .about-portrait { max-width: 300px; margin-inline: auto; }
+  .about-id { margin-top: 0; }
   .about-bio { font-size: 1rem; line-height: 1.8; }
   .about-lede { font-size: 1.1rem; }
   .about-bio li { padding-left: 1.2rem; margin-bottom: .7rem; }
   .about-bio li a { display: inline-block; padding: 4px 0; }
+  .idx-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-index, .about-outro { margin-top: 64px; }
+  .cv-text { font-size: 15px; }
 }
 
 @media (max-width: 479px) {
   .about-title { font-size: clamp(34px, 10vw, 40px); }
   .about-bio li { padding-left: 1.1rem; }
+  .idx-grid { gap: 12px; }
+  .idx-card { padding: 12px; }
+  .idx-name { font-size: 11px; }
+  .idx-num { font-size: 20px; }
+  .idx-meta { font-size: 9.5px; }
+  .cv-row { flex-wrap: wrap; }
+  .cv-period { flex-basis: 56px; }
+  .skill-row { flex-direction: column; gap: 4px; }
+  .skill-row .skill-name { flex: none; }
+}
+
+/* ── reduced-motion：子级编舞全部直落终态（main.css 只管 [data-reveal] 本体） ── */
+@media (prefers-reduced-motion: reduce) {
+  .about-portrait[data-reveal],
+  .about-id > *,
+  .cv-sec .cv-row,
+  .idx-grid .idx-card {
+    opacity: 1; transform: none; transition: none;
+  }
+  .idx-card:hover { transform: none; }
+  .idx-card:hover .idx-thumb img { transform: none; }
 }
 
 /* 触屏热区：PDF/外链/邮箱列表（around 复用本文件，一并覆盖） */
