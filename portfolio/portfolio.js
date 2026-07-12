@@ -29,6 +29,18 @@
     return f;
   }
   function psq() { return h('span', 'psq'); }
+
+  /* ↗ 用内嵌 SVG：U+2197 不在 Monterey 的 unicode-range 内，iOS 回退会落
+     Apple Color Emoji；文本文案里的 ↗ 一律写「↗︎」（补 FE0E 文本变体选择符）。 */
+  var ARROW_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  function extArrow(cls) {
+    var s = document.createElement('span');
+    s.className = cls;
+    s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = ARROW_SVG;
+    return s;
+  }
   function img(src, alt) {
     var im = h('img');
     im.src = '../' + src; im.alt = alt || '';
@@ -145,7 +157,7 @@
     side.appendChild(motto);
     var cta = h('span', 'film-cta');
     if (video.label_zh) cta.appendChild(h('span', 'zh-note', video.label_zh + ' ·'));
-    cta.appendChild(h('span', 'cta-link', (video.label_en || '').toUpperCase() + ' ↗'));
+    cta.appendChild(h('span', 'cta-link', (video.label_en || '').toUpperCase() + ' ↗︎'));
     side.appendChild(cta);
     grid.appendChild(side);
 
@@ -167,7 +179,7 @@
     a.appendChild(box);
     var txt = h('span', 'qr-txt');
     txt.appendChild(h('span', 'qr-link', host(qr.url)));
-    txt.appendChild(h('span', 'qr-cap', t(qr, 'caption') + ' ↗'));
+    txt.appendChild(h('span', 'qr-cap', t(qr, 'caption') + ' ↗︎'));
     a.appendChild(txt);
     return a;
   }
@@ -353,15 +365,19 @@
       'PROJECT ' + pad2(idx + 1) + ' · ' + (joined.category || '').toUpperCase() + ' · ' + (joined.year || '')));
     var row = h('div', 'work-title-row');
     var title = h('h1', 'work-title');
-    title.appendChild(document.createTextNode(prod.display || prod.ref));
-    title.appendChild(psq());
-    row.appendChild(title);
     if (ext(joined.url)) {
-      var a = h('a', 'work-ext', '↗');
+      var a = h('a');
       a.href = joined.url; a.target = '_blank'; a.rel = 'noopener';
       a.setAttribute('aria-label', prod.display + ' — live');
-      row.appendChild(a);
+      a.appendChild(document.createTextNode(prod.display || prod.ref));
+      a.appendChild(psq());
+      a.appendChild(extArrow('work-ext'));
+      title.appendChild(a);
+    } else {
+      title.appendChild(document.createTextNode(prod.display || prod.ref));
+      title.appendChild(psq());
     }
+    row.appendChild(title);
     head.appendChild(row);
     var kw = t(joined, 'keywords');
     if (kw) head.appendChild(h('p', 'work-kw', kw.split(/\s*\|\s*/).join(' · ')));
@@ -441,7 +457,7 @@
       main.appendChild(shot);
     } else {
       var more = h('p', 'ph-more');
-      var a = h('a', null, L('完整案例在主站', 'FULL CASE ON THE SITE') + ' ↗');
+      var a = h('a', null, L('完整案例在主站', 'FULL CASE ON THE SITE') + ' ↗︎');
       a.href = pf.meta.site_url + 'project.html?id=' + prod.ref;
       a.target = '_blank'; a.rel = 'noopener';
       more.appendChild(a);
@@ -621,7 +637,7 @@
     inner.appendChild(grid);
 
     var pdf = h('p', 'arch-pdf');
-    var a = h('a', null, t(arch, 'pdf_label') + ' ↗');
+    var a = h('a', null, t(arch, 'pdf_label') + ' ↗︎');
     a.href = pf.meta.site_url + 'architecture.html'; a.target = '_blank'; a.rel = 'noopener';
     pdf.appendChild(a);
     inner.appendChild(pdf);
@@ -702,7 +718,7 @@
     /* 册尾 PDF 入口（2026-07-11 用户裁定）：仅屏显、print 隐藏——用户自导出
        通道（随语言指向 zh/en 版）；访客侧其余作品集入口仍一律指网页阅读器 */
     var pdfBar = h('div', 'deck-pdf screen-only');
-    var pdfA = h('a', null, L('PDF 版', 'PDF EDITION') + ' ↗');
+    var pdfA = h('a', null, L('PDF 版', 'PDF EDITION') + ' ↗︎');
     pdfA.href = '../' + (locale() === 'zh' ? pf.meta.pdf.zh : pf.meta.pdf.en);
     pdfA.target = '_blank'; pdfA.rel = 'noopener';
     pdfBar.appendChild(pdfA);

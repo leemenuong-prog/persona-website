@@ -37,6 +37,19 @@
   }
   function psq() { return h('span', 'psq'); }
 
+  /* ↗ 用内嵌 SVG：U+2197 不在 Monterey 的 unicode-range 内，iOS 回退会落
+     Apple Color Emoji；文本文案里的 ↗ 则统一补 FE0E 文本变体选择符（fe）。 */
+  var ARROW_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  function extArrow(cls) {
+    var s = document.createElement('span');
+    s.className = cls;
+    s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = ARROW_SVG;
+    return s;
+  }
+  function fe(s) { return s ? String(s).replace(/↗(?!︎)/g, '↗︎') : s; }
+
   /* body 按 \n 拆「—」列表；行首「标签：」（≤10 字）加粗，
      否则加粗首个逗号前的短语（先说结论四条的 STAR 头）——与 portfolio.js 同口径 */
   function plist(body) {
@@ -95,7 +108,7 @@
       frame.appendChild(pi);
     }
     frame.appendChild(h('span', 'av-btn'));
-    frame.appendChild(h('span', 'av-label', L(m.label_zh || '点击播放', m.label_en || 'Play')));
+    frame.appendChild(h('span', 'av-label', fe(L(m.label_zh || '点击播放', m.label_en || 'Play'))));
     frame.addEventListener('click', function play() {
       frame.removeEventListener('click', play);
       frame.classList.add('playing');
@@ -190,13 +203,14 @@
       'PROJECT ' + pad2(idx + 1) + ' · ARCHITECTURE' + (p.year ? ' · ' + p.year : '')));
     var row = h('div', 'aw-title-row');
     var title = h('h2', 'aw-title');
-    title.appendChild(document.createTextNode(t(p, 'title')));
-    title.appendChild(psq());
+    var ta = h('a');
+    ta.href = 'project.html?id=' + id;
+    ta.setAttribute('aria-label', t(p, 'title') + ' — ' + L('完整案例', 'full case'));
+    ta.appendChild(document.createTextNode(t(p, 'title')));
+    ta.appendChild(psq());
+    ta.appendChild(extArrow('aw-ext'));
+    title.appendChild(ta);
     row.appendChild(title);
-    var ext = h('a', 'aw-ext', '↗');
-    ext.href = 'project.html?id=' + id;
-    ext.setAttribute('aria-label', t(p, 'title') + ' — ' + L('完整案例', 'full case'));
-    row.appendChild(ext);
     head.appendChild(row);
 
     var kw = t(p, 'keywords');
@@ -269,7 +283,7 @@
     }
 
     var more = h('p', 'aw-more');
-    var ma = h('a', null, L('查看完整案例', 'View the full case') + ' ↗');
+    var ma = h('a', null, L('查看完整案例', 'View the full case') + ' ↗︎');
     ma.href = 'project.html?id=' + id;
     more.appendChild(ma);
     sec.appendChild(more);
@@ -277,7 +291,7 @@
     return sec;
   }
 
-  /* ════════ 尾声（合集简介 + PDF 下载 + 交叉链接） ════════ */
+  /* ════════ 尾声（品牌条 + 交叉链接 + 册尾 PDF 自导出入口） ════════ */
   function outroSection() {
     var sec = h('section', 'arch-outro');
     var band = h('div', 'ao-band');
@@ -291,6 +305,14 @@
     alt.href = 'portfolio/';
     alt.textContent = L('AI 产品作品集', 'AI product portfolio') + ' →';
     actions.appendChild(alt);
+    /* 册尾 PDF 入口（2026-07-12 用户裁定，与 portfolio/ 册尾同款）：
+       用户自导出通道；访客侧其余作品集入口仍一律指网页阅读器 */
+    if (arch.pdf) {
+      var pdf = h('a', 'ao-alt ao-pdf');
+      pdf.href = arch.pdf; pdf.target = '_blank'; pdf.rel = 'noopener';
+      pdf.textContent = L('PDF 版', 'PDF edition') + ' ↗︎';
+      actions.appendChild(pdf);
+    }
     var top = h('a', 'ao-top');
     top.href = '#'; top.textContent = L('回到顶部', 'Back to top') + ' ↑';
     top.addEventListener('click', function (e) {

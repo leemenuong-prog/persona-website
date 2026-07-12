@@ -100,12 +100,6 @@ html[data-locale="en"] .zh-note { display: none; }
   transition: background-color .2s, color .2s;
 }
 .lang-toggle:hover { background: var(--c-header); color: var(--c-white); }
-/* 作品集专属：PDF 下载入口（并入右侧 chrome；站内其它页 header 无此项） */
-.pf-pdf {
-  font-family: var(--font-sans); font-size: 13px; letter-spacing: .06em;
-  color: var(--c-header); border-bottom: 1px solid var(--c-border);
-}
-.pf-pdf:hover { color: var(--c-title); border-color: var(--c-kw); }
 
 /* ════════ Sheet 页系统 ════════ */
 .deck { padding: calc(var(--header-h) + 22px) 0 96px; }
@@ -432,8 +426,11 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 .p-work .work-title-row { display: flex; align-items: baseline; gap: 4mm; margin-top: 1.5mm; }
 .p-work .work-title { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 40px; line-height: 1.12; color: var(--c-title); }
 .p-work .work-title .psq { width: 6px; height: 6px; }
-.p-work .work-ext { font-family: var(--font-display); font-size: 20px; color: var(--c-kw); }
-a.work-ext:hover { color: var(--c-title); }
+.p-work .work-title a { border-bottom: 2px solid transparent; transition: border-color .25s; }
+.p-work .work-title a:hover { border-color: var(--c-title); }
+.p-work .work-ext { margin-left: .28em; color: var(--c-kw); transition: color .2s; }
+.p-work .work-ext svg { width: .5em; height: .5em; }
+.p-work .work-title a:hover .work-ext { color: var(--c-title); }
 .p-work .work-kw { margin: 1.5mm 0 0; font-style: italic; font-size: 12px; color: var(--c-kw); }
 .p-work .work-oneliner { margin-top: 5mm; }
 .p-work .work-sec { margin-top: 5.5mm; }
@@ -584,14 +581,29 @@ a.work-ext:hover { color: var(--c-title); }
   .site-header .nav-btn { font-size: 11px; padding: 0 4px; }
 }
 
-/* ════════ 册尾 PDF 入口（仅屏显，print 走 .screen-only 隐藏） ════════ */
-.deck-pdf { text-align: center; padding: 4px 0 56px; }
-.deck-pdf a {
-  font: 10px/1.7 var(--font-sans); letter-spacing: .18em; text-transform: uppercase;
-  color: var(--c-sub); text-decoration: none;
-  border-bottom: 1px solid var(--c-kw); padding-bottom: 2px;
+/* 触屏热区（照 main.css 定式；纸内受 --sheet-scale 缩放，热区反补到物理 44px） */
+@media (pointer: coarse), (max-width: 1023px) {
+  .p-work .work-title a { position: relative; display: inline-block; }
+  .p-work .work-title a::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: max(100%, calc(44px / var(--sheet-scale, 1)));
+    height: max(100%, calc(44px / var(--sheet-scale, 1)));
+    transform: translate(-50%, -50%);
+  }
 }
-.deck-pdf a:hover { color: var(--c-title); border-color: var(--c-title); }
+
+/* ════════ 册尾 PDF 入口（仅屏显，print 走 .screen-only 隐藏）——
+   描边盒按钮，对齐 .lang-toggle 方角描边 idiom，hover 反白明度跳 ════════ */
+.deck-pdf { text-align: center; padding: 12px 0 64px; }
+.deck-pdf a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 30px;
+  border: 1px solid var(--c-sub); border-radius: 2px;
+  font: 12px/1 var(--font-sans); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c-sub); text-decoration: none;
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.deck-pdf a:hover { background: var(--c-title); border-color: var(--c-title); color: var(--c-white); }
 
 /* ════════ 打印 ════════ */
 @page { size: 210mm 297mm; margin: 0; }

@@ -57,8 +57,8 @@
     "experience": [
       {
         "period": "2026",
-        "text_zh": "XTOOL · AIPM 实习（AI 应用 / Agent 方向）",
-        "text_en": "XTOOL · AIPM intern (AI applications / agents)"
+        "text_zh": "XTOOL · AI 产品实习（AI 应用 / Agent 方向）",
+        "text_en": "XTOOL · AI product intern (AI applications / agents)"
       },
       {
         "period": "2025",
@@ -830,7 +830,7 @@
     "title_en": "ARCHITECTURE",
     "lede_zh": "",
     "lede_en": "",
-    "pdf": "https://alnt-med.netlify.app/uploads/portfolio.pdf",
+    "pdf": "uploads/portfolio.pdf",
     "pdf_label_zh": "建筑作品集",
     "pdf_label_en": "Architecture portfolio",
     "items": [

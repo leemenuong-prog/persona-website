@@ -174,8 +174,11 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
   font-size: clamp(34px, 5.4vw, 56px); line-height: 1.08; letter-spacing: .005em; color: var(--c-title);
 }
 .arch-work .aw-title .psq { width: .11em; height: .11em; }
-.arch-work .aw-ext { font-family: var(--font-display); font-size: 26px; color: var(--c-kw); transition: color .2s; }
-.arch-work .aw-ext:hover { color: var(--c-title); }
+.arch-work .aw-title a { border-bottom: 2px solid transparent; transition: border-color .25s; }
+.arch-work .aw-title a:hover { border-color: var(--c-title); }
+.arch-work .aw-ext { margin-left: .28em; color: var(--c-kw); transition: color .2s; }
+.arch-work .aw-ext svg { width: .5em; height: .5em; }
+.arch-work .aw-title a:hover .aw-ext { color: var(--c-title); }
 .arch-work .aw-kw { margin: 16px 0 0; font-style: italic; font-size: 15px; color: var(--c-kw); max-width: var(--tw); }
 .arch-work .aw-meta { margin: 8px 0 0; font: 12px/1.7 var(--font-sans); letter-spacing: .1em; color: var(--c-muted); }
 .arch-work .aw-award { margin: 14px 0 0; font: 13px/1.7 var(--font-sans); letter-spacing: .04em; color: var(--c-sub); }
@@ -217,7 +220,6 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
   .arch-hero { min-height: calc(72vh - var(--header-h)); min-height: calc(72svh - var(--header-h)); }
   .arch-hero .ah-title { letter-spacing: .18em; padding-left: .18em; }
   .arch-work { padding-top: 56px; margin-top: 52px; }
-  .arch-work .aw-title-row { gap: 10px; }
   #arch-deck .sec-h { font-size: 19px; }
   .arch-plate { margin-top: 26px; }
   .arch-outro { margin-top: 60px; padding-top: 50px; }
@@ -226,4 +228,14 @@ html[data-locale="en"] #arch-deck .zh-note { display: none; }
   .arch-index .ai-grid { grid-template-columns: 1fr; }
   #arch-deck .oneliner { font-size: 17px; }
   #arch-deck .plist li { font-size: 16px; }
+}
+
+/* 触屏热区（照 main.css 定式，::after 扩到 ≥44） */
+@media (pointer: coarse), (max-width: 1023px) {
+  .arch-work .aw-title a { position: relative; display: inline-block; }
+  .arch-work .aw-title a::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: max(100%, 44px); height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
 }

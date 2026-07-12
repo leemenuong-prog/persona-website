@@ -24,8 +24,9 @@
 }
 .detail-title a { border-bottom: 2px solid transparent; transition: border-color .25s; }
 .detail-title a:hover { border-color: var(--c-title); }
-.detail-title .ext { font-size: .7em; opacity: .5; transition: opacity .25s; }
+.detail-title .ext { opacity: .5; transition: opacity .25s; }
 .detail-title a:hover .ext { opacity: 1; }
+.detail-title .ext svg, .detail-title .pd-ext svg { width: .5em; height: .5em; }
 .detail-keywords {
   font-style: italic; font-size: .9rem; color: var(--c-kw); margin: 0 0 1.4rem;
 }
@@ -249,8 +250,8 @@ body.pd-mapped .stack-line .stack-label { color: var(--c-kw); margin-right: 12px
 body.pd-mapped .project-detail-header { border-bottom: none; padding-bottom: 0; }
 .pd-title-row { display: flex; align-items: baseline; gap: 16px; }
 body.pd-mapped .detail-title { margin-bottom: 0; }
-.pd-title-row .pd-ext { font-family: var(--font-display); font-size: 26px; color: var(--c-kw); transition: color .2s; }
-.pd-title-row .pd-ext:hover { color: var(--c-title); }
+.pd-title-row .pd-ext { margin-left: .28em; color: var(--c-kw); transition: color .2s; }
+.detail-title a:hover .pd-ext { color: var(--c-title); }
 body.pd-mapped .detail-keywords { margin: 14px 0 0; }
 
 /* ── 流式骨架：正文列吃满容器，块间距承担分页节奏 ── */
@@ -423,8 +424,6 @@ body.pd-mapped .la-motto .zh-note { display: block; margin-top: 10px; font: 400 
 }
 @media (max-width: 767px) {
   .pd-block + .pd-block { margin-top: 56px; }
-  .pd-title-row { gap: 10px; }
-  .pd-title-row .pd-ext { font-size: 20px; }
   body.pd-mapped .sec-h { font-size: 19px; }
   body.pd-mapped .plist li { font-size: 16px; }
   .pd-cover-cols { grid-template-columns: 1fr; }
@@ -444,8 +443,8 @@ body.pd-mapped .la-motto .zh-note { display: block; margin-top: 10px; font: 400 
 
 /* ── 触屏热区（视觉尺寸不变，::after 扩到 ≥44） ── */
 @media (pointer: coarse), (max-width: 1023px) {
-  .media-cta a { position: relative; display: inline-block; }
-  .text-ball::after, .media-cta a::after {
+  .media-cta a, .detail-title a { position: relative; display: inline-block; }
+  .text-ball::after, .media-cta a::after, .detail-title a::after {
     content: ""; position: absolute; left: 50%; top: 50%;
     width: max(100%, 44px); height: max(100%, 44px);
     transform: translate(-50%, -50%);

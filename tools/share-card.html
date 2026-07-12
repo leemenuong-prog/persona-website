@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- 分享卡生成器（不参与站点页面）：headless Chrome 截 1200×630 → sips 压 JPEG
+     入库 assets/brand/share-card.jpg。要素全部收进中央 630×630 安全区，
+     微信聊天卡居中裁方后仍完整。重新生成：
+     chrome --headless --screenshot=share-card.png --window-size=1200,630 file://…/tools/share-card.html -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'Monterey';
+    src: url('../assets/fonts/monterey-regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: radial-gradient(ellipse at 50% 42%, #FFFBF0 0%, #EAEAEA 62%, #FFFFFF 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Monterey', Georgia, 'Songti SC', STSong, serif;
+  }
+  .card { display: flex; flex-direction: column; align-items: center; width: 630px; }
+  .band { display: flex; align-items: flex-end; gap: 13px; height: 96px; margin-bottom: 52px; }
+  .band .bar { width: 9px; background: #181818; }
+  .band .dot { width: 9px; height: 9px; background: #000; }
+  .name {
+    font-size: 74px; font-weight: 400; letter-spacing: .16em;
+    color: #181818; white-space: nowrap; text-indent: .16em;
+  }
+  .sub {
+    margin-top: 30px; font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+    font-size: 20px; letter-spacing: .14em; color: #5F5F5F; text-indent: .14em;
+  }
+  .site {
+    margin-top: 26px; font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px; letter-spacing: .22em; color: #999; text-transform: uppercase; text-indent: .22em;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="band" id="band"><span class="dot"></span></div>
+    <div class="name">LI WENYUAN</div>
+    <div class="sub">李文苑 · AI 产品经理 · 建筑设计出身</div>
+    <div class="site">alnt-med.netlify.app</div>
+  </div>
+  <script>
+    /* IAM 八条天际线，与 barmorph.js 同一比例 */
+    var IAM_BARS = [.97, .58, 1, .66, .9, .52, .74, 1];
+    var band = document.getElementById('band');
+    IAM_BARS.forEach(function (f) {
+      var b = document.createElement('span');
+      b.className = 'bar';
+      b.style.height = Math.round(f * 96) + 'px';
+      band.appendChild(b);
+    });
+    var d = document.createElement('span');
+    d.className = 'dot';
+    band.appendChild(d);
+  </script>
+</body>
+</html>

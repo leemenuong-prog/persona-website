@@ -30,6 +30,19 @@
     if (html != null) n.innerHTML = html;
     return n;
   }
+
+  /* ↗ 用内嵌 SVG：U+2197 不在 Monterey 的 unicode-range 内，iOS 回退会落
+     Apple Color Emoji；文本文案里的 ↗ 则统一补 FE0E 文本变体选择符（fe）。 */
+  var ARROW_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  function extArrow(cls) {
+    var s = document.createElement('span');
+    s.className = cls;
+    s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = ARROW_SVG;
+    return s;
+  }
+  function fe(s) { return s ? String(s).replace(/↗(?!︎)/g, '↗︎') : s; }
   function getId() {
     try { return new URLSearchParams(location.search).get('id') || ''; } catch (e) { return ''; }
   }
@@ -43,7 +56,7 @@
     var h1 = el('h1', 'detail-title');
     if (p.url) {
       h1.innerHTML = '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' +
-        esc(title) + ' <span class="ext" aria-hidden="true">↗</span></a>';
+        esc(title) + ' <span class="ext" aria-hidden="true">' + ARROW_SVG + '</span></a>';
     } else {
       h1.textContent = title;
     }
@@ -90,7 +103,7 @@
     frame.innerHTML =
       (m.poster ? '<img class="facade-cover" src="' + esc(m.poster) + '" alt="" loading="lazy">' : '') +
       '<button class="facade-btn" type="button" aria-label="播放视频 · Play">▶</button>' +
-      '<div class="facade-label">' + esc(window.I18N.locale === 'zh' ? (m.label_zh || '点击播放 · PLAY') : (m.label_en || 'PLAY')) + '</div>';
+      '<div class="facade-label">' + esc(fe(window.I18N.locale === 'zh' ? (m.label_zh || '点击播放 · PLAY') : (m.label_en || 'PLAY'))) + '</div>';
     frame.addEventListener('click', function play() {
       frame.removeEventListener('click', play);
       frame.classList.remove('media-facade');
@@ -130,7 +143,7 @@
     frame.innerHTML =
       (m.poster ? '<img class="facade-cover" src="' + esc(m.poster) + '" alt="" loading="lazy">' : '') +
       '<button class="facade-btn" type="button" aria-label="加载交互演示 · Load demo">▶</button>' +
-      '<div class="facade-label">' + esc(window.I18N.locale === 'zh' ? (m.label_zh || '点击加载交互演示') : (m.label_en || 'Load interactive demo')) + '</div>';
+      '<div class="facade-label">' + esc(fe(window.I18N.locale === 'zh' ? (m.label_zh || '点击加载交互演示') : (m.label_en || 'Load interactive demo'))) + '</div>';
     frame.addEventListener('click', function load() {
       frame.removeEventListener('click', load);
       frame.classList.remove('media-facade');
@@ -146,7 +159,7 @@
     if (m.cta_url) {
       block.appendChild(el('p', 'media-cta',
         '<a href="' + esc(m.cta_url) + '" target="_blank" rel="noopener">' +
-        esc(window.I18N.locale === 'zh' ? (m.cta_zh || '打开线上版 ↗') : (m.cta_en || 'Open live site ↗')) + '</a>'));
+        esc(fe(window.I18N.locale === 'zh' ? (m.cta_zh || '打开线上版 ↗') : (m.cta_en || 'Open live site ↗'))) + '</a>'));
     }
     return block;
   }
@@ -387,15 +400,19 @@
       'PROJECT ' + pad2(idx + 1) + ' · ' + (p.category || '').toUpperCase() + ' · ' + (p.year || '')));
     var row = h('div', 'pd-title-row');
     var h1 = h('h1', 'detail-title');
-    h1.appendChild(document.createTextNode(prod.display || p.id));
-    h1.appendChild(psq());
-    row.appendChild(h1);
     if (p.url) {
-      var a = h('a', 'pd-ext', '↗');
+      var a = h('a');
       a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
       a.setAttribute('aria-label', (prod.display || p.id) + ' — live');
-      row.appendChild(a);
+      a.appendChild(document.createTextNode(prod.display || p.id));
+      a.appendChild(psq());
+      a.appendChild(extArrow('pd-ext'));
+      h1.appendChild(a);
+    } else {
+      h1.appendChild(document.createTextNode(prod.display || p.id));
+      h1.appendChild(psq());
     }
+    row.appendChild(h1);
     host.appendChild(row);
     var kw = t(p, 'keywords');
     if (kw) host.appendChild(h('p', 'detail-keywords', kw.split(/\s*\|\s*/).join(' · ')));
