@@ -106,7 +106,10 @@
 .idx-num { font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--c-kw); }
 .idx-meta {
   margin: 6px 0 0; font-family: var(--font-sans);
-  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--c-kw);
+  font-size: 10.5px; line-height: 1.5; letter-spacing: .02em; color: var(--c-kw);
+  /* 荣誉/介绍为整句：正常大小写；固定三行高度让各卡缩略图对齐 */
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: calc(10.5px * 1.5 * 3);
 }
 .idx-thumb { margin-top: 16px; aspect-ratio: 1; overflow: hidden; border-radius: 3px; }
 .idx-thumb img {
@@ -175,7 +178,7 @@
   .idx-card { padding: 12px; }
   .idx-name { font-size: 11px; }
   .idx-num { font-size: 20px; }
-  .idx-meta { font-size: 9.5px; }
+  .idx-meta { font-size: 9.5px; min-height: calc(9.5px * 1.5 * 3); }
   .cv-row { flex-wrap: wrap; }
   .cv-period { flex-basis: 56px; }
   .skill-row { flex-direction: column; gap: 4px; }

@@ -124,8 +124,9 @@
     (pf.products || []).forEach(function (prod, i) {
       var joined = byId.get(prod.ref);
       if (!joined) return;
-      var metaZh = (joined.category_zh || joined.category || '') + ' · ' + (joined.year || '');
-      var metaEn = (joined.category_en || joined.category || '') + ' · ' + (joined.year || '');
+      /* 小字：有荣誉的作品写荣誉，无荣誉的写产品介绍（与首页主线卡同口径） */
+      var metaZh = joined.award_zh || joined.desc_zh || '';
+      var metaEn = joined.award_en || joined.desc_en || joined.desc_zh || '';
       grid.appendChild(card(
         'project.html?id=' + encodeURIComponent(prod.ref),
         prod.display, pad2(i + 1), metaZh, metaEn,

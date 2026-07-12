@@ -262,8 +262,14 @@ body.pd-mapped .detail-section { margin-bottom: 0; }
 body.pd-mapped .pd-stack.stack-line { margin-top: 56px; }
 
 /* ── 封面块：tldr 双栏（列表｜方图+奖项）→ 指标带 → 落地页说明头+大图 ── */
-.pd-cover-cols { display: grid; grid-template-columns: 1fr 300px; gap: 28px 48px; align-items: start; }
-.pd-cover-art { margin: 0; }
+.pd-cover-cols {
+  display: grid; grid-template-columns: 1fr 300px;
+  grid-template-areas: "head ." "list art";   /* 右图与列表同处第二行，顶部对齐首行短横线 */
+  column-gap: 48px; row-gap: 0; align-items: start;
+}
+.pd-cover-cols > .sec-h { grid-area: head; }
+.pd-cover-cols > .pd-cc-left { grid-area: list; }
+.pd-cover-art { grid-area: art; margin: 0; }
 .pd-cover-art .ca-thumb {
   aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-border); border-radius: 4px;
   background: var(--c-white);
@@ -425,14 +431,14 @@ body.pd-mapped .la-motto .zh-note { display: block; margin-top: 10px; font: 400 
 
 /* ── 响应式 ── */
 @media (max-width: 900px) {
-  .pd-cover-cols { grid-template-columns: 1fr 240px; gap: 24px 28px; }
+  .pd-cover-cols { grid-template-columns: 1fr 240px; column-gap: 28px; row-gap: 0; }
   .pd-la-grid, .pd-film-grid { grid-template-columns: 1fr; gap: 22px; }
 }
 @media (max-width: 767px) {
   .pd-block + .pd-block { margin-top: 56px; }
   body.pd-mapped .sec-h { font-size: 19px; }
   body.pd-mapped .plist li { font-size: 16px; }
-  .pd-cover-cols { grid-template-columns: 1fr; }
+  .pd-cover-cols { grid-template-columns: 1fr; grid-template-areas: "head" "list" "art"; }
   .pd-cover-art { max-width: 340px; }
   .pd-metrics { grid-template-columns: repeat(2, 1fr); gap: 18px 12px; padding: 16px 0; margin: 30px 0; }
   .pd-metrics .m-val { font-size: 30px; }

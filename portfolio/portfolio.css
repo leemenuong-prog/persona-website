@@ -471,7 +471,14 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 .p-work .work-award .psq { width: 3px; height: 3px; }
 
 /* 封面双栏带：左 tldr 列表 ｜ 右封面艺术方图（+奖项注）——统一模板 */
-.p-work .cover-cols { display: grid; grid-template-columns: 1fr 54mm; gap: 4mm 6mm; align-items: start; margin-top: 5.5mm; }
+.p-work .cover-cols {
+  display: grid; grid-template-columns: 1fr 54mm;
+  grid-template-areas: "head ." "list art";   /* 右图与列表同处第二行，顶部对齐首行短横线 */
+  column-gap: 6mm; row-gap: 0; align-items: start; margin-top: 5.5mm;
+}
+.p-work .cover-cols > .sec-h { grid-area: head; }
+.p-work .cover-cols > .cc-left { grid-area: list; }
+.p-work .cover-art { grid-area: art; }
 /* EN 版结论列表比中文长一截：封面 EN 专属收紧，zh 定版不动（2026-07-09；
    作用域锁 .cc-left / 封面 oneliner / 封面块间距，场景页 plist 不受影响。
    验收口径：封面图注底缘必须高于页脚顶缘（cap-vs-foot < 0），溢出探测器

@@ -400,8 +400,9 @@
 
     /* 双栏带：左 = 先说结论列表；右 = 封面艺术方图 + 奖项注 */
     var cols = h('div', 'cover-cols' + (prod.placeholder ? ' ph' : ''));
+    /* 标题独占左列首行；列表与右图同处第二行 → 右图顶部对齐首行短横线（统一规则） */
+    cols.appendChild(secH(joined.sections.tldr));
     var lc = h('section', 'cc-left');
-    lc.appendChild(secH(joined.sections.tldr));
     lc.appendChild(plist(t(joined.sections.tldr, 'body')));
     cols.appendChild(lc);
     var art = h('figure', 'cover-art');

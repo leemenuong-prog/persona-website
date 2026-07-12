@@ -424,9 +424,10 @@
     var block = h('section', 'pd-block pd-cover');
 
     var cols = h('div', 'pd-cover-cols');
+    /* 标题独占左列首行（grid head）；列表与右图同处第二行 → 右图顶部对齐首行短横线 */
+    cols.appendChild(secH(p.sections.tldr));
     var lc = h('section', 'pd-cc-left detail-section');
     lc.setAttribute('data-skey', 'tldr');
-    lc.appendChild(secH(p.sections.tldr));
     lc.appendChild(plist(t(p.sections.tldr, 'body')));
     cols.appendChild(lc);
 
