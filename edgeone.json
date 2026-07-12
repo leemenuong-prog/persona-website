@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/ai-portfolio/*", "destination": "/uploads/portfolio-ai.pdf", "statusCode": 302 },
+    { "source": "/lab/*", "destination": "/", "statusCode": 302 },
+    { "source": "/scraps/*", "destination": "/", "statusCode": 302 },
+    { "source": "/projects.html", "destination": "/around.html", "statusCode": 301 }
+  ]
+}

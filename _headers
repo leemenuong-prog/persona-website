@@ -1,0 +1,22 @@
+# Netlify 缓存策略（2026-07-13 大陆手机端提速）
+# 文件名无内容哈希 → 不用全局 immutable：长 max-age + SWR（回访秒开，后台静默刷新）。
+# ⚠️ 原地替换同名图片最长可能被浏览器缓存 30 天——改图优先换文件名（仓库惯例本就是重导出新名）。
+# EdgeOne Pages 不读本文件（其缓存走平台默认 + edgeone.json）。
+
+/assets/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/works/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/xtool/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/uploads/*
+  Cache-Control: public, max-age=86400
+
+/config/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600

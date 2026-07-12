@@ -70,7 +70,8 @@
 
 ## 数据与素材约定
 
-- 加作品 = projects.json 加一条（含 `ribbon:{w,h}`=丝带卡图实际尺寸） + `assets/project/{id}/{thumbnails,float,content}/` 放图 + `assets/ribbon/{id}.jpg` sips 派生（英雄区丝带卡，tests 守卫尺寸一致），其余零代码
+- 加作品 = projects.json 加一条（含 `ribbon:{w,h}`=丝带卡图实际尺寸） + `assets/project/{id}/{thumbnails,float,content}/` 放图 + `assets/ribbon/{id}.jpg` sips 派生（英雄区丝带卡，tests 守卫尺寸一致） + **跑 `bash tools/build-images.sh` 出 WebP 变体**，其余零代码
+- **图片 WebP 变体（2026-07-13 大陆手机端提速）**：全站 `<img>` 经 `js/img-util.js` 阶梯选档——`{base}.w{480,800,1200}.webp`（限宽）/`{base}.webp`（同尺寸）/丝带 `{id}.m.webp`（限高 256），变体是 `tools/build-images.sh`（cwebp 幂等）预生成的仓库物理文件，**源 JPEG 一律保留不动**。新增/替换任何 JPEG 后必须重跑该脚本（tests 守卫缺档即红）；手机端由 variant() 视口钳制自动落 w800。**灯箱与 PDF 导出（?print=1）永远吃原图**；变体缺失线上一次性 onerror 回退原 JPEG。⚠️ macOS bash 3.2：`local a=$1 b="${a%.*}"` 同行声明 b 拿不到 a——写 shell 工具时拆行
 - 媒体：`video-local` / `iframe-lazy` 一律门面点击才加载；视频 ffmpeg H.264 crf26 `+faststart` <30MB，原片留 `../源文件/`
 - 资产文件名全小写（GH Pages 大小写敏感）；`annotations` 图注内联 JSON（图右下 12px 文字球）
 - **↗ 箭头铁律（2026-07-12）**：裸 U+2197 在 iOS 渲染成 emoji（Monterey unicode-range 只到 U+2122，回退落 Apple Color Emoji）——标题旁独立箭头一律用 `extArrow()` 内嵌 SVG（project-detail/architecture/portfolio 三份同源 helper，stroke currentColor）；文本文案里的 ↗ 一律写「↗︎」（带 FE0E 文本变体选择符；数据侧文案经 `fe()` 归一化）。新增文案勿再写裸 ↗
@@ -89,7 +90,7 @@
 - **Mac 窗框三灯 = macOS 原色**（#FF5F57/#FEBC2E/#28C840，2026-07-07 二轮用户裁定）：三灯与截图/封面素材是灰阶体系仅有的色彩例外；个人页人像也保持彩色（勿加黑白滤镜）。
 - **⚠️ 体积铁律：打印态禁 CSS filter**——filter 迫使 Chrome 把 JPEG 重栅格成无损位图（实测建筑页 6 图 150KB/张→1MB/张，全册 16MB）。屏显 saturate 调色保留，`@media print` 一律 `filter:none`（portfolio.css 打印块）。
 - **视频/交互影片**：作品集页绝不内嵌 video/iframe（与门面点击约定互斥、打印会空框）——一律 poster + 播放角标 + 外链 `<a>`（PDF 里自动成可点注记）。
-- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**23**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。**册尾 PDF 入口（2026-07-11 用户要求 · 07-12 扩到两处）**：portfolio/ 封底后渲染 `.deck-pdf`（screen-only，print 隐藏，随语言指向 zh/en 版；描边盒按钮样式=对齐 .lang-toggle 方角 idiom，hover 反白）+ architecture.html 尾声 `.ao-pdf`（ao-alt 同款 pill，消费 portfolio.json `architecture.pdf` 相对路径 → uploads/portfolio.pdf）——用户自导出通道就这两处 UI 入口，**其余访客侧入口仍一律指网页阅读器**（07-10 铁律不变）。
+- **PDF 导出**：`bash tools/export-portfolio-pdf.sh`（必须本机 macOS 跑，中文落宋体；URL 自带 `&print=1`——portfolio.js 的打印门，图保持 eager+sync+原 JPEG，屏显 lazy+WebP 不影响导出）→ `uploads/portfolio-ai.pdf`（中）+ `portfolio-ai-en.pdf`（英），母版归档 `../源文件/AI作品集/`。页数应=**23**；**绝不 gs 压缩**（soft-mask 拍扁）；体积靠素材 ≤300KB（`assets/portfolio/`，源图在 `../产品-详情图/`）。**册尾 PDF 入口（2026-07-11 用户要求 · 07-12 扩到两处）**：portfolio/ 封底后渲染 `.deck-pdf`（screen-only，print 隐藏，随语言指向 zh/en 版；描边盒按钮样式=对齐 .lang-toggle 方角 idiom，hover 反白）+ architecture.html 尾声 `.ao-pdf`（ao-alt 同款 pill，消费 portfolio.json `architecture.pdf` 相对路径 → uploads/portfolio.pdf）——用户自导出通道就这两处 UI 入口，**其余访客侧入口仍一律指网页阅读器**（07-10 铁律不变）。
 - **双语**：`?lang=zh|en` 显式覆盖（无头打印必带）；中文版=英文大标题+中文正文（`.zh-note` 在 EN 版 CSS 隐藏）。
 - **线稿页定式（2026-07-08 用户裁定，后续所有作品的线稿页照此）**：一侧文字｜一侧线稿图，文字侧 = 大标题（**线稿核心语句** `lineart.motto`，拉丁 Monterey + `motto_zh` 中文小注）+ 斜体 one_liner。**文字零重复铁律**：每段文案全册只出现一次——one_liner 归线稿页（有线稿页的作品封面不再渲染 one_liner），keywords 归封面，STACK 归尾场景页；线稿图注烧在 SVG 内不重复排版。Co-work 线稿引用站内 `assets/project/cowork/content/plate-core.svg`（不复制文件=天然同步）。
 - 主站入口：header/foot-nav 的 PORTFOLIO（main.js 注入，≤1023/≤479 断点已为三钮收纳）+ about 作品集区。
@@ -111,3 +112,4 @@
 
 改完 commit + `git push origin main` → GitHub Actions 自动部署 Netlify `alnt-med`。**不要**脱离仓库手动 `netlify deploy`。
 本地预览必须 HTTP：`python3 -m http.server 8080`（Claude Code 用预览配置 persona-site:8099）。
+- **缓存头（2026-07-13）**：`_headers` 给 `/assets|works|xtool` 配了 30 天 + SWR——**原地替换同名图片可能被缓存 30 天，改图优先换文件名**；`edgeone.json` 是 EdgeOne Pages 镜像的跳转配置（它不读 `_redirects`/`_headers`）。
