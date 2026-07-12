@@ -60,6 +60,10 @@
   var BOT_FRAC = 0.55;           /* 定标锚：掠底点投影 y = 0.55×半层高（层下半） */
   var SLICE_W = 1.25;            /* 切片屏幕宽上限（CSS px）——细到 AA 下呈连续 */
   var SLICE_DH = 0.5;            /* 切片内投影高差上限（CSS px）：侧棱自动加密 */
+  var SLICE_W_M = 2.0;           /* 手机档切片预算（2026-07-12 性能档：切片 ~×0.55；
+                                    手机环半径 ~164 CSS px，2.0 ≈ 角步进 0.7°，卡内直线不出台阶。
+                                    >2.2 开始可见分段仿射折痕，勿再放粗） */
+  var SLICE_DH_M = 0.8;
   var OFF_RELAX = 24;            /* 离屏段的细分预算放宽倍数（少画看不见的） */
   var RUNG_MAX = 4000;
 
@@ -277,6 +281,8 @@
   }
   function sampleFrame(fr) {
     var lw2 = geo.layerW / 2 + 80, lh2 = geo.layerH / 2 + 80;
+    var SW = MOBILE.matches ? SLICE_W_M : SLICE_W;     /* 手机档预算放粗（常量注释见顶部） */
+    var SDH = MOBILE.matches ? SLICE_DH_M : SLICE_DH;
     var n = 0, ci, c;
     for (ci = 0; ci < cardsMeta.length; ci++) {
       if (n >= RUNG_MAX - 1) break;                  /* 边界：连卡首 rung 也不越 rungBuf（否则返回计数超容量→越界 NaN 切片） */
@@ -298,12 +304,12 @@
         var relax = (pOff && off2 && pOff === off2) ? OFF_RELAX : 1;   /* 离屏段放宽预算 */
         var dx = Math.hypot(mx - pmx, my - pmy);     /* 中点位移（不只 x：侧棱竖直段也受控） */
         var dh = Math.abs(h2 - ph);
-        if ((dx > SLICE_W * 1.35 * relax || dh > SLICE_DH * 1.5 * relax) && (s2 - s) > minDs) {
+        if ((dx > SW * 1.35 * relax || dh > SDH * 1.5 * relax) && (s2 - s) > minDs) {
           ds = (s2 - s) / 2;
           continue;
         }
         n = pushRung(n, 0);
-        if (dx < SLICE_W * 0.55 * relax && dh < SLICE_DH * 0.4 * relax) ds = Math.min(ds * 1.7, c.w);
+        if (dx < SW * 0.55 * relax && dh < SDH * 0.4 * relax) ds = Math.min(ds * 1.7, c.w);
         s = s2; pmx = mx; pmy = my; ph = h2; pOff = off2;
       }
     }
@@ -360,6 +366,14 @@
 
   function render(now) {
     raf = null;
+    /* 手机档环态巡航 30fps 节流（2026-07-12 性能档）：惯性已收敛（|vel+BASE|<0.005 ≈ 0.3°/s）
+       且非拖拽时跳帧不重画、不写 lastT——跳过的时间并入下帧 dt，dt 归一自动补角度，转速不变。
+       intro/拖拽/惯性满帧；桌面零改动。31ms 阈：60Hz 隔帧画、120Hz 四取一 */
+    if (MOBILE.matches && mode === 'ring' && !dragging && lastT &&
+        Math.abs(vel + BASE) < 0.005 && now - lastT < 31) {
+      if (visible) raf = requestAnimationFrame(render);
+      return;
+    }
     if (!lastT) lastT = now;
     var dtMs = now - lastT;
     if (dtMs > 1000) dtMs = 16.7;                      /* 后台/离屏归来：整体重基，不追帧 */
