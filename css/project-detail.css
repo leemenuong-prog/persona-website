@@ -158,7 +158,10 @@
 
   /* ── 头部 ── */
   .project-detail-header { padding-bottom: 1.6rem; }
-  .detail-title { font-size: 1.9rem; }
+  /* 手机档大标题（2026-07-12 详略档）：原 1.9rem/1.6rem 与章节 h2（19-21px）几乎持平，
+     页级层级消失（390 实测仅 25.6px）。clamp 随屏宽走：390→35px、≥467→42px（贴近桌面 44）；
+     长题（UABB · Multimodal AIGC Pipeline）自然折行，display 标题折两行是预期形态 */
+  .detail-title { font-size: clamp(34px, 9vw, 42px); }
   .detail-keywords { font-size: .85rem; margin-bottom: 1.1rem; }
   /* 两等分列：原 minmax(180px,max-content) 在 327px 列宽下退化成五行竖排 */
   .detail-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; margin-bottom: 1.2rem; }
@@ -186,7 +189,7 @@
 }
 
 @media (max-width: 479px) {
-  .detail-title { font-size: 1.6rem; }
+  /* 大标题沿用 ≤767 的 clamp（375→34px），不再另降——降回去层级又塌 */
   .detail-keywords { font-size: .8rem; }
   .detail-tags { gap: 6px; }
   .detail-tags .tag-pill { font-size: .75rem; padding: 3px 10px; }
@@ -447,6 +450,9 @@ body.pd-mapped .la-motto .zh-note { display: block; margin-top: 10px; font: 400 
   body.pd-mapped .row-sec { margin-top: 44px; }
 }
 @media (max-width: 600px) {
+  /* 手机纵向节奏收一档（2026-07-12 详略档）：块间距 56→48、场景节头上距 44→36 */
+  .pd-block + .pd-block { margin-top: 48px; }
+  body.pd-mapped .row-sec { margin-top: 36px; }
   body.pd-mapped .scene-row { flex-direction: column; gap: 26px; }
   body.pd-mapped .scene-row--capped { width: 100%; }   /* 窄屏纵排释放定宽，勿压小图 */
   body.pd-mapped .scene-row .cell { flex: none; width: 100%; }
