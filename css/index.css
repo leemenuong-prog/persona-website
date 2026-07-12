@@ -251,9 +251,10 @@ main { position: relative; }
 .image-container:hover .layer-base { transform: scale(1.05); }
 
 /* ── 揭示层 · 卡片（画廊 + 主线，平面 2D）：hover 淡入后**完全盖住封面**。
-      主线 AI 卡：铺满卡面（object-fit: cover，无白边无白晕），直接看产品界面主内容
-      （2026-07-12 用户裁定：白边+白晕废除）。
-      建筑（画廊）卡：横构图版面 contain 白底收进框（禁 cover 拦腰裁半，CLAUDE.md 铁律）。
+      主线 AI 卡：padding 0 + contain 白底（2026-07-12 用户裁定：无白晕）——
+      比例接近方形的界面图（Meco/Pears/UABB）自然铺满卡面、无白边；宽版海报
+      （Co-work/Yi-Jian 落地页）contain 完整显示**不截断**（上下留白底，宁留白勿裁）。
+      建筑（画廊）卡同款 contain 白底（横构图版面，禁 cover 拦腰裁半，CLAUDE.md 铁律）。
       防闪铁律：只动 opacity/transform（合成器线程）；纯 CSS :hover 驱动，无 JS、无 rAF。 */
 .layer-reveal {
   position: absolute; inset: 0;
@@ -270,9 +271,8 @@ main { position: relative; }
 .layer-reveal img {
   position: static; width: 100%; height: 100%; object-fit: contain;
 }
-/* 主线 AI 卡：铺满卡面看产品界面，无白边无白晕（建筑仍走上面的 contain 白底） */
-.project-item .layer-reveal { padding: 0; background: transparent; }
-.project-item .layer-reveal img { object-fit: cover; }
+/* 主线 AI 卡：去掉 8% 内边距，方形界面图铺满、宽版海报 contain 完整不截断（img 沿用上面的 contain） */
+.project-item .layer-reveal { padding: 0; }
 .image-container:hover .layer-reveal { opacity: 1; transform: scale(1); }
 /* 立方体面揭示（.face-reveal / --rv-r 中心绽放）已移除——见上文，2026-07-07 用户裁定冗余。 */
 @media (hover: none) { .layer-reveal { display: none; } }
