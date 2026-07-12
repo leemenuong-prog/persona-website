@@ -12,10 +12,12 @@
   min-height: calc(100svh - var(--header-h));
   display: flex; flex-direction: column;
 }
-/* 巨大名字：偏上方（参考图 TERRA NOVA 位），丝带前弧压字下段、后弧藏字后 */
+/* 巨大名字：偏上方（参考图 TERRA NOVA 位），丝带前弧压字下段、后弧藏字后。
+   top 下沉给标题上方留呼吸（2026-07-12 用户：重心太靠上「顶到头」）——环随之下移（solveGeometry
+   由标题 offsetTop 反解锚点，1:0.65 跟随），整簇往视口中段靠。 */
 .hero-name {
   position: absolute; left: 0; right: 0;
-  top: clamp(12px, 6vh, 56px);
+  top: clamp(64px, 18vh, 180px);
   margin: 0;
   display: flex; justify-content: center;
   z-index: 2; pointer-events: none;
@@ -366,6 +368,8 @@ main { position: relative; }
   }
   /* 手机档同桌面「环套标题」：ribbon.js 统一锚「前弧顶边钉标题 (1−COVER) 线」+header 守卫；
      07-11 三段式（环对 hero 中心）已废除 */
+  /* 大字回到顶部小 top（桌面下沉的 18vh 会把小环推到中段、下半空一大片）：手机维持环套标题贴顶 */
+  .hero-name { top: clamp(12px, 6vh, 56px); }
   /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把占位顶到上方 */
   .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
