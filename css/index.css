@@ -74,8 +74,10 @@
 @media (prefers-reduced-motion: no-preference) {
   .hero-name         { animation: heroNameIn .95s var(--ez) both; }
   .polygon-container { animation: heroRise .85s var(--ez) both .35s; }
-  .ribbon-layer      { animation: ribbonFade .85s var(--ez) both .35s; }   /* 纯 opacity：勿加 transform（双容器投影必须逐像素一致） */
-  .ribbon-floor      { animation: ribbonFade .85s var(--ez) both .35s; }
+  /* 丝带与大字同拍起跑（2026-07-12 用户裁定：标题一出丝带立即开演，勿再加延迟）；
+     纯 opacity：勿加 transform（双容器投影必须逐像素一致） */
+  .ribbon-layer      { animation: ribbonFade .85s var(--ez) both; }
+  .ribbon-floor      { animation: ribbonFade .85s var(--ez) both; }
   .hero-intro        { animation: heroRise .85s var(--ez) both .55s; }
   .hero-aside        { animation: heroRise .85s var(--ez) both .7s; }
   html.loading .hero-name, html.loading .polygon-container, html.loading .ribbon-layer,
@@ -122,16 +124,25 @@
   mask-image: radial-gradient(ellipse at center, #000 26%, transparent 70%);
   pointer-events: none;
 }
-/* 双透视容器：back/front 共享本类，透视参数必须逐像素一致（DOM 迁移无缝的前提）。
-   ⚠️ 立法：本层与 .ribbon-world 禁 overflow / filter / opacity<1 / 圆角裁切
-   （Safari preserve-3d 扁平化触发器，一加环就拍扁）；入场淡入动画只挂本层（容器不在 3D 场景内）。 */
+/* 双画布容器（2026-07-12 Canvas 连续化改版）：back/front 各持一张 canvas 夹住大字
+   （z-split 深度遮挡）。⚠️ 禁给两容器套共用 transform wrapper（合成组会挡掉大字的
+   z-index 夹层）；入场淡入动画只挂本层（纯 opacity）。旧 preserve-3d/perspective
+   已随 DOM strip 方案退役——Safari 扁平化那族地雷（禁 overflow/filter/圆角裁切）不再适用。 */
 .ribbon-layer {
   position: absolute; inset: 0;
-  perspective: 1500px; perspective-origin: center center;
   pointer-events: none;
 }
 .ribbon-back  { z-index: 1; }
 .ribbon-front { z-index: 4; }
+/* 连续带面画布（js/ribbon-render.js）：像素尺寸/DPR 由 JS 写（仅 relayout，禁逐帧重设）；
+   前画布 pointer-events 由 JS 开 auto（语义域=命中带∪前弧卡面，在 ribbon.js onDown 复刻，
+   光标 pointer/grab 也由 JS 按拾取写） */
+.ribbon-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+  pointer-events: none;
+}
 /* 环的地面阴影（重量感，沿旧立方体接触影语汇）：静态径向渐变一次成型，
    位置/尺寸由 ribbon.js 随几何写（仅 relayout，非逐帧）；透明度恒定不呼吸 */
 .ribbon-floor {
@@ -149,38 +160,8 @@
   -webkit-user-select: none; user-select: none;
 }
 .ribbon-hit:active { cursor: grabbing; }
-.ribbon-world {
-  position: absolute; left: 50%; top: 50%; width: 0; height: 0;
-  transform-style: preserve-3d;
-}
-/* 丝带条带（strip 切片 = 真弯曲，2026-07-11 三迭代用户核心裁定「这是一条丝带不是一个个卡片」）：
-   每卡切 N 条竖直窄条（折角 ≤4°），每条是传送带上的独立链节 → 带体在路径任意曲率处连续弯曲。
-   布局尺寸（宽随卡变/等高混宽带）由 JS 在 init/relayout 写 px；⚠️ 零 transition（DOM 迁移会重置）。 */
-.rstrip {
-  position: absolute; left: 0; top: 0;
-  overflow: hidden;                            /* 叶子平面自身裁切安全（非 3D 容器） */
-  background: var(--c-border);                 /* 灰底兜图片解码空窗（灰阶站不突兀） */
-  -webkit-user-select: none; user-select: none;
-}
-/* 外角圆角只在各卡首/末条的外侧（弯带上整卡圆角/棱线/inset 阴影会逐条断裂，弃用） */
-.rstrip--head { border-radius: 3px 0 0 3px; }
-.rstrip--tail { border-radius: 0 3px 3px 0; }
-.ribbon-front .rstrip { pointer-events: auto; cursor: pointer; }
-.ribbon-back  .rstrip { pointer-events: none; }
-.rstrip img {
-  position: absolute; top: 0;
-  max-width: none;   /* ⚠️ 必须覆盖 main.css 全局 img{max-width:100%}，否则条内全卡宽 img 被压扁 */
-  filter: saturate(.85) contrast(1.03) brightness(1.02);   /* opacity 恒 1（条间重叠区半透明会反出暗缝），调色补偿 */
-}
-/* 深度遮罩=白纱（五迭代：带到名字后面要「变得很淡」——白罩向暖白底淡去，非压暗）：
-   JS 写 opacity；静态 translateZ(0) 提层 → opacity 走合成器零重绘
-   （93 条/帧的解药；strip overflow 已扁平化子树，非 hover 动态挂不违防闪总则） */
-.rstrip-shade {
-  position: absolute; inset: 0;
-  background: var(--c-white);
-  opacity: 0; pointer-events: none;
-  transform: translateZ(0);
-}
+/* （.ribbon-world / .rstrip 族已随 DOM strip 方案退役——白纱、调色
+   saturate(.85) contrast(1.03) brightness(1.02)、卡角圆角均烧进 canvas 渲染端） */
 
 /* ── 中轴数据条进度指示（绝对定位覆盖层，勿入文档流） ── */
 main { position: relative; }
@@ -269,11 +250,11 @@ main { position: relative; }
 .image-container .layer-base { transition: transform .3s ease; }
 .image-container:hover .layer-base { transform: scale(1.05); }
 
-/* ── 白底揭示 · 卡片（画廊 + 主线，平面 2D，2026-07-12 用户裁定统一）：
-      揭示层=不透明白底画布，hover 淡入后**完全盖住封面**（旧椭圆 mask 边缘透底
-      被判"残留原来的内容"，已废除）；图 contain 居中，四周静态白晕收边。
-      防闪铁律：只动 opacity/transform（合成器线程）；白晕=::after 静态一次成型；
-      纯 CSS :hover 驱动，无 JS、无 rAF、无光标跟随。 */
+/* ── 揭示层 · 卡片（画廊 + 主线，平面 2D）：hover 淡入后**完全盖住封面**。
+      主线 AI 卡：铺满卡面（object-fit: cover，无白边无白晕），直接看产品界面主内容
+      （2026-07-12 用户裁定：白边+白晕废除）。
+      建筑（画廊）卡：横构图版面 contain 白底收进框（禁 cover 拦腰裁半，CLAUDE.md 铁律）。
+      防闪铁律：只动 opacity/transform（合成器线程）；纯 CSS :hover 驱动，无 JS、无 rAF。 */
 .layer-reveal {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -289,10 +270,9 @@ main { position: relative; }
 .layer-reveal img {
   position: static; width: 100%; height: 100%; object-fit: contain;
 }
-.layer-reveal::after {             /* 周边白色光晕：静态，只随父层 opacity 合成 */
-  content: ""; position: absolute; inset: 0; border-radius: 4px;
-  box-shadow: inset 0 0 28px 18px var(--c-white);
-}
+/* 主线 AI 卡：铺满卡面看产品界面，无白边无白晕（建筑仍走上面的 contain 白底） */
+.project-item .layer-reveal { padding: 0; background: transparent; }
+.project-item .layer-reveal img { object-fit: cover; }
 .image-container:hover .layer-reveal { opacity: 1; transform: scale(1); }
 /* 立方体面揭示（.face-reveal / --rv-r 中心绽放）已移除——见上文，2026-07-07 用户裁定冗余。 */
 @media (hover: none) { .layer-reveal { display: none; } }
@@ -381,17 +361,18 @@ main { position: relative; }
   .hero {
     min-height: max(560px, calc(100vh - var(--header-h)));
     min-height: max(560px, calc(100svh - var(--header-h)));
-    justify-content: center;   /* 丝带占位（唯一流内元素）真正垂直居中 */
-    --ribbon-card-w: min(230px, 60vw);
+    justify-content: flex-start;   /* 环上移套标题（2026-07-12 用户裁定），占位随之靠顶 */
+    --ribbon-card-w: min(250px, 66vw);
   }
-  /* 大字留在顶部（大字在上、丝带环在中、贴底行沉底 三段式）；base 的 top:clamp 生效。
-     手机档环心不再对大字中线（ribbon.js 改对 hero 视口中心） */
+  /* 手机档同桌面「环套标题」：ribbon.js 统一锚「前弧顶边钉标题 (1−COVER) 线」+header 守卫；
+     07-11 三段式（环对 hero 中心）已废除 */
   /* 贴底行脱离流、绝对沉底，不再用 margin-auto 把占位顶到上方 */
   .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; margin-top: 0; padding: 0 24px 32px; }
   .intro-title { font-size: 18px; }
-  /* margin-top 归零：否则会叠加在 justify-center 上把环推离正中 */
-  .polygon-container { margin-top: 0; }
+  .polygon-container { margin-top: clamp(8px, 3vh, 28px); }
   .polygon-container::before { background-size: 16px 16px, 16px 16px; background-position: 0 0, 8px 8px; }
+  /* 命中带随环上移（环区 ≈ hero 上半部） */
+  .ribbon-hit { top: 2%; bottom: 52%; }
   .projects-section { margin-top: 96px; }
   .mainline { gap: 90px; }
   .epilogue-title { margin: 110px 0 36px; }
@@ -402,7 +383,7 @@ main { position: relative; }
 @media (max-width: 479px) {
   .hero-foot { padding: 0 20px 28px; }
   .intro-title { font-size: 17px; }
-  .hero { --ribbon-card-w: 180px; }
+  .hero { --ribbon-card-w: 200px; }
   .projects-section { margin-top: 76px; }
   .mainline { gap: 72px; }
   .epilogue-title { margin: 88px 0 30px; }

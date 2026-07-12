@@ -66,10 +66,11 @@
       <div class="ribbon-floor" aria-hidden="true"></div>
 
       <!-- 3D 作品丝带：双容器 z-split 深度遮挡（back z1 → 大字 z2 → hit z3 → front z4 → foot z5）。
-           卡片由 js/ribbon.js 生成并按世界深度在 back/front 间迁移；禁给两容器套共用 transform wrapper -->
-      <div class="ribbon-layer ribbon-back" aria-hidden="true"><div class="ribbon-world"></div></div>
+           连续带面画进前/后两张 canvas（js/ribbon-render.js），按世界深度分派前/后弧；
+           禁给两容器套共用 transform wrapper（会挡掉大字的 z-index 夹层） -->
+      <div class="ribbon-layer ribbon-back" aria-hidden="true"><canvas class="ribbon-canvas"></canvas></div>
       <div class="ribbon-hit" aria-hidden="true"></div>
-      <div class="ribbon-layer ribbon-front" aria-hidden="true"><div class="ribbon-world"></div></div>
+      <div class="ribbon-layer ribbon-front" aria-hidden="true"><canvas class="ribbon-canvas"></canvas></div>
 
       <!-- 贴底行：左 intro + 右精选 -->
       <div class="hero-foot">
@@ -112,6 +113,7 @@
   <script src="js/editor.js" defer></script>
   <script src="js/loader.js" defer></script>
   <script src="js/index-fx.js" defer></script>
+  <script src="js/ribbon-render.js" defer></script>
   <script src="js/ribbon.js" defer></script>
   <script src="js/index.js" defer></script>
 </body>

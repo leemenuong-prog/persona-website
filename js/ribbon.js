@@ -1,23 +1,28 @@
 /* ════════════════════════════════════════════════════════════
-   ribbon.js — 英雄区 3D 作品丝带（2026-07-11 三迭代：strip 切片真弯曲版）。
+   ribbon.js — 英雄区 3D 作品丝带（2026-07-12 Canvas 连续化改版）。
 
-   带体（用户核心裁定「这是一条丝带，不是一个个卡片」）：
-   等高混宽——带高 H 恒定，卡宽 = H×各自原始宽高比（方/竖/横原比例，无白边 pad）；
-   每卡切 N 条竖直窄条（相邻折角 ≤4°），每条 strip 是传送带上的独立链节，
-   带体在路径任意曲率处连续弯曲。共 ~93 条，DOM 只建一次（strip 数尺度不变）。
+   带体 = 连续曲面 B(s,v) = C(u(s)) + v·ŷ(u(s))（用户核心裁定「这是一条丝带，
+   不是一个个卡片」的连续极限）：等高混宽——带高 H 恒定，卡宽 = H×各自原始
+   宽高比（比例从 projects.json ribbon:{w,h} 来，几何同步可解、不等图片解码）。
+   渲染 = 屏幕空间自适应微切片进双 canvas（js/ribbon-render.js）：切片宽
+   ≤1.25 CSS px、片内高差 ≤0.5px（侧棱自动加密），整条带在同一张栅格以连续
+   覆盖率成像——旧 DOM strip 方案（~138 平面各自栅格化）的切片锯齿从机理上根除。
 
    模型（镜像传送带，无状态混合）：路径 pos(u)=(−r·sin u, lift, r·cos u + pull)，
    u≥0 段=环本身（lift=pull=0），u<0 段（q=−u）=入场螺线：
    pull 恒负（远景小，「从小丝滑到大」）、lift 正（掠屏幕底部）、
    x=r·sin q 自然完成「左下远景 → 掠底向右 → 右侧卷起 → 前弧右→左成环」。
-   头部弧长 S(t)=S0+ΔS·easeOutSine+ω·R·t 终端斜率恰=巡航弧速，u=0 处 C¹ 融进环态；
+   头部弧长 S(t)=S0+ΔS·easeInOutSine+ω·R·t 终端斜率恰=巡航弧速，u=0 处 C¹ 融进环态；
    sEnd = L = 2πR（混宽环精确闭合，合拢缝=卡间缝、自然落正前）。环自转 ω 为负
-   （前弧右→左，与入场方向连续）。
+   （前弧右→左，与入场方向连续）。环态相位由 ringS 吸收（intro 冻结含 ω 过冲，
+   relayout 重置为 L）。
 
-   深度遮挡（双容器 z-split）：.ribbon-back(z1)/.ribbon-front(z4) 夹大字(z2)，
-   strip 按世界深度 z_w = −Zoff + R·cos(θ+φ)·cosτ 正负迁移 DOM（±90° 侧棱 + 迟滞）。
-   ⚠️ 禁给两容器套共用 transform wrapper。铁律：逐帧只写 transform/opacity；
-   投影 scale 恒 ≤1（防合成层放大糊）；strip 零 CSS transition（DOM 迁移会重置）。
+   深度遮挡（双画布 z-split）：.ribbon-back(z1)/.ribbon-front(z4) 两张 canvas
+   夹大字(z2)，切片按 cos(θ+φ) 符号分派前/后画布（跨界切片+相邻切片两边补画，
+   焊死交界针孔）；每帧整幅重画，无 DOM 迁移。⚠️ 禁给两容器套共用 transform
+   wrapper（会挡掉大字的 z-index 夹层）。白纱深度淡出与调色烧在渲染端。
+   入场即时（2026-07-12 用户裁定）：loaderdone 即开演、零延迟零解码门，
+   未就绪的卡由 atlas 灰占位顶上、decode 到一张贴一张。
    Ribbon.init(list) 由 index-fx.refresh(list) 调用；resize 走 Ribbon.relayout()。
    ════════════════════════════════════════════════════════════ */
 (function () {
@@ -30,7 +35,7 @@
   var COARSE = window.matchMedia('(pointer: coarse)');
 
   var D2R = Math.PI / 180, R2D = 180 / Math.PI;
-  var PERSP = 1500;              /* 与 css .ribbon-layer 的 perspective 同值 */
+  var PERSP = 1500;              /* 透视深度（原 CSS perspective 同值，现由采样器投影） */
   var TILT = -26;                /* 环倾斜 rotateX（deg）：五迭代 −22→−26——椭圆更扁，前弧
                                     只从字下缘掠过（用户批 −22 时前弧「拦腰截断」标题） */
   var BANK = -4;                 /* 环斜置 rotateZ（deg）：微斜，不把后弧压回标题（−7→−4） */
@@ -39,45 +44,53 @@
                                     环「套住」标题（前弧字前/后弧字后），勿再让环与标题分离 */
   var MARGIN_Z = 40;             /* 世界深度上限 −40px：投影 scale 恒 <1 */
   var H_DIV = 2.15;              /* 带高 H = token 宽 ÷ H_DIV（旋钮：前弧偏大则加大） */
-  var X_FRAC = 0.30;             /* 环投影半宽 = X_FRAC×vw（旋钮） */
+  var X_FRAC = 0.30;             /* 环投影半宽 = X_FRAC×vw（桌面/平板；手机档见 solveGeometry） */
   var BASE = 0.05;               /* 巡航速率量值 3°/s；环向 = 负（前弧右→左） */
   var FRICTION = 0.95;           /* 松手惯性摩擦/帧 */
   var VEL_MAX = 0.8;             /* 惯性上限 °/帧 */
   var PSI_MAX = 35;              /* 飞入扭转峰值（deg，绕路径切线） */
-  var HYST = Math.sin(1.5 * D2R);/* 迁移迟滞 ±1.5° */
   var INTRO_DUR = 6000;          /* 飞入幕时长（ms）。七迭代速度曲线重设计（用户「按速度曲线设计」）：
                                     easeInOutSine 钟形——起步=巡航速（缓起，带子徐徐探入）→ 中段峰值
                                     1.57×均速（掠底冲刺）→ 终点导数 0（缓落，终端斜率恰=ω·R，
                                     C¹ 融进巡航）；两端皆柔，总时长 4.6→6s 整体放缓 */
-  var SEAM = 0.025;              /* 卡间缝 = 0.025H（参与环闭合）。六迭代由 0.08 收窄：
-                                    缝越宽卡间折角越集中（半条+缝+半条），曾在环前侧读成生硬切痕 */
-  var MAX_FOLD = 2.6 * D2R;      /* 相邻 strip 折角上限（弯曲顺滑度）。六迭代 4°→2.6°（~138 条）：
-                                    连同窄缝把带内/卡间折角拉平到 ≈2.6/3.2°，切线连续无折痕 */
-  var OVERLAP = 0.75;            /* strip 重叠 px：防投影取整白缝 */
+  var SEAM = 0.025;              /* 卡间缝 = 0.025H（参与环闭合；atlas 中为透明列，不出切片） */
   var Q_REF = 3.9;               /* 定标锚：远端参考弧角（rad） */
   var SCALE_FAR = 0.36;          /* 定标锚：远端投影 scale。六迭代 0.42→0.36（入场更远更小，
-                                    远处折角在屏上更不可辨——用户「飞远一些」） */
+                                    ——用户「飞远一些」） */
   var BOT_FRAC = 0.55;           /* 定标锚：掠底点投影 y = 0.55×半层高（层下半） */
+  var SLICE_W = 1.25;            /* 切片屏幕宽上限（CSS px）——细到 AA 下呈连续 */
+  var SLICE_DH = 0.5;            /* 切片内投影高差上限（CSS px）：侧棱自动加密 */
+  var OFF_RELAX = 24;            /* 离屏段的细分预算放宽倍数（少画看不见的） */
+  var RUNG_MAX = 4000;
 
   var DESKTOP = window.matchMedia('(min-width: 1024px)');
-  var strips = [];               /* {el, img, shade, id, s, w, side, phi, _o} */
   var spineTicks = null, spineBase = null, spineCk = 0;   /* 中轴轴头涟漪缓存（环↔进度轴互动） */
-  var cardsMeta = [];            /* {id, src, thumb, aspect, w, start, n} */
+  var cardsMeta = [];            /* {id, src, thumb, pre, aspect, w, start} */
   var geo = null;
+  var renderer = null;           /* RibbonRender 实例（js/ribbon-render.js） */
   var mode = 'idle';             /* idle → intro → ring；REDUCE → static */
   var theta = 0, vel = -BASE;    /* 环态自转（deg / deg每帧，负=前弧右→左） */
   var tIntro = 0, S0 = 0, sEnd = 0, omegaArc = 0;
+  var ringS = 0;                 /* 环态弧长基准（intro 冻结时的 S；relayout 重置为 L） */
+  var lastS = 0;                 /* intro 当前弧长头（idle = S0；供单帧重绘） */
   var raf = null, visible = true, lastT = 0;
   var dragging = false, px = 0, lastDx = 0, downX = 0, downY = 0, downT = 0, downCard = null;
   var par = { tx: 0, ty: 0, x: 0, y: 0 };
   var els = null;
+  var lastCursor = '';
+  var rungBuf = new Float32Array(8 * RUNG_MAX);
+  var rungTmp = new Float32Array(8);
+  var mRot = {                   /* 预计算 Rz(BANK)·Rx(TILT) 系数（世界旋转，常量） */
+    cB: Math.cos(BANK * D2R), sB: Math.sin(BANK * D2R),
+    cT: Math.cos(TILT * D2R), sT: Math.sin(TILT * D2R)
+  };
 
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
-  /* ── 镜像路径（环局部坐标，y 向下为正；tilt/bank 由 world 统一施加） ── */
+  /* ── 镜像路径（环局部坐标，y 向下为正；tilt/bank 由世界旋转统一施加） ── */
   /* ⚠️ 七迭代曲率连续铁律：三个形状函数的指数一律 ≥2.2——指数 <2 时二阶导在 q→0
-     发散 = 路径曲率在「螺线并入环」处有无穷尖峰，带子过接环点必折一下（切痕真凶，
-     加密条数治不了）；≥2.2 时附加曲率在接环点归零，κ 连续、切线丝滑 */
+     发散 = 路径曲率在「螺线并入环」处有无穷尖峰，带子过接环点必折一下；
+     ≥2.2 时附加曲率在接环点归零，κ 连续、切线丝滑 */
   function pathPos(u, g) {
     var q = Math.max(0, -u);
     var r = g.R * (1 + 0.08 * Math.pow(q, 2.2));       /* 外扩（π 处 ≈2R，与旧版同 reach） */
@@ -86,14 +99,13 @@
     return [-r * Math.sin(u), lift, r * Math.cos(u) + pull];
   }
   function pathPsi(u) {          /* 绕切线扭转：u=0 处零值零导（C¹ 融进环态）。
-                                    七迭代斜坡 1.2→1.8 rad：扭转梯度是相邻条带折角的叠加项，
-                                    拉宽斜坡削峰（全程可见折角 4.1°→≈3.5°） */
+                                    七迭代斜坡 1.8 rad：扭转梯度削峰 */
     var q = Math.max(0, -u);
     var f = Math.min(1, q / 1.8);
     var sm = f * f * (3 - 2 * f);
     return PSI_MAX * sm * sm;
   }
-  /* 相机空间 z / 投影 scale / 屏幕坐标（CSS rotateX：z' = y·sinT + z·cosT；bank 定标时忽略） */
+  /* 相机空间 z / 投影 scale / 屏幕坐标（CSS rotateX 同式：z' = y·sinT + z·cosT；bank 定标时忽略） */
   function camZ(p, g) { return -g.Zoff + p[1] * g.sinT + p[2] * g.cosT; }
   function projScale(p, g) { return PERSP / (PERSP - camZ(p, g)); }
   function screenY(p, g) {       /* 相对层中心（含 yc） */
@@ -104,18 +116,23 @@
   function solveGeometry() {
     var tokenW = els.probe.offsetWidth || 420;
     var H = tokenW / H_DIV;
-    var vw = window.innerWidth;
+    /* 视口宽用 clientWidth（布局视口）：innerWidth 含滚动条、且个别环境会报设备像素，
+       曾致几何解算整体崩坏（2026-07-12 实测） */
+    var vw = document.documentElement.clientWidth || window.innerWidth;
     var layer = els.frontLayer.getBoundingClientRect();
 
     /* 等高混宽带：卡宽 = H×aspect；L 含 11 条卡间缝；R = L/2π 精确闭合 */
     var L = 0;
     cardsMeta.forEach(function (c) { c.w = H * c.aspect; c.start = L; L += c.w + SEAM * H; });
     var R = L / (2 * Math.PI);
-    var Zoff = Math.max(PERSP * (R / (X_FRAC * vw) - 1),
+    /* 手机档环放大（2026-07-12 用户裁定「环套标题」后环成主角）：投影半宽占比上调 */
+    var xf = MOBILE.matches ? 0.42 : X_FRAC;
+    var Zoff = Math.max(PERSP * (R / (xf * vw) - 1),
       R * Math.cos(TILT * D2R) + MARGIN_Z);
 
     var g = {
       H: H, R: R, L: L, Zoff: Zoff,
+      layerW: layer.width, layerH: layer.height,
       cosT: Math.cos(TILT * D2R), sinT: Math.sin(TILT * D2R),
       yc: 0,
       sf: PERSP / (PERSP + Zoff - R * Math.cos(TILT * D2R)),   /* 前弧投影 scale */
@@ -124,12 +141,12 @@
     };
     g.gain = R2D / (R * g.sf);                         /* 拖拽：前弧带贴手指（°/px） */
 
-    /* 环心纵向：桌面由「前弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y——前弧压字前、
+    /* 环心纵向：由「前弧带顶边 = 标题 (1−COVER) 高度线」反解世界 y——前弧压字前、
        后弧从字后/字上方绕过，环「套住」标题；守卫：后弧顶不得越出 hero 顶压 header。
-       手机档对 hero 中心（三段式布局） */
+       2026-07-12 用户裁定：手机档同样环套标题（07-11 三段式「环对 hero 中心」废除） */
     var sinAbsT = Math.sin(-TILT * D2R);
     var sb = PERSP / (PERSP + Zoff + R * g.cosT);      /* 后弧投影 scale */
-    if (!MOBILE.matches && els.nameText) {
+    if (els.nameText) {
       var nameTop = 0, e = els.nameText;
       while (e && e !== els.hero) { nameTop += e.offsetTop; e = e.offsetParent; }
       var nameH = els.nameText.offsetHeight;
@@ -199,57 +216,114 @@
     return g.arcU[lo] + (g.arcU[hi] - g.arcU[lo]) * t;
   }
 
-  /* ── 每帧写入 ── */
-  function worldString(extraRotY) {
+  /* ── 采样器：连续带面 → 屏幕空间自适应 rung 序列（渲染由 ribbon-render 消费）。
+     世界旋转 Rz(BANK)·Rx(TILT)、平移 (pxo, yc+pyo, −Zoff)、透视 PERSP 与旧 CSS
+     transform 链逐像素同式（P0 对拍验证过）。rung 打包 stride 8：
+     s, topX, topY, botX, botY, camZ, veil, flag（bit0=与前一 rung 间是缝不出切片，
+     bit1=前侧）；坐标相对层中心 CSS px。 ── */
+  function rungAt(s, fr, out) {
+    var cx, cy0, cz, yx, yy, yz, eff;
+    if (fr.ring) {
+      var a = fr.thr - (ringS - s) / geo.R;          /* = (θ+φ) rad；ringS 吸收 intro 冻结相位 */
+      cx = geo.R * Math.sin(a); cy0 = 0; cz = geo.R * Math.cos(a);
+      yx = 0; yy = 1; yz = 0; eff = a;
+    } else {
+      var u = uAtArc(fr.S - s, geo);
+      var p = pathPos(u, geo);
+      cx = p[0]; cy0 = p[1]; cz = p[2];
+      var psi = pathPsi(u) * D2R;                    /* ŷ = RotY(−u)·RotX(ψ)·(0,1,0) */
+      var sp = Math.sin(psi), cp = Math.cos(psi), su = Math.sin(u), cu = Math.cos(u);
+      yx = -sp * su; yy = cp; yz = sp * cu;
+      eff = -u;
+    }
+    var hh = geo.H / 2, zsum = 0, i;
+    for (i = 0; i < 2; i++) {
+      var sg = i === 0 ? -1 : 1;
+      var x = cx + sg * hh * yx, y = cy0 + sg * hh * yy, z = cz + sg * hh * yz;
+      var y1 = y * mRot.cT - z * mRot.sT, z1 = y * mRot.sT + z * mRot.cT;
+      var X = x * mRot.cB - y1 * mRot.sB + fr.pxo;
+      var Y = x * mRot.sB + y1 * mRot.cB + fr.pyo;
+      var Z = z1 - geo.Zoff;
+      var w = PERSP / (PERSP - Z);
+      out[1 + i * 2] = X * w;
+      out[2 + i * 2] = Y * w;
+      zsum += Z;
+    }
+    out[0] = s;
+    out[5] = zsum / 2;
+    var c = Math.cos(eff);                           /* 白纱与前后分派沿旧 sideAndShade 公式：
+                                                        后弧最淡 0.82 白罩、前弧近全彩（勿改回压暗） */
+    out[6] = c >= 0 ? 0.06 * (1 - c) : Math.min(0.82, 0.06 + 0.72 * (-c));
+    out[7] = c >= 0 ? 2 : 0;
+    return out;
+  }
+  function offEdge(r, lw2, lh2) {                    /* 两角同侧出画（含余量）→ 1..4，否则 0 */
+    if (r[1] < -lw2 && r[3] < -lw2) return 1;
+    if (r[1] > lw2 && r[3] > lw2) return 2;
+    if (r[2] < -lh2 && r[4] < -lh2) return 3;
+    if (r[2] > lh2 && r[4] > lh2) return 4;
+    return 0;
+  }
+  function pushRung(n, seam) {
+    var o = n * 8;
+    for (var i = 0; i < 8; i++) rungBuf[o + i] = rungTmp[i];
+    if (seam) rungBuf[o + 7] += 1;
+    return n + 1;
+  }
+  function sampleFrame(fr) {
+    var lw2 = geo.layerW / 2 + 80, lh2 = geo.layerH / 2 + 80;
+    var n = 0, ci, c;
+    for (ci = 0; ci < cardsMeta.length; ci++) {
+      c = cardsMeta[ci];
+      var send = c.start + c.w;
+      var minDs = Math.max(c.w / 400, 0.05);
+      rungAt(c.start, fr, rungTmp);
+      n = pushRung(n, 1);                            /* 卡首：与上一卡之间是缝 */
+      var pmx = (rungTmp[1] + rungTmp[3]) / 2, pmy = (rungTmp[2] + rungTmp[4]) / 2;
+      var ph = Math.hypot(rungTmp[3] - rungTmp[1], rungTmp[4] - rungTmp[2]);
+      var pOff = offEdge(rungTmp, lw2, lh2);
+      var s = c.start, ds = 2 / geo.sf;
+      while (s < send - 1e-4 && n < RUNG_MAX - 1) {
+        var s2 = Math.min(s + ds, send);
+        rungAt(s2, fr, rungTmp);
+        var mx = (rungTmp[1] + rungTmp[3]) / 2, my = (rungTmp[2] + rungTmp[4]) / 2;
+        var h2 = Math.hypot(rungTmp[3] - rungTmp[1], rungTmp[4] - rungTmp[2]);
+        var off2 = offEdge(rungTmp, lw2, lh2);
+        var relax = (pOff && off2 && pOff === off2) ? OFF_RELAX : 1;   /* 离屏段放宽预算 */
+        var dx = Math.hypot(mx - pmx, my - pmy);     /* 中点位移（不只 x：侧棱竖直段也受控） */
+        var dh = Math.abs(h2 - ph);
+        if ((dx > SLICE_W * 1.35 * relax || dh > SLICE_DH * 1.5 * relax) && (s2 - s) > minDs) {
+          ds = (s2 - s) / 2;
+          continue;
+        }
+        n = pushRung(n, 0);
+        if (dx < SLICE_W * 0.55 * relax && dh < SLICE_DH * 0.4 * relax) ds = Math.min(ds * 1.7, c.w);
+        s = s2; pmx = mx; pmy = my; ph = h2; pOff = off2;
+      }
+    }
+    return n;
+  }
+  function poseNow() {
     var pxo = 0, pyo = 0;
     if (HOVERFINE.matches) { pxo = par.x * 14; pyo = par.y * 10; }
-    return 'translate3d(' + pxo.toFixed(1) + 'px,' + (geo.yc + pyo).toFixed(1) + 'px,' +
-      (-geo.Zoff).toFixed(1) + 'px) rotateZ(' + BANK + 'deg) rotateX(' + TILT + 'deg)' +
-      (extraRotY != null ? ' rotateY(' + extraRotY.toFixed(3) + 'deg)' : '');
-  }
-  function writeWorlds(str) {
-    els.backW.style.transform = str;
-    els.frontW.style.transform = str;
-  }
-  function stripIntroTransform(st, S) {
-    var u = uAtArc(S - st.s, geo);
-    var p = pathPos(u, geo);
-    st.el.style.transform =
-      'translate3d(' + p[0].toFixed(1) + 'px,' + p[1].toFixed(1) + 'px,' + p[2].toFixed(1) + 'px)' +
-      ' rotateY(' + (-u * R2D).toFixed(3) + 'deg) rotateX(' + pathPsi(u).toFixed(2) + 'deg)';
-    return u;
-  }
-  /* 迁移 + 深度/背面遮罩（strip 粒度；只写 opacity，Δ>0.004 才写） */
-  function sideAndShade(st, effRad) {
-    var c = Math.cos(effRad);
-    var side = st.side;
-    if (c > HYST) side = 1; else if (c < -HYST) side = -1;
-    if (side !== st.side) {
-      st.side = side;
-      (side === 1 ? els.frontW : els.backW).appendChild(st.el);
+    if (mode === 'ring' || mode === 'static') {
+      return { ring: true, thr: (mode === 'ring' ? theta : 0) * D2R, pxo: pxo, pyo: geo.yc + pyo };
     }
-    /* 白纱淡出（五迭代用户裁定：带到名字「后面」要变得很淡，分清前后无截断感）：
-       shade=白色罩，越靠后越浓 → 带体向暖白底淡去；前弧近乎全彩 */
-    var o = c >= 0 ? 0.06 * (1 - c) : Math.min(0.82, 0.06 + 0.72 * (-c));
-    if (Math.abs(o - st._o) > 0.004) {
-      st.shade.style.opacity = o.toFixed(3);
-      st._o = o;
-    }
+    return { ring: false, S: mode === 'intro' ? lastS : S0, pxo: pxo, pyo: geo.yc + pyo };
   }
+  function paintPose() {
+    if (!renderer || !geo) return;
+    renderer.frame(rungBuf, sampleFrame(poseNow()));
+  }
+
   function writeNameParallax() {
     if (HOVERFINE.matches && els.nameText) {
       els.nameText.style.transform =
         'translate3d(' + (par.x * -8).toFixed(1) + 'px,' + (par.y * -5).toFixed(1) + 'px,0)';
     }
   }
-  function slotTransform(phiDeg) {
-    return 'rotateY(' + phiDeg.toFixed(3) + 'deg) translateZ(' + geo.R.toFixed(1) + 'px)';
-  }
-  function freezeToRing(S) {                           /* 冻结槽位切环态（φ=−u，环向为负） */
-    for (var i = 0; i < strips.length; i++) {
-      strips[i].phi = -uAtArc(S - strips[i].s, geo) * R2D;
-      strips[i].el.style.transform = slotTransform(strips[i].phi);
-    }
+  function freezeToRing(S) {                           /* 冻结相位切环态（含 ω 过冲，由 ringS 吸收） */
+    ringS = S;
     theta = 0; vel = -BASE; mode = 'ring';
   }
 
@@ -299,13 +373,9 @@
       tIntro += dtMs;
       var x = Math.min(1, tIntro / INTRO_DUR);
       var ease = (1 - Math.cos(Math.PI * x)) / 2;      /* easeInOutSine：缓起→峰值→缓落（钟形速度曲线） */
-      var S = S0 + (sEnd - S0) * ease + omegaArc * tIntro / 1000;
-      writeWorlds(worldString(null));
-      for (var i = 0; i < strips.length; i++) {
-        var u = stripIntroTransform(strips[i], S);
-        sideAndShade(strips[i], -u);                   /* eff = θ+φ = −u（θ=0） */
-      }
-      if (x >= 1) freezeToRing(S);
+      lastS = S0 + (sEnd - S0) * ease + omegaArc * tIntro / 1000;
+      paintPose();
+      if (x >= 1) { freezeToRing(lastS); paintPose(); }
     } else if (mode === 'ring') {
       if (dragging) {
         lastDx *= Math.pow(0.8, dt);
@@ -313,10 +383,7 @@
         vel = -BASE + (vel + BASE) * Math.pow(FRICTION, dt);   /* 收敛到 −BASE（右→左巡航） */
         theta += vel * dt;
       }
-      writeWorlds(worldString(theta));
-      for (var j = 0; j < strips.length; j++) {
-        sideAndShade(strips[j], (theta + strips[j].phi) * D2R);
-      }
+      paintPose();
       spineRipple();                                   /* 环↔进度轴互动：轴头随环转动泛涟漪 */
     }
 
@@ -324,31 +391,61 @@
   }
   function ensure() { if (!raf && visible && mode !== 'idle') { lastT = 0; raf = requestAnimationFrame(render); } }
 
-  /* ── REDUCE 静态定格：θ=0 环态（合拢缝自然在正前），零 rAF；点击仍可用 ── */
+  /* ── REDUCE 静态定格：θ=0 环态（合拢缝自然在正前），零 rAF；点击仍可用（拾取吃本帧快照） ── */
   function staticPose() {
-    writeWorlds(worldString(0));
-    for (var i = 0; i < strips.length; i++) {
-      strips[i].phi = -((geo.L - strips[i].s) / geo.R) * R2D;
-      strips[i].el.style.transform = slotTransform(strips[i].phi);
-      sideAndShade(strips[i], strips[i].phi * D2R);
-    }
     mode = 'static';
+    ringS = geo ? geo.L : 0;
+    paintPose();
   }
 
-  /* ── 点击 vs 拖拽（down 绑 .ribbon-hit + .ribbon-front 冒泡；move/up 走 window） ── */
+  /* ── 点击 vs 拖拽（down 绑 .ribbon-hit + front canvas 冒泡；move/up 走 window）。
+     front canvas 全层接事件，语义域=命中带 ∪ 前弧卡面（数学拾取，与旧「hit 带 +
+     strip 可点」一致）；域外按下不响应。 ── */
+  function layerPoint(e) {
+    var r = els.frontLayer.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function inHitBand(e) {
+    if (!els.hit) return false;
+    var r = els.hit.getBoundingClientRect();
+    return e.clientX >= r.left && e.clientX <= r.right &&
+      e.clientY >= r.top && e.clientY <= r.bottom;
+  }
+  function setCursor(cur) {
+    if (!renderer || cur === lastCursor) return;
+    lastCursor = cur;
+    els.frontCanvas.style.cursor = cur;
+  }
   function onDown(e) {
     if (mode !== 'ring' && mode !== 'static') return;
+    var pt = layerPoint(e);
+    var ci = renderer.pick(pt.x, pt.y);
+    if (ci < 0 && !inHitBand(e)) return;
+    downCard = ci >= 0 ? cardsMeta[ci].id : null;
     dragging = mode === 'ring';
+    if (dragging) setCursor('grabbing');
     px = e.clientX; lastDx = 0;
     downX = e.clientX; downY = e.clientY; downT = performance.now();
-    downCard = e.target && e.target.closest ? e.target.closest('.rstrip') : null;
   }
+  var hoverT = 0;
   function onMove(e) {
     if (HOVERFINE.matches && !dragging && mode === 'ring') {   /* 视差目标仅环态更新 */
       par.tx = e.clientX / window.innerWidth * 2 - 1;
       par.ty = e.clientY / window.innerHeight * 2 - 1;
     }
-    if (!dragging) return;
+    if (!dragging) {
+      /* 悬停指针（80ms 节流拾取）：卡面 pointer / 命中带 grab / 其余默认 */
+      if (renderer && HOVERFINE.matches && e.target === els.frontCanvas &&
+        (mode === 'ring' || mode === 'static')) {
+        var now = performance.now();
+        if (now - hoverT > 80) {
+          hoverT = now;
+          var pt = layerPoint(e);
+          setCursor(renderer.pick(pt.x, pt.y) >= 0 ? 'pointer' : (inHitBand(e) ? 'grab' : ''));
+        }
+      }
+      return;
+    }
     var dx = e.clientX - px;
     theta += dx * geo.gain;
     lastDx = dx;
@@ -358,6 +455,7 @@
     var wasDown = downT > 0;
     if (dragging) {
       dragging = false;
+      setCursor('');
       vel = clamp(-BASE + lastDx * geo.gain, -VEL_MAX, VEL_MAX);
     }
     if (!wasDown) return;
@@ -366,7 +464,7 @@
       performance.now() - downT < 400 && downCard;
     downT = 0;
     if (!isTap) { downCard = null; return; }
-    var target = document.getElementById('work-' + downCard.dataset.id);
+    var target = document.getElementById('work-' + downCard);
     downCard = null;
     if (!target) return;
     target.scrollIntoView({ block: 'start' });         /* 不传 smooth：吃全局 scroll-behavior，RM 自动瞬跳 */
@@ -374,44 +472,6 @@
     setTimeout(function () { target.classList.remove('jump-hit'); }, 950);
   }
 
-  /* ── 建带（decode 门后：读 naturalW/H 得原始比例 → 切 strip → 解几何 → 摆画外首帧） ──
-     strip 数按折角上限定（尺度不变量），resize 只重解几何不重建 DOM */
-  function buildStrips() {
-    if (strips.length) return;
-    var sumA = 0;
-    cardsMeta.forEach(function (c) {
-      c.aspect = (c.pre.naturalWidth && c.pre.naturalHeight)
-        ? c.pre.naturalWidth / c.pre.naturalHeight : 1.5;
-      sumA += c.aspect;
-    });
-    var R_H = (sumA + cardsMeta.length * SEAM) / (2 * Math.PI);   /* 以 H 为单位的环半径 */
-    var frag = document.createDocumentFragment();
-    cardsMeta.forEach(function (c) {
-      c.n = Math.max(3, Math.ceil((c.aspect / R_H) / MAX_FOLD));
-      for (var j = 0; j < c.n; j++) {
-        var d = document.createElement('div');
-        d.className = 'rstrip' + (j === 0 ? ' rstrip--head' : '') +
-          (j === c.n - 1 ? ' rstrip--tail' : '');
-        d.dataset.id = c.id;
-        var img = document.createElement('img');
-        img.src = c.src;
-        img.alt = '';
-        img.decoding = 'async';
-        img.draggable = false;
-        img.addEventListener('error', function () {
-          if (c.thumb && img.src.indexOf(c.thumb) < 0) img.src = c.thumb;
-        });
-        var sh = document.createElement('i');
-        sh.className = 'rstrip-shade';
-        d.appendChild(img);
-        d.appendChild(sh);
-        frag.appendChild(d);
-        strips.push({ el: d, img: img, shade: sh, id: c.id, card: c, j: j, s: 0, w: 0, side: 1, phi: 0, _o: 0 });
-      }
-    });
-    els.frontW.appendChild(frag);
-    relayout();                                        /* 解几何 + 写布局 + 摆 idle 首帧 */
-  }
   /* 环的地面阴影：椭圆压在前弧下缘（重量感，静态透明度不呼吸）；仅 relayout 写 */
   function layoutFloor() {
     if (!els.floor) return;
@@ -427,32 +487,14 @@
     els.floor.style.left = ((layerW - w) / 2).toFixed(0) + 'px';
     els.floor.style.top = (frontBottom - h * 0.35).toFixed(0) + 'px';
   }
-  /* 布局尺寸写 px（仅 init/relayout；宽随卡变）+ 弧长偏移 s */
-  function layoutStrips() {
-    strips.forEach(function (st) {
-      var c = st.card;
-      var sw = c.w / c.n;
-      st.w = sw;
-      st.s = c.start + (st.j + 0.5) * sw;
-      st.el.style.width = (sw + OVERLAP).toFixed(2) + 'px';
-      st.el.style.height = geo.H.toFixed(2) + 'px';
-      st.el.style.marginLeft = (-(sw + OVERLAP) / 2).toFixed(2) + 'px';
-      st.el.style.marginTop = (-geo.H / 2).toFixed(2) + 'px';
-      st.img.style.width = c.w.toFixed(2) + 'px';
-      st.img.style.height = geo.H.toFixed(2) + 'px';
-      st.img.style.left = (OVERLAP / 2 - st.j * sw).toFixed(2) + 'px';
-    });
-  }
 
-  function armStart(prepared) {
+  /* 入场即时（2026-07-12 用户裁定「标题一出丝带立即开演」）：loaderdone 即武装，
+     零延迟、零解码门（几何从 projects.json 尺寸同步解，图未到先灰占位） */
+  function armStart() {
     var go = function () {
-      setTimeout(function () {
-        prepared.then(function () {
-          if (mode !== 'idle' || REDUCE) return;
-          tIntro = 0; mode = 'intro';
-          ensure();                                    /* t0 = 首个 rAF：后台/离屏等可见才开演 */
-        });
-      }, 350);
+      if (mode !== 'idle' || REDUCE) return;
+      tIntro = 0; mode = 'intro';
+      ensure();                                        /* t0 = 首个 rAF：后台/离屏等可见才开演 */
     };
     if (!document.documentElement.classList.contains('loading')) go();
     else document.addEventListener('loaderdone', go, { once: true });
@@ -466,7 +508,7 @@
     if (!items.length) return;
     frontLayer.dataset.ready = '1';
 
-    var probe = document.createElement('div');         /* 量 --ribbon-card-w 落地值（带高 H=÷1.5） */
+    var probe = document.createElement('div');         /* 量 --ribbon-card-w 落地值 */
     probe.style.cssText = 'position:absolute;visibility:hidden;width:var(--ribbon-card-w);height:0;';
     hero.appendChild(probe);
 
@@ -474,29 +516,37 @@
       hero: hero,
       probe: probe,
       frontLayer: frontLayer,
-      frontW: frontLayer.querySelector('.ribbon-world'),
-      backW: document.querySelector('.ribbon-back .ribbon-world'),
+      backCanvas: document.querySelector('.ribbon-back .ribbon-canvas'),
+      frontCanvas: frontLayer.querySelector('.ribbon-canvas'),
       hit: document.querySelector('.ribbon-hit'),
       floor: document.querySelector('.ribbon-floor'),
       nameText: document.querySelector('.hero-name-text')
     };
 
-    /* 预载 11 张卡图（原比例派生版），decode 门后才知带形（naturalW/H） */
+    if (window.RibbonRender && els.backCanvas && els.frontCanvas) {
+      var tok = getComputedStyle(document.documentElement);
+      renderer = window.RibbonRender.create({
+        backCanvas: els.backCanvas,
+        frontCanvas: els.frontCanvas,
+        white: (tok.getPropertyValue('--c-white') || '#FFFFFF').trim(),
+        border: (tok.getPropertyValue('--c-border') || '#E0E0E0').trim()
+      });
+    }
+    if (!renderer) return;                             /* canvas 不可用：优雅无丝带（标题/波点不受影响） */
+    els.frontCanvas.style.pointerEvents = 'auto';      /* 事件全层接收，语义域在 onDown 复刻 */
+    els.frontCanvas.style.touchAction = 'pan-y';       /* 竖划归页面滚动（同 .ribbon-hit 约定） */
+
+    /* 预载 11 张卡图（原比例派生版）：宽高比从 projects.json ribbon:{w,h} 来，
+       几何同步可解、不等图；decode 到一张贴一张（灰占位渐进升级） */
     cardsMeta = items.map(function (p, i) {
       var pre = new Image();
       if (i < 3) pre.fetchPriority = 'high';
       pre.src = 'assets/ribbon/' + p.id + '.jpg';
-      return { id: p.id, src: pre.src, thumb: p.thumb, pre: pre, aspect: 1.5, w: 0, start: 0, n: 0 };
+      var ar = (p.ribbon && p.ribbon.w > 0 && p.ribbon.h > 0) ? p.ribbon.w / p.ribbon.h : 0;
+      return { id: p.id, src: pre.src, thumb: p.thumb, pre: pre, aspect: ar || 1.5, w: 0, start: 0 };
     });
-    var decodeGate = Promise.race([
-      Promise.all(cardsMeta.map(function (c) {
-        return c.pre.decode ? c.pre.decode().catch(function () {}) : Promise.resolve();
-      })),
-      new Promise(function (res) { setTimeout(res, 1800); })
-    ]);
-    var prepared = decodeGate.then(buildStrips);
 
-    els.hit.addEventListener('pointerdown', onDown);   /* 卡事件冒泡到容器，不逐条绑（防闪总则第 4 条） */
+    els.hit.addEventListener('pointerdown', onDown);   /* 事件绑稳定容器，不逐卡绑（防闪总则第 4 条） */
     frontLayer.addEventListener('pointerdown', onDown);
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerup', onUp);
@@ -509,35 +559,57 @@
       }, { threshold: 0 }).observe(frontLayer);
     }
 
-    if (REDUCE) { prepared.then(staticPose); return; }
-    armStart(prepared);
+    cardsMeta.forEach(hookDecode);                     /* 渐进贴图：decode 到一张贴一张 */
+    relayout();                                        /* 几何+atlas（灰占位）+idle 首帧就位 */
+    if (REDUCE) { staticPose(); return; }
+    armStart();
+  }
+  /* 逐图解码钩子：成功→调色入 atlas（顺带用实测比例自愈 JSON 漂移）；失败→退 thumb 再试一次 */
+  function hookDecode(c, i) {
+    var ok = function () {
+      if (!renderer) return;
+      renderer.setCardImage(i, c.pre);
+      var real = (c.pre.naturalWidth && c.pre.naturalHeight)
+        ? c.pre.naturalWidth / c.pre.naturalHeight : 0;
+      if (real && Math.abs(real - c.aspect) > 0.01) { c.aspect = real; relayout(); return; }
+      if (mode === 'idle' || mode === 'static') paintPose();   /* 静止态补一帧显新图 */
+    };
+    var err = function () {
+      if (c.thumb && c.pre.src.indexOf(c.thumb) < 0) {
+        var im2 = new Image();
+        im2.src = c.thumb;
+        c.pre = im2;
+        hookDecode(c, i);
+      }
+    };
+    if (c.pre.decode) c.pre.decode().then(ok, err);
+    else { c.pre.onload = ok; c.pre.onerror = err; }
   }
 
-  /* resize/断点：重解几何+重写布局（DOM 不重建）。飞入途中遭遇 → 直接跳剪到环态 */
+  /* resize/断点：重解几何+重设画布（atlas 带高变超 10% 自动重建）。飞入途中遭遇 → 直接跳剪到环态 */
   function relayout() {
-    if (!strips.length) return;
+    if (!renderer || !cardsMeta.length) return;
     geo = solveGeometry();
     S0 = geo.sEntry;
     sEnd = geo.L;                                      /* = 2πR：头尾精确合拢 */
     omegaArc = BASE * 60 * D2R * geo.R;
-    layoutStrips();
+    renderer.setBand(cardsMeta, geo.H);
+    renderer.layout(geo.layerW, geo.layerH);
     layoutFloor();
     spineTicks = null;                                 /* 轴可能重建，涟漪缓存失效 */
     /* 地影/几何就位 → 通知 index-fx 重锚进度轴（轴头钉地影中心，与环相接） */
     document.dispatchEvent(new CustomEvent('ribbonlayout'));
-    if (mode === 'intro') { freezeToRing(sEnd + omegaArc * tIntro / 1000); return; }
+    if (mode === 'intro') {
+      freezeToRing(sEnd + omegaArc * tIntro / 1000);
+      paintPose();
+      return;
+    }
     if (mode === 'ring' || mode === 'static') {
-      for (var j = 0; j < strips.length; j++) {
-        strips[j].phi = -((geo.L - strips[j].s) / geo.R) * R2D;
-        strips[j].el.style.transform = slotTransform(strips[j].phi);
-      }
-      writeWorlds(worldString(mode === 'ring' ? theta : 0));
+      ringS = geo.L;                                   /* 重解几何后回到标准相位 */
+      paintPose();
     } else {                                           /* idle：摆 t=0 画外姿态（层淡入不见空白） */
-      writeWorlds(worldString(null));
-      for (var i = 0; i < strips.length; i++) {
-        var u = stripIntroTransform(strips[i], S0);
-        sideAndShade(strips[i], -u);
-      }
+      lastS = S0;
+      paintPose();
     }
     ensure();
   }
@@ -548,9 +620,16 @@
        传伪造时间戳逐帧驱动 render，配合替换 requestAnimationFrame 可离线扫描动画 */
     _pump: function (ts) { raf = null; render(ts); },
     _restart: function () {
-      if (!strips.length) return false;
+      if (!cardsMeta.length) return false;
       tIntro = 0; theta = 0; vel = -BASE; lastT = 0; mode = 'intro';
       return true;
-    }
+    },
+    /* canvas 验收探针：当前姿态的 rung 序列（Float32Array 视图）与渲染统计 */
+    _probe: function () {
+      if (!renderer || !geo) return null;
+      var n = sampleFrame(poseNow());
+      return { n: n, rungs: rungBuf.subarray(0, n * 8), stats: renderer._stats, geo: geo };
+    },
+    _renderer: function () { return renderer; }
   };
 })();

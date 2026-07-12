@@ -26,7 +26,9 @@
     var cur = parseFloat(getComputedStyle(el).getPropertyValue('--hero-fit')) || 1;
     var w = el.offsetWidth;
     if (!w) return;
-    var next = clamp(cur * (window.innerWidth * 0.92) / w, 0.6, 1.4);
+    /* clientWidth（布局视口）：innerWidth 含滚动条/个别环境报设备像素（2026-07-12 加固） */
+    var vw = document.documentElement.clientWidth || window.innerWidth;
+    var next = clamp(cur * (vw * 0.92) / w, 0.6, 1.4);
     el.style.setProperty('--hero-fit', next.toFixed(4));
   }
 

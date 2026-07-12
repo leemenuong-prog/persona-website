@@ -1,5 +1,6 @@
 import { readFileSync, existsSync, statSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { execFileSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 
@@ -71,11 +72,39 @@ for (const p of projects) {
     p.id + " should have a cover thumbnail assets/project/" + p.id + "/thumbnails/1.*");
 }
 /* 英雄区丝带卡图(2026-07-11 丝带改版):assets/ribbon/{id}.jpg 由封面缩略图 sips 派生
-   (640×427·3:2·白底 pad),js/ribbon.js 按约定路径引用——缺派生图测试红,不许线上静默回退 */
+   (原始比例),js/ribbon.js 按约定路径引用——缺派生图测试红,不许线上静默回退 */
 for (const p of projects) {
   assert.ok(exists("assets/ribbon/" + p.id + ".jpg"),
     p.id + " should have a hero ribbon card assets/ribbon/" + p.id + ".jpg (sips-derive from its thumbnail)");
 }
+
+/* ── 丝带 Canvas 连续化改版(2026-07-12)守卫 ── */
+/* ribbon:{w,h} 尺寸字段:入场即时化的前提(几何同步解算不等图片解码);
+   与 assets/ribbon/{id}.jpg 实际尺寸核对走 sips(macOS 本机跑测试),漂移即红 */
+let sipsOK = true;
+try { execFileSync("sips", ["--help"], { stdio: "ignore" }); } catch { sipsOK = false; }
+for (const p of projects) {
+  assert.ok(p.ribbon && p.ribbon.w > 0 && p.ribbon.h > 0,
+    p.id + " should carry ribbon:{w,h} (hero geometry solves synchronously from it)");
+  if (sipsOK) {
+    const out = execFileSync("sips",
+      ["-g", "pixelWidth", "-g", "pixelHeight", join(root, "assets/ribbon", p.id + ".jpg")],
+      { encoding: "utf8" });
+    const w = Number(/pixelWidth: (\d+)/.exec(out)?.[1]);
+    const h = Number(/pixelHeight: (\d+)/.exec(out)?.[1]);
+    assert.equal(p.ribbon.w, w, p.id + " ribbon.w drifted from the actual jpg width");
+    assert.equal(p.ribbon.h, h, p.id + " ribbon.h drifted from the actual jpg height");
+  }
+}
+/* 渲染接线:双 canvas + 渲染端脚本在 ribbon.js 之前;旧 DOM strip 不得回魂 */
+const indexHtml = read("index.html");
+assert.equal((indexHtml.match(/class="ribbon-canvas"/g) || []).length, 2,
+  "index.html should hold exactly two .ribbon-canvas (back z1 / front z4, z-split around the title)");
+assert.ok(indexHtml.indexOf("js/ribbon-render.js") < indexHtml.indexOf("js/ribbon.js"),
+  "js/ribbon-render.js must load before js/ribbon.js (window.RibbonRender must exist at init)");
+assert.doesNotMatch(indexHtml, /ribbon-world/, "the retired .ribbon-world DOM-strip stage must stay deleted");
+assert.doesNotMatch(read("css/index.css"), /\.rstrip\s*\{/, "the retired .rstrip DOM-strip styles must stay deleted");
+assert.match(read("js/ribbon.js"), /RibbonRender/, "js/ribbon.js should render through window.RibbonRender");
 const referenced = [];
 for (const p of projects) {
   referenced.push(...p.contentImages.map((src) => [p.id, src]));

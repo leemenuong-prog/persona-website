@@ -67,9 +67,10 @@
       top.appendChild(el('h3', 'project-title',
         '<a href="project.html?id=' + encodeURIComponent(p.id) + '">' + esc(t(p, 'title')) + '</a>'));
       top.appendChild(el('p', 'project-keywords', esc(t(p, 'keywords'))));
-      if (p.award_zh) top.appendChild(el('p', 'project-award', esc(t(p, 'award'))));
       var bottom = el('div', 'content-section');
-      bottom.appendChild(el('p', 'project-desc', esc(t(p, 'desc'))));
+      /* 小字：有荣誉的作品只写荣誉，无荣誉的写产品描述（不重复显示徽章行） */
+      var lead = p.award_zh ? t(p, 'award') : t(p, 'desc');
+      bottom.appendChild(el('p', 'project-desc', esc(lead)));
       txt.appendChild(top);
       txt.appendChild(bottom);
 

@@ -5,6 +5,10 @@
       "id": "pears",
       "sort_order": 1,
       "main": true,
+      "ribbon": {
+        "w": 512,
+        "h": 512
+      },
       "title_zh": "Pears — Agent Factory",
       "title_en": "Pears — Agent Factory",
       "category": "AI Product",
@@ -144,6 +148,10 @@
       "id": "cowork",
       "sort_order": 2,
       "main": true,
+      "ribbon": {
+        "w": 480,
+        "h": 600
+      },
       "title_zh": "Co-work — 部门 Agent 平台",
       "title_en": "Co-work Agent Platform",
       "category": "AI Platform",
@@ -237,6 +245,10 @@
       "id": "yijian",
       "sort_order": 3,
       "main": true,
+      "ribbon": {
+        "w": 512,
+        "h": 512
+      },
       "title_zh": "Yi-Jian — 共识引擎",
       "title_en": "Yi-Jian — Consensus Engine",
       "category": "AI Product",
@@ -320,6 +332,10 @@
       "id": "meco",
       "sort_order": 4,
       "main": true,
+      "ribbon": {
+        "w": 512,
+        "h": 512
+      },
       "title_zh": "Meco",
       "title_en": "Meco",
       "category": "AI Product",
@@ -420,6 +436,10 @@
       "id": "uabb",
       "sort_order": 5,
       "main": true,
+      "ribbon": {
+        "w": 512,
+        "h": 512
+      },
       "title_zh": "多模态 AIGC 工作流 — UABB",
       "title_en": "UABB · Multimodal AIGC Pipeline",
       "category": "AIGC Pipeline",
@@ -506,6 +526,10 @@
       "id": "after-silence",
       "sort_order": 6,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "After_Silence",
       "title_en": "After_Silence",
       "category": "Architecture",
@@ -591,6 +615,10 @@
       "id": "upper-via",
       "sort_order": 7,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "上桥",
       "title_en": "Upper-Via",
       "category": "Architecture",
@@ -668,6 +696,10 @@
       "id": "air-cube",
       "sort_order": 8,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "风贯·立方",
       "title_en": "Air Cube",
       "category": "Architecture",
@@ -745,6 +777,10 @@
       "id": "hidden-lingnan-garden",
       "sort_order": 9,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "绿光·隐园",
       "title_en": "Hidden–Lingnan Garden",
       "category": "Architecture",
@@ -822,6 +858,10 @@
       "id": "vista-out",
       "sort_order": 10,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "远山·眺",
       "title_en": "Vista–Out",
       "category": "Architecture",
@@ -899,6 +939,10 @@
       "id": "ring-world",
       "sort_order": 11,
       "main": false,
+      "ribbon": {
+        "w": 640,
+        "h": 427
+      },
       "title_zh": "环·世界",
       "title_en": "The Ring-World",
       "category": "Architecture",
