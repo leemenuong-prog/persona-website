@@ -518,10 +518,18 @@
   }
 
   /* 入场即时（2026-07-12 用户裁定「标题一出丝带立即开演」）：loaderdone 即武装，
-     零延迟、零解码门（几何从 projects.json 尺寸同步解，图未到先灰占位） */
+     零延迟、零解码门（几何从 projects.json 尺寸同步解，图未到先灰占位）。
+     手机档（2026-07-13 用户裁定）：飞入编舞整段跳过，一打开直接成环巡航——
+     省 6s 满帧动画的加载期 CPU，弱机/弱网首屏更稳；桌面飞入不动 */
   function armStart() {
     var go = function () {
       if (mode !== 'idle' || REDUCE) return;
+      if (MOBILE.matches) {
+        freezeToRing(geo ? geo.L : 0);                 /* 标准相位（合拢缝正前，与 relayout 同口径）+ 巡航 */
+        paintPose();
+        ensure();
+        return;
+      }
       tIntro = 0; mode = 'intro';
       ensure();                                        /* t0 = 首个 rAF：后台/离屏等可见才开演 */
     };
@@ -677,7 +685,7 @@
     _probe: function () {
       if (!renderer || !geo) return null;
       var n = sampleFrame(poseNow());
-      return { n: n, rungs: rungBuf.subarray(0, n * 8), stats: renderer._stats, geo: geo };
+      return { n: n, rungs: rungBuf.subarray(0, n * 8), stats: renderer._stats, geo: geo, mode: mode };
     },
     _renderer: function () { return renderer; }
   };

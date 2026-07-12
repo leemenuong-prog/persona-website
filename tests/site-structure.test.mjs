@@ -119,12 +119,14 @@ assert.equal((indexHtml.match(/class="ribbon-canvas"/g) || []).length, 2,
 assert.ok(indexHtml.indexOf("js/ribbon-render.js") < indexHtml.indexOf("js/ribbon.js"),
   "js/ribbon-render.js must load before js/ribbon.js (window.RibbonRender must exist at init)");
 assert.doesNotMatch(indexHtml, /ribbon-world/, "the retired .ribbon-world DOM-strip stage must stay deleted");
-/* 手机档丝带 preload(2026-07-13):head 里前三张 .m.webp 必须与 sort_order 前三名一致
+/* 丝带 preload(2026-07-13):head 里前三张 .m.webp(手机)+.webp(桌面)必须与 sort_order 前三名一致
    (= ribbon.js i<3 的 fetchPriority=high 分支同一批;改作品顺序要同步改 index.html) */
 const bySort = projects.slice().sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
 for (const p of bySort.slice(0, 3)) {
   assert.match(indexHtml, new RegExp('rel="preload" href="assets/ribbon/' + p.id + '\\.m\\.webp" as="image"'),
     "index.html head should preload assets/ribbon/" + p.id + ".m.webp (top-3 by sort_order, mobile media query)");
+  assert.match(indexHtml, new RegExp('rel="preload" href="assets/ribbon/' + p.id + '\\.webp" as="image"'),
+    "index.html head should preload assets/ribbon/" + p.id + ".webp (top-3 by sort_order, desktop media query)");
 }
 assert.doesNotMatch(read("css/index.css"), /\.rstrip\s*\{/, "the retired .rstrip DOM-strip styles must stay deleted");
 assert.match(read("js/ribbon.js"), /RibbonRender/, "js/ribbon.js should render through window.RibbonRender");
