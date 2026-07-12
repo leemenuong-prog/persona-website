@@ -33,6 +33,11 @@
   <!-- 数据预取（2026-07-12 性能档）：作品卡+丝带几何全等 projects.json，提前到 HTML 解析期并行。
        crossorigin 必带——默认 fetch=cors+same-origin，preload 不带会凭据模式不匹配→双下载 -->
   <link rel="preload" href="config/projects.json" as="fetch" crossorigin>
+  <!-- 手机档丝带前 3 张卡图预载（2026-07-13 提速）：id 必须与 projects.json sort_order 前三名一致
+       （= ribbon.js i<3 的 fetchPriority=high 分支），tests/site-structure.test.mjs 有断言绑定 -->
+  <link rel="preload" href="assets/ribbon/pears.m.webp" as="image" media="(max-width:767px)" fetchpriority="high">
+  <link rel="preload" href="assets/ribbon/cowork.m.webp" as="image" media="(max-width:767px)" fetchpriority="high">
+  <link rel="preload" href="assets/ribbon/yijian.m.webp" as="image" media="(max-width:767px)" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/barmorph.css">
@@ -111,6 +116,7 @@
   </main>
 
   <script src="js/language-toggle.js" defer></script>
+  <script src="js/img-util.js" defer></script>
   <script src="js/barmorph.js" defer></script>
   <script src="js/main.js" defer></script>
   <script src="js/editor.js" defer></script>

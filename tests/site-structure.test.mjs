@@ -77,6 +77,14 @@ for (const p of projects) {
   assert.ok(exists("assets/ribbon/" + p.id + ".jpg"),
     p.id + " should have a hero ribbon card assets/ribbon/" + p.id + ".jpg (sips-derive from its thumbnail)");
 }
+/* WebP 变体(2026-07-13 提速):tools/build-images.sh 预生成——桌面同尺寸 .webp + 手机 .m.webp(限高256)。
+   加/换作品后必须重跑该脚本;缺档线上会 onerror 回退原 jpg(能用,但每次都白付一个 404 往返) */
+for (const p of projects) {
+  for (const v of [".webp", ".m.webp"]) {
+    assert.ok(exists("assets/ribbon/" + p.id + v),
+      p.id + " missing ribbon WebP variant assets/ribbon/" + p.id + v + " — run tools/build-images.sh");
+  }
+}
 
 /* ── 丝带 Canvas 连续化改版(2026-07-12)守卫 ── */
 /* ribbon:{w,h} 尺寸字段:入场即时化的前提(几何同步解算不等图片解码);
@@ -94,6 +102,14 @@ for (const p of projects) {
     const h = Number(/pixelHeight: (\d+)/.exec(out)?.[1]);
     assert.equal(p.ribbon.w, w, p.id + " ribbon.w drifted from the actual jpg width");
     assert.equal(p.ribbon.h, h, p.id + " ribbon.h drifted from the actual jpg height");
+    /* 手机档 .m.webp 比例漂移必须 < 0.01(hookDecode 自愈阈值)——超了会引发 relayout 风暴 */
+    const outM = execFileSync("sips",
+      ["-g", "pixelWidth", "-g", "pixelHeight", join(root, "assets/ribbon", p.id + ".m.webp")],
+      { encoding: "utf8" });
+    const wM = Number(/pixelWidth: (\d+)/.exec(outM)?.[1]);
+    const hM = Number(/pixelHeight: (\d+)/.exec(outM)?.[1]);
+    assert.ok(Math.abs(wM / hM - p.ribbon.w / p.ribbon.h) < 0.01,
+      p.id + " .m.webp aspect drifted ≥0.01 from ribbon:{w,h} — regenerate via tools/build-images.sh");
   }
 }
 /* 渲染接线:双 canvas + 渲染端脚本在 ribbon.js 之前;旧 DOM strip 不得回魂 */
@@ -103,6 +119,13 @@ assert.equal((indexHtml.match(/class="ribbon-canvas"/g) || []).length, 2,
 assert.ok(indexHtml.indexOf("js/ribbon-render.js") < indexHtml.indexOf("js/ribbon.js"),
   "js/ribbon-render.js must load before js/ribbon.js (window.RibbonRender must exist at init)");
 assert.doesNotMatch(indexHtml, /ribbon-world/, "the retired .ribbon-world DOM-strip stage must stay deleted");
+/* 手机档丝带 preload(2026-07-13):head 里前三张 .m.webp 必须与 sort_order 前三名一致
+   (= ribbon.js i<3 的 fetchPriority=high 分支同一批;改作品顺序要同步改 index.html) */
+const bySort = projects.slice().sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
+for (const p of bySort.slice(0, 3)) {
+  assert.match(indexHtml, new RegExp('rel="preload" href="assets/ribbon/' + p.id + '\\.m\\.webp" as="image"'),
+    "index.html head should preload assets/ribbon/" + p.id + ".m.webp (top-3 by sort_order, mobile media query)");
+}
 assert.doesNotMatch(read("css/index.css"), /\.rstrip\s*\{/, "the retired .rstrip DOM-strip styles must stay deleted");
 assert.match(read("js/ribbon.js"), /RibbonRender/, "js/ribbon.js should render through window.RibbonRender");
 const referenced = [];
@@ -117,6 +140,20 @@ for (const p of projects) {
 }
 for (const [id, src] of referenced) {
   assert.ok(exists(src), id + " references a missing file: " + src);
+}
+/* WebP 变体守卫(2026-07-13):projects.json 引用的每个本地 JPEG 必须有整套变体
+   (js/img-util.js 阶梯选档按约定命名取档;缺档线上 onerror 回退原 jpg,能用但白付 404)。
+   新增素材后跑一遍 tools/build-images.sh 即补齐 */
+const jpgReferenced = referenced.filter(([, src]) => /\.jpe?g$/i.test(src));
+for (const p of projects) {
+  if (p.thumb && /\.jpe?g$/i.test(p.thumb)) jpgReferenced.push([p.id, p.thumb]);
+}
+for (const [id, src] of jpgReferenced) {
+  const base = src.replace(/\.jpe?g$/i, "");
+  for (const v of [".webp", ".w480.webp", ".w800.webp", ".w1200.webp"]) {
+    assert.ok(exists(base + v),
+      id + " missing WebP variant " + base + v + " — run tools/build-images.sh");
+  }
 }
 
 /* ── 数据接线:main.js 拉取 projects.json,详情页按 ?id= 查询 ── */

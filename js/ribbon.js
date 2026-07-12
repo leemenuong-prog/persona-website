@@ -566,11 +566,14 @@
     els.frontCanvas.style.touchAction = 'pan-y pinch-zoom';   /* 竖划归页面滚动、捏合交还浏览器（会发 pointercancel，清态已兜）；横向起手归拨环 */
 
     /* 预载 11 张卡图（原比例派生版）：宽高比从 projects.json ribbon:{w,h} 来，
-       几何同步可解、不等图；decode 到一张贴一张（灰占位渐进升级） */
+       几何同步可解、不等图；decode 到一张贴一张（灰占位渐进升级）。
+       2026-07-13 提速：WebP 变体（tools/build-images.sh 预生成）——手机 .m.webp 限高 256
+       （atlas 带高手机档 ~116 CSS px × DPR2，全套 ~150KB vs 原 JPEG 868KB），桌面同尺寸 .webp；
+       变体与 .jpg 比例漂移 ≤0.0012，远低于 hookDecode 0.01 自愈阈值，几何零扰动 */
     cardsMeta = items.map(function (p, i) {
       var pre = new Image();
       if (i < 3) pre.fetchPriority = 'high';
-      pre.src = 'assets/ribbon/' + p.id + '.jpg';
+      pre.src = 'assets/ribbon/' + p.id + (MOBILE.matches ? '.m.webp' : '.webp');
       var ar = (p.ribbon && p.ribbon.w > 0 && p.ribbon.h > 0) ? p.ribbon.w / p.ribbon.h : 0;
       return { id: p.id, src: pre.src, thumb: p.thumb, pre: pre, aspect: ar || 1.5, w: 0, start: 0 };
     });
@@ -605,6 +608,14 @@
     var err = function () {
       /* iOS Safari 内存压力下 decode() 有著名的假拒绝（图其实已好）——naturalWidth>0 即当成功，勿错退 thumb */
       if (c.pre.naturalWidth) { ok(); return; }
+      if (!c.triedJpg) {                               /* WebP 变体缺失（新作品没跑 build-images.sh）→ 原 jpg（tests 守卫其存在） */
+        c.triedJpg = true;
+        var im1 = new Image();
+        im1.src = 'assets/ribbon/' + c.id + '.jpg';
+        c.pre = im1;
+        hookDecode(c, i);
+        return;
+      }
       if (c.thumb && !c.triedThumb) {                  /* 布尔标记，勿用 src 子串（编码后可能永不含原路径→无限重试） */
         c.triedThumb = true;
         var im2 = new Image();
