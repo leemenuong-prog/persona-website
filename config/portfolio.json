@@ -712,7 +712,7 @@
       ],
       "cover": {
         "shot": "assets/portfolio/uabb/landing-01.jpg",
-        "ratio": 2.4361,
+        "ratio": 2.4365,
         "frame": "none",
         "lede_en": "Odd in, standard out.",
         "lede_zh": "放入任意内容，产出 3D 模型。",
@@ -759,8 +759,8 @@
         },
         {
           "id": "views",
-          "name_zh": "四视图与去背",
-          "name_en": "STRICT VIEWS",
+          "name_zh": "四视图与成品",
+          "name_en": "VIEWS & OUTCOME",
           "copy_ref": "how_it_works",
           "rows": [
             {
@@ -769,7 +769,19 @@
             {
               "imgs": [
                 0
+              ],
+              "w_mm": 88
+            },
+            {
+              "imgs": [
+                1
               ]
+            },
+            {
+              "imgs": [
+                2
+              ],
+              "w_mm": 72
             }
           ],
           "images": [
@@ -779,26 +791,7 @@
               "frame": "browser",
               "caption_zh": "第四步 · 锁相机生成四向立面，再统一去背",
               "caption_en": "Step 4 · camera-locked elevations, then background removal"
-            }
-          ]
-        },
-        {
-          "id": "outcome",
-          "name_zh": "成品与海报",
-          "name_en": "THE OUTCOME",
-          "rows": [
-            {
-              "imgs": [
-                0
-              ]
             },
-            {
-              "imgs": [
-                1
-              ]
-            }
-          ],
-          "images": [
             {
               "src": "assets/portfolio/uabb/result-01.jpg",
               "ratio": 2.8019,

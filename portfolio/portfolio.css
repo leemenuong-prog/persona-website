@@ -500,6 +500,15 @@ a:hover .qr-link { color: var(--c-title); border-color: var(--c-title); }
 /* 封面无框海报（frame:"none"，如 UABB 展报）＝图版而非界面窗口：居中内缩呈现，
    顺带让「one_liner+大图」同页的封面不压页脚（2026-07-09） */
 .p-work .work-cover-shot .shot-plain { width: 88%; margin-left: auto; margin-right: auto; }
+/* UABB 封面落地页＝3D-GC 总流程图（2.44 宽图，节点密）：满页宽出血呈现，
+   让流程看得清（2026-07-12 用户裁定「流程图大一些，现在看不清楚」）。
+   下半页 rail 柱在 ≈112mm 以上就收尾、shot 块 margin-top:auto 之上留白 ~70mm，
+   故出血到 sheet 内容宽（左越过 rail 柱到页边 16mm）不撞 rail、块底仍锚页脚上缘。 */
+#work-uabb .work-cover-shot {
+  margin-left: calc(-1 * (var(--sh-rail) + var(--sh-gutter)));
+  width: calc(100% + var(--sh-rail) + var(--sh-gutter));
+}
+#work-uabb .work-cover-shot .shot-plain { width: 100%; }
 .p-work .cover-cols.ph { grid-template-columns: 1fr 60mm; }
 .p-work .cover-art { margin: 0; }
 .p-work .cover-art .ca-thumb { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-border); }
