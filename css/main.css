@@ -196,7 +196,13 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 @media (max-width: 767px) {
   body { font-size: 16px; }
-  .site-header { padding: var(--safe-top) calc(10px + var(--safe-right)) 0 calc(10px + var(--safe-left)); }
+  .site-header {
+    padding: var(--safe-top) calc(10px + var(--safe-right)) 0 calc(10px + var(--safe-left));
+    /* 手机档去毛玻璃（2026-07-12 性能档）：fixed 元素的 backdrop blur 在滚动时逐帧重模糊，
+       是移动端滚动 jank 大头；底色加实一档（.95→.97）后残影 ≤3%，暖白页面上不可辨 */
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    background: rgba(255, 255, 255, .97);
+  }
   .site-header .nav-btn { min-width: 0; font-size: 15px; padding: 0 7px; letter-spacing: .02em; }
   .header-left { gap: 2px; }
   .header-right { gap: 6px; }

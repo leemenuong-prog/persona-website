@@ -50,6 +50,15 @@
     var main = document.querySelector('main');
     if (!host || !gallery || !polygon || !main) return;
 
+    /* <1024 轴 display:none（设计决定）——跳过重建（2026-07-12 性能档：RO 每次图片加载
+       都防抖触发本函数，手机端反复建几百个 <i> 纯浪费）。穿越回桌面：resize →
+       Ribbon.relayout →（geoKey 必变）→ ribbonlayout 事件 → 本函数重建 */
+    if (!DESKTOP.matches) {
+      if (spine.ok) { host.innerHTML = ''; spine.ticks = []; spine.branches = []; }
+      spine.ok = false;
+      return;
+    }
+
     host.innerHTML = '';
 
     /* 相对 main 定位：轴头优先钉在丝带环的地影中心（.ribbon-floor，七迭代「进度轴上移、
@@ -182,15 +191,27 @@
     if (!who) return;
     finaleStarted = true;
 
-    /* I am ___ 轮换（2.2s，whoIn 动画靠换 key 重放） */
-    var i = 0;
-    setInterval(function () {
+    /* I am ___ 轮换（2.2s，whoIn 动画靠换 key 重放）。
+       IO 门控（2026-07-12 性能档）：finale 不可见时停表——此前 2.2s 定时器+blur 关键帧
+       永动，读英雄区时也在页底空烧主线程/合成器 */
+    var i = 0, timer = null;
+    function step() {
       i = (i + 1) % IDS.length;
       var next = who.cloneNode(false);
       next.textContent = IDS[i];
       who.parentNode.replaceChild(next, who);
       who = next;
-    }, 2200);
+    }
+    function start() { if (!timer) timer = setInterval(step, 2200); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    var fin = document.getElementById('finale');
+    if (fin && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        if (entries[entries.length - 1].isIntersecting) start(); else stop();
+      }).observe(fin);
+    } else {
+      start();                                         /* 无 IO 环境回退旧行为 */
+    }
   }
 
   function refresh(list) {

@@ -30,6 +30,9 @@
     } catch (e) {}
   </script>
   <link rel="preload" href="assets/fonts/monterey-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- 数据预取（2026-07-12 性能档，crossorigin 必带：匹配默认 fetch 的 cors+same-origin，防双下载） -->
+  <link rel="preload" href="config/projects.json" as="fetch" crossorigin>
+  <link rel="preload" href="config/portfolio.json" as="fetch" crossorigin>
   <link rel="preload" href="assets/fonts/monterey-medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
