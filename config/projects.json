@@ -41,7 +41,7 @@
           "url": "https://pear-web-leemenuong.netlify.app/"
         }
       ],
-      "thumb": "assets/project/pears/thumbnails/1.png",
+      "thumb": "assets/project/pears/thumbnails/1.webp",
       "float": {
         "reveal": "assets/project/pears/float/1.jpg"
       },
@@ -357,7 +357,7 @@
       ],
       "url": "https://github.com/leemenuong-prog/Meco",
       "links": [],
-      "thumb": "assets/project/meco/thumbnails/1.png",
+      "thumb": "assets/project/meco/thumbnails/1.webp",
       "float": {
         "reveal": "assets/project/meco/float/1.jpg"
       },
