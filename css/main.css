@@ -80,12 +80,11 @@ img, video { max-width: 100%; height: auto; display: block; }
 .wordmark {
   display: inline-flex; align-items: center;
   padding: 6px 10px; border-radius: 8px;
-  /* 静止态即显浅按钮底色 + 发丝描边，让「回首页」被看出可点 */
-  background: rgba(239, 232, 233, .45);
-  border: 1px solid var(--c-border);
-  transition: background-color .2s, border-color .2s;
+  /* 静止态即显浅按钮底色（原 hover 态），无描边；hover 再加深一档 */
+  background: var(--hover-bg);
+  transition: background-color .2s;
 }
-.wordmark:hover { background: var(--hover-bg); border-color: transparent; }
+.wordmark:hover { background: rgba(224, 214, 215, .95); }
 .header-name {
   font-family: var(--font-sans); font-size: 14px; color: var(--c-header);
   white-space: nowrap;
