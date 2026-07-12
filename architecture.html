@@ -24,7 +24,7 @@
     try {
       var __q = new URLSearchParams(location.search).get('lang');
       var __l = (__q === 'zh' || __q === 'en') ? __q : localStorage.getItem('preferredLocale');
-      if (__l !== 'zh' && __l !== 'en') __l = (navigator.language || 'zh').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+      if (__l !== 'zh' && __l !== 'en') __l = 'zh';   /* 首访默认中文（2026-07-13） */
       document.documentElement.setAttribute('data-locale', __l);
       document.documentElement.lang = __l === 'zh' ? 'zh-CN' : 'en';
     } catch (e) {}

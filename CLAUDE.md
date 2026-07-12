@@ -2,6 +2,7 @@
 
 照老师站 wenxin.design 复刻的**纯静态多页站**：无框架无构建，`config/projects.json` 单一事实源。
 旧 React 单页站（「理性的艺术」钴蓝三色版）已整体退役，完整保留在 git 历史（快照 `ba7ebcd`）。
+**首访默认中文（2026-07-13 用户裁定）**：语言兜底一律 `'zh'`、不跟浏览器语言（六页 head 内联 + language-toggle.js detect() 共 7 处同口径）；已存 preferredLocale 与 portfolio `?lang=` 显式覆盖（PDF 导出）优先级不变。
 
 ## 色板（灰阶体系 · 钴蓝已退役，全站不再使用 #0047AB）
 

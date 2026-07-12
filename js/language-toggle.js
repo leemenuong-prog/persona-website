@@ -16,8 +16,7 @@
       var saved = localStorage.getItem(KEY);
       if (saved === 'zh' || saved === 'en') return saved;
     } catch (e) { /* 隐私模式无 localStorage */ }
-    var nav = (navigator.language || 'zh').toLowerCase();
-    return nav.indexOf('zh') === 0 ? 'zh' : 'en';
+    return 'zh';   /* 首访默认中文（2026-07-13 用户裁定，不再跟浏览器语言；手动切 EN 后仍持久化） */
   }
 
   var locale = document.documentElement.getAttribute('data-locale') || detect();
