@@ -53,7 +53,8 @@
       li.appendChild(bi(h('span', 'cv-period'), item.period, item.period_en || item.period));
     }
     li.appendChild(bi(h('span', 'cv-text'), item.text_zh, item.text_en));
-    if (item.note) li.appendChild(h('span', 'cv-note', item.note));   /* TOP n% 拉丁定字 */
+    if (item.note_zh) li.appendChild(bi(h('span', 'cv-note'), item.note_zh, item.note_en));   /* 双语注记（GPA·排名） */
+    else if (item.note) li.appendChild(h('span', 'cv-note', item.note));   /* TOP n% 拉丁定字 */
     return li;
   }
 

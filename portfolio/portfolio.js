@@ -321,7 +321,8 @@
         var li = h('li');
         if (it.period) li.appendChild(h('span', 'cv-period', locale() === 'zh' ? it.period : (it.period_en || it.period)));
         li.appendChild(h('span', 'cv-text', t(it, 'text')));
-        if (it.note) li.appendChild(h('span', 'cv-note', it.note));
+        var note = it.note_zh ? t(it, 'note') : it.note;   /* note_zh/en=双语注记，note=拉丁定字 */
+        if (note) li.appendChild(h('span', 'cv-note', note));
         ol.appendChild(li);
       });
       return ol;

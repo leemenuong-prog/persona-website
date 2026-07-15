@@ -47,13 +47,15 @@
         "period_en": "2025 —",
         "text_zh": "深圳大学 · 建筑学（复合 AI 方向）硕士",
         "text_en": "Shenzhen University · M.Arch, architecture × AI",
-        "note": "GPA 3.9 · RANK 2/69"
+        "note_zh": "GPA 3.9 · 排名 2/69",
+        "note_en": "GPA 3.9 · RANK 2/69"
       },
       {
         "period": "2020–2025",
         "text_zh": "广州大学 · 建筑学学士",
         "text_en": "Guangzhou University · B.Arch",
-        "note": "GPA 3.6 · RANK 14/84"
+        "note_zh": "GPA 3.6 · 排名 14/84",
+        "note_en": "GPA 3.6 · RANK 14/84"
       }
     ],
     "experience": [
